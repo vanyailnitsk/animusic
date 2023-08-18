@@ -18,7 +18,7 @@ public class Soundtrack {
     private Integer id;
     @Column(unique = true)
     private String originalTitle;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "anime_id", nullable = false)
     @JsonBackReference
     private Anime anime;

@@ -20,7 +20,7 @@ public class TestDataLoaderConfig {
         this.animeRepository = animeRepository;
     }
 
-    @Bean
+
     public CommandLineRunner testDataLoader() {
         return args -> {
             Anime anime1 = Anime.builder()
@@ -33,8 +33,14 @@ public class TestDataLoaderConfig {
                     .folderName("Naruto_Shippuden")
                     .releaseYear(Year.of(2007))
                     .build();
+            Anime anime3 = Anime.builder()
+                    .title("Attack on Titan")
+                    .folderName("Attack_on_Titan")
+                    .releaseYear(Year.of(2013))
+                    .build();
             animeRepository.save(anime1);
             animeRepository.save(anime2);
+            animeRepository.save(anime3);
         };
     }
 }

@@ -47,7 +47,7 @@ public class AudioService {
     private Soundtrack saveSoundtrack(Soundtrack soundtrack, Anime anime, int statusCode) {
         if (statusCode == 0) {
             soundtrack.setAnime(anime);
-            soundtrack.setPathToFile(soundtrack.getAnimeTitle());
+            soundtrack.setPathToFile(anime.getFolderName()+"/"+soundtrack.getAnimeTitle()+".mp3");
             Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
             anime.getSoundtracks().add(savedSoundtrack);
             animeRepository.save(anime);

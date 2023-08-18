@@ -22,14 +22,14 @@ public class AudioManagementController {
         this.audioService = audioService;
     }
 
-    @PostMapping("/upload-from-file")
+    @PostMapping("/create-from-file")
     public Soundtrack uploadAudioFromFile(@RequestPart("file") MultipartFile file,
                                        @ModelAttribute SoundtrackRequest request) {
         return audioService.createSoundtrackFromFile(
                 file,request.createSoundtrack(),request.getAnime() );
     }
 
-    @PostMapping("upload-from-youtube")
+    @PostMapping("/create-from-youtube")
     public Soundtrack uploadAudioFromYoutube(@RequestBody SoundtrackRequest request) {
         return audioService.createSoundtrackFromYoutube(
                 request.getVideoUrl(),request.createSoundtrack(),request.getAnime());
@@ -47,6 +47,7 @@ class SoundtrackRequest {
     private String videoUrl;
 
     public Soundtrack createSoundtrack() {
+        System.out.println(originalTitle+":"+trackType);
         return new Soundtrack(originalTitle,animeTitle,TrackType.valueOf(trackType));
     }
 }
