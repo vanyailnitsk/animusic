@@ -1,6 +1,7 @@
 package com.ilnitsk.animusic.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,6 @@ public class Soundtrack {
     @Id
     @GeneratedValue
     private Integer id;
-    @Column(unique = true)
     private String originalTitle;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "anime_id", nullable = false)
@@ -26,6 +26,8 @@ public class Soundtrack {
     private TrackType type;
     @Column(unique = true)
     private String pathToFile;
+    @JsonProperty("animeName")
+    private String animeName;
 
     public Soundtrack(String originalTitle, String animeTitle, TrackType type) {
         this.originalTitle = originalTitle;

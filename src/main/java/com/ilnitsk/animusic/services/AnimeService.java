@@ -20,13 +20,19 @@ public class AnimeService {
     }
 
     public List<Soundtrack> getSoundtracksByAnimeId(Integer animeId) {
-        return animeRepository.findById(animeId)
-                .orElseThrow(() -> new IllegalArgumentException("No anime with id " + animeId)).getSoundtracks();
+        Anime anime = animeRepository.findById(animeId)
+                .orElseThrow(() -> new IllegalArgumentException("No anime with id " + animeId));
+        List<Soundtrack> soundtracks = anime.getSoundtracks();
+        soundtracks.forEach(s -> s.setAnimeName(anime.getTitle()));
+        return soundtracks;
     }
 
     public Anime getAnimeInfo(Integer animeId) {
-        return animeRepository.findById(animeId)
+        Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new IllegalArgumentException("No anime with id " + animeId));
+        anime.getSoundtracks()
+                .forEach(s -> s.setAnimeName(anime.getTitle()));
+        return anime;
     }
 
     public List<AnimeNavDTO> getAnimeDropdownList() {
