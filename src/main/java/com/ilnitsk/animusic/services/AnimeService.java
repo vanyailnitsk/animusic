@@ -13,10 +13,12 @@ import java.util.List;
 @Service
 public class AnimeService {
     private final AnimeRepository animeRepository;
+    private final SoundtrackService soundtrackService;
 
     @Autowired
-    public AnimeService(AnimeRepository animeRepository) {
+    public AnimeService(AnimeRepository animeRepository, SoundtrackService soundtrackService) {
         this.animeRepository = animeRepository;
+        this.soundtrackService = soundtrackService;
     }
 
     public List<Soundtrack> getSoundtracksByAnimeId(Integer animeId) {
@@ -32,6 +34,7 @@ public class AnimeService {
                 .orElseThrow(() -> new IllegalArgumentException("No anime with id " + animeId));
         anime.getSoundtracks()
                 .forEach(s -> s.setAnimeName(anime.getTitle()));
+        anime.setSoundtracks(soundtrackService.getTypedSoundtrackList(anime.getSoundtracks()));
         return anime;
     }
 
