@@ -54,6 +54,7 @@ services - сервисные классы, которые управляют д
 - Maven
 - PostgreSQL
 - Node.js + [http-server](https://www.npmjs.com/package/http-server)
+- youtube-dl CLI
 
 ## Запуск приложения локально
 
