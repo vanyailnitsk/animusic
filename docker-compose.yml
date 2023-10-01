@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:14.5
+    image: db_container
     container_name : postgres_container
     environment:
       - POSTGRES_DB=postgres
@@ -8,12 +8,14 @@ services:
       - POSTGRES_PASSWORD=admin
     ports:
       - 5432:5432
-    volumes:
-      - ./backup.sql:/docker-entrypoint-initdb.d/backup.sql
+#    volumes:
+#      - ./backup.sql:/docker-entrypoint-initdb.d/backup.sql
+    cpu_shares: 100
+    mem_limit: 500m
   spring-app:
     container_name: spring-app
     build:
-      context: /Users/admin/IdeaProjects/animusic
+      context: .
       dockerfile: Dockerfile
     environment:
       db-url: jdbc:postgresql://db:5432/animusic
@@ -22,3 +24,5 @@ services:
       - 8081:8081
     depends_on:
       - db
+    cpu_shares: 100
+    mem_limit: 500m

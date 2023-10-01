@@ -1,9 +1,13 @@
 package com.ilnitsk.animusic.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +32,9 @@ public class Soundtrack {
     private String pathToFile;
     @JsonProperty("animeName")
     private String animeName;
+    @ManyToMany(mappedBy = "soundtracks")
+    @JsonBackReference
+    private List<Playlist> playlists = new ArrayList<>();
 
     public Soundtrack(String originalTitle, String animeTitle, TrackType type) {
         this.originalTitle = originalTitle;

@@ -29,5 +29,8 @@ public class Anime {
     @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Soundtrack> soundtracks = new ArrayList<>();
+    @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Playlist> playlists = new ArrayList<>();
 }
 
