@@ -25,25 +25,8 @@ public class PlaylistService {
         this.playlistRepository = playlistRepository;
     }
 
-    public void init() {
-        List<Anime> animeList = animeRepository.findAll();
-        for (Anime anime : animeList) {
-            List<Soundtrack> soundtracks = anime.getSoundtracks();
-            Map<TrackType, List<Soundtrack>> groupedSoundtracks = soundtracks.stream()
-                    .collect(Collectors.groupingBy(Soundtrack::getType));
-            for (Map.Entry<TrackType, List<Soundtrack>> entry : groupedSoundtracks.entrySet()) {
-                TrackType trackType = entry.getKey();
-                List<Soundtrack> soundtracksOfType = entry.getValue();
-
-                Playlist playlist = Playlist.builder()
-                        .name(trackType.toString())
-                        .imageUrl("/")
-                        .anime(anime)
-                        .soundtracks(soundtracksOfType)
-                        .build();
-                playlistRepository.save(playlist);
-            }
-        }
+    public List<Playlist> getPlaylistsByAnimeId(Integer animeId) {
+        return playlistRepository.getPlaylistsByAnimeId(animeId);
     }
 }
 
