@@ -27,6 +27,10 @@ public class PlaylistService {
     public Playlist getPlaylistsById(Integer id) {
         Optional<Playlist> entity = playlistRepository.findById(id);
         if (entity.isPresent())  {
+            Playlist playlist = entity.get();
+            String animeTitle = playlist.getAnime().getTitle();
+            playlist.getSoundtracks()
+                    .forEach(s -> s.setAnimeName(animeTitle));
             return entity.get();
         }
         throw new IllegalArgumentException("No playlist with id="+id);
