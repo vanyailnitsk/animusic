@@ -9,15 +9,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,43 +56,49 @@ public class SoundtrackService {
         return sortedList;
     }
 
-    public ResponseEntity<Resource> getAudioStream(Integer trackId,String range) throws IOException {
+    public ResponseEntity<StreamingResponseBody> getAudioStream(Integer trackId, HttpRange range) throws IOException {
         Optional<Soundtrack> soundtrack = soundtrackRepository.findById(trackId);
         if (soundtrack.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
         Path audioPath = Paths.get(musicDirectory).resolve(soundtrack.get().getPathToFile());
-
         if (Files.exists(audioPath)) {
             FileSystemResource audioFile = new FileSystemResource(audioPath.toFile());
             HttpHeaders headers = new HttpHeaders();
-
-            // Если запрошено частичное содержимое
+            StreamingResponseBody stream;
             if (range != null) {
-                // Устанавливаем заголовок с частичным содержимым
                 headers.set(HttpHeaders.ACCEPT_RANGES, "bytes");
-
-                // Получаем размер файла
                 long fileSize = audioFile.contentLength();
-
-                // Извлекаем начальный и конечный байты из заголовка Range
-                String[] rangeValues = range.split("=")[1].split("-");
-                long start = Long.parseLong(rangeValues[0]);
-                long end = rangeValues.length > 1 ? Long.parseLong(rangeValues[1]) : fileSize - 1;
-
-                // Устанавливаем заголовки для частичного содержимого
-                headers.set(HttpHeaders.CONTENT_LENGTH, String.valueOf(end - start + 1));
-                headers.set(HttpHeaders.CONTENT_RANGE, "bytes " + start + "-" + end + "/" + fileSize);
+                long rangeStart = range.getRangeStart(0);
+                long rangeEnd = rangeStart + 1000000;
+                if (rangeEnd >= fileSize) {
+                    rangeEnd = fileSize - 1;
+                }
+                long finalRangeEnd = rangeEnd;
+                stream = out -> {
+                    try (InputStream inputStream = Files.newInputStream(audioPath)) {
+                        inputStream.skip(rangeStart);
+                        byte[] bytes = inputStream.readNBytes((int) ((finalRangeEnd - rangeStart) + 1));
+                        out.write(bytes);
+                    } catch (IOException e) {
+                        System.out.println("Error with audiofile stream");
+                    }
+                };
+                headers.set(HttpHeaders.CONTENT_LENGTH, String.valueOf(rangeEnd - rangeStart + 1));
+                headers.set(HttpHeaders.CONTENT_RANGE, "bytes " + rangeStart + "-" + rangeEnd + "/" + fileSize);
                 headers.setContentType(MediaType.parseMediaType("audio/mpeg"));
-
-                // Возвращаем частичное содержимое файла
-                return new ResponseEntity<>(audioFile, headers, HttpStatus.PARTIAL_CONTENT);
+                return new ResponseEntity<>(stream, headers, HttpStatus.PARTIAL_CONTENT);
             }
-
-            // Если не запрошено частичное содержимое
+            stream = out -> {
+                try (InputStream inputStream = Files.newInputStream(audioPath)) {
+                    byte[] bytes = inputStream.readAllBytes();
+                    out.write(bytes);
+                } catch (IOException e) {
+                    System.out.println("Error with audiofile stream");
+                }
+            };
             headers.set(HttpHeaders.CONTENT_TYPE, "audio/mpeg");
-            return new ResponseEntity<>(audioFile, headers, HttpStatus.OK);
+            return new ResponseEntity<>(stream, headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

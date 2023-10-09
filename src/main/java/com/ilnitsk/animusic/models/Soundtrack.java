@@ -28,7 +28,6 @@ public class Soundtrack {
     private Anime anime;
     private String animeTitle;
     private TrackType type;
-    @Column(unique = true)
     private String pathToFile;
     @JsonProperty("animeName")
     private String animeName;
