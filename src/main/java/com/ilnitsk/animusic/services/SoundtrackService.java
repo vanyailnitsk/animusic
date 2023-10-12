@@ -1,20 +1,18 @@
 package com.ilnitsk.animusic.services;
 
+import com.ilnitsk.animusic.models.Anime;
 import com.ilnitsk.animusic.models.Soundtrack;
 import com.ilnitsk.animusic.models.TrackType;
+import com.ilnitsk.animusic.repositories.AnimeRepository;
 import com.ilnitsk.animusic.repositories.SoundtrackRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -31,10 +29,12 @@ public class SoundtrackService {
     private final SoundtrackRepository soundtrackRepository;
     @Value("${audiotracks.directory}")
     private String musicDirectory;
+    private final AnimeRepository animeRepository;
 
     @Autowired
-    public SoundtrackService(SoundtrackRepository soundtrackRepository) {
+    public SoundtrackService(SoundtrackRepository soundtrackRepository, AnimeRepository animeRepository) {
         this.soundtrackRepository = soundtrackRepository;
+        this.animeRepository = animeRepository;
     }
 
     public List<Soundtrack> getTypedSoundtrackList(List<Soundtrack> soundtracks) {
@@ -70,7 +70,7 @@ public class SoundtrackService {
                 headers.set(HttpHeaders.ACCEPT_RANGES, "bytes");
                 long fileSize = audioFile.contentLength();
                 long rangeStart = range.getRangeStart(0);
-                long rangeEnd = rangeStart + 1000000;
+                long rangeEnd = rangeStart + 2000000;
                 if (rangeEnd >= fileSize) {
                     rangeEnd = fileSize - 1;
                 }
@@ -101,6 +101,32 @@ public class SoundtrackService {
             return new ResponseEntity<>(stream, headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    public Soundtrack createFromFile(MultipartFile file, Soundtrack soundtrack, String animeTitle) {
+        Anime anime = animeRepository.findAnimeByTitle(animeTitle);
+        Path path = Paths.get(musicDirectory,anime.getFolderName());
+        int statusCode = Downloader.downloadAudioFromFile(file,path,soundtrack.getAnimeTitle());
+        return saveSoundtrack(soundtrack, anime, statusCode);
+    }
+    public Soundtrack createFromYoutube(String url,Soundtrack soundtrack,String animeTitle) {
+        Anime anime = animeRepository.findAnimeByTitle(animeTitle);
+        Path path = Paths.get(musicDirectory,anime.getFolderName());
+        int statusCode = Downloader.downloadAudioFromUrl(url,path,soundtrack.getAnimeTitle());
+        return saveSoundtrack(soundtrack, anime, statusCode);
+    }
+
+    private Soundtrack saveSoundtrack(Soundtrack soundtrack, Anime anime, int statusCode) {
+        if (statusCode == 0) {
+            soundtrack.setAnime(anime);
+            soundtrack.setPathToFile(anime.getFolderName()+"/"+soundtrack.getAnimeTitle()+".mp3");
+            Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
+            anime.getSoundtracks().add(savedSoundtrack);
+            animeRepository.save(anime);
+            return soundtrackRepository.save(savedSoundtrack);
+        }
+        else {
+            throw new IllegalStateException("Error while downloading audio!");
         }
     }
 

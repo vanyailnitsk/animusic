@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.controllers;
 
+import com.ilnitsk.animusic.dto.SoundtrackRequest;
 import com.ilnitsk.animusic.models.Soundtrack;
 import com.ilnitsk.animusic.models.TrackType;
 import com.ilnitsk.animusic.services.AudioService;
@@ -33,21 +34,5 @@ public class AudioManagementController {
     public Soundtrack uploadAudioFromYoutube(@RequestBody SoundtrackRequest request) {
         return audioService.createSoundtrackFromYoutube(
                 request.getVideoUrl(),request.createSoundtrack(),request.getAnime());
-    }
-}
-
-@AllArgsConstructor
-@Getter
-@Setter
-class SoundtrackRequest {
-    private String originalTitle;
-    private String animeTitle;
-    private String anime;
-    private String trackType;
-    private String videoUrl;
-
-    public Soundtrack createSoundtrack() {
-        System.out.println(originalTitle+":"+trackType);
-        return new Soundtrack(originalTitle,animeTitle,TrackType.valueOf(trackType));
     }
 }
