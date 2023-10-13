@@ -1,19 +1,14 @@
 package com.ilnitsk.animusic.services;
 
 import com.ilnitsk.animusic.models.Playlist;
-import com.ilnitsk.animusic.models.Soundtrack;
-import com.ilnitsk.animusic.models.TrackType;
 import com.ilnitsk.animusic.repositories.AnimeRepository;
 import com.ilnitsk.animusic.repositories.PlaylistRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PlaylistService {
@@ -29,7 +24,6 @@ public class PlaylistService {
     public List<Playlist> getPlaylistsByAnimeId(Integer animeId) {
         return playlistRepository.getPlaylistsByAnimeId(animeId);
     }
-
     public Playlist getPlaylistsById(Integer id) {
         Optional<Playlist> entity = playlistRepository.findById(id);
         if (entity.isEmpty())  {

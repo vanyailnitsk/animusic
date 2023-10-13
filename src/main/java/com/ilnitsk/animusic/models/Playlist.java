@@ -33,4 +33,7 @@ public class Playlist {
     )
     @JsonManagedReference
     private List<Soundtrack> soundtracks = new ArrayList<>();
+    public void addSoundtrack(Soundtrack soundtrack) {
+        soundtracks.add(soundtrack);
+    }
 }

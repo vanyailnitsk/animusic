@@ -1,6 +1,7 @@
 package com.ilnitsk.animusic.services;
 
 import com.ilnitsk.animusic.models.Anime;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,51 +12,46 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Scanner;
 
+@Slf4j
 public class Downloader {
+    public static void downloadAudio(Object audioSource, Path path, String fileName) throws IOException, InterruptedException {
+        if (Files.exists(Paths.get(path.toString(), fileName + ".mp3"))) {
+            log.error("File {} already exists",fileName);
+            throw new IOException();
+        }
+        if (audioSource instanceof MultipartFile) {
+            downloadAudioFromFile((MultipartFile) audioSource, path, fileName);
+        } else if (audioSource instanceof String) {
+            downloadAudioFromYoutube((String) audioSource, path, fileName);
+        } else {
+            throw new IllegalArgumentException("Unsupported audio source type");
+        }
+    }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String url = scanner.next();
-        String outputDir = "/Users/admin/Music/animusic-audio";
-        String fileName = "Promised_Neverland_Opening1";
-    }
-    public static int downloadAudioFromUrl(String url,Path path,String fileName) {
+    private static void downloadAudioFromYoutube(String url, Path path, String fileName) throws IOException, InterruptedException {
         handleFolderExisting(path);
-        try {
-            String outputFileName = fileName+".mp3";
-            List<String> commands = List.of(
-                    "youtube-dl", "-x", "--audio-format", "mp3","--output",outputFileName, url);
-            ProcessBuilder processBuilder = new ProcessBuilder(commands);
-            processBuilder.directory(path.toFile());
-            Process process = processBuilder.start();
-            System.out.println("Downloading started: "+fileName);
-            process.waitFor();
-            System.out.println(outputFileName + " has been successfully downloaded.");
-            return 0;
-        } catch (IOException | InterruptedException e) {
-            return 1;
-        }
+        String outputFileName = fileName + ".mp3";
+        List<String> commands = List.of(
+                "youtube-dl", "-x", "--audio-format", "mp3", "--output", outputFileName, url);
+        ProcessBuilder processBuilder = new ProcessBuilder(commands);
+        processBuilder.directory(path.toFile());
+        Process process = processBuilder.start();
+        log.info("Downloading started: {}", fileName);
+        process.waitFor();
+        log.info("{} has been successfully downloaded.", outputFileName);
     }
-    public static int downloadAudioFromFile(MultipartFile file,Path path,String fileName) {
+
+    private static void downloadAudioFromFile(MultipartFile file, Path path, String fileName) throws IOException {
         handleFolderExisting(path);
-        String newFilePath = Paths.get(path.toString(),fileName+".mp3").toString();
-        try {
-            FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(newFilePath));
-            return 0;
-        } catch (IOException e) {
-            return 1;
-        }
+        String newFilePath = Paths.get(path.toString(), fileName + ".mp3").toString();
+        FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(newFilePath));
     }
-    public static void handleFolderExisting(Path folderPath) {
+
+    private static void handleFolderExisting(Path folderPath) throws IOException {
         if (!Files.exists(folderPath)) {
-            try {
-                Files.createDirectories(folderPath);
-                System.out.println("Папка для аниме " + folderPath.getFileName().toString() + " успешно создана.");
-            } catch (IOException e) {
-                System.err.println("Ошибка при создании папки для аниме " + folderPath.getFileName().toString() + ": " + e.getMessage());
-            }
+            Files.createDirectories(folderPath);
+            log.info("Папка для аниме {} успешно создана.", folderPath.getFileName().toString());
         }
     }
 }

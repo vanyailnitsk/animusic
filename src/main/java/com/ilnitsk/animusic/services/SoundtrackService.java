@@ -1,10 +1,14 @@
 package com.ilnitsk.animusic.services;
 
 import com.ilnitsk.animusic.models.Anime;
+import com.ilnitsk.animusic.models.Playlist;
 import com.ilnitsk.animusic.models.Soundtrack;
 import com.ilnitsk.animusic.models.TrackType;
 import com.ilnitsk.animusic.repositories.AnimeRepository;
+import com.ilnitsk.animusic.repositories.PlaylistRepository;
 import com.ilnitsk.animusic.repositories.SoundtrackRepository;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -25,16 +29,19 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class SoundtrackService {
     private final SoundtrackRepository soundtrackRepository;
     @Value("${audiotracks.directory}")
     private String musicDirectory;
     private final AnimeRepository animeRepository;
+    private final PlaylistRepository playlistRepository;
 
     @Autowired
-    public SoundtrackService(SoundtrackRepository soundtrackRepository, AnimeRepository animeRepository) {
+    public SoundtrackService(SoundtrackRepository soundtrackRepository, AnimeRepository animeRepository, PlaylistRepository playlistRepository) {
         this.soundtrackRepository = soundtrackRepository;
         this.animeRepository = animeRepository;
+        this.playlistRepository = playlistRepository;
     }
 
     public List<Soundtrack> getTypedSoundtrackList(List<Soundtrack> soundtracks) {
@@ -103,32 +110,27 @@ public class SoundtrackService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    public Soundtrack createFromFile(MultipartFile file, Soundtrack soundtrack, String animeTitle) {
-        Anime anime = animeRepository.findAnimeByTitle(animeTitle);
-        Path path = Paths.get(musicDirectory,anime.getFolderName());
-        int statusCode = Downloader.downloadAudioFromFile(file,path,soundtrack.getAnimeTitle());
-        return saveSoundtrack(soundtrack, anime, statusCode);
-    }
-    public Soundtrack createFromYoutube(String url,Soundtrack soundtrack,String animeTitle) {
-        Anime anime = animeRepository.findAnimeByTitle(animeTitle);
-        Path path = Paths.get(musicDirectory,anime.getFolderName());
-        int statusCode = Downloader.downloadAudioFromUrl(url,path,soundtrack.getAnimeTitle());
-        return saveSoundtrack(soundtrack, anime, statusCode);
-    }
 
-    private Soundtrack saveSoundtrack(Soundtrack soundtrack, Anime anime, int statusCode) {
-        if (statusCode == 0) {
-            soundtrack.setAnime(anime);
-            soundtrack.setPathToFile(anime.getFolderName()+"/"+soundtrack.getAnimeTitle()+".mp3");
-            Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
-            anime.getSoundtracks().add(savedSoundtrack);
-            animeRepository.save(anime);
-            return soundtrackRepository.save(savedSoundtrack);
+    @Transactional
+    public Soundtrack createSoundtrack(Object audioSource,Soundtrack soundtrack,Integer playlistId) {
+        Optional<Playlist> playlistEntity = playlistRepository.findById(playlistId);
+        if (playlistEntity.isEmpty()) {
+            throw new IllegalStateException("No playlist with id "+playlistId);
         }
-        else {
+        Playlist playlist = playlistEntity.get();
+        Anime anime = playlist.getAnime();
+        Path path = Paths.get(musicDirectory, anime.getFolderName());
+        try {
+            Downloader.downloadAudio(audioSource, path, soundtrack.getAnimeTitle());
+            soundtrack.setAnime(anime);
+            soundtrack.setPathToFile(anime.getFolderName() + "/" + soundtrack.getAnimeTitle() + ".mp3");
+            Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
+            playlist.addSoundtrack(soundtrack);
+            playlistRepository.save(playlist);
+            log.info("Soundtrack {} created successfully", soundtrack.getAnimeTitle());
+            return soundtrackRepository.save(savedSoundtrack);
+        } catch (IOException | InterruptedException e) {
             throw new IllegalStateException("Error while downloading audio!");
         }
     }
-
-
 }

@@ -37,15 +37,17 @@ public class SountrackController {
     }
 
     @PostMapping("/create-from-file")
-    public Soundtrack createFromFile(@RequestPart("file") MultipartFile file,
+    public Soundtrack createFromFile(@RequestPart(value = "file",required = true) MultipartFile file,
                                           @ModelAttribute SoundtrackRequest request) {
-        return soundtrackService.createFromFile(
-                file,request.createSoundtrack(),request.getAnime() );
+        return soundtrackService.createSoundtrack(
+                file,request.createSoundtrack(),request.getPlaylistId()
+        );
     }
 
     @PostMapping("/create-from-youtube")
-    public Soundtrack createFromYoutube(@RequestBody SoundtrackRequest request) {
-        return soundtrackService.createFromYoutube(
-                request.getVideoUrl(),request.createSoundtrack(),request.getAnime());
+    public Soundtrack createFromYoutube(@RequestBody(required = true) SoundtrackRequest request) {
+        return soundtrackService.createSoundtrack(
+                request.getVideoUrl(),request.createSoundtrack(),request.getPlaylistId()
+        );
     }
 }

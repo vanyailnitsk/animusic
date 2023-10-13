@@ -12,12 +12,11 @@ import lombok.Setter;
 public class SoundtrackRequest {
     private String originalTitle;
     private String animeTitle;
-    private String anime;
+    private Integer playlistId;
     private String trackType;
     private String videoUrl;
 
     public Soundtrack createSoundtrack() {
-        System.out.println(originalTitle+":"+trackType);
         return new Soundtrack(originalTitle,animeTitle, TrackType.valueOf(trackType));
     }
 }
