@@ -51,7 +51,6 @@ services - сервисные классы, которые управляют д
 - Java 17+
 - Maven
 - PostgreSQL
-- Node.js + [http-server](https://www.npmjs.com/package/http-server)
 - youtube-dl CLI
 
 ## Запуск приложения локально
@@ -76,23 +75,11 @@ grant all privileges on database animusic to postgres;
 grant all privileges on database animusic to имя_пользователя;
 ```
 
-Установить http-server с помощью команды
-
-```bash
-npm i http-server
-```
-
 Создать директорию, где будут хранится аудио-файлы приложения. Например,
 
 ```bash
 mkdir animusic-audio
 cd animusic-audio
-```
-
-После чего запустить http-server на нужном порте (например 1234)
-
-```bash
-http-server -p 1234
 ```
 
 Далее необходимо сконфигурировать файл application.properties, находящийся в папке проекта src/main/resources
@@ -110,7 +97,7 @@ spring.jpa.properties.hibernate.format_sql=false
 spring.servlet.multipart.max-file-size=20MB
 spring.servlet.multipart.max-request-size=20MB
 audiotracks.directory=//абсолютный путь до директории с аудиофайлами
-server.error.include-message=alwaysДалее откройте файл SecurityConfig и в данной строке строке замените [localhost:3000](http://localhost:3000) на 
+server.error.include-message=always
 ```
 
 После чего остается только запустить приложение с помощью Maven:
@@ -166,7 +153,7 @@ Response example
 }
 ```
 
-2) POST /api/audio/create-from-file - создать саундтрек с помощью аудиофайла 
+2) POST /api/soundtrack/create-from-file - создать саундтрек с помощью аудиофайла 
 
 Пример использования:
 
