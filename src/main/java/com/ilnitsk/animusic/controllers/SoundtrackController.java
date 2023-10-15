@@ -5,7 +5,6 @@ import com.ilnitsk.animusic.models.Soundtrack;
 import com.ilnitsk.animusic.services.SoundtrackService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRange;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/soundtracks")
 @Slf4j
-public class SountrackController {
+public class SoundtrackController {
     private final SoundtrackService soundtrackService;
 
     @Autowired
-    public SountrackController(SoundtrackService soundtrackService) {
+    public SoundtrackController(SoundtrackService soundtrackService) {
         this.soundtrackService = soundtrackService;
     }
 
