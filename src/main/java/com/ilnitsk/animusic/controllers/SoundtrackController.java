@@ -49,4 +49,8 @@ public class SoundtrackController {
                 request.getVideoUrl(),request.createSoundtrack(),request.getPlaylistId()
         );
     }
+    @DeleteMapping("{id}")
+    public void deleteSoundtrack(@PathVariable Integer id) {
+        soundtrackService.remove(id);
+    }
 }

@@ -25,12 +25,16 @@ public class Playlist {
     @JoinColumn(name = "anime_id")
     @JsonIgnore
     private Anime anime;
-    @ManyToMany
-    @JoinTable(
-            name = "playlist_soundtrack",
-            joinColumns = @JoinColumn(name = "playlist_id"),
-            inverseJoinColumns = @JoinColumn(name = "soundtrack_id")
-    )
+    @ManyToMany(targetEntity = Soundtrack.class)
+    @JoinTable(name = "playlist_soundtrack",
+            inverseJoinColumns = @JoinColumn(name = "soundtrack_id",
+                    nullable = false,
+                    updatable = false),
+            joinColumns = @JoinColumn(name = "playlist_id",
+                    nullable = false,
+                    updatable = false),
+            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
+            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
     @JsonManagedReference
     private List<Soundtrack> soundtracks = new ArrayList<>();
     public void addSoundtrack(Soundtrack soundtrack) {

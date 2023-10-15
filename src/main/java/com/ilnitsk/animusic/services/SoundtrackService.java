@@ -132,4 +132,8 @@ public class SoundtrackService {
             throw new IllegalStateException("Error while downloading audio!");
         }
     }
+
+    public void remove(Integer id) {
+        soundtrackRepository.deleteById(id);
+    }
 }

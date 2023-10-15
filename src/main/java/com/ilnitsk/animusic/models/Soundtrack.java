@@ -31,7 +31,16 @@ public class Soundtrack {
     private String pathToFile;
     @JsonProperty("animeName")
     private String animeName;
-    @ManyToMany(mappedBy = "soundtracks")
+    @ManyToMany()
+    @JoinTable(name = "playlist_soundtrack",
+            inverseJoinColumns = @JoinColumn(name = "playlist_id",
+                    nullable = false,
+                    updatable = false),
+            joinColumns = @JoinColumn(name = "soundtrack_id",
+                    nullable = false,
+                    updatable = false),
+            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
+            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
     @JsonBackReference
     private List<Playlist> playlists = new ArrayList<>();
 

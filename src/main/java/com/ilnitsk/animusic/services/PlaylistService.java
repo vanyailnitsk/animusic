@@ -21,9 +21,14 @@ public class PlaylistService {
         this.playlistRepository = playlistRepository;
     }
 
+    public Playlist createPlaylist(Playlist playlist) {
+        return playlistRepository.save(playlist);
+    }
+
     public List<Playlist> getPlaylistsByAnimeId(Integer animeId) {
         return playlistRepository.getPlaylistsByAnimeId(animeId);
     }
+
     public Playlist getPlaylistsById(Integer id) {
         Optional<Playlist> entity = playlistRepository.findById(id);
         if (entity.isEmpty())  {
@@ -42,5 +47,6 @@ public class PlaylistService {
         }
         return entity.get();
     }
+
 }
 
