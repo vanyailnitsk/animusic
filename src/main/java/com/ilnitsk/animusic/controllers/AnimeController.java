@@ -23,13 +23,13 @@ public class AnimeController {
 
     @GetMapping("/all-soundtracks-by-anime-id/{animeId}")
     public List<Soundtrack> getSoundtracksByAnimeId(@PathVariable Integer animeId) {
-        log.info("Requested all sounddtrack by anime {}",animeId);
+        log.info("Requested all sounddtrack by anime {}", animeId);
         return animeService.getSoundtracksByAnimeId(animeId);
     }
 
     @GetMapping("/info/{animeId}")
     public Anime getAnimeInfo(@PathVariable Integer animeId) {
-        log.info("Requested anime {} info",animeId);
+        log.info("Requested anime {} info", animeId);
         return animeService.getAnimeInfo(animeId);
     }
 
@@ -40,7 +40,7 @@ public class AnimeController {
 
     @PostMapping("/create")
     public Anime createAnime(@RequestBody Anime anime) {
-        log.info("Anime {} created",anime.getTitle());
+        log.info("Anime {} created", anime.getTitle());
         return animeService.createAnime(anime);
     }
 }

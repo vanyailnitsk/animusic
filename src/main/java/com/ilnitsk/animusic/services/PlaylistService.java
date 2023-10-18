@@ -1,5 +1,8 @@
 package com.ilnitsk.animusic.services;
 
+import com.ilnitsk.animusic.exception.AnimeNotFoundException;
+import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
+import com.ilnitsk.animusic.models.Anime;
 import com.ilnitsk.animusic.models.Playlist;
 import com.ilnitsk.animusic.repositories.AnimeRepository;
 import com.ilnitsk.animusic.repositories.PlaylistRepository;
@@ -26,14 +29,17 @@ public class PlaylistService {
     }
 
     public List<Playlist> getPlaylistsByAnimeId(Integer animeId) {
-        return playlistRepository.getPlaylistsByAnimeId(animeId);
+        Optional<Anime> anime = animeRepository.findById(animeId);
+        if (anime.isEmpty()) {
+            throw new AnimeNotFoundException(animeId);
+        }
+        return anime.get().getPlaylists();
     }
 
     public Playlist getPlaylistsById(Integer id) {
         Optional<Playlist> entity = playlistRepository.findById(id);
-        if (entity.isEmpty())  {
-            throw new IllegalArgumentException("No playlist with id="+id);
-
+        if (entity.isEmpty()) {
+            throw new PlaylistNotFoundException(id);
         }
         Playlist playlist = entity.get();
         String animeTitle = playlist.getAnime().getTitle();

@@ -31,13 +31,13 @@ public class PlaylistController {
 
     @GetMapping("/by-anime/{animeId}")
     public List<Playlist> getPlaylistsByAnime(@PathVariable Integer animeId) {
-        log.info("Requested playlists by anime {}",animeId);
+        log.info("Requested playlists by anime {}", animeId);
         return playlistService.getPlaylistsByAnimeId(animeId);
     }
 
     @GetMapping("{id}")
     public Playlist getPlaylistById(@PathVariable(required = true) Integer id) {
-        log.info("Requested playlist with id {}",id);
+        log.info("Requested playlist with id {}", id);
         return playlistService.getPlaylistsById(id);
     }
 

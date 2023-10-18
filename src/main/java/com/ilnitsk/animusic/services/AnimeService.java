@@ -1,6 +1,7 @@
 package com.ilnitsk.animusic.services;
 
 import com.ilnitsk.animusic.dto.AnimeNavDTO;
+import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.models.Anime;
 import com.ilnitsk.animusic.models.Soundtrack;
 import com.ilnitsk.animusic.repositories.AnimeRepository;
@@ -23,7 +24,7 @@ public class AnimeService {
 
     public List<Soundtrack> getSoundtracksByAnimeId(Integer animeId) {
         Anime anime = animeRepository.findById(animeId)
-                .orElseThrow(() -> new IllegalArgumentException("No anime with id " + animeId));
+                .orElseThrow(() -> new AnimeNotFoundException(animeId));
         List<Soundtrack> soundtracks = anime.getSoundtracks();
         soundtracks.forEach(s -> s.setAnimeName(anime.getTitle()));
         return soundtracks;
@@ -31,10 +32,9 @@ public class AnimeService {
 
     public Anime getAnimeInfo(Integer animeId) {
         Anime anime = animeRepository.findById(animeId)
-                .orElseThrow(() -> new IllegalArgumentException("No anime with id " + animeId));
+                .orElseThrow(() -> new AnimeNotFoundException(animeId));
         anime.getSoundtracks()
                 .forEach(s -> s.setAnimeName(anime.getTitle()));
-        anime.setSoundtracks(soundtrackService.getTypedSoundtrackList(anime.getSoundtracks()));
         return anime;
     }
 

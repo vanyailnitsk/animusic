@@ -29,26 +29,27 @@ public class SoundtrackController {
     @GetMapping("/play/{trackId}")
     public ResponseEntity<StreamingResponseBody> playTrack(
             @PathVariable Integer trackId,
-            @RequestHeader(value = HttpHeaders.RANGE,required = false) String range) throws IOException {
+            @RequestHeader(value = HttpHeaders.RANGE, required = false) String range) throws IOException {
         List<HttpRange> httpRangeList = HttpRange.parseRanges(range);
-        log.info("Playing track: {}",trackId);
+        log.info("Playing track: {}", trackId);
         return soundtrackService.getAudioStream(trackId, httpRangeList.size() > 0 ? httpRangeList.get(0) : null);
     }
 
     @PostMapping("/create-from-file")
-    public Soundtrack createFromFile(@RequestPart(value = "file",required = true) MultipartFile file,
-                                          @ModelAttribute SoundtrackRequest request) {
+    public Soundtrack createFromFile(@RequestPart(value = "file", required = true) MultipartFile file,
+                                     @ModelAttribute SoundtrackRequest request) {
         return soundtrackService.createSoundtrack(
-                file,request.createSoundtrack(),request.getPlaylistId()
+                file, request.createSoundtrack(), request.getPlaylistId()
         );
     }
 
     @PostMapping("/create-from-youtube")
     public Soundtrack createFromYoutube(@RequestBody(required = true) SoundtrackRequest request) {
         return soundtrackService.createSoundtrack(
-                request.getVideoUrl(),request.createSoundtrack(),request.getPlaylistId()
+                request.getVideoUrl(), request.createSoundtrack(), request.getPlaylistId()
         );
     }
+
     @DeleteMapping("{id}")
     public void deleteSoundtrack(@PathVariable Integer id) {
         soundtrackService.remove(id);
