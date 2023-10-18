@@ -54,5 +54,8 @@ public class PlaylistService {
         return entity.get();
     }
 
+    public void deletePlaylist(Integer id) {
+        playlistRepository.deleteById(id);
+    }
 }
 

@@ -53,4 +53,8 @@ public class PlaylistController {
         Playlist savedPlaylist = playlistService.createPlaylist(playlist);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPlaylist);
     }
+    @DeleteMapping("{id}")
+    public void deletePlaylist(@PathVariable Integer id) {
+        playlistService.deletePlaylist(id);
+    }
 }
