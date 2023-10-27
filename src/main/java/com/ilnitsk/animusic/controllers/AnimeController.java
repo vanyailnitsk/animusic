@@ -2,7 +2,6 @@ package com.ilnitsk.animusic.controllers;
 
 import com.ilnitsk.animusic.dto.AnimeNavDTO;
 import com.ilnitsk.animusic.models.Anime;
-import com.ilnitsk.animusic.models.Soundtrack;
 import com.ilnitsk.animusic.services.AnimeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +20,6 @@ public class AnimeController {
         this.animeService = animeService;
     }
 
-    @GetMapping("/all-soundtracks-by-anime-id/{animeId}")
-    public List<Soundtrack> getSoundtracksByAnimeId(@PathVariable Integer animeId) {
-        log.info("Requested all sounddtrack by anime {}", animeId);
-        return animeService.getSoundtracksByAnimeId(animeId);
-    }
 
     @GetMapping("/info/{animeId}")
     public Anime getAnimeInfo(@PathVariable Integer animeId) {

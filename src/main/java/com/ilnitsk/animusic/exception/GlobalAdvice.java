@@ -29,5 +29,11 @@ public class GlobalAdvice {
         return ex.getMessage();
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String badRequest(BadRequestException ex) {
+        return ex.getMessage();
+    }
+
 
 }

@@ -32,5 +32,14 @@ public class Anime {
     @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Playlist> playlists = new ArrayList<>();
+
+    public Anime(String title, String studio, Year releaseYear, String description, String folderName) {
+        this.title = title;
+        this.studio = studio;
+        this.releaseYear = releaseYear;
+        this.description = description;
+        this.folderName = folderName;
+    }
+
 }
 

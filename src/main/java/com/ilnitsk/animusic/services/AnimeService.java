@@ -2,8 +2,8 @@ package com.ilnitsk.animusic.services;
 
 import com.ilnitsk.animusic.dto.AnimeNavDTO;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
+import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.models.Anime;
-import com.ilnitsk.animusic.models.Soundtrack;
 import com.ilnitsk.animusic.repositories.AnimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,20 +14,10 @@ import java.util.List;
 @Service
 public class AnimeService {
     private final AnimeRepository animeRepository;
-    private final SoundtrackService soundtrackService;
 
     @Autowired
-    public AnimeService(AnimeRepository animeRepository, SoundtrackService soundtrackService) {
+    public AnimeService(AnimeRepository animeRepository) {
         this.animeRepository = animeRepository;
-        this.soundtrackService = soundtrackService;
-    }
-
-    public List<Soundtrack> getSoundtracksByAnimeId(Integer animeId) {
-        Anime anime = animeRepository.findById(animeId)
-                .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        List<Soundtrack> soundtracks = anime.getSoundtracks();
-        soundtracks.forEach(s -> s.setAnimeName(anime.getTitle()));
-        return soundtracks;
     }
 
     public Anime getAnimeInfo(Integer animeId) {
@@ -50,6 +40,13 @@ public class AnimeService {
     }
 
     public Anime createAnime(Anime anime) {
+        boolean existsTitle = animeRepository
+                .existsAnimeByTitle(anime.getTitle());
+        if (existsTitle) {
+            throw new BadRequestException(
+                    "Anime " + anime.getTitle() + " already exists"
+            );
+        }
         return animeRepository.save(anime);
     }
 }
