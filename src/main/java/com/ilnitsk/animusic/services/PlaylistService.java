@@ -1,6 +1,8 @@
 package com.ilnitsk.animusic.services;
 
+import com.ilnitsk.animusic.dto.CreatePlaylistRequest;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
+import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
 import com.ilnitsk.animusic.models.Anime;
 import com.ilnitsk.animusic.models.Playlist;
@@ -8,6 +10,7 @@ import com.ilnitsk.animusic.repositories.AnimeRepository;
 import com.ilnitsk.animusic.repositories.PlaylistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Comparator;
 import java.util.List;
@@ -16,14 +19,28 @@ import java.util.Optional;
 @Service
 public class PlaylistService {
     private final PlaylistRepository playlistRepository;
+    private final AnimeRepository animeRepository;
 
     @Autowired
-    public PlaylistService(PlaylistRepository playlistRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository, AnimeRepository animeRepository) {
         this.playlistRepository = playlistRepository;
+        this.animeRepository = animeRepository;
     }
 
-    public Playlist createPlaylist(Playlist playlist) {
-        return playlistRepository.save(playlist);
+    public Playlist createPlaylist(@RequestBody CreatePlaylistRequest request) {
+        Optional<Anime> animeOptional = animeRepository.findById(request.getAnimeId());
+        if (animeOptional.isEmpty()) {
+            throw new AnimeNotFoundException(request.getAnimeId());
+        }
+        Anime anime = animeOptional.get();
+        if (playlistRepository.existsByNameAndAnimeId(request.getName(),request.getAnimeId())) {
+            throw new BadRequestException(
+                    "Playlist " + request.getName() + " in anime " +anime.getTitle()+" already exists"
+            );
+        }
+        Playlist playlist = request.getPlaylistData();
+        playlist.setAnime(anime);
+        return playlist;
     }
 
     public List<Playlist> getPlaylistsByAnimeId(Integer animeId) {
