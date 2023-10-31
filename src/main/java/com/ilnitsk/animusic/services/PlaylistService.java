@@ -15,12 +15,10 @@ import java.util.Optional;
 
 @Service
 public class PlaylistService {
-    private final AnimeRepository animeRepository;
     private final PlaylistRepository playlistRepository;
 
     @Autowired
-    public PlaylistService(AnimeRepository animeRepository, PlaylistRepository playlistRepository) {
-        this.animeRepository = animeRepository;
+    public PlaylistService(PlaylistRepository playlistRepository) {
         this.playlistRepository = playlistRepository;
     }
 
@@ -29,11 +27,11 @@ public class PlaylistService {
     }
 
     public List<Playlist> getPlaylistsByAnimeId(Integer animeId) {
-        Optional<Anime> anime = animeRepository.findById(animeId);
-        if (anime.isEmpty()) {
+        Optional<List<Playlist>> playlists = playlistRepository.getPlaylistsByAnimeId(animeId);
+        if (playlists.isEmpty()) {
             throw new AnimeNotFoundException(animeId);
         }
-        return anime.get().getPlaylists();
+        return playlists.get();
     }
 
     public Playlist getPlaylistsById(Integer id) {
