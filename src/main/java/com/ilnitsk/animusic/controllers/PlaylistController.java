@@ -33,7 +33,7 @@ public class PlaylistController {
     @GetMapping("{id}")
     public Playlist getPlaylistById(@PathVariable(required = true) Integer id) {
         log.info("Requested playlist with id {}", id);
-        return playlistService.getPlaylistsById(id);
+        return playlistService.getPlaylistById(id);
     }
 
     @PostMapping

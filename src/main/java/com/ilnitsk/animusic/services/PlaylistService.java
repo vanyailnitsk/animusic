@@ -27,7 +27,7 @@ public class PlaylistService {
         this.animeRepository = animeRepository;
     }
 
-    public Playlist createPlaylist(@RequestBody CreatePlaylistRequest request) {
+    public Playlist createPlaylist(CreatePlaylistRequest request) {
         Optional<Anime> animeOptional = animeRepository.findById(request.getAnimeId());
         if (animeOptional.isEmpty()) {
             throw new AnimeNotFoundException(request.getAnimeId());
@@ -40,6 +40,7 @@ public class PlaylistService {
         }
         Playlist playlist = request.getPlaylistData();
         playlist.setAnime(anime);
+        playlistRepository.save(playlist);
         return playlist;
     }
 
@@ -51,7 +52,7 @@ public class PlaylistService {
         return playlists.get();
     }
 
-    public Playlist getPlaylistsById(Integer id) {
+    public Playlist getPlaylistById(Integer id) {
         Optional<Playlist> entity = playlistRepository.findById(id);
         if (entity.isEmpty()) {
             throw new PlaylistNotFoundException(id);
