@@ -141,6 +141,12 @@ class PlaylistServiceTest {
 
     @Test
     void deletePlaylist() {
-
+        Playlist playlist1 = Playlist.builder()
+                .id(1)
+                .name("mock")
+                .soundtracks(new ArrayList<>())
+                .build();
+        underTest.deletePlaylist(1);
+        verify(playlistRepository).deleteById(1);
     }
 }

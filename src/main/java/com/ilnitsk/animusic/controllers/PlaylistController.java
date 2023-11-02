@@ -45,5 +45,6 @@ public class PlaylistController {
     @DeleteMapping("{id}")
     public void deletePlaylist(@PathVariable Integer id) {
         playlistService.deletePlaylist(id);
+        log.info("Playlist with id {} deleted",id);
     }
 }

@@ -10,7 +10,6 @@ import com.ilnitsk.animusic.repositories.AnimeRepository;
 import com.ilnitsk.animusic.repositories.PlaylistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Comparator;
 import java.util.List;
