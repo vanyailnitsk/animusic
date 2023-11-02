@@ -1,6 +1,8 @@
 package com.ilnitsk.animusic.services;
 
 import com.ilnitsk.animusic.dto.CreatePlaylistRequest;
+import com.ilnitsk.animusic.exception.AnimeNotFoundException;
+import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.models.Anime;
 import com.ilnitsk.animusic.models.Playlist;
 import com.ilnitsk.animusic.repositories.AnimeRepository;
@@ -13,12 +15,17 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PlaylistServiceTest {
@@ -54,16 +61,86 @@ class PlaylistServiceTest {
         assertThat(playlist.getImageUrl()).isEqualTo(request.getImageUrl());
     }
 
-
     @Test
-    void getPlaylistsByAnimeId() {
+    public void testCreatePlaylistWithNonExistingAnime() {
+        CreatePlaylistRequest request = new CreatePlaylistRequest(1, "Test Playlist", "/test-image.jpg");
+
+        when(animeRepository.findById(1)).thenReturn(Optional.empty());
+
+        assertThrows(AnimeNotFoundException.class, () -> {
+            underTest.createPlaylist(request);
+        });
     }
 
     @Test
-    void getPlaylistsById() {
+    public void testCreatePlaylistWithDuplicateName() {
+        CreatePlaylistRequest request = new CreatePlaylistRequest(1, "Test Playlist", "/test-image.jpg");
+
+        Anime anime = new Anime();
+        anime.setId(1);
+        when(animeRepository.findById(1)).thenReturn(Optional.of(anime));
+
+        when(playlistRepository.existsByNameAndAnimeId("Test Playlist", 1)).thenReturn(true);
+
+        assertThatThrownBy(() -> underTest.createPlaylist(request))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining(
+                        "Playlist " + request.getName() + " in anime " +anime.getTitle()+" already exists"
+                );
+    }
+
+
+    @Test
+    void getPlaylistsByAnimeId() {
+        Anime anime = new Anime();
+        anime.setId(1);
+        Playlist playlist1 = Playlist.builder()
+                .id(1)
+                .name("mock")
+                .anime(anime)
+                .soundtracks(new ArrayList<>())
+                .build();
+        Playlist playlist2 = Playlist.builder()
+                .id(2)
+                .name("mock1")
+                .anime(anime)
+                .soundtracks(new ArrayList<>())
+                .build();
+        given(playlistRepository.getPlaylistsByAnimeId(1)).willReturn(
+                Optional.of(List.of(playlist1,playlist2)));
+        List<Playlist> playlists = underTest.getPlaylistsByAnimeId(1);
+        verify(playlistRepository).getPlaylistsByAnimeId(1);
+        assertThat(playlists).isNotEmpty();
+        assertThat(playlists).isEqualTo(List.of(playlist1,playlist2));
+    }
+
+    @Test
+    void getPlaylistsByAnimeIdWithNonExistingAnime() {
+        given(playlistRepository.getPlaylistsByAnimeId(1)).willReturn(
+                Optional.empty());
+        assertThatThrownBy(() -> underTest.getPlaylistsByAnimeId(1))
+                .isInstanceOf(AnimeNotFoundException.class)
+                .hasMessageContaining("Anime with id 1 not found");
+        verify(playlistRepository).getPlaylistsByAnimeId(1);
+    }
+
+    @Test
+    void getPlaylistById() {
+        Anime anime = new Anime("Naruto","mock", Year.of(2002),"","");
+        Playlist playlist = Playlist.builder()
+                .id(1)
+                .name("mock")
+                .anime(anime)
+                .soundtracks(new ArrayList<>())
+                .build();
+        given(playlistRepository.findById(1)).willReturn(Optional.of(playlist));
+        Playlist provided = underTest.getPlaylistById(1);
+        verify(playlistRepository).findById(1);
+        assertThat(provided).isEqualTo(playlist);
     }
 
     @Test
     void deletePlaylist() {
+
     }
 }

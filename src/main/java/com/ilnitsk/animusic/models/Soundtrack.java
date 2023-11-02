@@ -31,7 +31,7 @@ public class Soundtrack {
     private String pathToFile;
     @JsonProperty("animeName")
     private String animeName;
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(name = "playlist_soundtrack",
             inverseJoinColumns = @JoinColumn(name = "playlist_id",
                     nullable = false,

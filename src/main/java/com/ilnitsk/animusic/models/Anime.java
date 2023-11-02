@@ -15,6 +15,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table
+@ToString
 public class Anime {
     @Id
     @GeneratedValue
