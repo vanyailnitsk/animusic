@@ -33,7 +33,7 @@ public class Downloader {
         handleFolderExisting(path);
         String outputFileName = fileName + ".mp3";
         List<String> commands = List.of(
-                "youtube-dl", "-x", "--audio-format", "mp3", "--output", outputFileName, url);
+                "yt-dlp", "-x", "--audio-format", "mp3", "--output", outputFileName, url);
         ProcessBuilder processBuilder = new ProcessBuilder(commands);
         processBuilder.directory(path.toFile());
         Process process = processBuilder.start();
