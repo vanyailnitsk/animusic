@@ -34,6 +34,4 @@ public class GlobalAdvice {
     public String badRequest(BadRequestException ex) {
         return ex.getMessage();
     }
-
-
 }

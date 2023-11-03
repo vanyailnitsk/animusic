@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.services;
 
+import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
 import com.ilnitsk.animusic.models.Anime;
 import com.ilnitsk.animusic.models.Playlist;
 import com.ilnitsk.animusic.models.Soundtrack;
@@ -111,26 +112,22 @@ public class SoundtrackService {
     }
 
     @Transactional
-    public Soundtrack createSoundtrack(Object audioSource,Soundtrack soundtrack,Integer playlistId) {
+    public Soundtrack createSoundtrack(Object audioSource, Soundtrack soundtrack, Integer playlistId) {
         Optional<Playlist> playlistEntity = playlistRepository.findById(playlistId);
         if (playlistEntity.isEmpty()) {
-            throw new IllegalStateException("No playlist with id "+playlistId);
+            throw new PlaylistNotFoundException(playlistId);
         }
         Playlist playlist = playlistEntity.get();
         Anime anime = playlist.getAnime();
         Path path = Paths.get(musicDirectory, anime.getFolderName());
-        try {
-            Downloader.downloadAudio(audioSource, path, soundtrack.getAnimeTitle());
-            soundtrack.setAnime(anime);
-            soundtrack.setPathToFile(anime.getFolderName() + "/" + soundtrack.getAnimeTitle() + ".mp3");
-            Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
-            playlist.addSoundtrack(soundtrack);
-            playlistRepository.save(playlist);
-            log.info("Soundtrack {} created successfully", soundtrack.getAnimeTitle());
-            return soundtrackRepository.save(savedSoundtrack);
-        } catch (IOException | InterruptedException e) {
-            throw new IllegalStateException("Error while downloading audio!");
-        }
+        Downloader.downloadAudio(audioSource, path, soundtrack.getAnimeTitle());
+        soundtrack.setAnime(anime);
+        soundtrack.setPathToFile(anime.getFolderName() + "/" + soundtrack.getAnimeTitle() + ".mp3");
+        Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
+        playlist.addSoundtrack(soundtrack);
+        playlistRepository.save(playlist);
+        log.info("Soundtrack {} created successfully", soundtrack.getAnimeTitle());
+        return soundtrackRepository.save(savedSoundtrack);
     }
 
     public void remove(Integer id) {

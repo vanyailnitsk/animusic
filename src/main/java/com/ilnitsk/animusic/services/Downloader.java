@@ -1,11 +1,10 @@
 package com.ilnitsk.animusic.services;
 
-import com.ilnitsk.animusic.models.Anime;
+import com.ilnitsk.animusic.exception.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,17 +14,26 @@ import java.util.List;
 
 @Slf4j
 public class Downloader {
-    public static void downloadAudio(Object audioSource, Path path, String fileName) throws IOException, InterruptedException {
-        if (Files.exists(Paths.get(path.toString(), fileName + ".mp3"))) {
-            log.error("File {} already exists",fileName);
-            throw new IOException();
+    public static void downloadAudio(Object audioSource, Path path, String fileName) {
+        Path absolutePath = Paths.get(path.toString(), fileName + ".mp3");
+        if (Files.exists(absolutePath)) {
+            log.error("File {} already exists", absolutePath);
+            throw new BadRequestException("File " + absolutePath + " already exists");
         }
-        if (audioSource instanceof MultipartFile) {
-            downloadAudioFromFile((MultipartFile) audioSource, path, fileName);
-        } else if (audioSource instanceof String) {
-            downloadAudioFromYoutube((String) audioSource, path, fileName);
-        } else {
-            throw new IllegalArgumentException("Unsupported audio source type");
+        try {
+            if (audioSource instanceof MultipartFile) {
+                downloadAudioFromFile((MultipartFile) audioSource, path, fileName);
+            } else if (audioSource instanceof String) {
+                downloadAudioFromYoutube((String) audioSource, path, fileName);
+            } else {
+                throw new IllegalArgumentException("Unsupported audio source type");
+            }
+        } catch (IOException e) {
+            log.error("Error with file {}", absolutePath);
+            throw new BadRequestException("Error with file " + absolutePath);
+        } catch (InterruptedException e) {
+            log.error("Yt-dlp error");
+            throw new BadRequestException("yt-dlp error");
         }
     }
 
