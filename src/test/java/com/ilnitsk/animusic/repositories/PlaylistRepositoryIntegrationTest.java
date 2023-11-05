@@ -79,6 +79,7 @@ public class PlaylistRepositoryIntegrationTest {
         playlistRepository.deleteById(playlist.getId());
         Soundtrack afterDelete = soundtrackRepository.findById(1).get();
         assertThat(playlistRepository.findById(1)).isEmpty();
+        assertThat(afterDelete).isNotNull();
         assertThat(afterDelete.getPlaylists()).isNull();
         assertThat(animeRepository.findById(1)).isNotNull();
     }
