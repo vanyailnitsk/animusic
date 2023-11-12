@@ -49,4 +49,8 @@ public class AnimeService {
         }
         return animeRepository.save(anime);
     }
+
+    public List<Anime> getAllAnime() {
+        return animeRepository.findAll();
+    }
 }

@@ -26,6 +26,10 @@ public class AnimeController {
         log.info("Requested anime {} info", animeId);
         return animeService.getAnimeInfo(animeId);
     }
+    @GetMapping("")
+    public List<Anime> getAllAnime() {
+        return animeService.getAllAnime();
+    }
 
     @GetMapping("/navigation")
     public List<AnimeNavDTO> getAnimeDropdownList() {
