@@ -36,7 +36,7 @@ class PlaylistServiceTest {
     private PlaylistService underTest;
     @BeforeEach
     void setUp() {
-        underTest = new PlaylistService(playlistRepository, animeRepository);
+        underTest = new PlaylistService(playlistRepository, animeRepository, null);
     }
 
     @Test

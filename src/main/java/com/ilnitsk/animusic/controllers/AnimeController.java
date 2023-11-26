@@ -47,14 +47,9 @@ public class AnimeController {
         log.info("Anime {} created", anime.getTitle());
         return animeService.createAnime(anime,banner,card);
     }
-    @GetMapping("/banner/{id}")
+    @GetMapping("/images/banner/{id}")
     public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer animeId) {
-        Anime anime = animeService.getAnimeInfo(animeId);
-        String bannerPath = anime.getBannerImagePath();
-        if (bannerPath == null || bannerPath.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return animeService.getImage(anime.getBannerImagePath());
+        return animeService.getBanner(animeId);
     }
 
     @DeleteMapping("{id}")

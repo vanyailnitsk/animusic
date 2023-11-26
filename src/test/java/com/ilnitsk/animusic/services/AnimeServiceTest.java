@@ -31,7 +31,7 @@ class AnimeServiceTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new AnimeService(animeRepository);
+        underTest = new AnimeService(animeRepository, new ImageService());
     }
 
     @Test
@@ -68,7 +68,7 @@ class AnimeServiceTest {
     @Test
     void canCreateAnime() {
         Anime anime = new Anime("Naruto", "mock", Year.of(2002), "", "");
-        underTest.createAnime(anime);
+        underTest.createAnime(anime,null,null);
         ArgumentCaptor<Anime> animeArgumentCaptor = ArgumentCaptor.forClass(Anime.class);
         verify(animeRepository).save(animeArgumentCaptor.capture());
         Anime capturedAnime = animeArgumentCaptor.getValue();
@@ -80,7 +80,7 @@ class AnimeServiceTest {
         Anime anime = new Anime("Naruto", "mock", Year.of(2002), "", "");
         given(animeRepository.existsAnimeByTitle(anime.getTitle()))
                 .willReturn(true);
-        assertThatThrownBy(() -> underTest.createAnime(anime))
+        assertThatThrownBy(() -> underTest.createAnime(anime,null,null))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Anime " + anime.getTitle() + " already exists");
         verify(animeRepository, never()).save(any());

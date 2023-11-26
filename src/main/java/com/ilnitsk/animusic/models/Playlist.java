@@ -44,4 +44,5 @@ public class Playlist {
     public String getBannerLink() {
         return "/anime/banner/"+anime.getId();
     }
+
 }

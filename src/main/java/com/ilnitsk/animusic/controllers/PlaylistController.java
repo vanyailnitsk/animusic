@@ -7,6 +7,7 @@ import com.ilnitsk.animusic.services.AnimeService;
 import com.ilnitsk.animusic.services.PlaylistService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,11 @@ public class PlaylistController {
     public Playlist getPlaylistById(@PathVariable(required = true) Integer id) {
         log.info("Requested playlist with id {}", id);
         return playlistService.getPlaylistById(id);
+    }
+
+    @GetMapping("/images/banner/{id}")
+    public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer playlistId) {
+        return playlistService.getBanner(playlistId);
     }
 
     @PostMapping

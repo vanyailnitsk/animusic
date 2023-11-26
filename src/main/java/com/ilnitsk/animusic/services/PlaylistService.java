@@ -9,6 +9,7 @@ import com.ilnitsk.animusic.models.Playlist;
 import com.ilnitsk.animusic.repositories.AnimeRepository;
 import com.ilnitsk.animusic.repositories.PlaylistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -19,11 +20,13 @@ import java.util.Optional;
 public class PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final AnimeRepository animeRepository;
+    private final AnimeService animeService;
 
     @Autowired
-    public PlaylistService(PlaylistRepository playlistRepository, AnimeRepository animeRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository, AnimeRepository animeRepository, AnimeService animeService) {
         this.playlistRepository = playlistRepository;
         this.animeRepository = animeRepository;
+        this.animeService = animeService;
     }
 
     public Playlist createPlaylist(CreatePlaylistRequest request) {
@@ -67,6 +70,12 @@ public class PlaylistService {
             );
         }
         return entity.get();
+    }
+
+    public ResponseEntity<byte[]> getBanner(Integer playlistId) {
+        Playlist playlist = playlistRepository.findById(playlistId)
+                .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
+        return animeService.getBanner(playlist.getAnime().getId());
     }
 
     public void deletePlaylist(Integer id) {
