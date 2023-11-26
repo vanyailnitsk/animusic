@@ -41,4 +41,7 @@ public class Playlist {
     public void addSoundtrack(Soundtrack soundtrack) {
         soundtracks.add(soundtrack);
     }
+    public String getBannerLink() {
+        return "/anime/banner/"+anime.getId();
+    }
 }

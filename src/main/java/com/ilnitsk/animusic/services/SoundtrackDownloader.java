@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Slf4j
-public class Downloader {
+public class SoundtrackDownloader {
     public static void downloadAudio(Object audioSource, Path path, String fileName) {
         Path absolutePath = Paths.get(path.toString(), fileName + ".mp3");
         if (Files.exists(absolutePath)) {

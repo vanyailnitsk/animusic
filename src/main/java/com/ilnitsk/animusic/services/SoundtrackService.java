@@ -120,7 +120,7 @@ public class SoundtrackService {
         Playlist playlist = playlistEntity.get();
         Anime anime = playlist.getAnime();
         Path path = Paths.get(musicDirectory, anime.getFolderName());
-        Downloader.downloadAudio(audioSource, path, soundtrack.getAnimeTitle());
+        SoundtrackDownloader.downloadAudio(audioSource, path, soundtrack.getAnimeTitle());
         soundtrack.setAnime(anime);
         soundtrack.setPathToFile(anime.getFolderName() + "/" + soundtrack.getAnimeTitle() + ".mp3");
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);

@@ -1,11 +1,15 @@
 package com.ilnitsk.animusic.controllers;
 
 import com.ilnitsk.animusic.dto.AnimeNavDTO;
+import com.ilnitsk.animusic.dto.SoundtrackRequest;
 import com.ilnitsk.animusic.models.Anime;
 import com.ilnitsk.animusic.services.AnimeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -37,8 +41,24 @@ public class AnimeController {
     }
 
     @PostMapping("/create")
-    public Anime createAnime(@RequestBody Anime anime) {
+    public Anime createAnime(@RequestPart(value = "banner") MultipartFile banner,
+                             @RequestPart(value = "card") MultipartFile card,
+                             @ModelAttribute Anime anime) {
         log.info("Anime {} created", anime.getTitle());
-        return animeService.createAnime(anime);
+        return animeService.createAnime(anime,banner,card);
+    }
+    @GetMapping("/banner/{id}")
+    public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer animeId) {
+        Anime anime = animeService.getAnimeInfo(animeId);
+        String bannerPath = anime.getBannerImagePath();
+        if (bannerPath == null || bannerPath.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return animeService.getImage(anime.getBannerImagePath());
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteAnime(@PathVariable Integer id) {
+        animeService.deleteAnime(id);
     }
 }
