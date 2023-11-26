@@ -49,13 +49,12 @@ public class AnimeService {
 
 
     public List<AnimeNavDTO> getAnimeDropdownList() {
-        List<Anime> animeList = animeRepository.findAll();
+        List<Anime> animeList = animeRepository.findAllByOrderByTitle();
         List<AnimeNavDTO> animeDropdownList = new ArrayList<>();
         for (Anime anime : animeList) {
             AnimeNavDTO dto = new AnimeNavDTO(anime.getId(), anime.getTitle());
             animeDropdownList.add(dto);
         }
-
         return animeDropdownList;
     }
 
