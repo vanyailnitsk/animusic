@@ -6,6 +6,7 @@ import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.models.Anime;
 import com.ilnitsk.animusic.repositories.AnimeRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -85,14 +86,24 @@ public class AnimeService {
         return imageService.getImage(anime.getBannerImagePath());
     }
 
+    public void replaceBanner(Integer animeId,MultipartFile file) {
+        Anime anime = animeRepository.findById(animeId)
+                .orElseThrow(() -> new AnimeNotFoundException(animeId));
+        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        String fileName = "banner."+extension;
+        String bannerPath = anime.getFolderName() +"/" +fileName;
+        saveFile(file, anime, fileName);
+        anime.setBannerImagePath(bannerPath);
+        animeRepository.save(anime);
+    }
+
     public void saveFile(MultipartFile file, Anime anime, String fileName) {
         try {
             Path folderPath = Paths.get(imagesPath, anime.getFolderName());
             handleFolderExisting(folderPath);
             Path absolutePath = Paths.get(imagesPath, anime.getFolderName(), fileName);
             if (Files.exists(absolutePath)) {
-                log.error("File {} already exists", absolutePath);
-                throw new BadRequestException("File " + absolutePath + " already exists");
+                log.error("Replacing file {}", absolutePath);
             }
             FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(absolutePath.toString()));
         } catch (IOException e) {

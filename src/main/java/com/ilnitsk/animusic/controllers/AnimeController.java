@@ -51,6 +51,11 @@ public class AnimeController {
     public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer animeId) {
         return animeService.getBanner(animeId);
     }
+    @PostMapping("/images/banner/{id}")
+    public void replaceBanner(@PathVariable("id") Integer animeId,
+                              @RequestPart(value = "banner") MultipartFile banner) {
+        animeService.replaceBanner(animeId,banner);
+    }
 
     @DeleteMapping("{id}")
     public void deleteAnime(@PathVariable Integer id) {
