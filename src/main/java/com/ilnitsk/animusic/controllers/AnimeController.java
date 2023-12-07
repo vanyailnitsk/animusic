@@ -54,7 +54,7 @@ public class AnimeController {
     @PostMapping("/images/banner/{id}")
     public void replaceBanner(@PathVariable("id") Integer animeId,
                               @RequestPart(value = "banner") MultipartFile banner) {
-        animeService.replaceBanner(animeId,banner);
+        animeService.createBanner(animeId,banner);
     }
 
     @DeleteMapping("{id}")
