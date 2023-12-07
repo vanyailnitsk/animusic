@@ -57,12 +57,12 @@ class AnimeServiceTest {
     void canGetAnimeDropdownList() {
         Anime anime1 = Anime.builder().id(1).title("Anime 1").build();
         Anime anime2 = Anime.builder().id(2).title("Anime 2").build();
-        given(animeRepository.findAll()).willReturn(List.of(anime1,anime2));
+        given(animeRepository.findAllByOrderByTitle()).willReturn(List.of(anime1,anime2));
         List<AnimeNavDTO> result = underTest.getAnimeDropdownList();
         assertThat(result).isNotEmpty();
         assertThat(result).contains(
                 new AnimeNavDTO(1, "Anime 1"), new AnimeNavDTO(2, "Anime 2"));
-        verify(animeRepository).findAll();
+        verify(animeRepository).findAllByOrderByTitle();
     }
 
     @Test
