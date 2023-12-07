@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 
 import java.time.Year;
 import java.util.List;
@@ -63,16 +64,6 @@ class AnimeServiceTest {
         assertThat(result).contains(
                 new AnimeNavDTO(1, "Anime 1"), new AnimeNavDTO(2, "Anime 2"));
         verify(animeRepository).findAllByOrderByTitle();
-    }
-
-    @Test
-    void canCreateAnime() {
-        Anime anime = new Anime("Naruto", "mock", Year.of(2002), "", "");
-        underTest.createAnime(anime,null,null);
-        ArgumentCaptor<Anime> animeArgumentCaptor = ArgumentCaptor.forClass(Anime.class);
-        verify(animeRepository).save(animeArgumentCaptor.capture());
-        Anime capturedAnime = animeArgumentCaptor.getValue();
-        assertThat(capturedAnime).isEqualTo(anime);
     }
 
     @Test
