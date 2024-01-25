@@ -33,9 +33,10 @@ services:
       db-url: jdbc:postgresql://animusic_db:5432/animusic
       port: 8081
       audio-path: "/animusic/audio"
-      image_path: "/animusic/audio"
+      image_path: "/animusic/images"
     volumes:
-      - ${IMAGE_FOLDER}:/animusic/audio}
+      - ${IMAGE_FOLDER}:/animusic/images}
+      - ${AUDIO_FOLDER}:/animusic/audio}
     ports:
       - "8081:8081"
     depends_on:
