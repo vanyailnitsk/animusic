@@ -5,6 +5,8 @@ target/
 !**/src/test/**/target/
 *.mp3
 **/.DS_Store
+database/data
+.env
 
 ### STS ###
 .apt_generated

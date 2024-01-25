@@ -50,7 +50,9 @@ CREATE TABLE public.anime (
     folder_name character varying(255),
     release_year integer,
     studio character varying(255),
-    title character varying(255)
+    title character varying(255),
+    banner_image_path character varying(255),
+    card_image_path character varying(255)
 );
 
 
@@ -64,6 +66,60 @@ CREATE SEQUENCE public.anime_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+
+--
+-- Name: playlist; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.playlist (
+    id bigint NOT NULL,
+    image_url character varying(255),
+    name character varying(255),
+    type smallint,
+    anime_id integer
+);
+
+
+--
+-- Name: playlist_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.playlist_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: playlist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.playlist_id_seq OWNED BY public.playlist.id;
+
+
+--
+-- Name: playlist_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.playlist_seq
+    START WITH 1
+    INCREMENT BY 50
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: playlist_soundtrack; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.playlist_soundtrack (
+    soundtrack_id integer NOT NULL,
+    playlist_id bigint NOT NULL
+);
 
 
 --
@@ -94,22 +150,112 @@ CREATE SEQUENCE public.soundtrack_seq
 
 
 --
+-- Name: playlist id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.playlist ALTER COLUMN id SET DEFAULT nextval('public.playlist_id_seq'::regclass);
+
+
+--
 -- Data for Name: anime; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.anime (id, description, folder_name, release_year, studio, title) FROM stdin;
-1	\N	Hunter_x_Hunter	2011	\N	Hunter x Hunter
-2	\N	Naruto_Shippuden	2007	\N	Naruto Shippuden
-3	\N	Attack_on_Titan	2013	\N	Attack on Titan
-52		Chainsaw_Man	\N	MAPPA	Chainsaw Man
-53		Vinland_Saga	\N		Vinland Saga
-54		Tokyo_Ghoul	\N		Tokyo Ghoul
-102		Jujutsu_Kaisen	\N	MAPPA	Jujutsu Kaisen
-152		Promised_Neverland	\N		Promised Neverland
-153		Black_Clover	2017		Black Clover
-154		Demon_Slayer	\N		Demon Slayer
-155		Death_Note	\N		Death Note
-156		Code_Geass	\N		Code Geass
+COPY public.anime (id, description, folder_name, release_year, studio, title, banner_image_path, card_image_path) FROM stdin;
+1	\N	Hunter_x_Hunter	2011	\N	Hunter x Hunter	\N	\N
+2	\N	Naruto_Shippuden	2007	\N	Naruto Shippuden	\N	\N
+53		Vinland_Saga	\N		Vinland Saga	\N	\N
+54		Tokyo_Ghoul	\N		Tokyo Ghoul	\N	\N
+102		Jujutsu_Kaisen	\N	MAPPA	Jujutsu Kaisen	\N	\N
+152		Promised_Neverland	\N		Promised Neverland	\N	\N
+153		Black_Clover	2017		Black Clover	\N	\N
+154		Demon_Slayer	\N		Demon Slayer	\N	\N
+155		Death_Note	\N		Death Note	\N	\N
+402		Naruto	2002	Studio Pierrot	Naruto	Naruto/banner.jpeg	Naruto/card.jpeg
+52		Chainsaw_Man	\N	MAPPA	Chainsaw Man	Chainsaw_Man/banner.webp	\N
+3	\N	Attack_on_Titan	2013	\N	Attack on Titan	Attack_on_Titan/banner.webp	\N
+\.
+
+
+--
+-- Data for Name: playlist; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.playlist (id, image_url, name, type, anime_id) FROM stdin;
+102	/	Openings	\N	1
+105	/	Openings	\N	2
+109	/	Openings	\N	3
+111	/	Openings	\N	52
+112	/	Openings	\N	53
+113	/	Openings	\N	54
+114	/	Openings	\N	102
+115	/	Openings	\N	152
+116	/	Openings	\N	153
+117	/	Openings	\N	154
+118	/	Openings	\N	155
+103	/	Endings	\N	1
+107	/	Endings	\N	2
+104	/	Themes	\N	1
+108	/	Themes	\N	2
+106	/	Scene songs	\N	2
+110	/	Scene songs	\N	3
+152	/	Endings	\N	3
+302	/	Openings	\N	402
+\.
+
+
+--
+-- Data for Name: playlist_soundtrack; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.playlist_soundtrack (soundtrack_id, playlist_id) FROM stdin;
+1152	111
+1202	302
+1	103
+2	105
+3	105
+4	109
+52	105
+103	112
+104	112
+105	113
+107	109
+108	109
+109	109
+110	109
+111	109
+112	109
+153	105
+203	114
+252	103
+302	103
+303	114
+304	114
+305	115
+306	116
+307	116
+308	116
+309	116
+310	108
+311	104
+312	102
+313	117
+314	118
+317	105
+319	116
+352	116
+353	108
+354	106
+355	110
+356	110
+402	105
+603	106
+702	152
+752	152
+852	112
+902	108
+1010	110
+152	107
+1053	107
 \.
 
 
@@ -122,7 +268,6 @@ COPY public.soundtrack (id, anime_title, original_title, path_to_file, type, ani
 3	Opening 3	Blue Bird	Naruto_Shippuden/Opening 3.mp3	0	2	\N
 4	Opening 1	Guren no Yumiya	Attack_on_Titan/Opening 1.mp3	0	3	\N
 52	Opening 9	Lovers	Naruto_Shippuden/Opening 9.mp3	0	2	\N
-102	Opening 1	KICKBACK	Chainsaw_Man/Opening 1.mp3	0	52	\N
 103	Opening 1	MUKANJYO	Vinland_Saga/Opening 1.mp3	0	53	\N
 104	Opening 2	Dark Crow	Vinland_Saga/Opening 2.mp3	0	53	\N
 105	Opening 1	Unravel	Tokyo_Ghoul/Opening 1.mp3	0	54	\N
@@ -151,14 +296,22 @@ COPY public.soundtrack (id, anime_title, original_title, path_to_file, type, ani
 313	Opening 1	Gurenge	Demon_Slayer/Opening 1.mp3	0	154	\N
 314	Opening 1	the WORLD	Death_Note/Opening 1.mp3	0	155	\N
 317	Opening 12	Moshimo	Naruto_Shippuden/Opening 12.mp3	0	2	\N
-318	Opening 1	COLORS	Code_Geass/Opening 1.mp3	0	156	\N
 319	Opening 7	JUSTadICE	Black_Clover/Opening 7.mp3	0	153	\N
 352	Opening 10	Black Catcher	Black_Clover/Opening 10.mp3	0	153	\N
 353	Obito's Theme	Naruto Shippuden OST	Naruto_Shippuden/Obito's Theme.mp3	2	2	\N
 354	Tragic	Naruto Shippuden OST	Naruto_Shippuden/Tragic.mp3	3	2	\N
 355	Bauklötze	Bauklötze	Attack_on_Titan/Bauklötze.mp3	3	3	\N
-356	YouSeeBIGGIRL/T:T	YouSeeBIGGIRL/T:T	Attack_on_Titan/YouSeeBIGGIRL/T:T.mp3	3	3	\N
 402	Opening 1	Hero's Come Back!	Naruto_Shippuden/Opening 1.mp3	0	2	\N
+356	YouSeeBIGGIRL/T:T	YouSeeBIGGIRL/T:T	Attack_on_Titan/YouSeeBIGGIRL.mp3	3	3	\N
+603	Hyouhaku + Kokuten	Naruto Shippuden OST	Naruto_Shippuden/Hyouhaku + Kokuten.mp3	3	2	\N
+752	Ending 2	great escape	Attack_on_Titan/Ending 2.mp3	1	3	\N
+702	Ending 4	Requiem der Morgenröte	Attack_on_Titan/ Ending 4.mp3	1	3	\N
+852	Opening 4	Paradox	Vinland_Saga/Opening 4.mp3	0	53	\N
+902	Kaguya Theme Extended	Otsutsuki Kaguya the Goddess	Naruto_Shippuden/Kaguya Theme Extended.mp3	2	2	\N
+1010	Final Ending Theme (Mikasa)	To You 2000…or…20000 Years From Now…	Attack_on_Titan/Final Ending Theme (Mikasa).mp3	3	3	\N
+1053	Ending 6	Broken Youth	Naruto_Shippuden/Ending 6.mp3	1	2	\N
+1152	Opening 1	KICK BACK	Chainsaw_Man/Opening 1.mp3	0	52	\N
+1202	Opening 1	R★O★C★K★S	Naruto/Opening 1.mp3	0	402	\N
 \.
 
 
@@ -166,14 +319,28 @@ COPY public.soundtrack (id, anime_title, original_title, path_to_file, type, ani
 -- Name: anime_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.anime_seq', 201, true);
+SELECT pg_catalog.setval('public.anime_seq', 501, true);
+
+
+--
+-- Name: playlist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.playlist_id_seq', 1, false);
+
+
+--
+-- Name: playlist_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.playlist_seq', 351, true);
 
 
 --
 -- Name: soundtrack_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.soundtrack_seq', 451, true);
+SELECT pg_catalog.setval('public.soundtrack_seq', 1251, true);
 
 
 --
@@ -185,6 +352,14 @@ ALTER TABLE ONLY public.anime
 
 
 --
+-- Name: playlist playlist_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.playlist
+    ADD CONSTRAINT playlist_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: soundtrack soundtrack_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -193,11 +368,11 @@ ALTER TABLE ONLY public.soundtrack
 
 
 --
--- Name: soundtrack uk_45nn6kh5nksi38bb479cddv3u; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: anime uk_298qhdp0ob1v29v6bkiiwmp5t; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.soundtrack
-    ADD CONSTRAINT uk_45nn6kh5nksi38bb479cddv3u UNIQUE (path_to_file);
+ALTER TABLE ONLY public.anime
+    ADD CONSTRAINT uk_298qhdp0ob1v29v6bkiiwmp5t UNIQUE (banner_image_path);
 
 
 --
@@ -209,6 +384,14 @@ ALTER TABLE ONLY public.anime
 
 
 --
+-- Name: anime uk_7ts88f2cvi4tyibvh17gmqmbb; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.anime
+    ADD CONSTRAINT uk_7ts88f2cvi4tyibvh17gmqmbb UNIQUE (card_image_path);
+
+
+--
 -- Name: anime uk_gi6g8jjcql5ohu4svoa08ilxq; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -217,11 +400,35 @@ ALTER TABLE ONLY public.anime
 
 
 --
+-- Name: playlist_soundtrack fk_playlist; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.playlist_soundtrack
+    ADD CONSTRAINT fk_playlist FOREIGN KEY (playlist_id) REFERENCES public.playlist(id);
+
+
+--
+-- Name: playlist_soundtrack fk_soundtrack; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.playlist_soundtrack
+    ADD CONSTRAINT fk_soundtrack FOREIGN KEY (soundtrack_id) REFERENCES public.soundtrack(id);
+
+
+--
 -- Name: soundtrack fkjbk0ljqrhm9n5m5jrqpcm9tsb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.soundtrack
     ADD CONSTRAINT fkjbk0ljqrhm9n5m5jrqpcm9tsb FOREIGN KEY (anime_id) REFERENCES public.anime(id);
+
+
+--
+-- Name: playlist fkme5db1cotvt9moswpurta3xk3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.playlist
+    ADD CONSTRAINT fkme5db1cotvt9moswpurta3xk3 FOREIGN KEY (anime_id) REFERENCES public.anime(id);
 
 
 --
