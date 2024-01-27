@@ -35,8 +35,8 @@ services:
       audio-path: "/animusic/audio"
       image_path: "/animusic/images"
     volumes:
-      - ${IMAGE_FOLDER}:/animusic/images}
-      - ${AUDIO_FOLDER}:/animusic/audio}
+      - ${IMAGE_FOLDER}:/animusic/images
+      - ${AUDIO_FOLDER}:/animusic/audio
     ports:
       - "8081:8081"
     depends_on:
