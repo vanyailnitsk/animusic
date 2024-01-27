@@ -18,6 +18,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -135,7 +136,11 @@ public class SoundtrackService {
         return soundtrackRepository.save(savedSoundtrack);
     }
 
-    public void remove(Integer id) {
+    public void remove(Integer id) throws IOException{
+        Soundtrack soundtrack = soundtrackRepository.findById(id)
+                        .orElseThrow(() -> new SoundtrackNotFoundException(id));
+        File file = new File(musicDirectory,soundtrack.getPathToFile());
+        Files.deleteIfExists(file.toPath());
         soundtrackRepository.deleteById(id);
     }
 }

@@ -60,7 +60,7 @@ public class SoundtrackController {
     }
 
     @DeleteMapping("{id}")
-    public void deleteSoundtrack(@PathVariable Integer id) {
+    public void deleteSoundtrack(@PathVariable Integer id) throws IOException{
         soundtrackService.remove(id);
     }
 }
