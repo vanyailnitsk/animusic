@@ -35,6 +35,11 @@ public class SoundtrackController {
         return soundtrackService.getAudioStream(trackId, httpRangeList.size() > 0 ? httpRangeList.get(0) : null);
     }
 
+    @GetMapping("{soundtrackId}")
+    public Soundtrack getSoundtrack(@PathVariable Integer soundtrackId) {
+        return soundtrackService.getSoundtrack(soundtrackId);
+    }
+
     @PostMapping("/create-from-file")
     public Soundtrack createFromFile(@RequestPart(value = "file", required = true) MultipartFile file,
                                      @ModelAttribute SoundtrackRequest request) {

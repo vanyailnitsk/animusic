@@ -1,6 +1,7 @@
 package com.ilnitsk.animusic.services;
 
 import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
+import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.models.Anime;
 import com.ilnitsk.animusic.models.Playlist;
 import com.ilnitsk.animusic.models.Soundtrack;
@@ -44,6 +45,10 @@ public class SoundtrackService {
         this.playlistRepository = playlistRepository;
     }
 
+    public Soundtrack getSoundtrack(Integer id) {
+        return soundtrackRepository.findById(id)
+                .orElseThrow(() -> new SoundtrackNotFoundException(id));
+    }
     public List<Soundtrack> getTypedSoundtrackList(List<Soundtrack> soundtracks) {
         List<Soundtrack> sortedList = new ArrayList<>();
         soundtracks.stream()
