@@ -29,6 +29,7 @@ public class Soundtrack {
     private String animeTitle;
     private TrackType type;
     private String pathToFile;
+    @Transient
     @JsonProperty("animeName")
     private String animeName;
     @ManyToMany
