@@ -1,6 +1,7 @@
 package com.ilnitsk.animusic.controllers;
 
 import com.ilnitsk.animusic.dto.SoundtrackRequest;
+import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.models.Soundtrack;
 import com.ilnitsk.animusic.services.SoundtrackService;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,9 @@ public class SoundtrackController {
     @PostMapping("/create-from-file")
     public Soundtrack createFromFile(@RequestPart(value = "file", required = true) MultipartFile file,
                                      @ModelAttribute SoundtrackRequest request) {
+        if (file.isEmpty()) {
+            throw new BadRequestException("No mp3-file provided");
+        }
         return soundtrackService.createSoundtrack(
                 file, request.createSoundtrack(), request.getPlaylistId()
         );
