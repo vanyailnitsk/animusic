@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.controllers;
+package com.ilnitsk.animusic.soundtrack;
 
 import com.ilnitsk.animusic.soundtrack.SoundtrackRequest;
 import com.ilnitsk.animusic.exception.BadRequestException;
