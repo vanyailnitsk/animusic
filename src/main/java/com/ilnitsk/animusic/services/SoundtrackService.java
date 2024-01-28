@@ -1,13 +1,13 @@
 package com.ilnitsk.animusic.services;
 
-import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
+import com.ilnitsk.animusic.playlist.PlaylistNotFoundException;
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.anime.Anime;
-import com.ilnitsk.animusic.models.Playlist;
+import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.models.Soundtrack;
 import com.ilnitsk.animusic.models.TrackType;
 import com.ilnitsk.animusic.anime.AnimeRepository;
-import com.ilnitsk.animusic.repositories.PlaylistRepository;
+import com.ilnitsk.animusic.playlist.PlaylistRepository;
 import com.ilnitsk.animusic.repositories.SoundtrackRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;

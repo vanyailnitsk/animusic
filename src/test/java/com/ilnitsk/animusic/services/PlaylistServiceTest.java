@@ -1,12 +1,13 @@
 package com.ilnitsk.animusic.services;
 
-import com.ilnitsk.animusic.dto.CreatePlaylistRequest;
+import com.ilnitsk.animusic.playlist.CreatePlaylistRequest;
 import com.ilnitsk.animusic.anime.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.anime.Anime;
-import com.ilnitsk.animusic.models.Playlist;
+import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.anime.AnimeRepository;
-import com.ilnitsk.animusic.repositories.PlaylistRepository;
+import com.ilnitsk.animusic.playlist.PlaylistRepository;
+import com.ilnitsk.animusic.playlist.PlaylistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,9 +1,9 @@
-package com.ilnitsk.animusic.controllers;
+package com.ilnitsk.animusic.playlist;
 
-import com.ilnitsk.animusic.dto.CreatePlaylistRequest;
-import com.ilnitsk.animusic.models.Playlist;
+import com.ilnitsk.animusic.playlist.CreatePlaylistRequest;
+import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.anime.AnimeRepository;
-import com.ilnitsk.animusic.services.PlaylistService;
+import com.ilnitsk.animusic.playlist.PlaylistService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
