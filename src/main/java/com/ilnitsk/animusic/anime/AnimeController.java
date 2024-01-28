@@ -1,12 +1,7 @@
-package com.ilnitsk.animusic.controllers;
+package com.ilnitsk.animusic.anime;
 
-import com.ilnitsk.animusic.dto.AnimeNavDTO;
-import com.ilnitsk.animusic.dto.SoundtrackRequest;
-import com.ilnitsk.animusic.models.Anime;
-import com.ilnitsk.animusic.services.AnimeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

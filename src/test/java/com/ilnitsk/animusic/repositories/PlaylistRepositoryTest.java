@@ -1,6 +1,7 @@
 package com.ilnitsk.animusic.repositories;
 
-import com.ilnitsk.animusic.models.Anime;
+import com.ilnitsk.animusic.anime.Anime;
+import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.models.Playlist;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

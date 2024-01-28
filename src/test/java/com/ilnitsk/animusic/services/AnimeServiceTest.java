@@ -1,17 +1,12 @@
 package com.ilnitsk.animusic.services;
 
-import com.ilnitsk.animusic.dto.AnimeNavDTO;
-import com.ilnitsk.animusic.exception.AnimeNotFoundException;
+import com.ilnitsk.animusic.anime.*;
 import com.ilnitsk.animusic.exception.BadRequestException;
-import com.ilnitsk.animusic.models.Anime;
-import com.ilnitsk.animusic.repositories.AnimeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
 
 import java.time.Year;
 import java.util.List;

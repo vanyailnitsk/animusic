@@ -1,12 +1,13 @@
 package com.ilnitsk.animusic.services;
 
+import com.ilnitsk.animusic.anime.AnimeService;
 import com.ilnitsk.animusic.dto.CreatePlaylistRequest;
-import com.ilnitsk.animusic.exception.AnimeNotFoundException;
+import com.ilnitsk.animusic.anime.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
-import com.ilnitsk.animusic.models.Anime;
+import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.models.Playlist;
-import com.ilnitsk.animusic.repositories.AnimeRepository;
+import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.repositories.PlaylistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

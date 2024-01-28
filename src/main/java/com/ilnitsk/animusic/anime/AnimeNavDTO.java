@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.dto;
+package com.ilnitsk.animusic.anime;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

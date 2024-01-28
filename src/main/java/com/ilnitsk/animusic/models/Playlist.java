@@ -2,6 +2,7 @@ package com.ilnitsk.animusic.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ilnitsk.animusic.anime.Anime;
 import jakarta.persistence.*;
 import lombok.*;
 

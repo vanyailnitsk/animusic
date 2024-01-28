@@ -1,21 +1,16 @@
 package com.ilnitsk.animusic.repositories;
 
 
+import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.dto.CreatePlaylistRequest;
-import com.ilnitsk.animusic.models.Anime;
+import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.models.Playlist;
 import com.ilnitsk.animusic.models.Soundtrack;
-import com.ilnitsk.animusic.services.PlaylistService;
-import jakarta.transaction.Transactional;
-import org.hibernate.Hibernate;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Year;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
