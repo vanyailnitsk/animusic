@@ -3,6 +3,7 @@ package com.ilnitsk.animusic.services;
 import com.ilnitsk.animusic.anime.*;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
+import com.ilnitsk.animusic.image.ImageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

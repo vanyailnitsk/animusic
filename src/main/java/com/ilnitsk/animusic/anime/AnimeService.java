@@ -2,7 +2,7 @@ package com.ilnitsk.animusic.anime;
 
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
-import com.ilnitsk.animusic.services.ImageService;
+import com.ilnitsk.animusic.image.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
