@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.playlist;
+package com.ilnitsk.animusic.exception;
 
 public class PlaylistNotFoundException extends RuntimeException{
     public PlaylistNotFoundException(Integer id) {

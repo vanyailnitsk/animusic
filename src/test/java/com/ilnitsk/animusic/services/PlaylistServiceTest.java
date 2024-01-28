@@ -1,7 +1,7 @@
 package com.ilnitsk.animusic.services;
 
 import com.ilnitsk.animusic.playlist.CreatePlaylistRequest;
-import com.ilnitsk.animusic.anime.AnimeNotFoundException;
+import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.playlist.Playlist;

@@ -1,10 +1,7 @@
 package com.ilnitsk.animusic.anime;
 
-import com.ilnitsk.animusic.anime.AnimeNavDTO;
-import com.ilnitsk.animusic.anime.AnimeNotFoundException;
+import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
-import com.ilnitsk.animusic.anime.Anime;
-import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.services.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;

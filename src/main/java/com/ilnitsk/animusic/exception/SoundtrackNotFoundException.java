@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.soundtrack;
+package com.ilnitsk.animusic.exception;
 
 public class SoundtrackNotFoundException extends RuntimeException{
     public SoundtrackNotFoundException(Integer id) {
