@@ -1,9 +1,8 @@
-package com.ilnitsk.animusic.dto;
+package com.ilnitsk.animusic.playlist;
 
-import com.ilnitsk.animusic.models.Playlist;
+import com.ilnitsk.animusic.playlist.Playlist;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor

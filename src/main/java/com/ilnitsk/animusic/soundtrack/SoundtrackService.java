@@ -1,14 +1,11 @@
-package com.ilnitsk.animusic.services;
+package com.ilnitsk.animusic.soundtrack;
 
 import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
+import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
-import com.ilnitsk.animusic.models.Anime;
-import com.ilnitsk.animusic.models.Playlist;
-import com.ilnitsk.animusic.models.Soundtrack;
-import com.ilnitsk.animusic.models.TrackType;
-import com.ilnitsk.animusic.repositories.AnimeRepository;
-import com.ilnitsk.animusic.repositories.PlaylistRepository;
-import com.ilnitsk.animusic.repositories.SoundtrackRepository;
+import com.ilnitsk.animusic.playlist.Playlist;
+import com.ilnitsk.animusic.anime.AnimeRepository;
+import com.ilnitsk.animusic.playlist.PlaylistRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

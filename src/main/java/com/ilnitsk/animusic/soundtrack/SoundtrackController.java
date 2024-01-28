@@ -1,9 +1,9 @@
-package com.ilnitsk.animusic.controllers;
+package com.ilnitsk.animusic.soundtrack;
 
-import com.ilnitsk.animusic.dto.SoundtrackRequest;
+import com.ilnitsk.animusic.soundtrack.SoundtrackRequest;
 import com.ilnitsk.animusic.exception.BadRequestException;
-import com.ilnitsk.animusic.models.Soundtrack;
-import com.ilnitsk.animusic.services.SoundtrackService;
+import com.ilnitsk.animusic.soundtrack.Soundtrack;
+import com.ilnitsk.animusic.soundtrack.SoundtrackService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

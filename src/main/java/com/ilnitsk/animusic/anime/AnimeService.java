@@ -1,16 +1,13 @@
-package com.ilnitsk.animusic.services;
+package com.ilnitsk.animusic.anime;
 
-import com.ilnitsk.animusic.dto.AnimeNavDTO;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
-import com.ilnitsk.animusic.models.Anime;
-import com.ilnitsk.animusic.repositories.AnimeRepository;
+import com.ilnitsk.animusic.image.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

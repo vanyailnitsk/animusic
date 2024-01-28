@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.services;
+package com.ilnitsk.animusic.image;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

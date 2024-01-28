@@ -1,7 +1,9 @@
-package com.ilnitsk.animusic.models;
+package com.ilnitsk.animusic.playlist;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ilnitsk.animusic.anime.Anime;
+import com.ilnitsk.animusic.soundtrack.Soundtrack;
 import jakarta.persistence.*;
 import lombok.*;
 
