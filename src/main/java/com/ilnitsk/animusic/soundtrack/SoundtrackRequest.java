@@ -1,6 +1,5 @@
 package com.ilnitsk.animusic.soundtrack;
 
-import com.ilnitsk.animusic.models.TrackType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

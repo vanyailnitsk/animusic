@@ -4,7 +4,6 @@ import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.playlist.Playlist;
-import com.ilnitsk.animusic.models.TrackType;
 import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
 import jakarta.transaction.Transactional;
