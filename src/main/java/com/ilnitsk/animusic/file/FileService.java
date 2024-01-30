@@ -21,6 +21,8 @@ public class FileService {
     private String imagesPath;
     @Value("${audiotracks.directory}")
     private String audioPath;
+    @Value("${storage.directory}")
+    private String storagePath;
 
     public byte[] getFileBytes(String path, String fileName) {
         Path filePath = Paths.get(path).resolve(fileName);
@@ -38,11 +40,11 @@ public class FileService {
         return getFileBytes(imagesPath, fileName);
     }
 
-    public static void downloadAudio(MultipartFile audioFile, Path path, String fileName) throws IOException{
-        Path newFilePath = Paths.get(path.toString(), fileName + ".mp3");
+    public void downloadAudio(MultipartFile audioFile, String animeFolder, String fileName) throws IOException{
+        Path newFilePath = Paths.get(animeFolder, fileName + getFileExtension(fileName));
         Files.deleteIfExists(newFilePath);
         try {
-            handleFolderExisting(path);
+            handleFolderExisting(animeFolder);
             FileCopyUtils.copy(audioFile.getInputStream(), new FileOutputStream(newFilePath.toFile()));
         } catch (IOException e) {
             log.error("Error with file {}", newFilePath);
@@ -50,16 +52,17 @@ public class FileService {
         }
     }
 
-    public static String getFileExtension(String fileName) {
+    public String getFileExtension(String fileName) {
         if (fileName == null || fileName.lastIndexOf('.') == -1) {
             return null;
         }
         return fileName.substring(fileName.lastIndexOf('.') + 1);
     }
-    private static void handleFolderExisting(Path folderPath) throws IOException {
-        if (!Files.exists(folderPath)) {
-            Files.createDirectories(folderPath);
-            log.info("Папка для аниме {} успешно создана.", folderPath.getFileName().toString());
+    private void handleFolderExisting(String folderName) throws IOException {
+        Path path = Paths.get(storagePath,folderName);
+        if (!Files.exists(path)) {
+            Files.createDirectories(path);
+            log.info("Папка для аниме {} успешно создана.", path.getFileName().toString());
         }
     }
 
