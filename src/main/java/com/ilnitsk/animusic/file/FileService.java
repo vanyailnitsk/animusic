@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 @Service
 @Slf4j
@@ -54,6 +55,13 @@ public class FileService {
         }
     }
 
+    public String getFileExtension(String fileName) {
+        if (fileName == null || fileName.lastIndexOf('.') == -1) {
+            return null;
+        }
+        return fileName.substring(fileName.lastIndexOf('.'));
+    }
+
     public void saveImage(MultipartFile imageFile, String animeFolder, String imageName) {
         String imageFileName = imageName+getFileExtension(imageFile.getOriginalFilename());
         saveFile(imageFile,"images",animeFolder,imageFileName);
@@ -68,12 +76,12 @@ public class FileService {
         saveFile(audioFile,"audio",animeFolder,audioFileName);
     }
 
-    public String getFileExtension(String fileName) {
-        if (fileName == null || fileName.lastIndexOf('.') == -1) {
-            return null;
+    public byte[] getAudioContent(String animeFolder,String audioFileName,int rangeStart,int rangeEnd) {
+        byte[] audioFileBytes = getFileBytes(animeFolder,"audio",audioFileName);
+        int fileSize = audioFileBytes.length;
+        if (rangeEnd >= fileSize) {
+            rangeEnd = fileSize;
         }
-        return fileName.substring(fileName.lastIndexOf('.'));
+        return Arrays.copyOfRange(audioFileBytes, rangeStart, rangeEnd);
     }
-
-
 }

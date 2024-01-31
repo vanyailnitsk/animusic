@@ -34,6 +34,8 @@ class FileServiceTest {
         Files.createDirectories(Paths.get(testFolder,"audio"));
         Files.createDirectories(Paths.get(testFolder,"images"));
         Files.createFile(Paths.get(dirForTests ,animeFolder,"audio",audioFile));
+        MultipartFile file = new MockMultipartFile("test.mp3","test.mp3","",new byte[10000]);
+        fileService.saveAudio(file,animeFolder,"test");
         Files.createFile(Paths.get(dirForTests ,animeFolder,"images",imageFile));
     }
 
@@ -105,6 +107,13 @@ class FileServiceTest {
     void getImageContent() {
         byte[] image = fileService.getImageContent(animeFolder,imageFile);
         assertThat(image).isNotNull();
+    }
+
+    @Test
+    void getAudioContent() {
+        byte[] audioBytes = fileService.getAudioContent(animeFolder,"test.mp3",1000,100000);
+        System.out.println(audioBytes.length);
+        assertThat(audioBytes).isNotEmpty();
     }
 
 }
