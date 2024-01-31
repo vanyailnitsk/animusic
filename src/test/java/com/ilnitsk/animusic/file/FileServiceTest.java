@@ -4,17 +4,12 @@ import com.ilnitsk.animusic.exception.FileNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-//@ExtendWith(SpringExtension.class)
-@TestPropertySource(properties = {
-        "storage.directory=/Users/admin/Music/animusic"
-})
 class FileServiceTest {
     private FileService fileService;
 
@@ -24,12 +19,9 @@ class FileServiceTest {
         ReflectionTestUtils.setField(fileService,"storagePath","/Users/admin/Music/animusic");
     }
 
-
     private String animeFolder = "test";
     private String audioFile = "file.mp3";
     private String imageFile = "img.jpg";
-
-
 
     @Test
     void getFileBytesCorrect() {
