@@ -18,15 +18,10 @@ import java.nio.file.Paths;
 @Service
 @Slf4j
 public class FileService {
-    @Value("${images.directory}")
-    private String imagesPath;
-    @Value("${audiotracks.directory}")
-    private String audioPath;
     @Value("${storage.directory}")
     private String storagePath;
 
-
-    public byte[] getFileBytes(String animeFolder,String subDirectory,String fileName) {
+    public byte[] getFileBytes(String animeFolder, String subDirectory, String fileName) {
         Path filePath = Paths.get(storagePath,animeFolder,subDirectory,fileName);
         if (!Files.exists(filePath)) {
             throw new FileNotFoundException(filePath.toString());
@@ -55,7 +50,7 @@ public class FileService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error while saving file");
         }
     }
-    public void downloadAudio(MultipartFile audioFile, String animeFolder, String audioName) {
+    public void saveAudio(MultipartFile audioFile, String animeFolder, String audioName) {
         String audioFileName = audioName+getFileExtension(audioFile.getOriginalFilename());
         saveFile(audioFile,"audio",animeFolder,audioFileName);
     }
