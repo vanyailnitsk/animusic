@@ -64,9 +64,16 @@ class FileServiceTest {
     @Test
     void saveAudio() {
         MultipartFile file = new MockMultipartFile("test.mp3","test.mp3","",new byte[]{1,2,3});
-        System.out.println(file.getOriginalFilename());
         fileService.saveAudio(file,animeFolder,"opening");
         byte[] savedFile = fileService.getFileBytes(animeFolder,"audio","opening.mp3");
+        assertThat(savedFile).isNotEmpty();
+    }
+
+    @Test
+    void saveImage() {
+        MultipartFile file = new MockMultipartFile("image.png","image.png","",new byte[]{1,2,3});
+        fileService.saveImage(file,animeFolder,"banner");
+        byte[] savedFile = fileService.getFileBytes(animeFolder,"images","banner.png");
         assertThat(savedFile).isNotEmpty();
     }
 
