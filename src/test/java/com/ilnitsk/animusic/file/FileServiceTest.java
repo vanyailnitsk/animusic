@@ -45,7 +45,8 @@ class FileServiceTest {
 
     @Test
     void getImageContent() {
-        fileService.getImageContent(animeFolder,imageFile);
+        byte[] image = fileService.getImageContent(animeFolder,imageFile);
+        assertThat(image).isNotNull();
     }
 
     @Test
