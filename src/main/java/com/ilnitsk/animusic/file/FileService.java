@@ -50,7 +50,7 @@ public class FileService {
     private void handleFolderExisting(Path path) throws IOException {
         if (!Files.exists(path)) {
             Files.createDirectories(path);
-            log.info("Папка для аниме {} успешно создана.", path.getFileName().toString());
+            log.info("Папка {} успешно создана.", path.toAbsolutePath());
         }
     }
 
