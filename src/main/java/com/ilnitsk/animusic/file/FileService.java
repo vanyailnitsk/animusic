@@ -33,10 +33,6 @@ public class FileService {
         }
     }
 
-    public byte[] getImageContent(String animeFolder,String fileName) {
-        return getFileBytes(animeFolder, "images",fileName);
-    }
-
     public void saveFile(MultipartFile file, String subDirectory,String animeFolder, String fileName) {
         try {
             Path folderPath = Paths.get(storagePath, animeFolder,subDirectory);
@@ -50,6 +46,23 @@ public class FileService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error while saving file");
         }
     }
+
+    private void handleFolderExisting(Path path) throws IOException {
+        if (!Files.exists(path)) {
+            Files.createDirectories(path);
+            log.info("Папка для аниме {} успешно создана.", path.getFileName().toString());
+        }
+    }
+
+    public void saveImage(MultipartFile imageFile, String animeFolder, String imageName) {
+        String imageFileName = imageName+getFileExtension(imageFile.getOriginalFilename());
+        saveFile(imageFile,"images",animeFolder,imageFileName);
+    }
+
+    public byte[] getImageContent(String animeFolder,String fileName) {
+        return getFileBytes(animeFolder, "images",fileName);
+    }
+
     public void saveAudio(MultipartFile audioFile, String animeFolder, String audioName) {
         String audioFileName = audioName+getFileExtension(audioFile.getOriginalFilename());
         saveFile(audioFile,"audio",animeFolder,audioFileName);
@@ -61,11 +74,6 @@ public class FileService {
         }
         return fileName.substring(fileName.lastIndexOf('.'));
     }
-    private void handleFolderExisting(Path path) throws IOException {
-        if (!Files.exists(path)) {
-            Files.createDirectories(path);
-            log.info("Папка для аниме {} успешно создана.", path.getFileName().toString());
-        }
-    }
+
 
 }
