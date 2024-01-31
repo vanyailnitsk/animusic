@@ -7,6 +7,7 @@ target/
 **/.DS_Store
 database/data
 .env
+files-test
 
 ### STS ###
 .apt_generated

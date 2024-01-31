@@ -7,16 +7,18 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Paths;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 class FileServiceTest {
     private FileService fileService;
+    private String dirForTests = Paths.get(System.getProperty("user.dir"),"files-test").toString();
 
     @BeforeEach
     void setupTest() {
         fileService = new FileService();
-        ReflectionTestUtils.setField(fileService,"storagePath","/Users/admin/Music/animusic");
+        ReflectionTestUtils.setField(fileService,"storagePath",dirForTests);
     }
 
     private String animeFolder = "test";
