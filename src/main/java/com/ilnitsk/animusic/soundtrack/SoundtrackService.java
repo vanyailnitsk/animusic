@@ -95,23 +95,23 @@ public class SoundtrackService {
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
         Anime anime = playlist.getAnime();
-        fileService.saveAudio(file,anime.getFolderName(),soundtrack.getAnimeTitle());
+        fileService.saveAudio(file, anime.getFolderName(), soundtrack.getAnimeTitle());
         soundtrack.setAnime(anime);
         soundtrack.setPathToFile(
-                soundtrack.getAnimeTitle()+fileService.getFileExtension(file.getOriginalFilename())
+                soundtrack.getAnimeTitle() + fileService.getFileExtension(file.getOriginalFilename())
         );
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
         playlist.addSoundtrack(soundtrack);
-        log.info("Soundtrack {}/{} created successfully", anime.getFolderName(),soundtrack.getAnimeTitle());
+        log.info("Soundtrack {}/{} created successfully", anime.getFolderName(), soundtrack.getAnimeTitle());
         return savedSoundtrack;
     }
 
-    public void remove(Integer id)  {
+    public void remove(Integer id) {
         Soundtrack soundtrack = soundtrackRepository.findById(id)
                 .orElseThrow(() -> new SoundtrackNotFoundException(id));
         String folderName = soundtrack.getAnime().getFolderName();
-        fileService.removeFile(folderName,"audio",soundtrack.getPathToFile());
+        fileService.removeFile(folderName, "audio", soundtrack.getPathToFile());
         soundtrackRepository.deleteById(id);
-        log.info("Soundtrack {}/{} removed successfully", folderName,soundtrack.getAnimeTitle());
+        log.info("Soundtrack {}/{} removed successfully", folderName, soundtrack.getAnimeTitle());
     }
 }
