@@ -24,7 +24,6 @@ public class FileService {
 
     public byte[] getFileBytes(String animeFolder, String subDirectory, String fileName) {
         Path filePath = Paths.get(storagePath,animeFolder,subDirectory,fileName);
-        System.out.println(filePath);
         if (!Files.exists(filePath)) {
             throw new FileNotFoundException(filePath.toString());
         }
@@ -79,13 +78,11 @@ public class FileService {
 
     public byte[] getAudioContent(String animeFolder,String audioFileName,int rangeStart,int rangeEnd) {
         Path audioPath = Paths.get(storagePath,animeFolder,"audio",audioFileName);
-        int fileSize = (int) audioPath.toFile().length();
         if (!Files.exists(audioPath)) {
             throw new FileNotFoundException(audioPath.toString());
         }
         try (InputStream inputStream = Files.newInputStream(audioPath)) {
             inputStream.skip(rangeStart);
-            System.out.println(rangeEnd - rangeStart + 1);
             return inputStream.readNBytes(rangeEnd - rangeStart + 1);
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Ошибка во время чтения аудиофайла");

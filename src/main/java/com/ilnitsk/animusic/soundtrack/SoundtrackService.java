@@ -67,12 +67,10 @@ public class SoundtrackService {
     }
 
     public ResponseEntity<StreamingResponseBody> getAudioStream(Integer trackId, HttpRange range) {
-        Optional<Soundtrack> soundtrack = soundtrackRepository.findById(trackId);
-        if (soundtrack.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        String animeFolder = "Attack_on_Titan";
-        String trackName = "Vogel im Käfig.mp3";
+        Soundtrack soundtrack = soundtrackRepository.findById(trackId)
+                .orElseThrow(() -> new SoundtrackNotFoundException(trackId));
+        String animeFolder = soundtrack.getAnime().getFolderName();
+        String trackName = soundtrack.getPathToFile();
         HttpHeaders headers = new HttpHeaders();
         StreamingResponseBody stream;
         if (range != null) {
