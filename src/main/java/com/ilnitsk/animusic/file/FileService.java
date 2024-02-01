@@ -97,4 +97,12 @@ public class FileService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Ошибка во время чтения аудиофайла");
         }
     }
+    public void removeFile(String animeFolder, String subDirectory, String fileName) {
+        try {
+            Path file = Paths.get(storagePath,animeFolder,subDirectory,fileName);
+            Files.deleteIfExists(file);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Ошибка во время удаления файла");
+        }
+    }
 }

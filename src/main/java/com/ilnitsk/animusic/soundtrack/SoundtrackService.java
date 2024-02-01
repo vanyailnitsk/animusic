@@ -15,9 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -96,7 +93,7 @@ public class SoundtrackService {
         return new ResponseEntity<>(stream, headers, HttpStatus.OK);
     }
 
-    @Transactional(timeout = 5)
+    @Transactional(timeout = 10)
     public Soundtrack createSoundtrack(MultipartFile file, Soundtrack soundtrack, Integer playlistId) {
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
@@ -112,11 +109,12 @@ public class SoundtrackService {
         return savedSoundtrack;
     }
 
-    public void remove(Integer id) throws IOException {
+    public void remove(Integer id)  {
         Soundtrack soundtrack = soundtrackRepository.findById(id)
                 .orElseThrow(() -> new SoundtrackNotFoundException(id));
-        File file = new File(musicDirectory, soundtrack.getPathToFile());
-        Files.deleteIfExists(file.toPath());
+        String folderName = soundtrack.getAnime().getFolderName();
+        fileService.removeFile(folderName,"audio",soundtrack.getPathToFile());
         soundtrackRepository.deleteById(id);
+        log.info("Soundtrack {}/{} removed successfully", folderName,soundtrack.getAnimeTitle());
     }
 }
