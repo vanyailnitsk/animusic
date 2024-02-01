@@ -8,7 +8,6 @@ import com.ilnitsk.animusic.file.FileService;
 import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +23,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SoundtrackService {
     private final SoundtrackRepository soundtrackRepository;
-    @Value("${audiotracks.directory}")
-    private String musicDirectory;
     private final AnimeRepository animeRepository;
     private final PlaylistRepository playlistRepository;
     private final FileService fileService;
