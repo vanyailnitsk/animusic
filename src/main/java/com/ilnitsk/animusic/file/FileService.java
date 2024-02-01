@@ -11,10 +11,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 @Service
 @Slf4j
@@ -24,6 +24,7 @@ public class FileService {
 
     public byte[] getFileBytes(String animeFolder, String subDirectory, String fileName) {
         Path filePath = Paths.get(storagePath,animeFolder,subDirectory,fileName);
+        System.out.println(filePath);
         if (!Files.exists(filePath)) {
             throw new FileNotFoundException(filePath.toString());
         }
@@ -77,11 +78,26 @@ public class FileService {
     }
 
     public byte[] getAudioContent(String animeFolder,String audioFileName,int rangeStart,int rangeEnd) {
-        byte[] audioFileBytes = getFileBytes(animeFolder,"audio",audioFileName);
-        int fileSize = audioFileBytes.length;
-        if (rangeEnd >= fileSize) {
-            rangeEnd = fileSize;
+        Path audioPath = Paths.get(storagePath,animeFolder,"audio",audioFileName);
+        int fileSize = (int) audioPath.toFile().length();
+        if (!Files.exists(audioPath)) {
+            throw new FileNotFoundException(audioPath.toString());
         }
-        return Arrays.copyOfRange(audioFileBytes, rangeStart, rangeEnd);
+        try (InputStream inputStream = Files.newInputStream(audioPath)) {
+            inputStream.skip(rangeStart);
+            System.out.println(rangeEnd - rangeStart + 1);
+            return inputStream.readNBytes(rangeEnd - rangeStart + 1);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Ошибка во время чтения аудиофайла");
+        }
+    }
+
+    public int getAudioFileSize(String animeFolder,String audioFileName) {
+        Path audioPath = Paths.get(storagePath,animeFolder,"audio",audioFileName);
+        try {
+            return (int) Files.size(audioPath);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Ошибка во время чтения аудиофайла");
+        }
     }
 }
