@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -27,10 +26,10 @@ public class SoundtrackController {
     @GetMapping("/play/{trackId}")
     public ResponseEntity<StreamingResponseBody> playTrack(
             @PathVariable Integer trackId,
-            @RequestHeader(value = HttpHeaders.RANGE, required = false) String range) throws IOException {
+            @RequestHeader(value = HttpHeaders.RANGE, required = false) String range) {
         List<HttpRange> httpRangeList = HttpRange.parseRanges(range);
         log.info("Playing track: {}", trackId);
-        return soundtrackService.getAudioStream(trackId, httpRangeList.size() > 0 ? httpRangeList.get(0) : null);
+        return soundtrackService.getAudioStream(trackId, !httpRangeList.isEmpty() ? httpRangeList.get(0) : null);
     }
 
     @GetMapping("{soundtrackId}")
@@ -39,7 +38,7 @@ public class SoundtrackController {
     }
 
     @PostMapping("/create-from-file")
-    public Soundtrack createFromFile(@RequestPart(value = "file", required = true) MultipartFile file,
+    public Soundtrack createFromFile(@RequestPart(value = "file") MultipartFile file,
                                      @ModelAttribute SoundtrackRequest request) {
         if (file.isEmpty()) {
             throw new BadRequestException("No mp3-file provided");
@@ -50,7 +49,7 @@ public class SoundtrackController {
     }
 
     @DeleteMapping("{id}")
-    public void deleteSoundtrack(@PathVariable Integer id) throws IOException{
+    public void deleteSoundtrack(@PathVariable Integer id) {
         soundtrackService.remove(id);
     }
 }
