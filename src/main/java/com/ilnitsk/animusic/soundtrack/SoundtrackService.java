@@ -7,22 +7,20 @@ import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.file.FileService;
 import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -98,23 +96,20 @@ public class SoundtrackService {
         return new ResponseEntity<>(stream, headers, HttpStatus.OK);
     }
 
-    @Transactional
-    public Soundtrack createSoundtrack(Object audioSource, Soundtrack soundtrack, Integer playlistId) {
-        Optional<Playlist> playlistEntity = playlistRepository.findById(playlistId);
-        if (playlistEntity.isEmpty()) {
-            throw new PlaylistNotFoundException(playlistId);
-        }
-        Playlist playlist = playlistEntity.get();
+    @Transactional(timeout = 5)
+    public Soundtrack createSoundtrack(MultipartFile file, Soundtrack soundtrack, Integer playlistId) {
+        Playlist playlist = playlistRepository.findById(playlistId)
+                .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
         Anime anime = playlist.getAnime();
-        Path path = Paths.get(musicDirectory, anime.getFolderName());
-        SoundtrackDownloader.downloadAudio(audioSource, path, soundtrack.getAnimeTitle());
+        fileService.saveAudio(file,anime.getFolderName(),soundtrack.getAnimeTitle());
         soundtrack.setAnime(anime);
-        soundtrack.setPathToFile(anime.getFolderName() + "/" + soundtrack.getAnimeTitle() + ".mp3");
+        soundtrack.setPathToFile(
+                soundtrack.getAnimeTitle()+fileService.getFileExtension(file.getOriginalFilename())
+        );
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
         playlist.addSoundtrack(soundtrack);
-        playlistRepository.save(playlist);
-        log.info("Soundtrack {} created successfully", soundtrack.getAnimeTitle());
-        return soundtrackRepository.save(savedSoundtrack);
+        log.info("Soundtrack {}/{} created successfully", anime.getFolderName(),soundtrack.getAnimeTitle());
+        return savedSoundtrack;
     }
 
     public void remove(Integer id) throws IOException {

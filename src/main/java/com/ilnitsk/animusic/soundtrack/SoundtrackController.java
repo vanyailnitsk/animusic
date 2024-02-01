@@ -1,9 +1,6 @@
 package com.ilnitsk.animusic.soundtrack;
 
-import com.ilnitsk.animusic.soundtrack.SoundtrackRequest;
 import com.ilnitsk.animusic.exception.BadRequestException;
-import com.ilnitsk.animusic.soundtrack.Soundtrack;
-import com.ilnitsk.animusic.soundtrack.SoundtrackService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -49,13 +46,6 @@ public class SoundtrackController {
         }
         return soundtrackService.createSoundtrack(
                 file, request.createSoundtrack(), request.getPlaylistId()
-        );
-    }
-
-    @PostMapping("/create-from-youtube")
-    public Soundtrack createFromYoutube(@RequestBody(required = true) SoundtrackRequest request) {
-        return soundtrackService.createSoundtrack(
-                request.getVideoUrl(), request.createSoundtrack(), request.getPlaylistId()
         );
     }
 
