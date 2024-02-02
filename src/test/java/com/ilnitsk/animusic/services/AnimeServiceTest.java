@@ -29,7 +29,7 @@ class AnimeServiceTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new AnimeService(animeRepository, new ImageService());
+        underTest = new AnimeService(animeRepository, new ImageService(null));
     }
 
     @Test
