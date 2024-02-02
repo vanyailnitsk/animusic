@@ -58,7 +58,7 @@ public class AnimeController {
     }
     @PostMapping("/images/card/{id}")
     public void setCard(@PathVariable("id") Integer animeId,
-                              @RequestPart(value = "banner") MultipartFile card) {
+                              @RequestPart(value = "card") MultipartFile card) {
         animeService.setCard(animeId,card);
     }
 

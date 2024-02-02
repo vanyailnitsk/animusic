@@ -72,16 +72,6 @@ public class AnimeService {
         return imageService.getImage(anime.getFolderName(),banner);
     }
 
-    public ResponseEntity<byte[]> getCard(Integer animeId) {
-        Anime anime = animeRepository.findById(animeId)
-                .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        String card = anime.getBannerImagePath();
-        if (card == null || card.isEmpty()) {
-            return imageService.getDefaultCard();
-        }
-        return imageService.getImage(anime.getFolderName(),card);
-    }
-
     public void createBanner(Anime anime,MultipartFile banner) {
         String extension = imageService.getImageExtension(banner.getOriginalFilename());
         String bannerFile = "banner%s".formatted(extension);
@@ -97,11 +87,21 @@ public class AnimeService {
         createBanner(anime,banner);
     }
 
+    public ResponseEntity<byte[]> getCard(Integer animeId) {
+        Anime anime = animeRepository.findById(animeId)
+                .orElseThrow(() -> new AnimeNotFoundException(animeId));
+        String card = anime.getCardImagePath();
+        if (card == null || card.isEmpty()) {
+            return imageService.getDefaultCard();
+        }
+        return imageService.getImage(anime.getFolderName(),card);
+    }
+
     public void createCard(Anime anime,MultipartFile card) {
         String extension = imageService.getImageExtension(card.getOriginalFilename());
-        String cardFile = "card.%s".formatted(extension);
-        imageService.saveImage(card,anime.getFolderName(),cardFile);
-        anime.setBannerImagePath(cardFile);
+        String cardFile = "card%s".formatted(extension);
+        imageService.saveImage(card,anime.getFolderName(),"card");
+        anime.setCardImagePath(cardFile);
     }
 
     @Transactional
@@ -110,7 +110,6 @@ public class AnimeService {
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
         createCard(anime,card);
     }
-
 
     public List<Anime> getAllAnime() {
         return animeRepository.findAll();
