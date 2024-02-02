@@ -4,7 +4,6 @@ import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.image.ImageService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -58,8 +57,8 @@ public class AnimeService {
                     "Anime " + anime.getTitle() + " already exists"
             );
         }
-        createImage(anime,"banner",banner);
-        createImage(anime,"card",card);
+        createBanner(anime,banner);
+        createCard(anime,banner);
         return animeRepository.save(anime);
     }
 
@@ -73,19 +72,33 @@ public class AnimeService {
         return imageService.getImage(anime.getFolderName(),banner);
     }
 
-    public void createImage(Anime anime,String fileName,MultipartFile file) {
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-        String newFileName = fileName+"."+extension;
-        String bannerPath = anime.getFolderName() +"/" +newFileName;
-        //saveFile(file, anime, newFileName);
-        anime.setBannerImagePath(bannerPath);
+    public void createBanner(Anime anime,MultipartFile banner) {
+        String extension = imageService.getImageExtension(banner.getOriginalFilename());
+        String bannerFile = "banner%s".formatted(extension);
+        imageService.saveImage(banner,anime.getFolderName(),"banner");
+        anime.setBannerImagePath(bannerFile);
         animeRepository.save(anime);
     }
 
-    public void createBanner(Integer animeId, MultipartFile banner) {
+    @Transactional
+    public void setBanner(Integer animeId, MultipartFile banner) {
         Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        createImage(anime,"banner",banner);
+        createBanner(anime,banner);
+    }
+
+    public void createCard(Anime anime,MultipartFile card) {
+        String extension = imageService.getImageExtension(card.getOriginalFilename());
+        String cardFile = "card.%s".formatted(extension);
+        imageService.saveImage(card,anime.getFolderName(),cardFile);
+        anime.setBannerImagePath(cardFile);
+    }
+
+    @Transactional
+    public void setCard(Integer animeId, MultipartFile card) {
+        Anime anime = animeRepository.findById(animeId)
+                .orElseThrow(() -> new AnimeNotFoundException(animeId));
+        createCard(anime,card);
     }
 
 

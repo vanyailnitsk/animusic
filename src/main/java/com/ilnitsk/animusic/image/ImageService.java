@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @AllArgsConstructor
@@ -22,5 +23,12 @@ public class ImageService {
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType("image/webp"))
                 .body(imageBytes);
+    }
+    public void saveImage(MultipartFile file,String animeFolder, String fileName) {
+        fileService.saveImage(file,animeFolder,fileName);
+    }
+
+    public String getImageExtension(String fileName) {
+        return fileService.getFileExtension(fileName);
     }
 }
