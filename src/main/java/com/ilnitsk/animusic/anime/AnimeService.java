@@ -4,22 +4,13 @@ import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.image.ImageService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,55 +57,58 @@ public class AnimeService {
                     "Anime " + anime.getTitle() + " already exists"
             );
         }
-        createImage(anime,"banner",banner);
-        createImage(anime,"card",card);
+        createBanner(anime,banner);
+        createCard(anime,banner);
         return animeRepository.save(anime);
     }
 
     public ResponseEntity<byte[]> getBanner(Integer animeId) {
         Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        String bannerPath = anime.getBannerImagePath();
-        if (bannerPath == null || bannerPath.isEmpty()) {
-            return imageService.getImage("default-banner.jpg");
+        String banner = anime.getBannerImagePath();
+        if (banner == null || banner.isEmpty()) {
+            return imageService.getDefaultBanner();
         }
-        return imageService.getImage(anime.getBannerImagePath());
+        return imageService.getImage(anime.getFolderName(),banner);
     }
 
-    public void createImage(Anime anime,String fileName,MultipartFile file) {
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-        String newFileName = fileName+"."+extension;
-        String bannerPath = anime.getFolderName() +"/" +newFileName;
-        saveFile(file, anime, newFileName);
-        anime.setBannerImagePath(bannerPath);
+    public void createBanner(Anime anime,MultipartFile banner) {
+        String extension = imageService.getImageExtension(banner.getOriginalFilename());
+        String bannerFile = "banner%s".formatted(extension);
+        imageService.saveImage(banner,anime.getFolderName(),"banner");
+        anime.setBannerImagePath(bannerFile);
         animeRepository.save(anime);
     }
 
-    public void createBanner(Integer animeId, MultipartFile banner) {
+    @Transactional
+    public void setBanner(Integer animeId, MultipartFile banner) {
         Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        createImage(anime,"banner",banner);
+        createBanner(anime,banner);
     }
 
-    public void saveFile(MultipartFile file, Anime anime, String fileName) {
-        try {
-            Path folderPath = Paths.get(imagesPath, anime.getFolderName());
-            handleFolderExisting(folderPath);
-            Path absolutePath = Paths.get(imagesPath, anime.getFolderName(), fileName);
-            if (Files.exists(absolutePath)) {
-                log.debug("Replacing file {}", absolutePath);
-            }
-            FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(absolutePath.toString()));
-        } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error while saving images");
+    public ResponseEntity<byte[]> getCard(Integer animeId) {
+        Anime anime = animeRepository.findById(animeId)
+                .orElseThrow(() -> new AnimeNotFoundException(animeId));
+        String card = anime.getCardImagePath();
+        if (card == null || card.isEmpty()) {
+            return imageService.getDefaultCard();
         }
+        return imageService.getImage(anime.getFolderName(),card);
     }
 
-    private static void handleFolderExisting(Path folderPath) throws IOException {
-        if (!Files.exists(folderPath)) {
-            Files.createDirectories(folderPath);
-            log.info("Папка для аниме {} успешно создана.", folderPath.getFileName().toString());
-        }
+    public void createCard(Anime anime,MultipartFile card) {
+        String extension = imageService.getImageExtension(card.getOriginalFilename());
+        String cardFile = "card%s".formatted(extension);
+        imageService.saveImage(card,anime.getFolderName(),"card");
+        anime.setCardImagePath(cardFile);
+    }
+
+    @Transactional
+    public void setCard(Integer animeId, MultipartFile card) {
+        Anime anime = animeRepository.findById(animeId)
+                .orElseThrow(() -> new AnimeNotFoundException(animeId));
+        createCard(anime,card);
     }
 
     public List<Anime> getAllAnime() {

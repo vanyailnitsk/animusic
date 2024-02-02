@@ -29,14 +29,12 @@ public class Anime {
     private String description;
     @Column(unique = true)
     private String folderName;
-    @Column(unique=true)
     private String bannerImagePath;
-    @Column(unique=true)
     private String cardImagePath;
-    @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Soundtrack> soundtracks = new ArrayList<>();
-    @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Playlist> playlists = new ArrayList<>();
 
