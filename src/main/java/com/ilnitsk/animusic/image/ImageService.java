@@ -1,32 +1,26 @@
 package com.ilnitsk.animusic.image;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
+import com.ilnitsk.animusic.file.FileService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 @Service
+@AllArgsConstructor
 public class ImageService {
-    @Value("${images.directory}")
-    private String imagesPath;
-    public ResponseEntity<byte[]> getImage(String fileName) {
-        Path imagePath = Paths.get(imagesPath).resolve(fileName);
-        if (!Files.exists(imagePath)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        try {
-            byte[] imageBytes = Files.readAllBytes(imagePath);
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG)
-                    .body(imageBytes);
-        } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    private final FileService fileService;
+
+    public ResponseEntity<byte[]> getImage(String animeFolder,String fileName) {
+        byte[] imageBytes = fileService.getImageContent(animeFolder,fileName);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("image/webp"))
+                .body(imageBytes);
+    }
+    public ResponseEntity<byte[]> getDefaultBanner() {
+        byte[] imageBytes = fileService.getImageContent("","default-banner.webp");
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("image/webp"))
+                .body(imageBytes);
     }
 }
