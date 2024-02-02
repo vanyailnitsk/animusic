@@ -14,11 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @Slf4j
 public class SoundtrackService {
@@ -37,25 +32,6 @@ public class SoundtrackService {
     public Soundtrack getSoundtrack(Integer id) {
         return soundtrackRepository.findById(id)
                 .orElseThrow(() -> new SoundtrackNotFoundException(id));
-    }
-
-    public List<Soundtrack> getTypedSoundtrackList(List<Soundtrack> soundtracks) {
-        List<Soundtrack> sortedList = new ArrayList<>();
-        soundtracks.stream()
-                .filter(s -> s.getType() == TrackType.OPENING)
-                .sorted(Comparator.comparingInt(
-                        a -> Integer.parseInt(a.getAnimeTitle().split(" ")[1]))
-                ).collect(Collectors.toCollection(() -> sortedList));
-        soundtracks.stream()
-                .filter(s -> s.getType() == TrackType.ENDING)
-                .sorted(Comparator.comparingInt(
-                        a -> Integer.parseInt(a.getAnimeTitle().split(" ")[1]))
-                ).collect(Collectors.toCollection(() -> sortedList));
-        soundtracks.stream().filter(s -> s.getType() == TrackType.THEME)
-                .collect(Collectors.toCollection(() -> sortedList));
-        soundtracks.stream().filter(s -> s.getType() == TrackType.SCENE_SONG)
-                .collect(Collectors.toCollection(() -> sortedList));
-        return sortedList;
     }
 
     public ResponseEntity<StreamingResponseBody> getAudioStream(Integer trackId, HttpRange range) {
