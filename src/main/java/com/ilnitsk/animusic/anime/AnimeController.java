@@ -47,9 +47,19 @@ public class AnimeController {
         return animeService.getBanner(animeId);
     }
     @PostMapping("/images/banner/{id}")
-    public void replaceBanner(@PathVariable("id") Integer animeId,
+    public void setBanner(@PathVariable("id") Integer animeId,
                               @RequestPart(value = "banner") MultipartFile banner) {
         animeService.setBanner(animeId,banner);
+    }
+
+    @GetMapping("/images/card/{id}")
+    public ResponseEntity<byte[]> getCard(@PathVariable("id") Integer animeId) {
+        return animeService.getCard(animeId);
+    }
+    @PostMapping("/images/card/{id}")
+    public void setCard(@PathVariable("id") Integer animeId,
+                              @RequestPart(value = "banner") MultipartFile card) {
+        animeService.setCard(animeId,card);
     }
 
     @DeleteMapping("{id}")
