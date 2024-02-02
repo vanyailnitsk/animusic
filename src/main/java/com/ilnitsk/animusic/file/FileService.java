@@ -23,7 +23,7 @@ public class FileService {
     private String storagePath;
 
     public byte[] getFileBytes(String animeFolder, String subDirectory, String fileName) {
-        Path filePath = Paths.get(storagePath,animeFolder,subDirectory,fileName);
+        Path filePath = Paths.get(storagePath, animeFolder, subDirectory, fileName);
         if (!Files.exists(filePath)) {
             throw new FileNotFoundException(filePath.toString());
         }
@@ -34,11 +34,11 @@ public class FileService {
         }
     }
 
-    public void saveFile(MultipartFile file, String subDirectory,String animeFolder, String fileName) {
+    public void saveFile(MultipartFile file, String subDirectory, String animeFolder, String fileName) {
         try {
-            Path folderPath = Paths.get(storagePath, animeFolder,subDirectory);
+            Path folderPath = Paths.get(storagePath, animeFolder, subDirectory);
             handleFolderExisting(folderPath);
-            Path filePath = Paths.get(folderPath.toString(),fileName);
+            Path filePath = Paths.get(folderPath.toString(), fileName);
             if (Files.exists(filePath)) {
                 log.debug("Replacing file {}", filePath);
             }
@@ -63,21 +63,21 @@ public class FileService {
     }
 
     public void saveImage(MultipartFile imageFile, String animeFolder, String imageName) {
-        String imageFileName = imageName+getFileExtension(imageFile.getOriginalFilename());
-        saveFile(imageFile,"images",animeFolder,imageFileName);
+        String imageFileName = imageName + getFileExtension(imageFile.getOriginalFilename());
+        saveFile(imageFile, "images", animeFolder, imageFileName);
     }
 
-    public byte[] getImageContent(String animeFolder,String fileName) {
-        return getFileBytes(animeFolder, "images",fileName);
+    public byte[] getImageContent(String animeFolder, String fileName) {
+        return getFileBytes(animeFolder, "images", fileName);
     }
 
     public void saveAudio(MultipartFile audioFile, String animeFolder, String audioName) {
-        String audioFileName = audioName+getFileExtension(audioFile.getOriginalFilename());
-        saveFile(audioFile,"audio",animeFolder,audioFileName);
+        String audioFileName = audioName + getFileExtension(audioFile.getOriginalFilename());
+        saveFile(audioFile, "audio", animeFolder, audioFileName);
     }
 
-    public byte[] getAudioContent(String animeFolder,String audioFileName,int rangeStart,int rangeEnd) {
-        Path audioPath = Paths.get(storagePath,animeFolder,"audio",audioFileName);
+    public byte[] getAudioContent(String animeFolder, String audioFileName, int rangeStart, int rangeEnd) {
+        Path audioPath = Paths.get(storagePath, animeFolder, "audio", audioFileName);
         if (!Files.exists(audioPath)) {
             throw new FileNotFoundException(audioPath.toString());
         }
@@ -85,16 +85,25 @@ public class FileService {
             inputStream.skip(rangeStart);
             return inputStream.readNBytes(rangeEnd - rangeStart + 1);
         } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Ошибка во время чтения аудиофайла");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Ошибка во время чтения аудиофайла");
         }
     }
 
-    public int getAudioFileSize(String animeFolder,String audioFileName) {
-        Path audioPath = Paths.get(storagePath,animeFolder,"audio",audioFileName);
+    public int getAudioFileSize(String animeFolder, String audioFileName) {
+        Path audioPath = Paths.get(storagePath, animeFolder, "audio", audioFileName);
         try {
             return (int) Files.size(audioPath);
         } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Ошибка во время чтения аудиофайла");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Ошибка во время чтения аудиофайла");
+        }
+    }
+
+    public void removeFile(String animeFolder, String subDirectory, String fileName) {
+        try {
+            Path file = Paths.get(storagePath, animeFolder, subDirectory, fileName);
+            Files.deleteIfExists(file);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Ошибка во время удаления файла");
         }
     }
 }
