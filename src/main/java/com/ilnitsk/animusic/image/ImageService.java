@@ -18,12 +18,6 @@ public class ImageService {
                 .contentType(MediaType.parseMediaType("image/webp"))
                 .body(imageBytes);
     }
-    public ResponseEntity<byte[]> getDefaultBanner() {
-        byte[] imageBytes = fileService.getImageContent("","default-banner.webp");
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType("image/webp"))
-                .body(imageBytes);
-    }
     public void saveImage(MultipartFile file,String animeFolder, String fileName) {
         fileService.saveImage(file,animeFolder,fileName);
     }
@@ -31,4 +25,17 @@ public class ImageService {
     public String getImageExtension(String fileName) {
         return fileService.getFileExtension(fileName);
     }
+    public ResponseEntity<byte[]> getDefaultBanner() {
+        byte[] imageBytes = fileService.getImageContent("","default-banner.webp");
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("image/webp"))
+                .body(imageBytes);
+    }
+    public ResponseEntity<byte[]> getDefaultCard() {
+        byte[] imageBytes = fileService.getImageContent("","default-card.webp");
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("image/webp"))
+                .body(imageBytes);
+    }
+
 }

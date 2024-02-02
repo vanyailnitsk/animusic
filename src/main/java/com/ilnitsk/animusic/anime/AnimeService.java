@@ -72,6 +72,16 @@ public class AnimeService {
         return imageService.getImage(anime.getFolderName(),banner);
     }
 
+    public ResponseEntity<byte[]> getCard(Integer animeId) {
+        Anime anime = animeRepository.findById(animeId)
+                .orElseThrow(() -> new AnimeNotFoundException(animeId));
+        String card = anime.getBannerImagePath();
+        if (card == null || card.isEmpty()) {
+            return imageService.getDefaultCard();
+        }
+        return imageService.getImage(anime.getFolderName(),card);
+    }
+
     public void createBanner(Anime anime,MultipartFile banner) {
         String extension = imageService.getImageExtension(banner.getOriginalFilename());
         String bannerFile = "banner%s".formatted(extension);
