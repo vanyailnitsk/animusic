@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.ilnitsk</groupId>
 	<artifactId>animusic</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0 RELEASE</version>
 	<name>animusic</name>
 	<description>Application for listening to music from anime</description>
 	<properties>
