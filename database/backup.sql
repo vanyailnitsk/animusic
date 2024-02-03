@@ -16,6 +16,7 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+DROP DATABASE animusic;
 --
 -- Name: animusic; Type: DATABASE; Schema: -; Owner: -
 --
@@ -142,8 +143,8 @@ CREATE TABLE public.soundtrack (
     anime_title character varying(255),
     original_title character varying(255),
     path_to_file character varying(255),
-    type smallint,
-    anime_id integer NOT NULL
+    anime_id integer NOT NULL,
+    type smallint
 );
 
 
@@ -171,18 +172,18 @@ ALTER TABLE ONLY public.playlist ALTER COLUMN id SET DEFAULT nextval('public.pla
 --
 
 COPY public.anime (id, description, folder_name, release_year, studio, title, banner_image_path, card_image_path) FROM stdin;
-2	\N	Naruto_Shippuden	2007	\N	Naruto Shippuden	card.webp	card.webp
-154		Demon_Slayer	\N		Demon Slayer	\N	card.webp
 3	\N	Attack_on_Titan	2013	\N	Attack on Titan	banner.webp	card.webp
-153		Black_Clover	2017		Black Clover	\N	card.webp
 52		Chainsaw_Man	\N	MAPPA	Chainsaw Man	banner.webp	card.webp
 53		Vinland_Saga	\N		Vinland Saga	banner.webp	card.webp
-54		Tokyo_Ghoul	\N		Tokyo Ghoul	\N	card.webp
-102		Jujutsu_Kaisen	\N	MAPPA	Jujutsu Kaisen	\N	card.webp
-152		Promised_Neverland	\N		Promised Neverland	\N	card.webp
-155		Death_Note	\N		Death Note	\N	card.webp
-402		Naruto	2002	Studio Pierrot	Naruto	banner.jpeg	card.webp
-1	\N	Hunter_x_Hunter	2011	\N	Hunter x Hunter	\N	card.webp
+2	\N	Naruto_Shippuden	2007	\N	Naruto Shippuden	banner.webp	card.webp
+102		Jujutsu_Kaisen	\N	MAPPA	Jujutsu Kaisen	banner.webp	card.webp
+152		Promised_Neverland	\N		Promised Neverland	banner.webp	card.webp
+154		Demon_Slayer	\N		Demon Slayer	banner.webp	card.webp
+402		Naruto	2002	Studio Pierrot	Naruto	banner.webp	card.webp
+54		Tokyo_Ghoul	\N		Tokyo Ghoul	banner.webp	card.webp
+153		Black_Clover	2017		Black Clover	banner.webp	card.webp
+155		Death_Note	\N		Death Note	banner.webp	card.webp
+1	\N	Hunter_x_Hunter	2011	\N	Hunter x Hunter	banner.webp	card.webp
 \.
 
 
@@ -210,6 +211,7 @@ COPY public.playlist (id, image_url, name, anime_id) FROM stdin;
 110	/	Scene songs	3
 152	/	Endings	3
 302	/	Openings	402
+352	/	Endings	154
 \.
 
 
@@ -218,13 +220,10 @@ COPY public.playlist (id, image_url, name, anime_id) FROM stdin;
 --
 
 COPY public.playlist_soundtrack (soundtrack_id, playlist_id) FROM stdin;
-1152	111
 1202	302
 1	103
-2	105
-3	105
+1902	103
 4	109
-52	105
 103	112
 104	112
 105	113
@@ -232,13 +231,22 @@ COPY public.playlist_soundtrack (soundtrack_id, playlist_id) FROM stdin;
 108	109
 109	109
 110	109
-312	102
 111	109
 112	109
-153	105
+1854	111
+402	105
+1852	105
+1853	105
+2	105
+52	105
 203	114
-252	103
-302	103
+317	105
+1855	105
+1856	108
+902	108
+353	108
+1857	108
+312	102
 303	114
 304	114
 305	115
@@ -246,23 +254,18 @@ COPY public.playlist_soundtrack (soundtrack_id, playlist_id) FROM stdin;
 307	116
 308	116
 309	116
-310	108
 311	104
 313	117
 314	118
-317	105
 319	116
 352	116
-353	108
 354	106
 355	110
 356	110
-402	105
 603	106
 702	152
 752	152
 852	112
-902	108
 1010	110
 152	107
 1053	107
@@ -273,55 +276,56 @@ COPY public.playlist_soundtrack (soundtrack_id, playlist_id) FROM stdin;
 -- Data for Name: soundtrack; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.soundtrack (id, anime_title, original_title, path_to_file, type, anime_id) FROM stdin;
-603	Hyouhaku + Kokuten	Naruto Shippuden OST	Hyouhaku + Kokuten.mp3	3	2
-1202	Opening 1	R★O★C★K★S	Opening 1.mp3	0	402
-402	Opening 1	Hero's Come Back!	Opening 1.mp3	0	2
-104	Opening 2	Dark Crow	Opening 2.mp3	0	53
-105	Opening 1	Unravel	Opening 1.mp3	0	54
-107	Opening 2	Jiyuu no Tsubasa	Opening 2.mp3	0	3
-252	Ending 5	Hyori Ittai	Ending 5.mp3	1	1
-110	Opening 5	Shoukei to Shikabane no Michi	Opening 5.mp3	0	3
-303	Opening 2	Vivid Vice	Opening 2.mp3	0	102
-311	Phantom Troupe Theme	Requiem Aranea	Phantom Troupe Theme.mp3	2	1
-4	Opening 1	Guren no Yumiya	Opening 1.mp3	0	3
-1	Ending 2	Hunting For Your Dream	Ending 2.mp3	1	1
-111	Opening 6	My War	Opening 6.mp3	0	3
-304	Opening 3	Where Our Blue Is	Opening 3.mp3	0	102
-305	Opening 1	Touch off	Opening 1.mp3	0	152
-306	Opening 1	Haruka Mirai	Opening 1.mp3	0	153
-203	Opening 1	Kaikai Kitan	Opening 1.mp3	0	102
-112	Opening 7	The Rumbling	Opening 7.mp3	0	3
-2	Opening 5	FLOW-Sign	Opening 5.mp3	0	2
-314	Opening 1	the WORLD	Opening 1.mp3	0	155
-302	Ending 6	Hyori Ittai	Ending 6.mp3	1	1
-313	Opening 1	Gurenge	Opening 1.mp3	0	154
-103	Opening 1	MUKANJYO	Opening 1.mp3	0	53
-109	Opening 4	Red Swan	Opening 4.mp3	0	3
-153	Opening 15	Guren	Opening 15.mp3	0	2
-308	Opening 3	Black Rover	Opening 3.mp3	0	153
-310	Itachi Uchiha Theme	Many Nights	tachi Uchiha Theme.mp3	2	2
-312	Opening 1	Departure!	Opening 1.mp3	0	1
-108	Opening 3	Shinzou wo Sasageyo!	Opening 3.mp3	0	3
-3	Opening 3	Blue Bird	Opening 3.mp3	0	2
-309	Opening 4	Guess Who Is Back	Opening 4.mp3	0	153
-152	Ending 28	Niji	Ending 28.mp3	1	2
-52	Opening 9	Lovers	Opening 9.mp3	0	2
-307	Opening 2	PAiNT it BLACK	Opening 2.mp3	0	153
-1010	Final Ending Theme (Mikasa)	To You 2000…or…20000 Years From Now…	Final Ending Theme (Mikasa).mp3	3	3
-852	Opening 4	Paradox	Opening 4.mp3	0	53
-317	Opening 12	Moshimo	Opening 12.mp3	0	2
-354	Tragic	Naruto Shippuden OST	Tragic.mp3	3	2
-1152	Opening 1	KICK BACK	Opening 1.mp3	0	52
-1053	Ending 6	Broken Youth	Ending 6.mp3	1	2
-902	Kaguya Theme Extended	Otsutsuki Kaguya the Goddess	Kaguya Theme Extended.mp3	2	2
-356	YouSeeBIGGIRL/T:T	YouSeeBIGGIRL/T:T	YouSeeBIGGIRL.mp3	3	3
-319	Opening 7	JUSTadICE	Opening 7.mp3	0	153
-352	Opening 10	Black Catcher	Opening 10.mp3	0	153
-752	Ending 2	great escape	Ending 2.mp3	1	3
-702	Ending 4	Requiem der Morgenröte	Ending 4.mp3	1	3
-353	Obito's Theme	Naruto Shippuden OST	Obito's Theme.mp3	2	2
-355	Bauklötze	Bauklötze	Bauklötze.mp3	3	3
+COPY public.soundtrack (id, anime_title, original_title, path_to_file, anime_id, type) FROM stdin;
+603	Hyouhaku + Kokuten	Naruto Shippuden OST	Hyouhaku + Kokuten.mp3	2	\N
+1202	Opening 1	R★O★C★K★S	Opening 1.mp3	402	\N
+402	Opening 1	Hero's Come Back!	Opening 1.mp3	2	\N
+1852	Opening 16	Silhouette	Opening 16.ogg	2	\N
+1853	Opening 3	Blue Bird	Opening 3.ogg	2	\N
+1854	Opening 1	KICK BACK	Opening 1.ogg	52	\N
+1855	Opening 15	Guren	Opening 15.ogg	2	\N
+1856	Pain's Theme Song	Girei	Pain's Theme Song.ogg	2	\N
+1857	Itachi Theme Song	Senya	Itachi Theme Song.ogg	2	\N
+1	Ending 2	Hunting For Your Dream	Ending 2.ogg	1	\N
+1902	Ending 5-6	Hyori Ittai	Ending 5-6.ogg	1	\N
+104	Opening 2	Dark Crow	Opening 2.mp3	53	\N
+105	Opening 1	Unravel	Opening 1.mp3	54	\N
+107	Opening 2	Jiyuu no Tsubasa	Opening 2.mp3	3	\N
+110	Opening 5	Shoukei to Shikabane no Michi	Opening 5.mp3	3	\N
+303	Opening 2	Vivid Vice	Opening 2.mp3	102	\N
+311	Phantom Troupe Theme	Requiem Aranea	Phantom Troupe Theme.mp3	1	\N
+4	Opening 1	Guren no Yumiya	Opening 1.mp3	3	\N
+111	Opening 6	My War	Opening 6.mp3	3	\N
+304	Opening 3	Where Our Blue Is	Opening 3.mp3	102	\N
+305	Opening 1	Touch off	Opening 1.mp3	152	\N
+306	Opening 1	Haruka Mirai	Opening 1.mp3	153	\N
+203	Opening 1	Kaikai Kitan	Opening 1.mp3	102	\N
+112	Opening 7	The Rumbling	Opening 7.mp3	3	\N
+2	Opening 5	FLOW-Sign	Opening 5.mp3	2	\N
+314	Opening 1	the WORLD	Opening 1.mp3	155	\N
+313	Opening 1	Gurenge	Opening 1.mp3	154	\N
+103	Opening 1	MUKANJYO	Opening 1.mp3	53	\N
+109	Opening 4	Red Swan	Opening 4.mp3	3	\N
+308	Opening 3	Black Rover	Opening 3.mp3	153	\N
+312	Opening 1	Departure!	Opening 1.mp3	1	\N
+108	Opening 3	Shinzou wo Sasageyo!	Opening 3.mp3	3	\N
+309	Opening 4	Guess Who Is Back	Opening 4.mp3	153	\N
+152	Ending 28	Niji	Ending 28.mp3	2	\N
+52	Opening 9	Lovers	Opening 9.mp3	2	\N
+307	Opening 2	PAiNT it BLACK	Opening 2.mp3	153	\N
+1010	Final Ending Theme (Mikasa)	To You 2000…or…20000 Years From Now…	Final Ending Theme (Mikasa).mp3	3	\N
+852	Opening 4	Paradox	Opening 4.mp3	53	\N
+317	Opening 12	Moshimo	Opening 12.mp3	2	\N
+354	Tragic	Naruto Shippuden OST	Tragic.mp3	2	\N
+1053	Ending 6	Broken Youth	Ending 6.mp3	2	\N
+902	Kaguya Theme Extended	Otsutsuki Kaguya the Goddess	Kaguya Theme Extended.mp3	2	\N
+356	YouSeeBIGGIRL/T:T	YouSeeBIGGIRL/T:T	YouSeeBIGGIRL.mp3	3	\N
+319	Opening 7	JUSTadICE	Opening 7.mp3	153	\N
+352	Opening 10	Black Catcher	Opening 10.mp3	153	\N
+752	Ending 2	great escape	Ending 2.mp3	3	\N
+702	Ending 4	Requiem der Morgenröte	Ending 4.mp3	3	\N
+353	Obito's Theme	Naruto Shippuden OST	Obito's Theme.mp3	2	\N
+355	Bauklötze	Bauklötze	Bauklötze.mp3	3	\N
 \.
 
 
@@ -350,14 +354,14 @@ SELECT pg_catalog.setval('public.playlist_id_seq', 1, false);
 -- Name: playlist_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.playlist_seq', 351, true);
+SELECT pg_catalog.setval('public.playlist_seq', 401, true);
 
 
 --
 -- Name: soundtrack_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.soundtrack_seq', 1851, true);
+SELECT pg_catalog.setval('public.soundtrack_seq', 1951, true);
 
 
 --
