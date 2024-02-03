@@ -64,8 +64,20 @@ public class PlaylistService {
         String playlistName = playlist.getName();
         if (playlistName.equals("Openings") || playlistName.equals("Endings")) {
             playlist.getSoundtracks().sort(Comparator.comparingInt(
-                    a -> Integer.parseInt(a.getAnimeTitle().split(" ")[1]))
-            );
+                    a -> {
+                        String title = a.getAnimeTitle();
+                        if (title.matches(".*\\d+-\\d+.*")) {
+                            // Формат "Ending 5-6", извлекаем оба номера и возвращаем их среднее
+                            String[] parts = title.split("-");
+                            int number1 = Integer.parseInt(parts[0].replaceAll("\\D+", ""));
+                            int number2 = Integer.parseInt(parts[1].replaceAll("\\D+", ""));
+                            return (number1 + number2) / 2;
+                        } else {
+                            // Стандартный формат, извлекаем номер
+                            return Integer.parseInt(title.replaceAll("\\D+", ""));
+                        }
+                    }
+            ));
         }
         return entity.get();
     }

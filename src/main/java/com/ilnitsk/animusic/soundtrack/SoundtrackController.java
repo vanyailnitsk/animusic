@@ -37,7 +37,7 @@ public class SoundtrackController {
         return soundtrackService.getSoundtrack(soundtrackId);
     }
 
-    @PostMapping("/create-from-file")
+    @PostMapping
     public Soundtrack createFromFile(@RequestPart(value = "file") MultipartFile file,
                                      @ModelAttribute SoundtrackRequest request) {
         if (file.isEmpty()) {
