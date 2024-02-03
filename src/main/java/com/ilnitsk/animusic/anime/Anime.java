@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.anime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.soundtrack.Soundtrack;
@@ -32,7 +33,7 @@ public class Anime {
     private String bannerImagePath;
     private String cardImagePath;
     @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Soundtrack> soundtracks = new ArrayList<>();
     @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonManagedReference

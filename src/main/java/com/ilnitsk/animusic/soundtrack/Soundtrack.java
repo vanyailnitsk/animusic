@@ -28,7 +28,6 @@ public class Soundtrack {
     @JsonBackReference
     private Anime anime;
     private String animeTitle;
-    private TrackType type;
     private String pathToFile;
     @Transient
     @JsonProperty("animeName")
@@ -46,9 +45,8 @@ public class Soundtrack {
     @JsonBackReference
     private List<Playlist> playlists = new ArrayList<>();
 
-    public Soundtrack(String originalTitle, String animeTitle, TrackType type) {
+    public Soundtrack(String originalTitle, String animeTitle) {
         this.originalTitle = originalTitle;
         this.animeTitle = animeTitle;
-        this.type = type;
     }
 }
