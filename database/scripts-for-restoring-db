@@ -1,0 +1,9 @@
+pg_dump --create -p 5432 -U postgres -d animusic -f database/backup.sql --no-owner
+
+SELECT pg_terminate_backend(pg_stat_activity.pg_backend_pid)
+FROM pg_stat_activity
+WHERE pg_stat_activity.datname = 'animusic';
+
+drop database animusic;
+
+
