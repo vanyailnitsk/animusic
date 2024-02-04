@@ -43,13 +43,13 @@ public class SoundtrackController {
     }
 
     @PostMapping
-    public Soundtrack createFromFile(@RequestPart(value = "file") MultipartFile file,
+    public Soundtrack createFromFile(@RequestPart(value = "file") MultipartFile audio,
                                      @ModelAttribute SoundtrackRequest request) {
-        if (file.isEmpty()) {
+        if (audio.isEmpty()) {
             throw new BadRequestException("No mp3-file provided");
         }
         return soundtrackService.createSoundtrack(
-                file, request.createSoundtrack(), request.getPlaylistId()
+                audio, request.createSoundtrack(), request.getPlaylistId()
         );
     }
 

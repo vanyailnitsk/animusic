@@ -64,14 +64,14 @@ public class SoundtrackService {
     }
 
     @Transactional(timeout = 10)
-    public Soundtrack createSoundtrack(MultipartFile file, Soundtrack soundtrack, Integer playlistId) {
+    public Soundtrack createSoundtrack(MultipartFile audio, Soundtrack soundtrack, Integer playlistId) {
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
         Anime anime = playlist.getAnime();
-        fileService.saveAudio(file, anime.getFolderName(), soundtrack.getAnimeTitle());
+        fileService.saveAudio(audio, anime.getFolderName(), soundtrack.getAnimeTitle());
         soundtrack.setAnime(anime);
         soundtrack.setAudioFile(
-                soundtrack.getAnimeTitle() + fileService.getFileExtension(file.getOriginalFilename())
+                soundtrack.getAnimeTitle() + fileService.getFileExtension(audio.getOriginalFilename())
         );
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
         playlist.addSoundtrack(soundtrack);
@@ -87,6 +87,20 @@ public class SoundtrackService {
             return imageService.getDefaultSoundtrackImage();
         }
         return imageService.getImage(soundtrack.getAnime().getFolderName(),imageFile);
+    }
+
+    public void createImage(Soundtrack soundtrack,MultipartFile card) {
+        String extension = imageService.getImageExtension(card.getOriginalFilename());
+        String imageFile = soundtrack.getAnimeTitle()+extension;
+        imageService.saveImage(card,soundtrack.getAnime().getFolderName(),soundtrack.getAnimeTitle());
+        soundtrack.setImageFile(imageFile);
+    }
+
+    @Transactional
+    public void setImage(Integer soundtrackId, MultipartFile image) {
+        Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
+                .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
+        createImage(soundtrack,image);
     }
 
     public void remove(Integer id) {
