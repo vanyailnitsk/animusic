@@ -28,7 +28,7 @@ public class Soundtrack {
     @JsonBackReference
     private Anime anime;
     private String animeTitle;
-    private String pathToFile;
+    private String audioFile;
     @Transient
     @JsonProperty("animeName")
     private String animeName;

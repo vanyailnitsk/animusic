@@ -38,7 +38,7 @@ public class SoundtrackService {
         Soundtrack soundtrack = soundtrackRepository.findById(trackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(trackId));
         String animeFolder = soundtrack.getAnime().getFolderName();
-        String trackName = soundtrack.getPathToFile();
+        String trackName = soundtrack.getAudioFile();
         HttpHeaders headers = new HttpHeaders();
         StreamingResponseBody stream;
         if (range != null) {
@@ -73,7 +73,7 @@ public class SoundtrackService {
         Anime anime = playlist.getAnime();
         fileService.saveAudio(file, anime.getFolderName(), soundtrack.getAnimeTitle());
         soundtrack.setAnime(anime);
-        soundtrack.setPathToFile(
+        soundtrack.setAudioFile(
                 soundtrack.getAnimeTitle() + fileService.getFileExtension(file.getOriginalFilename())
         );
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
@@ -86,7 +86,7 @@ public class SoundtrackService {
         Soundtrack soundtrack = soundtrackRepository.findById(id)
                 .orElseThrow(() -> new SoundtrackNotFoundException(id));
         String folderName = soundtrack.getAnime().getFolderName();
-        fileService.removeFile(folderName, "audio", soundtrack.getPathToFile());
+        fileService.removeFile(folderName, "audio", soundtrack.getAudioFile());
         soundtrackRepository.deleteById(id);
         log.info("Soundtrack {}/{} removed successfully", folderName, soundtrack.getAnimeTitle());
     }
