@@ -20,7 +20,7 @@ public class AnimeController {
     }
 
 
-    @GetMapping("/info/{animeId}")
+    @GetMapping("/{animeId}")
     public Anime getAnimeInfo(@PathVariable Integer animeId) {
         log.info("Requested anime {} info", animeId);
         return animeService.getAnimeInfo(animeId);
@@ -30,12 +30,7 @@ public class AnimeController {
         return animeService.getAllAnime();
     }
 
-    @GetMapping("/navigation")
-    public List<AnimeNavDTO> getAnimeDropdownList() {
-        return animeService.getAnimeDropdownList();
-    }
-
-    @PostMapping("/create")
+    @PostMapping
     public Anime createAnime(@RequestPart(value = "banner") MultipartFile banner,
                              @RequestPart(value = "card") MultipartFile card,
                              @ModelAttribute Anime anime) {

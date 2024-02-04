@@ -1,6 +1,8 @@
 package com.ilnitsk.animusic.services;
 
-import com.ilnitsk.animusic.anime.*;
+import com.ilnitsk.animusic.anime.Anime;
+import com.ilnitsk.animusic.anime.AnimeRepository;
+import com.ilnitsk.animusic.anime.AnimeService;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.image.ImageService;
@@ -11,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Year;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,18 +50,6 @@ class AnimeServiceTest {
                 .isInstanceOf(AnimeNotFoundException.class)
                 .hasMessageContaining("Anime with id 1 not found");
         verify(animeRepository).findById(1);
-    }
-
-    @Test
-    void canGetAnimeDropdownList() {
-        Anime anime1 = Anime.builder().id(1).title("Anime 1").build();
-        Anime anime2 = Anime.builder().id(2).title("Anime 2").build();
-        given(animeRepository.findAllByOrderByTitle()).willReturn(List.of(anime1,anime2));
-        List<AnimeNavDTO> result = underTest.getAnimeDropdownList();
-        assertThat(result).isNotEmpty();
-        assertThat(result).contains(
-                new AnimeNavDTO(1, "Anime 1"), new AnimeNavDTO(2, "Anime 2"));
-        verify(animeRepository).findAllByOrderByTitle();
     }
 
     @Test

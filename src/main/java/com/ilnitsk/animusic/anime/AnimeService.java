@@ -5,13 +5,11 @@ import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.image.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,8 +17,6 @@ import java.util.List;
 public class AnimeService {
     private final AnimeRepository animeRepository;
     private final ImageService imageService;
-    @Value("${images.directory}")
-    private String imagesPath;
 
     @Autowired
     public AnimeService(AnimeRepository animeRepository, ImageService imageService) {
@@ -36,16 +32,8 @@ public class AnimeService {
         return anime;
     }
 
-
-
-    public List<AnimeNavDTO> getAnimeDropdownList() {
-        List<Anime> animeList = animeRepository.findAllByOrderByTitle();
-        List<AnimeNavDTO> animeDropdownList = new ArrayList<>();
-        for (Anime anime : animeList) {
-            AnimeNavDTO dto = new AnimeNavDTO(anime.getId(), anime.getTitle());
-            animeDropdownList.add(dto);
-        }
-        return animeDropdownList;
+    public List<Anime> getAllAnime() {
+        return animeRepository.findAllByOrderByTitle();
     }
 
     @Transactional
@@ -58,8 +46,11 @@ public class AnimeService {
             );
         }
         createBanner(anime,banner);
-        createCard(anime,banner);
+        createCard(anime,card);
         return animeRepository.save(anime);
+    }
+    public void deleteAnime(Integer animeId) {
+        animeRepository.deleteById(animeId);
     }
 
     public ResponseEntity<byte[]> getBanner(Integer animeId) {
@@ -110,13 +101,4 @@ public class AnimeService {
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
         createCard(anime,card);
     }
-
-    public List<Anime> getAllAnime() {
-        return animeRepository.findAll();
-    }
-    public void deleteAnime(Integer animeId) {
-        animeRepository.deleteById(animeId);
-    }
-
-
 }
