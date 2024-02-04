@@ -29,6 +29,7 @@ public class Soundtrack {
     private Anime anime;
     private String animeTitle;
     private String audioFile;
+    private String imageFile;
     @Transient
     @JsonProperty("animeName")
     private String animeName;

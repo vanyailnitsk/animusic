@@ -5,8 +5,10 @@ import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.file.FileService;
+import com.ilnitsk.animusic.image.ImageService;
 import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -16,18 +18,13 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SoundtrackService {
     private final SoundtrackRepository soundtrackRepository;
     private final AnimeRepository animeRepository;
     private final PlaylistRepository playlistRepository;
     private final FileService fileService;
-
-    public SoundtrackService(SoundtrackRepository soundtrackRepository, AnimeRepository animeRepository, PlaylistRepository playlistRepository, FileService fileService) {
-        this.soundtrackRepository = soundtrackRepository;
-        this.animeRepository = animeRepository;
-        this.playlistRepository = playlistRepository;
-        this.fileService = fileService;
-    }
+    private final ImageService imageService;
 
     public Soundtrack getSoundtrack(Integer id) {
         return soundtrackRepository.findById(id)
@@ -80,6 +77,16 @@ public class SoundtrackService {
         playlist.addSoundtrack(soundtrack);
         log.info("Soundtrack {}/{} created successfully", anime.getFolderName(), soundtrack.getAnimeTitle());
         return savedSoundtrack;
+    }
+
+    public ResponseEntity<byte[]> getSoundtrackImage(Integer soundtrackId) {
+        Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
+                .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
+        String imageFile = soundtrack.getImageFile();
+        if (imageFile == null || imageFile.isEmpty()) {
+            return imageService.getDefaultSoundtrackImage();
+        }
+        return imageService.getImage(soundtrack.getAnime().getFolderName(),imageFile);
     }
 
     public void remove(Integer id) {
