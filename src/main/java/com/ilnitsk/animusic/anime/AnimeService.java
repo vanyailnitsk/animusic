@@ -35,9 +35,6 @@ public class AnimeService {
     public List<Anime> getAllAnime() {
         return animeRepository.findAllByOrderByTitle();
     }
-    public void deleteAnime(Integer animeId) {
-        animeRepository.deleteById(animeId);
-    }
 
     @Transactional
     public Anime createAnime(Anime anime, MultipartFile banner, MultipartFile card) {
@@ -49,8 +46,11 @@ public class AnimeService {
             );
         }
         createBanner(anime,banner);
-        createCard(anime,banner);
+        createCard(anime,card);
         return animeRepository.save(anime);
+    }
+    public void deleteAnime(Integer animeId) {
+        animeRepository.deleteById(animeId);
     }
 
     public ResponseEntity<byte[]> getBanner(Integer animeId) {
