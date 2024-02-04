@@ -37,6 +37,11 @@ public class SoundtrackController {
         return soundtrackService.getSoundtrack(soundtrackId);
     }
 
+    @GetMapping("/images/{soundtrackId}")
+    public ResponseEntity<byte[]> getSoundtrackImage(@PathVariable Integer soundtrackId) {
+        return soundtrackService.getSoundtrackImage(soundtrackId);
+    }
+
     @PostMapping
     public Soundtrack createFromFile(@RequestPart(value = "file") MultipartFile file,
                                      @ModelAttribute SoundtrackRequest request) {
