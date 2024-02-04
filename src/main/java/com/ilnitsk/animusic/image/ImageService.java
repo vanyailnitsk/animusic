@@ -38,4 +38,11 @@ public class ImageService {
                 .body(imageBytes);
     }
 
+    public ResponseEntity<byte[]> getDefaultSoundtrackImage() {
+        byte[] imageBytes = fileService.getImageContent("","track-img.webp");
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("image/webp"))
+                .body(imageBytes);
+    }
+
 }

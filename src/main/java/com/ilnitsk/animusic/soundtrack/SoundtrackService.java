@@ -5,8 +5,10 @@ import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.file.FileService;
+import com.ilnitsk.animusic.image.ImageService;
 import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -16,18 +18,13 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SoundtrackService {
     private final SoundtrackRepository soundtrackRepository;
     private final AnimeRepository animeRepository;
     private final PlaylistRepository playlistRepository;
     private final FileService fileService;
-
-    public SoundtrackService(SoundtrackRepository soundtrackRepository, AnimeRepository animeRepository, PlaylistRepository playlistRepository, FileService fileService) {
-        this.soundtrackRepository = soundtrackRepository;
-        this.animeRepository = animeRepository;
-        this.playlistRepository = playlistRepository;
-        this.fileService = fileService;
-    }
+    private final ImageService imageService;
 
     public Soundtrack getSoundtrack(Integer id) {
         return soundtrackRepository.findById(id)
@@ -38,7 +35,7 @@ public class SoundtrackService {
         Soundtrack soundtrack = soundtrackRepository.findById(trackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(trackId));
         String animeFolder = soundtrack.getAnime().getFolderName();
-        String trackName = soundtrack.getPathToFile();
+        String trackName = soundtrack.getAudioFile();
         HttpHeaders headers = new HttpHeaders();
         StreamingResponseBody stream;
         if (range != null) {
@@ -67,26 +64,53 @@ public class SoundtrackService {
     }
 
     @Transactional(timeout = 10)
-    public Soundtrack createSoundtrack(MultipartFile file, Soundtrack soundtrack, Integer playlistId) {
+    public Soundtrack createSoundtrack(MultipartFile audio, MultipartFile image,Soundtrack soundtrack, Integer playlistId) {
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
         Anime anime = playlist.getAnime();
-        fileService.saveAudio(file, anime.getFolderName(), soundtrack.getAnimeTitle());
+        fileService.saveAudio(audio, anime.getFolderName(), soundtrack.getAnimeTitle());
         soundtrack.setAnime(anime);
-        soundtrack.setPathToFile(
-                soundtrack.getAnimeTitle() + fileService.getFileExtension(file.getOriginalFilename())
+        soundtrack.setAudioFile(
+                soundtrack.getAnimeTitle() + fileService.getFileExtension(audio.getOriginalFilename())
         );
+        if (!image.isEmpty()) {
+            createImage(soundtrack,image);
+        }
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
         playlist.addSoundtrack(soundtrack);
         log.info("Soundtrack {}/{} created successfully", anime.getFolderName(), soundtrack.getAnimeTitle());
         return savedSoundtrack;
     }
 
+    public ResponseEntity<byte[]> getSoundtrackImage(Integer soundtrackId) {
+        Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
+                .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
+        String imageFile = soundtrack.getImageFile();
+        if (imageFile == null || imageFile.isEmpty()) {
+            return imageService.getDefaultSoundtrackImage();
+        }
+        return imageService.getImage(soundtrack.getAnime().getFolderName(),imageFile);
+    }
+
+    public void createImage(Soundtrack soundtrack,MultipartFile image) {
+        String extension = imageService.getImageExtension(image.getOriginalFilename());
+        String imageFile = soundtrack.getAnimeTitle()+extension;
+        imageService.saveImage(image,soundtrack.getAnime().getFolderName(),soundtrack.getAnimeTitle());
+        soundtrack.setImageFile(imageFile);
+    }
+
+    @Transactional
+    public void setImage(Integer soundtrackId, MultipartFile image) {
+        Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
+                .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
+        createImage(soundtrack,image);
+    }
+
     public void remove(Integer id) {
         Soundtrack soundtrack = soundtrackRepository.findById(id)
                 .orElseThrow(() -> new SoundtrackNotFoundException(id));
         String folderName = soundtrack.getAnime().getFolderName();
-        fileService.removeFile(folderName, "audio", soundtrack.getPathToFile());
+        fileService.removeFile(folderName, "audio", soundtrack.getAudioFile());
         soundtrackRepository.deleteById(id);
         log.info("Soundtrack {}/{} removed successfully", folderName, soundtrack.getAnimeTitle());
     }
