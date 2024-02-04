@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,16 +35,11 @@ public class AnimeService {
         return anime;
     }
 
-
-
-    public List<AnimeNavDTO> getAnimeDropdownList() {
-        List<Anime> animeList = animeRepository.findAllByOrderByTitle();
-        List<AnimeNavDTO> animeDropdownList = new ArrayList<>();
-        for (Anime anime : animeList) {
-            AnimeNavDTO dto = new AnimeNavDTO(anime.getId(), anime.getTitle());
-            animeDropdownList.add(dto);
-        }
-        return animeDropdownList;
+    public List<Anime> getAllAnime() {
+        return animeRepository.findAllByOrderByTitle();
+    }
+    public void deleteAnime(Integer animeId) {
+        animeRepository.deleteById(animeId);
     }
 
     @Transactional
@@ -110,13 +104,4 @@ public class AnimeService {
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
         createCard(anime,card);
     }
-
-    public List<Anime> getAllAnime() {
-        return animeRepository.findAll();
-    }
-    public void deleteAnime(Integer animeId) {
-        animeRepository.deleteById(animeId);
-    }
-
-
 }
