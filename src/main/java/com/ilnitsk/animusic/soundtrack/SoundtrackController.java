@@ -37,20 +37,27 @@ public class SoundtrackController {
         return soundtrackService.getSoundtrack(soundtrackId);
     }
 
-    @GetMapping("/images/{soundtrackId}")
-    public ResponseEntity<byte[]> getSoundtrackImage(@PathVariable Integer soundtrackId) {
-        return soundtrackService.getSoundtrackImage(soundtrackId);
-    }
-
     @PostMapping
-    public Soundtrack createFromFile(@RequestPart(value = "file") MultipartFile audio,
+    public Soundtrack createFromFile(@RequestPart(value = "audio") MultipartFile audio,
+                                     @RequestPart(value = "image",required = false) MultipartFile image,
                                      @ModelAttribute SoundtrackRequest request) {
         if (audio.isEmpty()) {
             throw new BadRequestException("No mp3-file provided");
         }
         return soundtrackService.createSoundtrack(
-                audio, request.createSoundtrack(), request.getPlaylistId()
+                audio, image, request.createSoundtrack(), request.getPlaylistId()
         );
+    }
+
+    @GetMapping("/images/{soundtrackId}")
+    public ResponseEntity<byte[]> getSoundtrackImage(@PathVariable Integer soundtrackId) {
+        return soundtrackService.getSoundtrackImage(soundtrackId);
+    }
+
+    @PostMapping("/images/{soundtrackId}")
+    public void setSoundtrackImage(@PathVariable Integer soundtrackId,
+                          @RequestPart(value = "image") MultipartFile image) {
+        soundtrackService.setImage(soundtrackId,image);
     }
 
     @DeleteMapping("{id}")
