@@ -141,9 +141,10 @@ CREATE TABLE public.soundtrack (
     id integer NOT NULL,
     anime_title character varying(255),
     original_title character varying(255),
-    path_to_file character varying(255),
+    audio_file character varying(255),
     anime_id integer NOT NULL,
-    type smallint
+    type smallint,
+    image_file character varying(255)
 );
 
 
@@ -182,7 +183,7 @@ COPY public.anime (id, description, folder_name, release_year, studio, title, ba
 54		Tokyo_Ghoul	\N		Tokyo Ghoul	banner.webp	card.webp
 153		Black_Clover	2017		Black Clover	banner.webp	card.webp
 155		Death_Note	\N		Death Note	banner.webp	card.webp
-1	\N	Hunter_x_Hunter	2011	\N	Hunter x Hunter	banner.webp	card.webp
+1	\N	Hunter_x_Hunter	2011	\N	Hunter × Hunter	banner.webp	card.webp
 \.
 
 
@@ -211,6 +212,7 @@ COPY public.playlist (id, image_url, name, anime_id) FROM stdin;
 152	/	Endings	3
 302	/	Openings	402
 352	/	Endings	154
+402	/	Scene songs	1
 \.
 
 
@@ -222,6 +224,7 @@ COPY public.playlist_soundtrack (soundtrack_id, playlist_id) FROM stdin;
 1202	302
 1	103
 1902	103
+1952	402
 4	109
 103	112
 104	112
@@ -275,56 +278,57 @@ COPY public.playlist_soundtrack (soundtrack_id, playlist_id) FROM stdin;
 -- Data for Name: soundtrack; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.soundtrack (id, anime_title, original_title, path_to_file, anime_id, type) FROM stdin;
-603	Hyouhaku + Kokuten	Naruto Shippuden OST	Hyouhaku + Kokuten.mp3	2	\N
-1202	Opening 1	R★O★C★K★S	Opening 1.mp3	402	\N
-402	Opening 1	Hero's Come Back!	Opening 1.mp3	2	\N
-1852	Opening 16	Silhouette	Opening 16.ogg	2	\N
-1853	Opening 3	Blue Bird	Opening 3.ogg	2	\N
-1854	Opening 1	KICK BACK	Opening 1.ogg	52	\N
-1855	Opening 15	Guren	Opening 15.ogg	2	\N
-1856	Pain's Theme Song	Girei	Pain's Theme Song.ogg	2	\N
-1857	Itachi Theme Song	Senya	Itachi Theme Song.ogg	2	\N
-1	Ending 2	Hunting For Your Dream	Ending 2.ogg	1	\N
-1902	Ending 5-6	Hyori Ittai	Ending 5-6.ogg	1	\N
-104	Opening 2	Dark Crow	Opening 2.mp3	53	\N
-105	Opening 1	Unravel	Opening 1.mp3	54	\N
-107	Opening 2	Jiyuu no Tsubasa	Opening 2.mp3	3	\N
-110	Opening 5	Shoukei to Shikabane no Michi	Opening 5.mp3	3	\N
-303	Opening 2	Vivid Vice	Opening 2.mp3	102	\N
-311	Phantom Troupe Theme	Requiem Aranea	Phantom Troupe Theme.mp3	1	\N
-4	Opening 1	Guren no Yumiya	Opening 1.mp3	3	\N
-111	Opening 6	My War	Opening 6.mp3	3	\N
-304	Opening 3	Where Our Blue Is	Opening 3.mp3	102	\N
-305	Opening 1	Touch off	Opening 1.mp3	152	\N
-306	Opening 1	Haruka Mirai	Opening 1.mp3	153	\N
-203	Opening 1	Kaikai Kitan	Opening 1.mp3	102	\N
-112	Opening 7	The Rumbling	Opening 7.mp3	3	\N
-2	Opening 5	FLOW-Sign	Opening 5.mp3	2	\N
-314	Opening 1	the WORLD	Opening 1.mp3	155	\N
-313	Opening 1	Gurenge	Opening 1.mp3	154	\N
-103	Opening 1	MUKANJYO	Opening 1.mp3	53	\N
-109	Opening 4	Red Swan	Opening 4.mp3	3	\N
-308	Opening 3	Black Rover	Opening 3.mp3	153	\N
-312	Opening 1	Departure!	Opening 1.mp3	1	\N
-108	Opening 3	Shinzou wo Sasageyo!	Opening 3.mp3	3	\N
-309	Opening 4	Guess Who Is Back	Opening 4.mp3	153	\N
-152	Ending 28	Niji	Ending 28.mp3	2	\N
-52	Opening 9	Lovers	Opening 9.mp3	2	\N
-307	Opening 2	PAiNT it BLACK	Opening 2.mp3	153	\N
-1010	Final Ending Theme (Mikasa)	To You 2000…or…20000 Years From Now…	Final Ending Theme (Mikasa).mp3	3	\N
-852	Opening 4	Paradox	Opening 4.mp3	53	\N
-317	Opening 12	Moshimo	Opening 12.mp3	2	\N
-354	Tragic	Naruto Shippuden OST	Tragic.mp3	2	\N
-1053	Ending 6	Broken Youth	Ending 6.mp3	2	\N
-902	Kaguya Theme Extended	Otsutsuki Kaguya the Goddess	Kaguya Theme Extended.mp3	2	\N
-356	YouSeeBIGGIRL/T:T	YouSeeBIGGIRL/T:T	YouSeeBIGGIRL.mp3	3	\N
-319	Opening 7	JUSTadICE	Opening 7.mp3	153	\N
-352	Opening 10	Black Catcher	Opening 10.mp3	153	\N
-752	Ending 2	great escape	Ending 2.mp3	3	\N
-702	Ending 4	Requiem der Morgenröte	Ending 4.mp3	3	\N
-353	Obito's Theme	Naruto Shippuden OST	Obito's Theme.mp3	2	\N
-355	Bauklötze	Bauklötze	Bauklötze.mp3	3	\N
+COPY public.soundtrack (id, anime_title, original_title, audio_file, anime_id, type, image_file) FROM stdin;
+603	Hyouhaku + Kokuten	Naruto Shippuden OST	Hyouhaku + Kokuten.mp3	2	\N	\N
+1202	Opening 1	R★O★C★K★S	Opening 1.mp3	402	\N	\N
+402	Opening 1	Hero's Come Back!	Opening 1.mp3	2	\N	\N
+1852	Opening 16	Silhouette	Opening 16.ogg	2	\N	\N
+1853	Opening 3	Blue Bird	Opening 3.ogg	2	\N	\N
+1854	Opening 1	KICK BACK	Opening 1.ogg	52	\N	\N
+1856	Pain's Theme Song	Girei	Pain's Theme Song.ogg	2	\N	\N
+1857	Itachi Theme Song	Senya	Itachi Theme Song.ogg	2	\N	\N
+1	Ending 2	Hunting For Your Dream	Ending 2.ogg	1	\N	\N
+1902	Ending 5-6	Hyori Ittai	Ending 5-6.ogg	1	\N	\N
+4	Opening 1	Guren no Yumiya	Opening 1.mp3	3	\N	Opening 1.webp
+1855	Opening 15	Guren	Opening 15.ogg	2	\N	Opening 15.jpg
+1952	Kusari Yarou	Hunter × Hunter OST	Kusari Yarou.mp3	1	\N	Kusari Yarou.jpeg
+1053	Ending 6	Broken Youth	Ending 6.mp3	2	\N	Ending 6.jpg
+104	Opening 2	Dark Crow	Opening 2.mp3	53	\N	\N
+105	Opening 1	Unravel	Opening 1.mp3	54	\N	\N
+107	Opening 2	Jiyuu no Tsubasa	Opening 2.mp3	3	\N	\N
+110	Opening 5	Shoukei to Shikabane no Michi	Opening 5.mp3	3	\N	\N
+303	Opening 2	Vivid Vice	Opening 2.mp3	102	\N	\N
+311	Phantom Troupe Theme	Requiem Aranea	Phantom Troupe Theme.mp3	1	\N	\N
+111	Opening 6	My War	Opening 6.mp3	3	\N	\N
+304	Opening 3	Where Our Blue Is	Opening 3.mp3	102	\N	\N
+305	Opening 1	Touch off	Opening 1.mp3	152	\N	\N
+306	Opening 1	Haruka Mirai	Opening 1.mp3	153	\N	\N
+203	Opening 1	Kaikai Kitan	Opening 1.mp3	102	\N	\N
+112	Opening 7	The Rumbling	Opening 7.mp3	3	\N	\N
+2	Opening 5	FLOW-Sign	Opening 5.mp3	2	\N	\N
+314	Opening 1	the WORLD	Opening 1.mp3	155	\N	\N
+313	Opening 1	Gurenge	Opening 1.mp3	154	\N	\N
+103	Opening 1	MUKANJYO	Opening 1.mp3	53	\N	\N
+109	Opening 4	Red Swan	Opening 4.mp3	3	\N	\N
+308	Opening 3	Black Rover	Opening 3.mp3	153	\N	\N
+312	Opening 1	Departure!	Opening 1.mp3	1	\N	\N
+108	Opening 3	Shinzou wo Sasageyo!	Opening 3.mp3	3	\N	\N
+309	Opening 4	Guess Who Is Back	Opening 4.mp3	153	\N	\N
+152	Ending 28	Niji	Ending 28.mp3	2	\N	\N
+52	Opening 9	Lovers	Opening 9.mp3	2	\N	\N
+307	Opening 2	PAiNT it BLACK	Opening 2.mp3	153	\N	\N
+1010	Final Ending Theme (Mikasa)	To You 2000…or…20000 Years From Now…	Final Ending Theme (Mikasa).mp3	3	\N	\N
+852	Opening 4	Paradox	Opening 4.mp3	53	\N	\N
+317	Opening 12	Moshimo	Opening 12.mp3	2	\N	\N
+354	Tragic	Naruto Shippuden OST	Tragic.mp3	2	\N	\N
+902	Kaguya Theme Extended	Otsutsuki Kaguya the Goddess	Kaguya Theme Extended.mp3	2	\N	\N
+356	YouSeeBIGGIRL/T:T	YouSeeBIGGIRL/T:T	YouSeeBIGGIRL.mp3	3	\N	\N
+319	Opening 7	JUSTadICE	Opening 7.mp3	153	\N	\N
+352	Opening 10	Black Catcher	Opening 10.mp3	153	\N	\N
+752	Ending 2	great escape	Ending 2.mp3	3	\N	\N
+702	Ending 4	Requiem der Morgenröte	Ending 4.mp3	3	\N	\N
+353	Obito's Theme	Naruto Shippuden OST	Obito's Theme.mp3	2	\N	\N
+355	Bauklötze	Bauklötze	Bauklötze.mp3	3	\N	\N
 \.
 
 
@@ -353,14 +357,14 @@ SELECT pg_catalog.setval('public.playlist_id_seq', 1, false);
 -- Name: playlist_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.playlist_seq', 401, true);
+SELECT pg_catalog.setval('public.playlist_seq', 451, true);
 
 
 --
 -- Name: soundtrack_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.soundtrack_seq', 1951, true);
+SELECT pg_catalog.setval('public.soundtrack_seq', 2001, true);
 
 
 --
