@@ -2,6 +2,9 @@ package com.ilnitsk.animusic.file;
 
 import com.ilnitsk.animusic.exception.FileNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.AudioHeader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -96,6 +99,19 @@ public class FileService {
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Ошибка во время чтения аудиофайла");
         }
+    }
+
+    public int getTrackDuration(String animeFolder,String audioFileName) {
+        Path audioPath = Paths.get(storagePath, animeFolder, "audio", audioFileName);
+        AudioFile af;
+        try {
+            af = AudioFileIO.read(audioPath.toFile());
+        } catch (Exception e) {
+            System.out.println(audioPath);
+            return 0;
+        }
+        AudioHeader ah = af.getAudioHeader();
+        return ah.getTrackLength();
     }
 
     public void removeFile(String animeFolder, String subDirectory, String fileName) {
