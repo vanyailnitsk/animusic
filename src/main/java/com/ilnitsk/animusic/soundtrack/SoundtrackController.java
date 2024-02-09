@@ -60,6 +60,11 @@ public class SoundtrackController {
         soundtrackService.setImage(soundtrackId,image);
     }
 
+    @PutMapping("/update-duration")
+    public void updateSoundtracksDuration() {
+        soundtrackService.updateAllTracksDuration();
+    }
+
     @DeleteMapping("{id}")
     public void deleteSoundtrack(@PathVariable Integer id) {
         soundtrackService.remove(id);

@@ -1,9 +1,6 @@
 package com.ilnitsk.animusic;
 
-import com.ilnitsk.animusic.soundtrack.SoundtrackRepository;
-import com.ilnitsk.animusic.soundtrack.SoundtrackService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,10 +11,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Arrays;
 
 @SpringBootApplication
-@RequiredArgsConstructor
 public class AnimusicApplication {
-	private final SoundtrackRepository soundtrackRepository;
-	private final SoundtrackService soundtrackService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AnimusicApplication.class, args);
@@ -37,14 +31,6 @@ public class AnimusicApplication {
 		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
 		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
 		return new CorsFilter(urlBasedCorsConfigurationSource);
-	}
-
-	@Bean
-	CommandLineRunner commandLineRunner() {
-		return (args) -> {
-			soundtrackRepository.findAll()
-					.forEach(soundtrackService::updateTrackDuration);
-		};
 	}
 }
 

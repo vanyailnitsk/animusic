@@ -67,6 +67,11 @@ public class SoundtrackService {
         soundtrack.setDuration(fileService.getTrackDuration(soundtrack.getAnime().getFolderName(),soundtrack.getAudioFile()));
         soundtrackRepository.save(soundtrack);
     }
+
+    public void updateAllTracksDuration() {
+        soundtrackRepository.findAll()
+                .forEach(this::updateTrackDuration);
+    }
     @Transactional(timeout = 10)
     public Soundtrack createSoundtrack(MultipartFile audio, MultipartFile image,Soundtrack soundtrack, Integer playlistId) {
         Playlist playlist = playlistRepository.findById(playlistId)
@@ -80,6 +85,7 @@ public class SoundtrackService {
         if (!image.isEmpty()) {
             createImage(soundtrack,image);
         }
+        updateTrackDuration(soundtrack);
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
         playlist.addSoundtrack(soundtrack);
         log.info("Soundtrack {}/{} created successfully", anime.getFolderName(), soundtrack.getAnimeTitle());
