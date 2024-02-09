@@ -63,6 +63,10 @@ public class SoundtrackService {
         return new ResponseEntity<>(stream, headers, HttpStatus.OK);
     }
 
+    public void updateTrackDuration(Soundtrack soundtrack) {
+        soundtrack.setDuration(fileService.getTrackDuration(soundtrack.getAnime().getFolderName(),soundtrack.getAudioFile()));
+        soundtrackRepository.save(soundtrack);
+    }
     @Transactional(timeout = 10)
     public Soundtrack createSoundtrack(MultipartFile audio, MultipartFile image,Soundtrack soundtrack, Integer playlistId) {
         Playlist playlist = playlistRepository.findById(playlistId)

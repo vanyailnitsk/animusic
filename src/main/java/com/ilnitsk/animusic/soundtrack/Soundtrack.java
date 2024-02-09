@@ -33,6 +33,7 @@ public class Soundtrack {
     @Transient
     @JsonProperty("animeName")
     private String animeName;
+    private Integer duration;
     @ManyToMany
     @JoinTable(name = "playlist_soundtrack",
             inverseJoinColumns = @JoinColumn(name = "playlist_id",
