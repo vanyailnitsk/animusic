@@ -10,7 +10,6 @@
 	<packaging>jar</packaging>
 	<artifactId>media-service</artifactId>
 
-	<name>media-service</name>
 	<description>Application for listening to music from anime</description>
 	<properties>
 		<java.version>17</java.version>
@@ -74,6 +73,11 @@
 			<groupId>net.jthink</groupId>
 			<artifactId>jaudiotagger</artifactId>
 			<version>3.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 
 
