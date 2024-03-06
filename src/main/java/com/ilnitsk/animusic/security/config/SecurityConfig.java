@@ -1,6 +1,8 @@
 package com.ilnitsk.animusic.security.config;
 
+import com.ilnitsk.animusic.security.JwtAuthorizationFilter;
 import com.ilnitsk.animusic.security.UserDetailsServiceUmpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,10 +16,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     public UserDetailsService userDetailsService(){
@@ -31,7 +36,8 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/register", "/auth/token", "/auth/validate","api/soundtracks/*").permitAll()
-                .and()
+                .requestMatchers("/api/playlist/*").authenticated()
+                .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
