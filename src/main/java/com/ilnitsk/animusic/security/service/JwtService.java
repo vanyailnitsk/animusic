@@ -2,17 +2,12 @@ package com.ilnitsk.animusic.security.service;
 
 import com.ilnitsk.animusic.user.User;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -31,8 +26,7 @@ public class JwtService {
     }
 
     public String createToken(User user) {
-        Claims claims = Jwts.claims().setSubject(user.getEmail());
-        claims.put("username",user.getUsername());
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
         Date tokenCreateTime = new Date();
         Date tokenValidity = new Date(tokenCreateTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
         return Jwts.builder()

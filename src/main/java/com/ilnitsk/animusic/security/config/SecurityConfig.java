@@ -36,9 +36,9 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
                 .requestMatchers(
-                        "/auth/register", "/auth/login","api/soundtracks/*",
-                        "/api/playlist/*", "/api/anime/*","/swagger-ui/*").permitAll()
-                .requestMatchers("/api/users/*").authenticated()
+                        "/auth/register", "/auth/login","api/soundtracks/**",
+                        "/api/playlist/**", "/api/anime/**","/swagger-ui/**").permitAll()
+                .anyRequest().authenticated()
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
