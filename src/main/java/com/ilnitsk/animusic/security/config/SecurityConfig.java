@@ -35,8 +35,10 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/register", "/auth/token", "/auth/validate","api/soundtracks/*").permitAll()
-                .requestMatchers("/api/playlist/*").authenticated()
+                .requestMatchers(
+                        "/auth/register", "/auth/login","api/soundtracks/*",
+                        "/api/playlist/*", "/api/anime/*","/swagger-ui/*").permitAll()
+                .requestMatchers("/api/users/*").authenticated()
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
