@@ -8,6 +8,8 @@ import com.ilnitsk.animusic.file.FileService;
 import com.ilnitsk.animusic.image.ImageService;
 import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Slf4j
@@ -31,6 +35,7 @@ public class SoundtrackService {
                 .orElseThrow(() -> new SoundtrackNotFoundException(id));
     }
 
+    @Timed("audioStreamDelay")
     public ResponseEntity<StreamingResponseBody> getAudioStream(Integer trackId, HttpRange range) {
         Soundtrack soundtrack = soundtrackRepository.findById(trackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(trackId));
