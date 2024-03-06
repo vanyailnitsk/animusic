@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Map;
@@ -23,8 +24,12 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationProvider authenticationManager;
 
+    @Transactional
     public Map<String,String> register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new BadRequestException("Username уже занят!");
+        }
         userRepository.save(user);
         String token = jwtService.createToken(user);
         return Collections.singletonMap("token",token);

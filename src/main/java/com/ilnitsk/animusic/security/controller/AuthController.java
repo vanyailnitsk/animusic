@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AuthController {
     private final AuthService authService;
-    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody User user) {
@@ -29,7 +28,6 @@ public class AuthController {
     public ResponseEntity<Object> authenticate(
             @RequestBody AuthRequest request
     ) {
-        log.info("login={}",request.getUsername());
         return ResponseEntity.ok(authService.authenticate(request));
     }
 }
