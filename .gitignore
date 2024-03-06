@@ -8,6 +8,8 @@ target/
 database/data
 .env
 files-test
+*.tmpl
+*/prometheus/wal
 
 ### STS ###
 .apt_generated
