@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(
                         "/auth/register", "/auth/login","/auth/refresh","api/soundtracks/**",
-                        "/api/playlist/**", "/api/anime/**","/swagger-ui/**").permitAll()
+                        "/api/playlist/**", "/api/anime/**","/swagger-ui/**","/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
