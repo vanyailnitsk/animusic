@@ -3,32 +3,38 @@ package com.ilnitsk.animusic.security.service;
 import com.ilnitsk.animusic.user.User;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.core.AuthenticationException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
+@Slf4j
 public class JwtService {
 
-    private final String secret_key = "14acdddc53daf06715e6d1a2f302ea7e2d93e8a1bac6f3cb61790f541f47d003";
-    private long accessTokenValidity = 60*60*1000;
+    private String secret_key;
+    private long ttlMinutes = 60;
 
     private final JwtParser jwtParser;
 
     private final String TOKEN_HEADER = "Authorization";
     private final String TOKEN_PREFIX = "Bearer ";
 
-    public JwtService(){
+    public JwtService(@Value("${token.secret}") String secret){
+        this.secret_key = secret;
         this.jwtParser = Jwts.parser().setSigningKey(secret_key);
     }
 
     public String createToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
-        Date tokenCreateTime = new Date();
-        Date tokenValidity = new Date(tokenCreateTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
+        ZonedDateTime tokenCreateTime = ZonedDateTime.now();
+        tokenCreateTime = tokenCreateTime.plusMinutes(ttlMinutes);
+        Date tokenValidity = Date.from(tokenCreateTime.toInstant());
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(tokenValidity)
@@ -65,16 +71,13 @@ public class JwtService {
         return null;
     }
 
-    public boolean validateClaims(Claims claims) throws AuthenticationException {
+    public boolean validateClaims(Claims claims) {
         try {
             return claims.getExpiration().after(new Date());
         } catch (Exception e) {
-            throw e;
+            log.warn("Claims is invalid: {}",claims.getSubject());
+            return false;
         }
-    }
-
-    public String getEmail(Claims claims) {
-        return claims.getSubject();
     }
 
     private List<String> getRoles(Claims claims) {
