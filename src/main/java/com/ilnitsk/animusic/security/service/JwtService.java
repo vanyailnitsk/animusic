@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.security.service;
 
+import com.ilnitsk.animusic.security.dto.TokenDto;
 import com.ilnitsk.animusic.user.User;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ public class JwtService {
 
     private final String secret_key;
     private long TTL_MINUTES = 60;
+    private long REFRESH_TTL_DAYS = 30;
 
     private final JwtParser jwtParser;
 
@@ -28,15 +30,29 @@ public class JwtService {
         this.jwtParser = Jwts.parser().setSigningKey(secret_key);
     }
 
-    public String createToken(User user) {
+    public TokenDto createToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
-        ZonedDateTime tokenCreateTime = ZonedDateTime.now().plusMinutes(TTL_MINUTES);
-        Date tokenValidity = Date.from(tokenCreateTime.toInstant());
-        return Jwts.builder()
+        ZonedDateTime tokenCreateTime = ZonedDateTime.now();
+        Date tokenValidity = Date.from(tokenCreateTime.plusMinutes(TTL_MINUTES).toInstant());
+        String accessToken = Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(tokenValidity)
                 .signWith(SignatureAlgorithm.HS256, secret_key)
                 .compact();
+        Date refreshTokenValidity = Date.from(tokenCreateTime.plusDays(REFRESH_TTL_DAYS).toInstant());
+        String refreshToken = Jwts.builder()
+                .setClaims(claims)
+                .setExpiration(refreshTokenValidity)
+                .signWith(SignatureAlgorithm.HS256, secret_key)
+                .compact();
+        return TokenDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    public String parseUsernameFromJwt(String token) {
+        return parseJwtClaims(token).getSubject();
     }
 
     private Claims parseJwtClaims(String token) {
