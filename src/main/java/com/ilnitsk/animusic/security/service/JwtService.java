@@ -1,7 +1,7 @@
 package com.ilnitsk.animusic.security.service;
 
 import com.ilnitsk.animusic.security.dto.TokenDto;
-import com.ilnitsk.animusic.user.User;
+import com.ilnitsk.animusic.user.dao.User;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;

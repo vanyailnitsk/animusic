@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.user;
+package com.ilnitsk.animusic.user.dao;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -21,6 +22,11 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "favourites_playlist_id")
+    private UserPlaylist favouriteTracks;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    public List<UserPlaylist> playlists;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

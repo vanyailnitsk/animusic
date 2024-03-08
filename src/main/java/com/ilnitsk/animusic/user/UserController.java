@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.user;
 
+import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

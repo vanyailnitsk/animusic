@@ -1,6 +1,7 @@
 package com.ilnitsk.animusic.user;
 
 import com.ilnitsk.animusic.exception.UserNotFoundException;
+import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

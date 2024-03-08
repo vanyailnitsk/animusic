@@ -7,8 +7,7 @@ import com.ilnitsk.animusic.security.Token;
 import com.ilnitsk.animusic.security.TokenRepository;
 import com.ilnitsk.animusic.security.dto.AuthRequest;
 import com.ilnitsk.animusic.security.dto.TokenDto;
-import com.ilnitsk.animusic.user.User;
-import com.ilnitsk.animusic.user.UserService;
+import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -16,9 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
