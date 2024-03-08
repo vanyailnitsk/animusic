@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
                 .requestMatchers(
-                        "/auth/register", "/auth/login","/auth/refresh","api/soundtracks/**",
+                        "/anime/**","/auth/register", "/auth/login","/auth/refresh","api/soundtracks/**",
                         "/api/playlist/**", "/api/anime/**","/swagger-ui/**","/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
