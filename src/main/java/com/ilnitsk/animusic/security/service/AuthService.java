@@ -6,6 +6,7 @@ import com.ilnitsk.animusic.exception.UserNotFoundException;
 import com.ilnitsk.animusic.security.Token;
 import com.ilnitsk.animusic.security.TokenRepository;
 import com.ilnitsk.animusic.security.dto.AuthRequest;
+import com.ilnitsk.animusic.security.dto.RegisterRequest;
 import com.ilnitsk.animusic.security.dto.TokenDto;
 import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.repository.UserRepository;
@@ -26,7 +27,8 @@ public class AuthService {
     private final AuthenticationProvider authenticationManager;
     private final TokenRepository tokenRepository;
     @Transactional
-    public TokenDto register(User user) {
+    public TokenDto register(RegisterRequest registerRequest) {
+        User user = registerRequest.toUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new BadRequestException("Username уже занят!");
