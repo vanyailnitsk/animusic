@@ -7,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
@@ -17,8 +15,8 @@ import java.util.List;
 @Slf4j
 public class JwtService {
 
-    private String secret_key;
-    private long ttlMinutes = 60;
+    private final String secret_key;
+    private long TTL_MINUTES = 60;
 
     private final JwtParser jwtParser;
 
@@ -32,8 +30,7 @@ public class JwtService {
 
     public String createToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
-        ZonedDateTime tokenCreateTime = ZonedDateTime.now();
-        tokenCreateTime = tokenCreateTime.plusMinutes(ttlMinutes);
+        ZonedDateTime tokenCreateTime = ZonedDateTime.now().plusMinutes(TTL_MINUTES);
         Date tokenValidity = Date.from(tokenCreateTime.toInstant());
         return Jwts.builder()
                 .setClaims(claims)
