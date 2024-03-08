@@ -23,7 +23,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "favourites_playlist_id")
+    @JoinColumn(name = "favourite_playlist_id")
     private UserPlaylist favouriteTracks;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     public List<UserPlaylist> playlists;
