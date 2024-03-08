@@ -1,18 +1,19 @@
 package com.ilnitsk.animusic.user.dao;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ilnitsk.animusic.soundtrack.Soundtrack;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class UserPlaylistSoundtrack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +21,7 @@ public class UserPlaylistSoundtrack {
 
     @ManyToOne
     @JoinColumn(name = "playlist_id")
+    @JsonBackReference
     private UserPlaylist playlist;
 
     @ManyToOne
