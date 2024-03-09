@@ -1,6 +1,6 @@
 package com.ilnitsk.animusic.user.dto;
 
-import com.ilnitsk.animusic.user.User;
+import com.ilnitsk.animusic.user.dao.User;
 import lombok.Data;
 
 @Data

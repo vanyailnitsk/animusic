@@ -1,6 +1,6 @@
 package com.ilnitsk.animusic.security;
 
-import com.ilnitsk.animusic.user.User;
+import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

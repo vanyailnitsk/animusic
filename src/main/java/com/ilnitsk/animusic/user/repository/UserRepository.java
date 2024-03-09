@@ -1,6 +1,6 @@
 package com.ilnitsk.animusic.user.repository;
 
-import com.ilnitsk.animusic.user.User;
+import com.ilnitsk.animusic.user.dao.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
