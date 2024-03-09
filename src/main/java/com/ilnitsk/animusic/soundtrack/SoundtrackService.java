@@ -80,7 +80,6 @@ public class SoundtrackService {
                 .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
         Anime anime = playlist.getAnime();
         String fileName = "%s/audio/%s".formatted(anime.getFolderName(),soundtrack.getAnimeTitle());
-        System.out.println(fileName);
         String blobKey = s3Service.createBlob(fileName,audio);
         soundtrack.setAnime(anime);
         soundtrack.setAudioFile(blobKey);
@@ -90,7 +89,7 @@ public class SoundtrackService {
         updateTrackDuration(soundtrack);
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
         playlist.addSoundtrack(soundtrack);
-        log.info("Soundtrack {}/{} created successfully", anime.getFolderName(), soundtrack.getAnimeTitle());
+        log.info("Soundtrack {} created successfully",blobKey);
         return savedSoundtrack;
     }
 
