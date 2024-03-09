@@ -3,9 +3,11 @@ package com.ilnitsk.animusic.s3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -38,6 +40,31 @@ public class S3Service {
             return object.readAllBytes();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteObject(String key) {
+        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                .bucket(s3Config.getBucket())
+                .key(key)
+                .build();
+        s3Client.deleteObject(deleteObjectRequest);
+    }
+
+    public String getFileExtension(String fileName) {
+        if (fileName == null || fileName.lastIndexOf('.') == -1) {
+            return null;
+        }
+        return fileName.substring(fileName.lastIndexOf('.'));
+    }
+
+    public String createBlob(String fileName, MultipartFile content) {
+        String key = fileName+getFileExtension(content.getOriginalFilename());
+        try {
+            putObject(key,content.getBytes());
+            return key;
+        } catch (IOException e) {
+            throw new RuntimeException("Битый файл!");
         }
     }
 }

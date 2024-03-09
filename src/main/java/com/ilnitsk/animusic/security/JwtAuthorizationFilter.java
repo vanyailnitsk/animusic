@@ -3,6 +3,7 @@ package com.ilnitsk.animusic.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ilnitsk.animusic.security.service.JwtService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,7 +48,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
 
         }
-        catch (Exception e){
+        catch (ExpiredJwtException e){
             errorDetails.put("message", "Authentication Error");
             errorDetails.put("details",e.getMessage());
             response.setCharacterEncoding("UTF-8");
