@@ -55,12 +55,14 @@ public class UserMediaLibraryService {
         }
         Soundtrack soundtrack = soundtrackRepository.findById(trackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(trackId));
-        UserPlaylistSoundtrack playlistSoundtrack = UserPlaylistSoundtrack.builder()
-                .playlist(userPlaylist)
-                .soundtrack(soundtrack)
-                .addedAt(LocalDateTime.now())
-                .build();
-        userPlaylistSoundtrackRepository.save(playlistSoundtrack);
-        userPlaylist.getSoundtracks().add(playlistSoundtrack);
+        if (!userPlaylistSoundtrackRepository.playlistAlreadyContainsSoundtrack(userPlaylist.getId(),soundtrack.getId())) {
+            UserPlaylistSoundtrack playlistSoundtrack = UserPlaylistSoundtrack.builder()
+                    .playlist(userPlaylist)
+                    .soundtrack(soundtrack)
+                    .addedAt(LocalDateTime.now())
+                    .build();
+            userPlaylistSoundtrackRepository.save(playlistSoundtrack);
+            userPlaylist.getSoundtracks().add(playlistSoundtrack);
+        }
     }
 }
