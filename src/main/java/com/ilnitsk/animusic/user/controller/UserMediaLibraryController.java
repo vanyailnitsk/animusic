@@ -16,13 +16,20 @@ public class UserMediaLibraryController {
         return userMediaLibraryService.getFavouriteTracksPlaylist();
     }
 
+    @PostMapping("/favourites")
+    public void addTrackToFavourites(@RequestParam Integer trackId) {
+        userMediaLibraryService.addTrackToFavourites(trackId);
+    }
+
+    @DeleteMapping("/favourites")
+    public void deleteTrackFromFavourites(@RequestParam Integer trackId) {
+        userMediaLibraryService.deleteTrackFromFavourites(trackId);
+    }
+
     @PostMapping
     public UserPlaylist createPlaylist(@RequestParam String playlistName) {
         return userMediaLibraryService.createPlaylist(playlistName);
     }
 
-    @PostMapping("/add-to-favourites")
-    public void addTrackToFavourites(@RequestParam Integer trackId) {
-        userMediaLibraryService.addTrackToFavourites(trackId);
-    }
+
 }

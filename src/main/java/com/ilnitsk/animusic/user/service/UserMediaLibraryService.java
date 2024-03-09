@@ -64,4 +64,10 @@ public class UserMediaLibraryService {
             userPlaylist.getSoundtracks().add(playlistSoundtrack);
         }
     }
+
+    public void deleteTrackFromFavourites(Integer trackId) {
+        User user = userService.getUserInSession();
+        UserPlaylist favourites = user.getFavouriteTracks();
+        userPlaylistSoundtrackRepository.deleteTrackFromPlaylist(favourites.getId(),trackId);
+    }
 }
