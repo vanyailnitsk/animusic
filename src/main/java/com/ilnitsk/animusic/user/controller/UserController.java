@@ -1,8 +1,8 @@
 package com.ilnitsk.animusic.user.controller;
 
-import com.ilnitsk.animusic.user.UserService;
 import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.dto.UserDto;
+import com.ilnitsk.animusic.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

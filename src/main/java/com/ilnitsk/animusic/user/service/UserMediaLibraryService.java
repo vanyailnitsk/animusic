@@ -3,7 +3,6 @@ package com.ilnitsk.animusic.user.service;
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.soundtrack.Soundtrack;
 import com.ilnitsk.animusic.soundtrack.SoundtrackRepository;
-import com.ilnitsk.animusic.user.UserService;
 import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.dao.UserPlaylist;
 import com.ilnitsk.animusic.user.dao.UserPlaylistSoundtrack;

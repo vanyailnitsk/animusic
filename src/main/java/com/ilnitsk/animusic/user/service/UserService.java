@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.user;
+package com.ilnitsk.animusic.user.service;
 
 import com.ilnitsk.animusic.exception.UserNotFoundException;
 import com.ilnitsk.animusic.user.dao.User;
