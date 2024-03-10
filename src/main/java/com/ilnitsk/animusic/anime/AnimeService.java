@@ -3,8 +3,9 @@ package com.ilnitsk.animusic.anime;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.image.ImageService;
+import com.ilnitsk.animusic.s3.S3Service;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,15 +15,12 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class AnimeService {
     private final AnimeRepository animeRepository;
     private final ImageService imageService;
+    private final S3Service s3Service;
 
-    @Autowired
-    public AnimeService(AnimeRepository animeRepository, ImageService imageService) {
-        this.animeRepository = animeRepository;
-        this.imageService = imageService;
-    }
 
     public Anime getAnimeInfo(Integer animeId) {
         Anime anime = animeRepository.findById(animeId)
@@ -45,8 +43,11 @@ public class AnimeService {
                     "Anime " + anime.getTitle() + " already exists"
             );
         }
-        createBanner(anime,banner);
-        createCard(anime,card);
+        animeRepository.save(anime);
+        String bannerPath = createBanner(anime,banner);
+        String cardPath = createCard(anime,card);
+        anime.setBannerImagePath(bannerPath);
+        anime.setCardImagePath(cardPath);
         return animeRepository.save(anime);
     }
     public void deleteAnime(Integer animeId) {
@@ -63,19 +64,17 @@ public class AnimeService {
         return imageService.getImage(anime.getFolderName(),banner);
     }
 
-    public void createBanner(Anime anime,MultipartFile banner) {
-        String extension = imageService.getImageExtension(banner.getOriginalFilename());
-        String bannerFile = "banner%s".formatted(extension);
-        imageService.saveImage(banner,anime.getFolderName(),"banner");
-        anime.setBannerImagePath(bannerFile);
-        animeRepository.save(anime);
+    public String createBanner(Anime anime,MultipartFile banner) {
+        String bannerName = "%s/images/%s".formatted(anime.getFolderName(),"banner");
+        return s3Service.createBlob(bannerName,banner);
     }
 
     @Transactional
     public void setBanner(Integer animeId, MultipartFile banner) {
         Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        createBanner(anime,banner);
+        String bannerPath = createBanner(anime,banner);
+        anime.setBannerImagePath(bannerPath);
     }
 
     public ResponseEntity<byte[]> getCard(Integer animeId) {
@@ -88,17 +87,16 @@ public class AnimeService {
         return imageService.getImage(anime.getFolderName(),card);
     }
 
-    public void createCard(Anime anime,MultipartFile card) {
-        String extension = imageService.getImageExtension(card.getOriginalFilename());
-        String cardFile = "card%s".formatted(extension);
-        imageService.saveImage(card,anime.getFolderName(),"card");
-        anime.setCardImagePath(cardFile);
+    public String createCard(Anime anime,MultipartFile card) {
+        String cardName = "%s/images/%s".formatted(anime.getFolderName(),"card");
+        return s3Service.createBlob(cardName,card);
     }
 
     @Transactional
     public void setCard(Integer animeId, MultipartFile card) {
         Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        createCard(anime,card);
+        String cardPath = createCard(anime,card);
+        anime.setCardImagePath(cardPath);
     }
 }
