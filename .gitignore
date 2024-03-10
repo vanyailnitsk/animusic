@@ -10,6 +10,8 @@ database/data
 files-test
 *.tmpl
 */prometheus/wal
+index.html
+create.sql
 
 ### STS ###
 .apt_generated

@@ -1,8 +1,8 @@
 package com.ilnitsk.animusic.soundtrack;
 
 import com.ilnitsk.animusic.exception.BadRequestException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRange;
 import org.springframework.http.ResponseEntity;
@@ -14,16 +14,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/soundtracks")
+@RequiredArgsConstructor
 @Slf4j
 public class SoundtrackController {
     private final SoundtrackService soundtrackService;
 
-    @Autowired
-    public SoundtrackController(SoundtrackService soundtrackService) {
-        this.soundtrackService = soundtrackService;
-    }
-
     @GetMapping("/play/{trackId}")
+    @Deprecated
     public ResponseEntity<StreamingResponseBody> playTrack(
             @PathVariable Integer trackId,
             @RequestHeader(value = HttpHeaders.RANGE, required = false) String range) {
@@ -50,6 +47,7 @@ public class SoundtrackController {
     }
 
     @GetMapping("/images/{soundtrackId}")
+    @Deprecated
     public ResponseEntity<byte[]> getSoundtrackImage(@PathVariable Integer soundtrackId) {
         return soundtrackService.getSoundtrackImage(soundtrackId);
     }
