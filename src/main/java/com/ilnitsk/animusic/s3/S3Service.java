@@ -13,6 +13,7 @@ import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -44,11 +45,13 @@ public class S3Service {
     }
 
     public void deleteObject(String key) {
-        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-                .bucket(s3Config.getBucket())
-                .key(key)
-                .build();
-        s3Client.deleteObject(deleteObjectRequest);
+        if (!Objects.isNull(key)) {
+            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                    .bucket(s3Config.getBucket())
+                    .key(key)
+                    .build();
+            s3Client.deleteObject(deleteObjectRequest);
+        }
     }
 
     public String getFileExtension(String fileName) {
