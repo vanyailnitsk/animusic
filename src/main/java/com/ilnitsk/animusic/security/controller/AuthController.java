@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @AllArgsConstructor
 @Slf4j
 @Tag(name = "REST API для авторизации", description = "Предоставляет методы для аутентификации и авторизации")
