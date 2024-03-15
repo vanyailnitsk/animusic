@@ -31,7 +31,7 @@ public class JwtService {
     }
 
     public TokenDto createToken(User user) {
-        Claims claims = Jwts.claims().setSubject(user.getUsername());
+        Claims claims = Jwts.claims().setSubject(user.getEmail());
         ZonedDateTime tokenCreateTime = ZonedDateTime.now();
         Date tokenValidity = Date.from(tokenCreateTime.plusMinutes(TTL_MINUTES).toInstant());
         String accessToken = Jwts.builder()

@@ -30,7 +30,7 @@ public class AuthService {
     public TokenDto register(RegisterRequest registerRequest) {
         User user = registerRequest.toUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new BadRequestException("Username уже занят!");
         }
         userRepository.save(user);
@@ -43,11 +43,11 @@ public class AuthService {
     public TokenDto authenticate(AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
+                        request.getEmail(),
                         request.getPassword()
                 )
         );
-        var user = userRepository.findByUsername(request.getUsername())
+        var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new BadRequestException("Invalid credentials"));
         TokenDto tokens = jwtService.createToken(user);
         tokenRepository.save(new Token(tokens.getRefreshToken()));
@@ -57,9 +57,9 @@ public class AuthService {
 
     @Transactional
     public TokenDto updateToken(String refreshToken) {
-        String username = jwtService.parseUsernameFromJwt(refreshToken);
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(username));
+        String email = jwtService.parseUsernameFromJwt(refreshToken);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
         Token token = tokenRepository.findByValue(refreshToken)
                 .orElseThrow(() -> new InvalidTokenException("Refresh-токен не найден!"));
         tokenRepository.delete(token);

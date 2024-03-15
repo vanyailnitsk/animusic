@@ -17,7 +17,7 @@ public class UserDetailsServiceUmpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> credential = repository.findByUsername(username);
+        Optional<User> credential = repository.findByEmail(username);
         return credential.orElseThrow(
                 () -> new UsernameNotFoundException(username)
         );
