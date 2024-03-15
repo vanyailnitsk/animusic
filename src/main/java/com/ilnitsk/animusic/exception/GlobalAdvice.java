@@ -39,9 +39,4 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(Map.of("error",ex.getMessage()));
     }
 
-    @ExceptionHandler(InvalidTokenException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<Object> invalidRefreshToken(InvalidTokenException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error",ex.getMessage()));
-    }
 }

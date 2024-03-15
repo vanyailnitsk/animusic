@@ -46,9 +46,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(username,"",new ArrayList<>());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-
         }
-        catch (ExpiredJwtException e){
+        catch (Exception e){
             errorDetails.put("message", "Authentication Error");
             errorDetails.put("details",e.getMessage());
             response.setCharacterEncoding("UTF-8");
