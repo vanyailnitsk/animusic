@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +24,14 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> registerUser(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authService.register(request));
+    @Operation(summary = "Метод для регистрации пользователя.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешная регистрация."),
+            @ApiResponse(responseCode = "400", description = "Email уже занят"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
+    public JwtResponse registerUser(@RequestBody RegisterRequest request) {
+        return authService.register(request);
     }
 
     @PostMapping("/login")
@@ -36,13 +41,17 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Ошибка во время аутентификации!"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public JwtResponse authenticate(
-            @RequestBody AuthRequest request
-    ) {
+    public JwtResponse authenticate(@RequestBody AuthRequest request) {
         return authService.authenticate(request);
     }
 
     @PostMapping("/refresh")
+    @Operation(summary = "Метод для получения новой пары токенов.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное обновление токенов."),
+            @ApiResponse(responseCode = "403", description = "Ошибка во время аутентификации!"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
     public JwtResponse refresh(@RequestBody String refreshToken) {
         return authService.updateToken(refreshToken);
     }
