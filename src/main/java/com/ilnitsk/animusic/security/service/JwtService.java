@@ -1,6 +1,5 @@
 package com.ilnitsk.animusic.security.service;
 
-import com.ilnitsk.animusic.security.dto.TokenDto;
 import com.ilnitsk.animusic.user.dao.User;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,25 +31,15 @@ public class JwtService {
         this.jwtParser = Jwts.parser().setSigningKey(secret_key);
     }
 
-    public TokenDto createToken(User user) {
+    public String createToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getEmail());
         ZonedDateTime tokenCreateTime = ZonedDateTime.now();
         Date tokenValidity = Date.from(tokenCreateTime.plusMinutes(TTL_MINUTES).toInstant());
-        String accessToken = Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(tokenValidity)
                 .signWith(SignatureAlgorithm.HS256, secret_key)
                 .compact();
-        Date refreshTokenValidity = Date.from(tokenCreateTime.plusHours(REFRESH_TTL_HOURS).toInstant());
-        String refreshToken = Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(refreshTokenValidity)
-                .signWith(SignatureAlgorithm.HS256, secret_key)
-                .compact();
-        return TokenDto.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
     }
 
     public String parseUsernameFromJwt(String token) {
