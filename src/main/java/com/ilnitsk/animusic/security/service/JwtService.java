@@ -1,10 +1,13 @@
 package com.ilnitsk.animusic.security.service;
 
+import com.ilnitsk.animusic.security.CookieUtils;
 import com.ilnitsk.animusic.user.dao.User;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -25,10 +28,13 @@ public class JwtService {
 
     private final String TOKEN_HEADER = "Authorization";
     private final String TOKEN_PREFIX = "Bearer ";
+    private CookieUtils cookieUtils;
 
-    public JwtService(@Value("${token.secret}") String secret){
+    @Autowired
+    public JwtService(@Value("${token.secret}") String secret,CookieUtils cookieUtils){
         this.secret_key = secret;
         this.jwtParser = Jwts.parser().setSigningKey(secret_key);
+        this.cookieUtils = cookieUtils;
     }
 
     public String createToken(User user) {
@@ -41,6 +47,12 @@ public class JwtService {
                 .signWith(SignatureAlgorithm.HS256, secret_key)
                 .compact();
     }
+
+    public ResponseCookie generateJwtCookie(User user) {
+        String jwt = createToken(user);
+        return cookieUtils.generateCookie("access-token",jwt,"/api");
+    }
+
 
     public String parseUsernameFromJwt(String token) {
         return parseJwtClaims(token).getSubject();
