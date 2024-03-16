@@ -9,7 +9,9 @@ import com.ilnitsk.animusic.security.dto.JwtResponse;
 import com.ilnitsk.animusic.security.dto.RegisterRequest;
 import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,10 +38,10 @@ public class AuthService {
         }
         userRepository.save(user);
         String jwt = jwtService.createToken(user);
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
+        ResponseCookie responseCookie = refreshTokenService.generateRefreshCookie(user);
         return JwtResponse.builder()
                 .accessToken(jwt)
-                .refreshToken(refreshToken.getToken())
+                .refreshToken(responseCookie)
                 .user(user)
                 .build();
     }
@@ -55,27 +57,27 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new BadRequestException("Invalid credentials"));
         String jwt = jwtService.createToken(user);
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
+        ResponseCookie responseCookie = refreshTokenService.generateRefreshCookie(user);
         return JwtResponse.builder()
                 .accessToken(jwt)
-                .refreshToken(refreshToken.getToken())
+                .refreshToken(responseCookie)
                 .user(user)
                 .build();
     }
 
-
     @Transactional
-    public JwtResponse updateToken(String refreshToken) {
+    public JwtResponse updateToken(HttpServletRequest request) {
+        String refreshToken = refreshTokenService.getRefreshFromCookie(request);
         RefreshToken token = refreshTokenRepository.findByToken(refreshToken)
                 .orElseThrow(() -> new InvalidTokenException("Refresh-токен не найден!"));
         refreshTokenService.verifyExpiration(token);
         User user = token.getUser();
-        refreshTokenRepository.delete(token);
+        refreshTokenRepository.deleteById(token.getId());
         String jwt = jwtService.createToken(user);
-        RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user);
+        ResponseCookie responseCookie = refreshTokenService.generateRefreshCookie(user);
         return JwtResponse.builder()
                 .accessToken(jwt)
-                .refreshToken(newRefreshToken.getToken())
+                .refreshToken(responseCookie)
                 .user(user)
                 .build();
     }

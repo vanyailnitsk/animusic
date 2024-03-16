@@ -8,8 +8,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,8 +44,11 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Ошибка во время аутентификации!"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public JwtResponse authenticate(@RequestBody AuthRequest request) {
-        return authService.authenticate(request);
+    public ResponseEntity<?> authenticate(@RequestBody AuthRequest request) {
+        JwtResponse response = authService.authenticate(request);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE,response.getRefreshToken().toString())
+                .body(response);
     }
 
     @PostMapping("/refresh")
@@ -52,7 +58,10 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Ошибка во время аутентификации!"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public JwtResponse refresh(@RequestBody String refreshToken) {
-        return authService.updateToken(refreshToken);
+    public ResponseEntity<?> refresh(HttpServletRequest request) {
+        JwtResponse response = authService.updateToken(request);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE,response.getRefreshToken().toString())
+                .body(response);
     }
 }

@@ -5,6 +5,7 @@ import com.ilnitsk.animusic.security.CookieUtils;
 import com.ilnitsk.animusic.security.RefreshToken;
 import com.ilnitsk.animusic.security.RefreshTokenRepository;
 import com.ilnitsk.animusic.user.dao.User;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
@@ -47,5 +48,9 @@ public class RefreshTokenService {
     public ResponseCookie generateRefreshCookie(User user) {
         String refreshToken = createRefreshToken(user).getToken();
         return cookieUtils.generateCookie("refresh-token",refreshToken,"/api/auth/refresh");
+    }
+
+    public String getRefreshFromCookie(HttpServletRequest request) {
+        return cookieUtils.getCookieValueByName(request,"refresh-token");
     }
 }
