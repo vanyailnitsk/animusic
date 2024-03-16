@@ -2,15 +2,17 @@ package com.ilnitsk.animusic.security;
 
 import com.ilnitsk.animusic.user.dao.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
 @Entity
 @Table
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Builder
 public class RefreshToken {

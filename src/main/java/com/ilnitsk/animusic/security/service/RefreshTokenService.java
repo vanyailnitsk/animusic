@@ -4,7 +4,6 @@ import com.ilnitsk.animusic.exception.TokenRefreshException;
 import com.ilnitsk.animusic.security.RefreshToken;
 import com.ilnitsk.animusic.security.RefreshTokenRepository;
 import com.ilnitsk.animusic.user.dao.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +11,15 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
-    @Value("${token.refreshExpirationHours}")
     private final Integer refreshTTLhours;
+
+    public RefreshTokenService(RefreshTokenRepository refreshTokenRepository,
+                               @Value("${token.refreshExpirationHours}") Integer refreshTTLhours) {
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.refreshTTLhours = refreshTTLhours;
+    }
 
     public RefreshToken createRefreshToken(User user) {
         RefreshToken refreshToken = RefreshToken.builder()

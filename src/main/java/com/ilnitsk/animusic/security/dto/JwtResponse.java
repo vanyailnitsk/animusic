@@ -2,15 +2,15 @@ package com.ilnitsk.animusic.security.dto;
 
 import com.ilnitsk.animusic.user.dao.User;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Schema(name = "JWT-ответ",description = "Ответ на авторизацию")
 public class JwtResponse {
     @Schema(name = "accessToken",description = "JWT-токен доступа к ресурсам",example = "eyJhbGciOiJIUzI1NiIsInR5cCI6")
