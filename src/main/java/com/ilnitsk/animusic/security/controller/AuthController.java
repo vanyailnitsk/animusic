@@ -33,8 +33,11 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Email уже занят"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public JwtResponse registerUser(@RequestBody RegisterRequest request) {
-        return authService.register(request);
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
+        JwtResponse response = authService.register(request);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE,response.getRefreshToken().toString())
+                .body(response);
     }
 
     @PostMapping("/login")
