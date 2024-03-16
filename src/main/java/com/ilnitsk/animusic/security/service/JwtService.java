@@ -17,8 +17,10 @@ import java.util.List;
 public class JwtService {
 
     private final String secret_key;
-    private long TTL_MINUTES = 60;
-    private long REFRESH_TTL_DAYS = 30;
+    @Value("${token.expirationMinutes}")
+    private long TTL_MINUTES;
+    @Value("${token.refreshExpirationHours}")
+    private long REFRESH_TTL_HOURS;
 
     private final JwtParser jwtParser;
 
@@ -39,7 +41,7 @@ public class JwtService {
                 .setExpiration(tokenValidity)
                 .signWith(SignatureAlgorithm.HS256, secret_key)
                 .compact();
-        Date refreshTokenValidity = Date.from(tokenCreateTime.plusDays(REFRESH_TTL_DAYS).toInstant());
+        Date refreshTokenValidity = Date.from(tokenCreateTime.plusHours(REFRESH_TTL_HOURS).toInstant());
         String refreshToken = Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(refreshTokenValidity)
