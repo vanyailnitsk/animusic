@@ -1,15 +1,17 @@
 package com.ilnitsk.animusic.security.controller;
 
 import com.ilnitsk.animusic.security.dto.AuthRequest;
+import com.ilnitsk.animusic.security.dto.JwtResponse;
 import com.ilnitsk.animusic.security.dto.RegisterRequest;
-import com.ilnitsk.animusic.security.dto.TokenDto;
 import com.ilnitsk.animusic.security.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +27,17 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> registerUser(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authService.register(request));
+    @Operation(summary = "Метод для регистрации пользователя.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешная регистрация."),
+            @ApiResponse(responseCode = "400", description = "Email уже занят"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
+        JwtResponse response = authService.register(request);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE,response.getRefreshToken().toString())
+                .body(response);
     }
 
     @PostMapping("/login")
@@ -36,14 +47,24 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Ошибка во время аутентификации!"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public ResponseEntity<Object> authenticate(
-            @RequestBody AuthRequest request
-    ) {
-        return ResponseEntity.ok(authService.authenticate(request));
+    public ResponseEntity<?> authenticate(@RequestBody AuthRequest request) {
+        JwtResponse response = authService.authenticate(request);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE,response.getRefreshToken().toString())
+                .body(response);
     }
 
     @PostMapping("/refresh")
-    public TokenDto refresh(@RequestBody String refreshToken) {
-        return authService.updateToken(refreshToken);
+    @Operation(summary = "Метод для получения новой пары токенов.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное обновление токенов."),
+            @ApiResponse(responseCode = "403", description = "Ошибка во время аутентификации!"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
+    public ResponseEntity<?> refresh(HttpServletRequest request) {
+        JwtResponse response = authService.updateToken(request);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE,response.getRefreshToken().toString())
+                .body(response);
     }
 }

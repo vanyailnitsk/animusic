@@ -1,11 +1,13 @@
 package com.ilnitsk.animusic.security.service;
 
-import com.ilnitsk.animusic.security.dto.TokenDto;
+import com.ilnitsk.animusic.security.CookieUtils;
 import com.ilnitsk.animusic.user.dao.User;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -17,39 +19,40 @@ import java.util.List;
 public class JwtService {
 
     private final String secret_key;
-    private long TTL_MINUTES = 60;
-    private long REFRESH_TTL_DAYS = 30;
+    @Value("${token.expirationMinutes}")
+    private long TTL_MINUTES;
+    @Value("${token.refreshExpirationHours}")
+    private long REFRESH_TTL_HOURS;
 
     private final JwtParser jwtParser;
 
     private final String TOKEN_HEADER = "Authorization";
     private final String TOKEN_PREFIX = "Bearer ";
+    private CookieUtils cookieUtils;
 
-    public JwtService(@Value("${token.secret}") String secret){
+    @Autowired
+    public JwtService(@Value("${token.secret}") String secret,CookieUtils cookieUtils){
         this.secret_key = secret;
         this.jwtParser = Jwts.parser().setSigningKey(secret_key);
+        this.cookieUtils = cookieUtils;
     }
 
-    public TokenDto createToken(User user) {
+    public String createToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getEmail());
         ZonedDateTime tokenCreateTime = ZonedDateTime.now();
         Date tokenValidity = Date.from(tokenCreateTime.plusMinutes(TTL_MINUTES).toInstant());
-        String accessToken = Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(tokenValidity)
                 .signWith(SignatureAlgorithm.HS256, secret_key)
                 .compact();
-        Date refreshTokenValidity = Date.from(tokenCreateTime.plusDays(REFRESH_TTL_DAYS).toInstant());
-        String refreshToken = Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(refreshTokenValidity)
-                .signWith(SignatureAlgorithm.HS256, secret_key)
-                .compact();
-        return TokenDto.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
     }
+
+    public ResponseCookie generateJwtCookie(User user) {
+        String jwt = createToken(user);
+        return cookieUtils.generateCookie("access-token",jwt,"/api");
+    }
+
 
     public String parseUsernameFromJwt(String token) {
         return parseJwtClaims(token).getSubject();
