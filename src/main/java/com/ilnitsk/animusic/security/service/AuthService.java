@@ -3,8 +3,8 @@ package com.ilnitsk.animusic.security.service;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.exception.InvalidTokenException;
 import com.ilnitsk.animusic.exception.UserNotFoundException;
+import com.ilnitsk.animusic.security.RefreshTokenRepository;
 import com.ilnitsk.animusic.security.Token;
-import com.ilnitsk.animusic.security.TokenRepository;
 import com.ilnitsk.animusic.security.dto.AuthRequest;
 import com.ilnitsk.animusic.security.dto.RegisterRequest;
 import com.ilnitsk.animusic.security.dto.TokenDto;
@@ -25,7 +25,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationProvider authenticationManager;
-    private final TokenRepository tokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     @Transactional
     public TokenDto register(RegisterRequest registerRequest) {
         User user = registerRequest.toUser();
@@ -35,7 +35,7 @@ public class AuthService {
         }
         userRepository.save(user);
         TokenDto tokens = jwtService.createToken(user);
-        tokenRepository.save(new Token(tokens.getRefreshToken()));
+        refreshTokenRepository.save(new Token(tokens.getRefreshToken()));
         return tokens;
     }
 
@@ -50,7 +50,7 @@ public class AuthService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new BadRequestException("Invalid credentials"));
         TokenDto tokens = jwtService.createToken(user);
-        tokenRepository.save(new Token(tokens.getRefreshToken()));
+        refreshTokenRepository.save(new Token(tokens.getRefreshToken()));
         return tokens;
     }
 
@@ -60,11 +60,11 @@ public class AuthService {
         String email = jwtService.parseUsernameFromJwt(refreshToken);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
-        Token token = tokenRepository.findByValue(refreshToken)
+        Token token = refreshTokenRepository.findByValue(refreshToken)
                 .orElseThrow(() -> new InvalidTokenException("Refresh-токен не найден!"));
-        tokenRepository.delete(token);
+        refreshTokenRepository.delete(token);
         TokenDto tokenDto = jwtService.createToken(user);
-        tokenRepository.save(new Token(tokenDto.getRefreshToken()));
+        refreshTokenRepository.save(new Token(tokenDto.getRefreshToken()));
         return tokenDto;
     }
 }
