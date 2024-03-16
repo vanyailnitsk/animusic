@@ -8,13 +8,13 @@ import lombok.RequiredArgsConstructor;
 @Table
 @RequiredArgsConstructor
 @Data
-public class Token {
+public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String value;
 
-    public Token(String value) {
+    public RefreshToken(String value) {
         this.value = value;
     }
 }

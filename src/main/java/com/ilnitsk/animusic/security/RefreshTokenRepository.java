@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface RefreshTokenRepository extends JpaRepository<Token,Long> {
-    Optional<Token> findByValue(String value);
+public interface RefreshTokenRepository extends JpaRepository<RefreshToken,Long> {
+    Optional<RefreshToken> findByValue(String value);
 }

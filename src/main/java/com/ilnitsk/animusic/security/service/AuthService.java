@@ -3,8 +3,8 @@ package com.ilnitsk.animusic.security.service;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.exception.InvalidTokenException;
 import com.ilnitsk.animusic.exception.UserNotFoundException;
+import com.ilnitsk.animusic.security.RefreshToken;
 import com.ilnitsk.animusic.security.RefreshTokenRepository;
-import com.ilnitsk.animusic.security.Token;
 import com.ilnitsk.animusic.security.dto.AuthRequest;
 import com.ilnitsk.animusic.security.dto.RegisterRequest;
 import com.ilnitsk.animusic.security.dto.TokenDto;
@@ -35,7 +35,7 @@ public class AuthService {
         }
         userRepository.save(user);
         TokenDto tokens = jwtService.createToken(user);
-        refreshTokenRepository.save(new Token(tokens.getRefreshToken()));
+        refreshTokenRepository.save(new RefreshToken(tokens.getRefreshToken()));
         return tokens;
     }
 
@@ -50,7 +50,7 @@ public class AuthService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new BadRequestException("Invalid credentials"));
         TokenDto tokens = jwtService.createToken(user);
-        refreshTokenRepository.save(new Token(tokens.getRefreshToken()));
+        refreshTokenRepository.save(new RefreshToken(tokens.getRefreshToken()));
         return tokens;
     }
 
@@ -60,11 +60,11 @@ public class AuthService {
         String email = jwtService.parseUsernameFromJwt(refreshToken);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
-        Token token = refreshTokenRepository.findByValue(refreshToken)
+        RefreshToken token = refreshTokenRepository.findByValue(refreshToken)
                 .orElseThrow(() -> new InvalidTokenException("Refresh-токен не найден!"));
         refreshTokenRepository.delete(token);
         TokenDto tokenDto = jwtService.createToken(user);
-        refreshTokenRepository.save(new Token(tokenDto.getRefreshToken()));
+        refreshTokenRepository.save(new RefreshToken(tokenDto.getRefreshToken()));
         return tokenDto;
     }
 }
