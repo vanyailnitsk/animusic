@@ -8,6 +8,7 @@ import com.ilnitsk.animusic.security.dto.AuthRequest;
 import com.ilnitsk.animusic.security.dto.JwtResponse;
 import com.ilnitsk.animusic.security.dto.RegisterRequest;
 import com.ilnitsk.animusic.user.dao.User;
+import com.ilnitsk.animusic.user.dto.UserDto;
 import com.ilnitsk.animusic.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class AuthService {
         return JwtResponse.builder()
                 .accessToken(jwt)
                 .refreshToken(responseCookie)
-                .user(user)
+                .user(new UserDto(user))
                 .build();
     }
 
@@ -61,7 +62,7 @@ public class AuthService {
         return JwtResponse.builder()
                 .accessToken(jwt)
                 .refreshToken(responseCookie)
-                .user(user)
+                .user(new UserDto(user))
                 .build();
     }
 
@@ -78,7 +79,7 @@ public class AuthService {
         return JwtResponse.builder()
                 .accessToken(jwt)
                 .refreshToken(responseCookie)
-                .user(user)
+                .user(new UserDto(user))
                 .build();
     }
 }
