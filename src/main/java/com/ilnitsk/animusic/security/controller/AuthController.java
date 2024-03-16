@@ -1,8 +1,8 @@
 package com.ilnitsk.animusic.security.controller;
 
 import com.ilnitsk.animusic.security.dto.AuthRequest;
+import com.ilnitsk.animusic.security.dto.JwtResponse;
 import com.ilnitsk.animusic.security.dto.RegisterRequest;
-import com.ilnitsk.animusic.security.dto.TokenDto;
 import com.ilnitsk.animusic.security.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -36,14 +36,14 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Ошибка во время аутентификации!"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public ResponseEntity<Object> authenticate(
+    public JwtResponse authenticate(
             @RequestBody AuthRequest request
     ) {
-        return ResponseEntity.ok(authService.authenticate(request));
+        return authService.authenticate(request);
     }
 
     @PostMapping("/refresh")
-    public TokenDto refresh(@RequestBody String refreshToken) {
+    public JwtResponse refresh(@RequestBody String refreshToken) {
         return authService.updateToken(refreshToken);
     }
 }
