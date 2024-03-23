@@ -5,6 +5,8 @@ import com.ilnitsk.animusic.soundtrack.SoundtrackDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class PlaylistConverter {
     private final ModelMapper modelMapper;
@@ -23,5 +25,9 @@ public class PlaylistConverter {
                 .map(SoundtrackDto::new)
                 .toList());
         return dto;
+    }
+
+    public List<PlaylistDto> convertListToDto(List<Playlist> playlists) {
+        return playlists.stream().map(this::convertToDto).toList();
     }
 }

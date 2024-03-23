@@ -21,13 +21,14 @@ public class PlaylistController {
     private final AnimeRepository animeRepository;
     private final PlaylistConverter playlistConverter;
     @GetMapping("/by-anime/{animeId}")
-    public List<Playlist> getPlaylistsByAnime(@PathVariable Integer animeId) {
+    public List<PlaylistDto> getPlaylistsByAnime(@PathVariable Integer animeId) {
         log.info("Requested playlists by anime {}", animeId);
-        return playlistService.getPlaylistsByAnimeId(animeId);
+        List<Playlist> playlists = playlistService.getPlaylistsByAnimeId(animeId);
+        return playlistConverter.convertListToDto(playlists);
     }
 
     @GetMapping("{id}")
-    public PlaylistDto getPlaylistById(@PathVariable(required = true) Integer id, HttpServletRequest request) {
+    public PlaylistDto getPlaylistById(@PathVariable Integer id, HttpServletRequest request) {
         log.info("Requested playlist with id {}", id);
         Playlist playlist = playlistService.getPlaylistById(id);
         PlaylistDto playlistDto = playlistConverter.convertToDto(playlist);
@@ -43,6 +44,7 @@ public class PlaylistController {
     @PostMapping
     public Playlist createPlaylist(@RequestBody CreatePlaylistRequest request) {
         Playlist playlist = playlistService.createPlaylist(request);
+
         log.info("Playlist {} in anime {} created",request.getName(),request.getAnimeId());
         return playlist;
     }
