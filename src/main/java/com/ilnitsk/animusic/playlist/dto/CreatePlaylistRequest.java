@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.playlist;
+package com.ilnitsk.animusic.playlist.dto;
 
 import com.ilnitsk.animusic.playlist.Playlist;
 import lombok.AllArgsConstructor;

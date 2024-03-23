@@ -1,12 +1,12 @@
 package com.ilnitsk.animusic.repositories;
 
 
-import com.ilnitsk.animusic.anime.AnimeRepository;
-import com.ilnitsk.animusic.playlist.CreatePlaylistRequest;
 import com.ilnitsk.animusic.anime.Anime;
+import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.playlist.Playlist;
-import com.ilnitsk.animusic.soundtrack.Soundtrack;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
+import com.ilnitsk.animusic.playlist.dto.CreatePlaylistRequest;
+import com.ilnitsk.animusic.soundtrack.Soundtrack;
 import com.ilnitsk.animusic.soundtrack.SoundtrackRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
