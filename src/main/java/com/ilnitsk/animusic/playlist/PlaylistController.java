@@ -1,11 +1,12 @@
 package com.ilnitsk.animusic.playlist;
 
-import com.ilnitsk.animusic.playlist.CreatePlaylistRequest;
-import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.anime.AnimeRepository;
-import com.ilnitsk.animusic.playlist.PlaylistService;
+import com.ilnitsk.animusic.playlist.dto.CreatePlaylistRequest;
+import com.ilnitsk.animusic.playlist.dto.PlaylistConverter;
+import com.ilnitsk.animusic.playlist.dto.PlaylistDto;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,16 +15,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/playlist")
 @Slf4j
+@RequiredArgsConstructor
 public class PlaylistController {
     private final PlaylistService playlistService;
     private final AnimeRepository animeRepository;
-
-    @Autowired
-    public PlaylistController(PlaylistService playlistService, AnimeRepository animeRepository) {
-        this.playlistService = playlistService;
-        this.animeRepository = animeRepository;
-    }
-
+    private final PlaylistConverter playlistConverter;
     @GetMapping("/by-anime/{animeId}")
     public List<Playlist> getPlaylistsByAnime(@PathVariable Integer animeId) {
         log.info("Requested playlists by anime {}", animeId);
@@ -31,9 +27,12 @@ public class PlaylistController {
     }
 
     @GetMapping("{id}")
-    public Playlist getPlaylistById(@PathVariable(required = true) Integer id) {
+    public PlaylistDto getPlaylistById(@PathVariable(required = true) Integer id, HttpServletRequest request) {
         log.info("Requested playlist with id {}", id);
-        return playlistService.getPlaylistById(id);
+        Playlist playlist = playlistService.getPlaylistById(id);
+        PlaylistDto playlistDto = playlistConverter.convertToDto(playlist);
+        playlistDto.setBannerLink(request.getRequestURI());
+        return playlistDto;
     }
 
     @GetMapping("/images/banner/{id}")
