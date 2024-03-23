@@ -24,7 +24,9 @@ public class PlaylistController {
     public List<PlaylistDto> getPlaylistsByAnime(@PathVariable Integer animeId) {
         log.info("Requested playlists by anime {}", animeId);
         List<Playlist> playlists = playlistService.getPlaylistsByAnimeId(animeId);
-        return playlistConverter.convertListToDto(playlists);
+        List<PlaylistDto> playlistDtos = playlistConverter.convertListToDto(playlists);
+        playlistDtos.forEach(s -> s.setLink("/api/playlist/"+s.getId()));
+        return playlistDtos;
     }
 
     @GetMapping("{id}")
@@ -32,7 +34,7 @@ public class PlaylistController {
         log.info("Requested playlist with id {}", id);
         Playlist playlist = playlistService.getPlaylistById(id);
         PlaylistDto playlistDto = playlistConverter.convertToDto(playlist);
-        playlistDto.setBannerLink(request.getRequestURI());
+        playlistDto.setLink(request.getRequestURI());
         return playlistDto;
     }
 

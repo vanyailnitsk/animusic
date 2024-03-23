@@ -11,5 +11,6 @@ public class PlaylistDto {
     private String name;
     private String imageUrl;
     private String bannerLink;
+    private String link;
     private List<SoundtrackDto> soundtracks;
 }
