@@ -1,7 +1,10 @@
 package com.ilnitsk.animusic.user.controller;
 
 import com.ilnitsk.animusic.user.dao.UserPlaylist;
+import com.ilnitsk.animusic.user.dto.UserMediaConverter;
+import com.ilnitsk.animusic.user.dto.UserPlaylistDto;
 import com.ilnitsk.animusic.user.service.UserMediaLibraryService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,10 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserMediaLibraryController {
     private final UserMediaLibraryService userMediaLibraryService;
+    private final UserMediaConverter userMediaConverter;
 
     @GetMapping("/favourites")
-    public UserPlaylist getFavouriteTracksPlaylist() {
-        return userMediaLibraryService.getFavouriteTracksPlaylist();
+    public UserPlaylistDto getFavouriteTracksPlaylist(HttpServletRequest request) {
+        UserPlaylist playlist = userMediaLibraryService.getFavouriteTracksPlaylist();
+        UserPlaylistDto dto = userMediaConverter.convertToDto(playlist);
+        dto.setLink(request.getRequestURI());
+        return dto;
     }
 
     @PostMapping("/favourites")
