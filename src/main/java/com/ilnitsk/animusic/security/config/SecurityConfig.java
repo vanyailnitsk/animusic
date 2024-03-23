@@ -5,6 +5,7 @@ import com.ilnitsk.animusic.security.UserDetailsServiceUmpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -45,6 +46,7 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/anime/**","/api/auth/register", "/api/auth/login","/api/auth/refresh","/api/soundtracks/**",
                         "/api/playlist/**", "/api/anime/**","/swagger-ui/**","/v3/api-docs/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
@@ -75,7 +77,7 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedOriginPattern("*");
-        //corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
                 "Accept", "Authorization", "Origin, Accept", "X-Requested-With",
                 "Access-Control-Request-Method", "Access-Control-Request-Headers"));
