@@ -1,7 +1,6 @@
 package com.ilnitsk.animusic.playlist.dto;
 
 import com.ilnitsk.animusic.playlist.Playlist;
-import com.ilnitsk.animusic.soundtrack.SoundtrackDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -15,16 +14,11 @@ public class PlaylistConverter {
         this.modelMapper = modelMapper;
 
         modelMapper.createTypeMap(Playlist.class,PlaylistDto.class)
-                .addMapping(Playlist::getBannerLink, PlaylistDto::setBannerLink)
-                .addMappings(mapper -> mapper.skip(PlaylistDto::setSoundtracks));
+                .addMapping(Playlist::getBannerLink, PlaylistDto::setBannerLink);
     }
 
     public PlaylistDto convertToDto(Playlist playlist) {
-        PlaylistDto dto = modelMapper.map(playlist,PlaylistDto.class);
-        dto.setSoundtracks(playlist.getSoundtracks().stream()
-                .map(SoundtrackDto::new)
-                .toList());
-        return dto;
+        return modelMapper.map(playlist,PlaylistDto.class);
     }
 
     public List<PlaylistDto> convertListToDto(List<Playlist> playlists) {
