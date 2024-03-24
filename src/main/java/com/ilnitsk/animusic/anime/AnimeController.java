@@ -1,7 +1,9 @@
 package com.ilnitsk.animusic.anime;
 
+import com.ilnitsk.animusic.anime.dto.AnimeConverter;
+import com.ilnitsk.animusic.anime.dto.AnimeDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,31 +13,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/anime")
 @Slf4j
+@RequiredArgsConstructor
 public class AnimeController {
     private final AnimeService animeService;
-
-    @Autowired
-    public AnimeController(AnimeService animeService) {
-        this.animeService = animeService;
-    }
-
+    private final AnimeConverter animeConverter;
 
     @GetMapping("/{animeId}")
-    public Anime getAnimeInfo(@PathVariable Integer animeId) {
+    public AnimeDto getAnimeInfo(@PathVariable Integer animeId) {
         log.info("Requested anime {} info", animeId);
-        return animeService.getAnimeInfo(animeId);
+        Anime anime = animeService.getAnimeInfo(animeId);
+        return animeConverter.convertToDto(anime);
     }
     @GetMapping
-    public List<Anime> getAllAnime() {
-        return animeService.getAllAnime();
+    public List<AnimeDto> getAllAnime() {
+        List<Anime> anime = animeService.getAllAnime();
+        return animeConverter.convertListToDto(anime);
     }
 
     @PostMapping
-    public Anime createAnime(@RequestPart(value = "banner") MultipartFile banner,
+    public AnimeDto createAnime(@RequestPart(value = "banner") MultipartFile banner,
                              @RequestPart(value = "card") MultipartFile card,
                              @ModelAttribute Anime anime) {
         log.info("Anime {} created", anime.getTitle());
-        return animeService.createAnime(anime,banner,card);
+        Anime createdAnime = animeService.createAnime(anime,banner,card);
+        return animeConverter.convertToDto(createdAnime);
     }
     @GetMapping("/images/banner/{id}")
     public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer animeId) {
