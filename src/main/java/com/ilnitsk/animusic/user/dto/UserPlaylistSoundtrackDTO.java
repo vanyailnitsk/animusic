@@ -1,6 +1,6 @@
 package com.ilnitsk.animusic.user.dto;
 
-import com.ilnitsk.animusic.soundtrack.Soundtrack;
+import com.ilnitsk.animusic.soundtrack.dto.SoundtrackEntityDto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -8,5 +8,5 @@ import java.time.LocalDateTime;
 @Data
 public class UserPlaylistSoundtrackDTO {
     private LocalDateTime addedAt;
-    private Soundtrack soundtrack;
+    private SoundtrackEntityDto soundtrack;
 }

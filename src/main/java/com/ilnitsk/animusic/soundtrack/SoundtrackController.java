@@ -1,6 +1,8 @@
 package com.ilnitsk.animusic.soundtrack;
 
 import com.ilnitsk.animusic.exception.BadRequestException;
+import com.ilnitsk.animusic.soundtrack.dto.SoundtrackConverter;
+import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +20,7 @@ import java.util.List;
 @Slf4j
 public class SoundtrackController {
     private final SoundtrackService soundtrackService;
+    private final SoundtrackConverter soundtrackConverter;
 
     @GetMapping("/play/{trackId}")
     @Deprecated
@@ -30,8 +33,9 @@ public class SoundtrackController {
     }
 
     @GetMapping("{soundtrackId}")
-    public Soundtrack getSoundtrack(@PathVariable Integer soundtrackId) {
-        return soundtrackService.getSoundtrack(soundtrackId);
+    public SoundtrackDto getSoundtrack(@PathVariable Integer soundtrackId) {
+        Soundtrack soundtrack = soundtrackService.getSoundtrack(soundtrackId);
+        return soundtrackConverter.convertToDto(soundtrack);
     }
 
     @PostMapping
