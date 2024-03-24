@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.soundtrack;
+package com.ilnitsk.animusic.soundtrack.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SoundtrackDto {
-    private Soundtrack soundtrack;
+    private SoundtrackEntityDto soundtrack;
 }
