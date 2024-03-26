@@ -1,6 +1,6 @@
 package com.ilnitsk.animusic.playlist.dto;
 
-import com.ilnitsk.animusic.soundtrack.SoundtrackDto;
+import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
 import lombok.Data;
 
 import java.util.List;

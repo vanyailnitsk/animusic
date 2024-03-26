@@ -13,8 +13,7 @@ public class UserMediaConverter {
 
         modelMapper.createTypeMap(UserPlaylist.class, UserPlaylistDto.class)
                 .addMapping(UserPlaylist::getName, UserPlaylistDto::setName)
-                .addMapping(UserPlaylist::getSoundtracks, UserPlaylistDto::setSoundtracks)
-                .addMappings(mapper -> mapper.map(UserPlaylist::getSoundtracks, UserPlaylistDto::setSoundtracks));
+                .addMapping(UserPlaylist::getSoundtracks, UserPlaylistDto::setSoundtracks);
     }
 
     public UserPlaylistDto convertToDto(UserPlaylist userPlaylist) {

@@ -15,6 +15,7 @@ public class PlaylistConverter {
 
         modelMapper.createTypeMap(Playlist.class,PlaylistDto.class)
                 .addMapping(Playlist::getBannerLink, PlaylistDto::setBannerLink);
+        modelMapper.createTypeMap(Playlist.class,PlaylistItemDto.class);
     }
 
     public PlaylistDto convertToDto(Playlist playlist) {
