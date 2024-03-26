@@ -81,10 +81,10 @@ public class AnimeController {
     }
 
     @DeleteMapping("{id}")
-    @Operation(summary = "Метод для регистрации пользователя.")
+    @Operation(summary = "Метод для удаления аниме")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Успешная регистрация."),
-            @ApiResponse(responseCode = "400", description = "Email уже занят"),
+            @ApiResponse(responseCode = "200", description = "Успешное удаление."),
+            @ApiResponse(responseCode = "400", description = "Аниме не найдено"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public void deleteAnime(@PathVariable Integer id) {
