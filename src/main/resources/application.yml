@@ -30,5 +30,8 @@ token:
   refreshExpirationHours: 168
 timeweb:
   s3:
-    url: https://s3.timeweb.cloud
-    bucket: 7d46835a-animusic-storage
+    url: ${s3-url}
+    bucket: ${s3-bucket}
+    region: ${s3-region}
+    access-key: ${s3-accesskey}
+    secret-key: ${s3-secretkey}
