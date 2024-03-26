@@ -4,6 +4,10 @@ import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackConverter;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/soundtracks")
 @RequiredArgsConstructor
-@Slf4j
+@Slf4j@Tag(name = "REST API для управления саундтреками", description = "Предоставляет методы для управления саундтреками")
 public class SoundtrackController {
     private final SoundtrackService soundtrackService;
     private final SoundtrackConverter soundtrackConverter;
@@ -34,12 +38,24 @@ public class SoundtrackController {
     }
 
     @GetMapping("{soundtrackId}")
+    @Operation(summary = "Метод для получения саундтрека по id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное получение саундтрека"),
+            @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
     public SoundtrackDto getSoundtrack(@PathVariable Integer soundtrackId) {
         Soundtrack soundtrack = soundtrackService.getSoundtrack(soundtrackId);
         return soundtrackConverter.convertToDto(soundtrack);
     }
 
     @PostMapping
+    @Operation(summary = "Метод для создания саундтрека")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное создание саундтрека"),
+            @ApiResponse(responseCode = "400", description = "Саундтрек уже существует"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
     public Soundtrack createFromFile(@RequestPart(value = "audio") MultipartFile audio,
                                      @RequestPart(value = "image",required = false) MultipartFile image,
                                      @ModelAttribute SoundtrackRequest request) {
@@ -58,17 +74,35 @@ public class SoundtrackController {
     }
 
     @PostMapping("/images/{soundtrackId}")
+    @Operation(summary = "Метод для установки изображения саундтрека")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешная установка изображения"),
+            @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
     public void setSoundtrackImage(@PathVariable Integer soundtrackId,
                           @RequestPart(value = "image") MultipartFile image) {
         soundtrackService.setImage(soundtrackId,image);
     }
 
     @PutMapping("/update-duration")
+    @Operation(summary = "Метод для изменения длительности саундтрека")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное изменение длительности"),
+            @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
     public void updateSoundtracksDuration() {
         soundtrackService.updateAllTracksDuration();
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Метод для удаления саундтрека по id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное удаления саундтрека"),
+            @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
     public void deleteSoundtrack(@PathVariable Integer id) {
         soundtrackService.remove(id);
     }
