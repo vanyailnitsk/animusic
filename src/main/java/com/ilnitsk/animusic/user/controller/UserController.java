@@ -3,6 +3,7 @@ package com.ilnitsk.animusic.user.controller;
 import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.dto.UserDto;
 import com.ilnitsk.animusic.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("")
+    @Operation(summary = "Метод для получения данных пользователя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное получение данных пользователя"),
             @ApiResponse(responseCode = "401", description = "Не авторизован"),
