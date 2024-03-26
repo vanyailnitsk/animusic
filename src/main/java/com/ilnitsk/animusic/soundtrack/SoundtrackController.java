@@ -3,6 +3,7 @@ package com.ilnitsk.animusic.soundtrack;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackConverter;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
+import com.ilnitsk.animusic.soundtrack.dto.SoundtrackRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
