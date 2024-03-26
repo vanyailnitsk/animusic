@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    url: ${db-url:jdbc:postgresql://localhost:5432/animusic}
+    username: postgres
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  flyway:
+    locations: filesystem:./database/migration
+    baseline-on-migrate: true
+storage:
+  directory: ${storage}
+server:
+  error:
+    include-message: always
+  port: ${port:8080}
+token:
+  secret: ${JWT_SECRET}
+  expirationMinutes: 60
+  refreshExpirationHours: 168
+timeweb:
+  s3:
+    url: https://s3.timeweb.cloud
+    bucket: 7d46835a-animusic-storage
