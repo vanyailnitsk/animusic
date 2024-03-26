@@ -22,7 +22,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/soundtracks")
 @RequiredArgsConstructor
-@Slf4j@Tag(name = "REST API для управления саундтреками", description = "Предоставляет методы для управления саундтреками")
+@Slf4j
+@Tag(name = "REST API для управления саундтреками", description = "Предоставляет методы для управления саундтреками")
 public class SoundtrackController {
     private final SoundtrackService soundtrackService;
     private final SoundtrackConverter soundtrackConverter;
