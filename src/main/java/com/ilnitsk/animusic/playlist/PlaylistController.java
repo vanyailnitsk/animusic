@@ -25,14 +25,14 @@ public class PlaylistController {
     private final PlaylistService playlistService;
     private final AnimeRepository animeRepository;
     private final PlaylistConverter playlistConverter;
-    @GetMapping("/by-anime/{animeId}")
+    @GetMapping
     @Operation(summary = "Метод для получения списка альбомов по animeId")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное получение альбомов."),
             @ApiResponse(responseCode = "404", description = "Альбом не найден не найдено"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public List<PlaylistDto> getPlaylistsByAnime(@PathVariable Integer animeId) {
+    public List<PlaylistDto> getPlaylistsByAnime(@RequestParam("animeId") Integer animeId) {
         log.info("Requested playlists by anime {}", animeId);
         List<Playlist> playlists = playlistService.getPlaylistsByAnimeId(animeId);
         List<PlaylistDto> playlistDtos = playlistConverter.convertListToDto(playlists);
