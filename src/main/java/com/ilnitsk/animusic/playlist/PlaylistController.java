@@ -79,7 +79,7 @@ public class PlaylistController {
     @Operation(summary = "Метод для обновления альбома")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное обновление альбома."),
-            @ApiResponse(responseCode = "404", description = "Альбом уже существует")
+            @ApiResponse(responseCode = "404", description = "Альбом не найден")
     })
     public PlaylistDto updatePlaylist(@RequestBody UpdatePlaylistDto playlistDto, @PathVariable Integer playlistId) {
         Playlist playlist = playlistService.updatePlaylist(playlistDto,playlistId);
