@@ -115,7 +115,7 @@ public class SoundtrackController {
                           @RequestPart(value = "image") MultipartFile image) {
         Soundtrack soundtrack = soundtrackService.setImage(soundtrackId,image);
         SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrack);
-        log.info("Image of soundtrack with id={} updated to {}",soundtrackId,soundtrack.getImageFile());
+        log.info("Image of Soundtrack with id={} updated to '{}'",soundtrackId,soundtrack.getImageFile());
         return soundtrackDto;
     }
 
