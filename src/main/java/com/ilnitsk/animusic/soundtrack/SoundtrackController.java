@@ -54,7 +54,10 @@ public class SoundtrackController {
     @PutMapping("{soundtrackId}")
     public SoundtrackDto updateSoundtrack(@RequestBody UpdateSoundtrackDto updateSoundtrackDto,
                                           @PathVariable Integer soundtrackId) {
-        Soundtrack soundtrack =
+        Soundtrack soundtrack = soundtrackService.updateSoundtrack(updateSoundtrackDto,soundtrackId);
+        SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrack);
+        log.info("Soundtrack id={} updated successfully",soundtrackId);
+        return soundtrackDto;
     }
 
     @PostMapping

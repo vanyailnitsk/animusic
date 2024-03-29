@@ -9,6 +9,7 @@ import com.ilnitsk.animusic.image.ImageService;
 import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
 import com.ilnitsk.animusic.s3.S3Service;
+import com.ilnitsk.animusic.soundtrack.dto.UpdateSoundtrackDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -124,5 +125,17 @@ public class SoundtrackService {
         s3Service.deleteObject(soundtrack.getImageFile());
         soundtrackRepository.deleteById(id);
         log.info("Soundtrack {}/{} removed successfully", folderName, soundtrack.getAnimeTitle());
+    }
+
+    @Transactional
+    public Soundtrack updateSoundtrack(UpdateSoundtrackDto updateSoundtrackDto, Integer soundtrackId) {
+        return soundtrackRepository.findById(soundtrackId).map(
+                soundtrack -> {
+                    soundtrack.setOriginalTitle(updateSoundtrackDto.getOriginalTitle());
+                    soundtrack.setAnimeTitle(updateSoundtrackDto.getAnimeTitle());
+                    soundtrack.setDuration(updateSoundtrackDto.getDuration());
+                    return soundtrack;
+                }
+        ).orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
     }
 }
