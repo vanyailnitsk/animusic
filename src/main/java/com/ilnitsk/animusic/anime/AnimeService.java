@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.anime;
 
+import com.ilnitsk.animusic.anime.dto.UpdateAnimeDto;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.image.ImageService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Year;
 import java.util.List;
 
 @Service
@@ -98,5 +100,19 @@ public class AnimeService {
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
         String cardPath = createCard(anime,card);
         anime.setCardImagePath(cardPath);
+    }
+
+    @Transactional
+    public Anime updateAnime(UpdateAnimeDto updateAnimeDto, Integer animeId) {
+        return animeRepository.findById(animeId).map(
+                anime -> {
+                    anime.setTitle(updateAnimeDto.getTitle());
+                    anime.setStudio(updateAnimeDto.getStudio());
+                    anime.setReleaseYear(Year.of(updateAnimeDto.getReleaseYear()));
+                    anime.setDescription(updateAnimeDto.getDescription());
+                    anime.setFolderName(updateAnimeDto.getFolderName());
+                    return anime;
+                }
+        ).orElseThrow(() -> new AnimeNotFoundException(animeId));
     }
 }
