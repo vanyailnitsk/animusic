@@ -4,6 +4,7 @@ import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.playlist.dto.CreatePlaylistRequest;
 import com.ilnitsk.animusic.playlist.dto.PlaylistConverter;
 import com.ilnitsk.animusic.playlist.dto.PlaylistDto;
+import com.ilnitsk.animusic.playlist.dto.UpdatePlaylistDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -73,6 +74,15 @@ public class PlaylistController {
         log.info("Playlist {} in anime {} created",request.getName(),request.getAnimeId());
         return playlist;
     }
+
+    @PutMapping("{playlistId}")
+    public PlaylistDto updatePlaylist(@RequestBody UpdatePlaylistDto playlistDto, @PathVariable Integer playlistId) {
+        Playlist playlist = playlistService.updatePlaylist(playlistDto);
+        PlaylistDto newPlaylistDto = playlistConverter.convertToDto(playlist);
+        log.info("Playlist id={} updated successfully",playlistId);
+        return newPlaylistDto;
+    }
+
     @DeleteMapping("{id}")
     @Operation(summary = "Удаление альбома")
     @ApiResponses(value = {
