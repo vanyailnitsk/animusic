@@ -76,8 +76,13 @@ public class PlaylistController {
     }
 
     @PutMapping("{playlistId}")
+    @Operation(summary = "Метод для обновления альбома")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное обновление альбома."),
+            @ApiResponse(responseCode = "404", description = "Альбом уже существует")
+    })
     public PlaylistDto updatePlaylist(@RequestBody UpdatePlaylistDto playlistDto, @PathVariable Integer playlistId) {
-        Playlist playlist = playlistService.updatePlaylist(playlistDto);
+        Playlist playlist = playlistService.updatePlaylist(playlistDto,playlistId);
         PlaylistDto newPlaylistDto = playlistConverter.convertToDto(playlist);
         log.info("Playlist id={} updated successfully",playlistId);
         return newPlaylistDto;

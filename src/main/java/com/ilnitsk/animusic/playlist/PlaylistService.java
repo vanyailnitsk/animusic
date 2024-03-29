@@ -7,9 +7,11 @@ import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
 import com.ilnitsk.animusic.playlist.dto.CreatePlaylistRequest;
+import com.ilnitsk.animusic.playlist.dto.UpdatePlaylistDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -83,6 +85,7 @@ public class PlaylistService {
         return entity.get();
     }
 
+
     public ResponseEntity<byte[]> getBanner(Integer playlistId) {
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
@@ -91,6 +94,17 @@ public class PlaylistService {
 
     public void deletePlaylist(Integer id) {
         playlistRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Playlist updatePlaylist(UpdatePlaylistDto playlistDto,Integer playlistId) {
+        return playlistRepository.findById(playlistId).map(
+                playlist -> {
+                    playlist.setName(playlistDto.getName());
+                    playlist.setImageUrl(playlistDto.getImageUrl());
+                    return playlist;
+                }
+        ).orElseThrow(() -> new PlaylistNotFoundException(playlistId));
     }
 }
 
