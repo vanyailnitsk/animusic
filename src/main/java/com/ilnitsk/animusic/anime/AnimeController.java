@@ -66,7 +66,7 @@ public class AnimeController {
     @Operation(summary = "Метод для обновления аниме")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное обновление аниме"),
-            @ApiResponse(responseCode = "400", description = "Аниме не найдено"),
+            @ApiResponse(responseCode = "404", description = "Аниме не найдено"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public AnimeDto updateAnime(@RequestBody UpdateAnimeDto updateAnimeDto,@PathVariable Integer animeId) {

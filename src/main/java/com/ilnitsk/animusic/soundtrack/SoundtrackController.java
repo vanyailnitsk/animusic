@@ -52,6 +52,12 @@ public class SoundtrackController {
     }
 
     @PutMapping("{soundtrackId}")
+    @Operation(summary = "Метод для обновления саундтрека")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное обновление саундтрека"),
+            @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
     public SoundtrackDto updateSoundtrack(@RequestBody UpdateSoundtrackDto updateSoundtrackDto,
                                           @PathVariable Integer soundtrackId) {
         Soundtrack soundtrack = soundtrackService.updateSoundtrack(updateSoundtrackDto,soundtrackId);
