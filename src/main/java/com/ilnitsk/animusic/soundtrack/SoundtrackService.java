@@ -111,10 +111,11 @@ public class SoundtrackService {
     }
 
     @Transactional
-    public void setImage(Integer soundtrackId, MultipartFile image) {
+    public Soundtrack setImage(Integer soundtrackId, MultipartFile image) {
         Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
         createImage(soundtrack,image);
+        return soundtrack;
     }
 
     public void remove(Integer id) {

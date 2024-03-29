@@ -104,16 +104,19 @@ public class SoundtrackController {
         return soundtrackService.getSoundtrackImage(soundtrackId);
     }
 
-    @PostMapping("/images/{soundtrackId}")
+    @PutMapping("/images/{soundtrackId}")
     @Operation(summary = "Метод для установки изображения саундтрека")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешная установка изображения"),
             @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public void setSoundtrackImage(@PathVariable Integer soundtrackId,
+    public SoundtrackDto setSoundtrackImage(@PathVariable Integer soundtrackId,
                           @RequestPart(value = "image") MultipartFile image) {
-        soundtrackService.setImage(soundtrackId,image);
+        Soundtrack soundtrack = soundtrackService.setImage(soundtrackId,image);
+        SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrack);
+        log.info("Image of soundtrack with id={} updated to {}",soundtrackId,soundtrack.getImageFile());
+        return soundtrackDto;
     }
 
     @PutMapping("/update-duration")
