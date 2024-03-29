@@ -84,6 +84,20 @@ public class SoundtrackController {
         );
     }
 
+    @PutMapping("/audio/{soundtrackId}")
+    @Operation(summary = "Метод для обновления аудиофайла у саундтрека")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное обновления саундтрека"),
+            @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
+            @ApiResponse(responseCode = "400", description = "Пустой аудиофайл")
+    })
+    public SoundtrackDto updateAudioFile(@RequestPart("audio") MultipartFile audio,@PathVariable Integer soundtrackId) {
+        Soundtrack soundtrack = soundtrackService.updateAudio(audio,soundtrackId);
+        SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrack);
+        log.info("Soundtrack id={} audio updated to {}",soundtrackId,soundtrack.getAudioFile());
+        return soundtrackDto;
+    }
+
     @GetMapping("/images/{soundtrackId}")
     @Deprecated
     public ResponseEntity<byte[]> getSoundtrackImage(@PathVariable Integer soundtrackId) {

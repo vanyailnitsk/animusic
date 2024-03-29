@@ -2,6 +2,7 @@ package com.ilnitsk.animusic.soundtrack;
 
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
+import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.file.FileService;
@@ -87,7 +88,6 @@ public class SoundtrackService {
         if (!image.isEmpty()) {
             createImage(soundtrack,image);
         }
-        updateTrackDuration(soundtrack);
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
         playlist.addSoundtrack(soundtrack);
         log.info("Soundtrack {} created successfully",blobKey);
@@ -137,5 +137,18 @@ public class SoundtrackService {
                     return soundtrack;
                 }
         ).orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
+    }
+
+    @Transactional
+    public Soundtrack updateAudio(MultipartFile audio, Integer soundtrackId) {
+        Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
+                .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
+        if (audio.isEmpty()) {
+            throw new BadRequestException("Содержимое аудиофайла не может быть пустым!");
+        }
+        String fileName = "%s/audio/%s".formatted(soundtrack.getAnime().getFolderName(),soundtrack.getAnimeTitle());
+        String blobKey = s3Service.createBlob(fileName,audio);
+        soundtrack.setAudioFile(blobKey);
+        return soundtrack;
     }
 }
