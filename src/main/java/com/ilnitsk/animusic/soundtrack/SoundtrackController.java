@@ -4,6 +4,7 @@ import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackConverter;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackRequest;
+import com.ilnitsk.animusic.soundtrack.dto.UpdateSoundtrackDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -48,6 +49,12 @@ public class SoundtrackController {
     public SoundtrackDto getSoundtrack(@PathVariable Integer soundtrackId) {
         Soundtrack soundtrack = soundtrackService.getSoundtrack(soundtrackId);
         return soundtrackConverter.convertToDto(soundtrack);
+    }
+
+    @PutMapping("{soundtrackId}")
+    public SoundtrackDto updateSoundtrack(@RequestBody UpdateSoundtrackDto updateSoundtrackDto,
+                                          @PathVariable Integer soundtrackId) {
+        Soundtrack soundtrack =
     }
 
     @PostMapping
