@@ -4,6 +4,7 @@ import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackConverter;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackRequest;
+import com.ilnitsk.animusic.soundtrack.dto.UpdateSoundtrackDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -50,6 +51,21 @@ public class SoundtrackController {
         return soundtrackConverter.convertToDto(soundtrack);
     }
 
+    @PutMapping("{soundtrackId}")
+    @Operation(summary = "Метод для обновления саундтрека")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное обновление саундтрека"),
+            @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
+    public SoundtrackDto updateSoundtrack(@RequestBody UpdateSoundtrackDto updateSoundtrackDto,
+                                          @PathVariable Integer soundtrackId) {
+        Soundtrack soundtrack = soundtrackService.updateSoundtrack(updateSoundtrackDto,soundtrackId);
+        SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrack);
+        log.info("Soundtrack id={} updated successfully",soundtrackId);
+        return soundtrackDto;
+    }
+
     @PostMapping
     @Operation(summary = "Метод для создания саундтрека")
     @ApiResponses(value = {
@@ -68,22 +84,39 @@ public class SoundtrackController {
         );
     }
 
+    @PutMapping("/audio/{soundtrackId}")
+    @Operation(summary = "Метод для обновления аудиофайла у саундтрека")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное обновления саундтрека"),
+            @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
+            @ApiResponse(responseCode = "400", description = "Пустой аудиофайл")
+    })
+    public SoundtrackDto updateAudioFile(@RequestPart("audio") MultipartFile audio,@PathVariable Integer soundtrackId) {
+        Soundtrack soundtrack = soundtrackService.updateAudio(audio,soundtrackId);
+        SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrack);
+        log.info("Soundtrack id={} audio updated to {}",soundtrackId,soundtrack.getAudioFile());
+        return soundtrackDto;
+    }
+
     @GetMapping("/images/{soundtrackId}")
     @Deprecated
     public ResponseEntity<byte[]> getSoundtrackImage(@PathVariable Integer soundtrackId) {
         return soundtrackService.getSoundtrackImage(soundtrackId);
     }
 
-    @PostMapping("/images/{soundtrackId}")
+    @PutMapping("/images/{soundtrackId}")
     @Operation(summary = "Метод для установки изображения саундтрека")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешная установка изображения"),
             @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public void setSoundtrackImage(@PathVariable Integer soundtrackId,
+    public SoundtrackDto setSoundtrackImage(@PathVariable Integer soundtrackId,
                           @RequestPart(value = "image") MultipartFile image) {
-        soundtrackService.setImage(soundtrackId,image);
+        Soundtrack soundtrack = soundtrackService.setImage(soundtrackId,image);
+        SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrack);
+        log.info("Image of Soundtrack with id={} updated to '{}'",soundtrackId,soundtrack.getImageFile());
+        return soundtrackDto;
     }
 
     @PutMapping("/update-duration")

@@ -2,6 +2,7 @@ package com.ilnitsk.animusic.soundtrack;
 
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
+import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.file.FileService;
@@ -9,6 +10,7 @@ import com.ilnitsk.animusic.image.ImageService;
 import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
 import com.ilnitsk.animusic.s3.S3Service;
+import com.ilnitsk.animusic.soundtrack.dto.UpdateSoundtrackDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -86,7 +88,6 @@ public class SoundtrackService {
         if (!image.isEmpty()) {
             createImage(soundtrack,image);
         }
-        updateTrackDuration(soundtrack);
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
         playlist.addSoundtrack(soundtrack);
         log.info("Soundtrack {} created successfully",blobKey);
@@ -110,10 +111,11 @@ public class SoundtrackService {
     }
 
     @Transactional
-    public void setImage(Integer soundtrackId, MultipartFile image) {
+    public Soundtrack setImage(Integer soundtrackId, MultipartFile image) {
         Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
         createImage(soundtrack,image);
+        return soundtrack;
     }
 
     public void remove(Integer id) {
@@ -124,5 +126,30 @@ public class SoundtrackService {
         s3Service.deleteObject(soundtrack.getImageFile());
         soundtrackRepository.deleteById(id);
         log.info("Soundtrack {}/{} removed successfully", folderName, soundtrack.getAnimeTitle());
+    }
+
+    @Transactional
+    public Soundtrack updateSoundtrack(UpdateSoundtrackDto updateSoundtrackDto, Integer soundtrackId) {
+        return soundtrackRepository.findById(soundtrackId).map(
+                soundtrack -> {
+                    soundtrack.setOriginalTitle(updateSoundtrackDto.getOriginalTitle());
+                    soundtrack.setAnimeTitle(updateSoundtrackDto.getAnimeTitle());
+                    soundtrack.setDuration(updateSoundtrackDto.getDuration());
+                    return soundtrack;
+                }
+        ).orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
+    }
+
+    @Transactional
+    public Soundtrack updateAudio(MultipartFile audio, Integer soundtrackId) {
+        Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
+                .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
+        if (audio.isEmpty()) {
+            throw new BadRequestException("Содержимое аудиофайла не может быть пустым!");
+        }
+        String fileName = "%s/audio/%s".formatted(soundtrack.getAnime().getFolderName(),soundtrack.getAnimeTitle());
+        String blobKey = s3Service.createBlob(fileName,audio);
+        soundtrack.setAudioFile(blobKey);
+        return soundtrack;
     }
 }

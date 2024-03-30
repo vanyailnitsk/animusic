@@ -2,6 +2,7 @@ package com.ilnitsk.animusic.anime;
 
 import com.ilnitsk.animusic.anime.dto.AnimeConverter;
 import com.ilnitsk.animusic.anime.dto.AnimeDto;
+import com.ilnitsk.animusic.anime.dto.UpdateAnimeDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -60,6 +61,21 @@ public class AnimeController {
         Anime createdAnime = animeService.createAnime(anime,banner,card);
         return animeConverter.convertToDto(createdAnime);
     }
+
+    @PutMapping("{animeId}")
+    @Operation(summary = "Метод для обновления аниме")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное обновление аниме"),
+            @ApiResponse(responseCode = "404", description = "Аниме не найдено"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
+    public AnimeDto updateAnime(@RequestBody UpdateAnimeDto updateAnimeDto,@PathVariable Integer animeId) {
+        Anime anime = animeService.updateAnime(updateAnimeDto,animeId);
+        AnimeDto animeDto = animeConverter.convertToDto(anime);
+        log.info("Anime id={} updated successfully",animeId);
+        return animeDto;
+    }
+
     @GetMapping("/images/banner/{id}")
     public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer animeId) {
         return animeService.getBanner(animeId);
