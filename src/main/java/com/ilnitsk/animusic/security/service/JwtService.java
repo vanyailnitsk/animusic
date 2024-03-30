@@ -2,7 +2,10 @@ package com.ilnitsk.animusic.security.service;
 
 import com.ilnitsk.animusic.security.CookieUtils;
 import com.ilnitsk.animusic.user.dao.User;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +21,18 @@ import java.util.List;
 @Slf4j
 public class JwtService {
 
-    private final String secret_key;
+    @Value("${token.secret}")
+    private String secret_key;
     @Value("${token.expirationMinutes}")
     private long TTL_MINUTES;
     @Value("${token.refreshExpirationHours}")
     private long REFRESH_TTL_HOURS;
-
-    private final JwtParser jwtParser;
-
     private final String TOKEN_HEADER = "Authorization";
     private final String TOKEN_PREFIX = "Bearer ";
     private CookieUtils cookieUtils;
 
     @Autowired
-    public JwtService(@Value("${token.secret}") String secret,CookieUtils cookieUtils){
-        this.secret_key = secret;
-        this.jwtParser = Jwts.parser().setSigningKey(secret_key);
+    public JwtService(CookieUtils cookieUtils){
         this.cookieUtils = cookieUtils;
     }
 
@@ -59,7 +58,7 @@ public class JwtService {
     }
 
     private Claims parseJwtClaims(String token) {
-        return jwtParser.parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(secret_key).parseClaimsJws(token).getBody();
     }
 
     public Claims resolveClaims(HttpServletRequest req) {
