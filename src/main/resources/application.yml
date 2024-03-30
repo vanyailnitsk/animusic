@@ -23,6 +23,16 @@ spring:
     password: ${DB_PASSWORD}
   config:
     import: optional:file:.env[.properties]
+  output:
+    ansi:
+      enabled: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, logfile, loggers, env
+
 storage:
   directory: ${storage}
 server:
@@ -40,3 +50,7 @@ timeweb:
     region: ${s3-region}
     access-key: ${s3-accesskey}
     secret-key: ${s3-secretkey}
+
+logging:
+  file:
+    name: logs/app.log

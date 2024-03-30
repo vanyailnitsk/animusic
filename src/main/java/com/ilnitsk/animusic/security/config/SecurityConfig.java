@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(
                         "/anime/**","/api/auth/register", "/api/auth/login","/api/auth/refresh","/api/soundtracks/**",
-                        "/api/playlist/**", "/api/anime/**","/swagger-ui/**","/v3/api-docs/**","/error").permitAll()
+                        "/api/playlist/**", "/api/anime/**","/swagger-ui/**","/v3/api-docs/**","/error","/actuator/**").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)

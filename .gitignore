@@ -13,6 +13,7 @@ files-test
 */prometheus/wal
 index.html
 create.sql
+logs/
 
 ### STS ###
 .apt_generated
