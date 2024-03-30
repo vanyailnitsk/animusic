@@ -35,15 +35,27 @@ public class SecurityConfig {
         return new UserDetailsServiceUmpl();
     }
 
+    public String[] openResources = {
+            "/anime/**",
+            "/api/auth/register",
+            "/api/auth/login",
+            "/api/auth/refresh",
+            "/api/soundtracks/**",
+            "/api/playlist/**",
+            "/api/anime/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/error",
+            "/actuator/**"
+    };
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
-                .requestMatchers(
-                        "/anime/**","/api/auth/register", "/api/auth/login","/api/auth/refresh","/api/soundtracks/**",
-                        "/api/playlist/**", "/api/anime/**","/swagger-ui/**","/v3/api-docs/**","/error","/actuator/**").permitAll()
+                .requestMatchers(openResources).permitAll()
                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
