@@ -98,12 +98,6 @@ public class SoundtrackController {
         return soundtrackDto;
     }
 
-    @GetMapping("/images/{soundtrackId}")
-    @Deprecated
-    public ResponseEntity<byte[]> getSoundtrackImage(@PathVariable Integer soundtrackId) {
-        return soundtrackService.getSoundtrackImage(soundtrackId);
-    }
-
     @PutMapping("/images/{soundtrackId}")
     @Operation(summary = "Метод для установки изображения саундтрека")
     @ApiResponses(value = {
@@ -112,11 +106,17 @@ public class SoundtrackController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public SoundtrackDto setSoundtrackImage(@PathVariable Integer soundtrackId,
-                          @RequestPart(value = "image") MultipartFile image) {
+                                            @RequestPart(value = "image") MultipartFile image) {
         Soundtrack soundtrack = soundtrackService.setImage(soundtrackId,image);
         SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrack);
         log.info("Image of Soundtrack with id={} updated to '{}'",soundtrackId,soundtrack.getImageFile());
         return soundtrackDto;
+    }
+
+    @GetMapping("/images/{soundtrackId}")
+    @Deprecated
+    public ResponseEntity<byte[]> getSoundtrackImage(@PathVariable Integer soundtrackId) {
+        return soundtrackService.getSoundtrackImage(soundtrackId);
     }
 
     @PutMapping("/update-duration")
