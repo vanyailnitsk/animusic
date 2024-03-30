@@ -7,6 +7,7 @@ target/
 **/.DS_Store
 database/data
 .env
+flyway.env
 files-test
 *.tmpl
 */prometheus/wal

@@ -139,6 +139,16 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>9.22.3</version>
+<!--                <configuration>-->
+<!--                    <url>${spring.da}</url>-->
+<!--                    <user>${env.DB_USER}</user>-->
+<!--                    <password>${env.DB_PASSWORD}</password>-->
+<!--                </configuration>-->
+            </plugin>
         </plugins>
     </build>
 

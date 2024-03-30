@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${db-url:jdbc:postgresql://localhost:5432/animusic}
-    username: postgres
-    password: admin
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,9 +18,9 @@ spring:
   flyway:
     locations: filesystem:./database/migration
     baseline-on-migrate: true
-    url: ${db-url:jdbc:postgresql://localhost:5432/animusic}
-    user: postgres
-    password: admin
+    url: ${DB_URL}
+    user: ${DB_USER}
+    password: ${DB_PASSWORD}
   config:
     import: optional:file:.env[.properties]
 storage:
