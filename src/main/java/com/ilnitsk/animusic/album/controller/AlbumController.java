@@ -1,6 +1,8 @@
-package com.ilnitsk.animusic.album;
+package com.ilnitsk.animusic.album.controller;
 
+import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.album.dto.*;
+import com.ilnitsk.animusic.album.service.AlbumService;
 import com.ilnitsk.animusic.anime.AnimeRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

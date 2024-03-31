@@ -1,5 +1,6 @@
-package com.ilnitsk.animusic.album;
+package com.ilnitsk.animusic.album.repository;
 
+import com.ilnitsk.animusic.album.dao.Album;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

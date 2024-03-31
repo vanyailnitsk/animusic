@@ -1,9 +1,9 @@
 package com.ilnitsk.animusic.services;
 
-import com.ilnitsk.animusic.album.Album;
-import com.ilnitsk.animusic.album.AlbumRepository;
-import com.ilnitsk.animusic.album.AlbumService;
+import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.album.dto.CreateAlbumRequest;
+import com.ilnitsk.animusic.album.repository.AlbumRepository;
+import com.ilnitsk.animusic.album.service.AlbumService;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;

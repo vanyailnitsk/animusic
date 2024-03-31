@@ -1,7 +1,9 @@
-package com.ilnitsk.animusic.album;
+package com.ilnitsk.animusic.album.service;
 
+import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.album.dto.CreateAlbumRequest;
 import com.ilnitsk.animusic.album.dto.UpdateAlbumDto;
+import com.ilnitsk.animusic.album.repository.AlbumRepository;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.anime.AnimeService;

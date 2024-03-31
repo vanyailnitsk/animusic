@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.album;
+package com.ilnitsk.animusic.album.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;

@@ -1,8 +1,8 @@
 package com.ilnitsk.animusic.soundtrack;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.ilnitsk.animusic.album.Album;
-import com.ilnitsk.animusic.album.AlbumRepository;
+import com.ilnitsk.animusic.album.dao.Album;
+import com.ilnitsk.animusic.album.repository.AlbumRepository;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.exception.BadRequestException;
