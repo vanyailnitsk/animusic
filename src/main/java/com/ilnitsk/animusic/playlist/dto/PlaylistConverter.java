@@ -26,4 +26,13 @@ public class PlaylistConverter {
     public List<AlbumDto> convertListToDto(List<Album> albums) {
         return albums.stream().map(this::convertToDto).toList();
     }
+
+    public AlbumItemDto convertToItemDto(Album album) {
+        return modelMapper.map(album,AlbumItemDto.class);
+    }
+
+    public List<AlbumItemDto> convertListToItemDto(List<Album> albums) {
+        return albums.stream().map(this::convertToItemDto).toList();
+    }
+
 }

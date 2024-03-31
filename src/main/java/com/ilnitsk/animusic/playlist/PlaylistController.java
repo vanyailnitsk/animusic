@@ -1,10 +1,7 @@
 package com.ilnitsk.animusic.playlist;
 
 import com.ilnitsk.animusic.anime.AnimeRepository;
-import com.ilnitsk.animusic.playlist.dto.AlbumDto;
-import com.ilnitsk.animusic.playlist.dto.CreatePlaylistRequest;
-import com.ilnitsk.animusic.playlist.dto.PlaylistConverter;
-import com.ilnitsk.animusic.playlist.dto.UpdatePlaylistDto;
+import com.ilnitsk.animusic.playlist.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -33,11 +30,10 @@ public class PlaylistController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден не найдено"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public List<AlbumDto> getPlaylistsByAnime(@RequestParam("animeId") Integer animeId) {
+    public List<AlbumItemDto> getPlaylistsByAnime(@RequestParam("animeId") Integer animeId) {
         log.info("Requested playlists by anime {}", animeId);
         List<Album> albums = playlistService.getPlaylistsByAnimeId(animeId);
-        List<AlbumDto> albumDtos = playlistConverter.convertListToDto(albums);
-        albumDtos.forEach(s -> s.setLink("/api/playlist/"+s.getId()));
+        List<AlbumItemDto> albumDtos = playlistConverter.convertListToItemDto(albums);
         return albumDtos;
     }
 
