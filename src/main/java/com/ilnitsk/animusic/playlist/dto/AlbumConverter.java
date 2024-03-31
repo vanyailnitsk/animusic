@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class PlaylistConverter {
+public class AlbumConverter {
     private final ModelMapper modelMapper;
 
-    public PlaylistConverter(ModelMapper modelMapper) {
+    public AlbumConverter(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
 
         modelMapper.createTypeMap(Album.class, AlbumDto.class)

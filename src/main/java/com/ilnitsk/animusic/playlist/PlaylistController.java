@@ -22,7 +22,7 @@ import java.util.List;
 public class PlaylistController {
     private final AlbumService albumService;
     private final AnimeRepository animeRepository;
-    private final PlaylistConverter playlistConverter;
+    private final AlbumConverter albumConverter;
     @GetMapping
     @Operation(summary = "Метод для получения списка альбомов по animeId")
     @ApiResponses(value = {
@@ -33,7 +33,7 @@ public class PlaylistController {
     public List<AlbumItemDto> getPlaylistsByAnime(@RequestParam("animeId") Integer animeId) {
         log.info("Requested playlists by anime {}", animeId);
         List<Album> albums = albumService.getPlaylistsByAnimeId(animeId);
-        List<AlbumItemDto> albumDtos = playlistConverter.convertListToItemDto(albums);
+        List<AlbumItemDto> albumDtos = albumConverter.convertListToItemDto(albums);
         return albumDtos;
     }
 
@@ -47,7 +47,7 @@ public class PlaylistController {
     public AlbumDto getPlaylistById(@PathVariable Integer id, HttpServletRequest request) {
         log.info("Requested playlist with id {}", id);
         Album album = albumService.getPlaylistById(id);
-        AlbumDto albumDto = playlistConverter.convertToDto(album);
+        AlbumDto albumDto = albumConverter.convertToDto(album);
         albumDto.setLink(request.getRequestURI());
         return albumDto;
     }
@@ -79,7 +79,7 @@ public class PlaylistController {
     })
     public AlbumDto updatePlaylist(@RequestBody UpdatePlaylistDto playlistDto, @PathVariable Integer playlistId) {
         Album album = albumService.updatePlaylist(playlistDto,playlistId);
-        AlbumDto newAlbumDto = playlistConverter.convertToDto(album);
+        AlbumDto newAlbumDto = albumConverter.convertToDto(album);
         log.info("Playlist id={} updated successfully",playlistId);
         return newAlbumDto;
     }
