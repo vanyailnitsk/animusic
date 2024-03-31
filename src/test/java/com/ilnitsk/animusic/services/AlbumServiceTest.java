@@ -5,8 +5,8 @@ import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.playlist.Album;
+import com.ilnitsk.animusic.playlist.AlbumService;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
-import com.ilnitsk.animusic.playlist.PlaylistService;
 import com.ilnitsk.animusic.playlist.dto.CreatePlaylistRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,10 +33,10 @@ class AlbumServiceTest {
     private PlaylistRepository playlistRepository;
     @Mock
     private AnimeRepository animeRepository;
-    private PlaylistService underTest;
+    private AlbumService underTest;
     @BeforeEach
     void setUp() {
-        underTest = new PlaylistService(playlistRepository, animeRepository, null);
+        underTest = new AlbumService(playlistRepository, animeRepository, null);
     }
 
     @Test

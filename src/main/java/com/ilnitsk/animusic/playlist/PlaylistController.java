@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "REST API для управления альбомами", description = "Предоставляет методы для управление альбомами")
 public class PlaylistController {
-    private final PlaylistService playlistService;
+    private final AlbumService albumService;
     private final AnimeRepository animeRepository;
     private final PlaylistConverter playlistConverter;
     @GetMapping
@@ -32,7 +32,7 @@ public class PlaylistController {
     })
     public List<AlbumItemDto> getPlaylistsByAnime(@RequestParam("animeId") Integer animeId) {
         log.info("Requested playlists by anime {}", animeId);
-        List<Album> albums = playlistService.getPlaylistsByAnimeId(animeId);
+        List<Album> albums = albumService.getPlaylistsByAnimeId(animeId);
         List<AlbumItemDto> albumDtos = playlistConverter.convertListToItemDto(albums);
         return albumDtos;
     }
@@ -46,7 +46,7 @@ public class PlaylistController {
     })
     public AlbumDto getPlaylistById(@PathVariable Integer id, HttpServletRequest request) {
         log.info("Requested playlist with id {}", id);
-        Album album = playlistService.getPlaylistById(id);
+        Album album = albumService.getPlaylistById(id);
         AlbumDto albumDto = playlistConverter.convertToDto(album);
         albumDto.setLink(request.getRequestURI());
         return albumDto;
@@ -54,7 +54,7 @@ public class PlaylistController {
 
     @GetMapping("/images/banner/{id}")
     public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer playlistId) {
-        return playlistService.getBanner(playlistId);
+        return albumService.getBanner(playlistId);
     }
 
     @PostMapping
@@ -65,7 +65,7 @@ public class PlaylistController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public Album createPlaylist(@RequestBody CreatePlaylistRequest request) {
-        Album album = playlistService.createPlaylist(request);
+        Album album = albumService.createPlaylist(request);
 
         log.info("Playlist {} in anime {} created",request.getName(),request.getAnimeId());
         return album;
@@ -78,7 +78,7 @@ public class PlaylistController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден")
     })
     public AlbumDto updatePlaylist(@RequestBody UpdatePlaylistDto playlistDto, @PathVariable Integer playlistId) {
-        Album album = playlistService.updatePlaylist(playlistDto,playlistId);
+        Album album = albumService.updatePlaylist(playlistDto,playlistId);
         AlbumDto newAlbumDto = playlistConverter.convertToDto(album);
         log.info("Playlist id={} updated successfully",playlistId);
         return newAlbumDto;
@@ -92,7 +92,7 @@ public class PlaylistController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public void deletePlaylist(@PathVariable Integer id) {
-        playlistService.deletePlaylist(id);
+        albumService.deletePlaylist(id);
         log.info("Playlist with id {} deleted",id);
     }
 }

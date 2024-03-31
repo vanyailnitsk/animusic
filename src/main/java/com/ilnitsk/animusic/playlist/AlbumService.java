@@ -18,13 +18,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PlaylistService {
+public class AlbumService {
     private final PlaylistRepository playlistRepository;
     private final AnimeRepository animeRepository;
     private final AnimeService animeService;
 
     @Autowired
-    public PlaylistService(PlaylistRepository playlistRepository, AnimeRepository animeRepository, AnimeService animeService) {
+    public AlbumService(PlaylistRepository playlistRepository, AnimeRepository animeRepository, AnimeService animeService) {
         this.playlistRepository = playlistRepository;
         this.animeRepository = animeRepository;
         this.animeService = animeService;
