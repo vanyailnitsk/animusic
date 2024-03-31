@@ -39,12 +39,12 @@ public class AlbumRepositoryIntegrationTest {
                 "My Playlist",
                 "/"
         );
-        Album album = request.getPlaylistData();
+        Album album = request.getAlbumData();
         album.setAnime(anime);
         Album createdAlbum = albumRepository.save(album);
         assertThat(createdAlbum).isNotNull();
         assertThat(createdAlbum.getAnime()).isNotNull();
-        assertThat(albumRepository.getPlaylistsByAnimeId(1)).isNotEmpty();
+        assertThat(albumRepository.getAlbumsByAnimeId(1)).isNotEmpty();
         assertThat(createdAlbum).isEqualTo(album);
         assertThat(createdAlbum.getSoundtracks()).isNull();
     }

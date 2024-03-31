@@ -40,7 +40,7 @@ class AlbumServiceTest {
     }
 
     @Test
-    void createPlaylist() {
+    void createAlbum() {
         Anime anime = new Anime();
         anime.setId(1);
         anime.setTitle("Naruto");
@@ -52,7 +52,7 @@ class AlbumServiceTest {
         );
         given(albumRepository.existsByNameAndAnimeId(request.getName(),1))
                 .willReturn(false);
-        underTest.createPlaylist(request);
+        underTest.createAlbum(request);
         ArgumentCaptor<Album> playlistArgumentCaptor = ArgumentCaptor.forClass(Album.class);
         verify(albumRepository).save(playlistArgumentCaptor.capture());
         Album album = playlistArgumentCaptor.getValue();
@@ -62,36 +62,36 @@ class AlbumServiceTest {
     }
 
     @Test
-    public void testCreatePlaylistWithNonExistingAnime() {
-        CreateAlbumRequest request = new CreateAlbumRequest(1, "Test Playlist", "/test-image.jpg");
+    public void testCreateAlbumWithNonExistingAnime() {
+        CreateAlbumRequest request = new CreateAlbumRequest(1, "Test Album", "/test-image.jpg");
 
         when(animeRepository.findById(1)).thenReturn(Optional.empty());
 
         assertThrows(AnimeNotFoundException.class, () -> {
-            underTest.createPlaylist(request);
+            underTest.createAlbum(request);
         });
     }
 
     @Test
-    public void testCreatePlaylistWithDuplicateName() {
-        CreateAlbumRequest request = new CreateAlbumRequest(1, "Test Playlist", "/test-image.jpg");
+    public void testCreateAlbumWithDuplicateName() {
+        CreateAlbumRequest request = new CreateAlbumRequest(1, "Test Album", "/test-image.jpg");
 
         Anime anime = new Anime();
         anime.setId(1);
         when(animeRepository.findById(1)).thenReturn(Optional.of(anime));
 
-        when(albumRepository.existsByNameAndAnimeId("Test Playlist", 1)).thenReturn(true);
+        when(albumRepository.existsByNameAndAnimeId("Test Album", 1)).thenReturn(true);
 
-        assertThatThrownBy(() -> underTest.createPlaylist(request))
+        assertThatThrownBy(() -> underTest.createAlbum(request))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining(
-                        "Playlist " + request.getName() + " in anime " +anime.getTitle()+" already exists"
+                        "Album " + request.getName() + " in anime " +anime.getTitle()+" already exists"
                 );
     }
 
 
     @Test
-    void getPlaylistsByAnimeId() {
+    void getAlbumsByAnimeId() {
         Anime anime = new Anime();
         anime.setId(1);
         Album album1 = Album.builder()
@@ -106,26 +106,26 @@ class AlbumServiceTest {
                 .anime(anime)
                 .soundtracks(new ArrayList<>())
                 .build();
-        given(albumRepository.getPlaylistsByAnimeId(1)).willReturn(
+        given(albumRepository.getAlbumsByAnimeId(1)).willReturn(
                 Optional.of(List.of(album1, album2)));
-        List<Album> albums = underTest.getPlaylistsByAnimeId(1);
-        verify(albumRepository).getPlaylistsByAnimeId(1);
+        List<Album> albums = underTest.getAlbumsByAnimeId(1);
+        verify(albumRepository).getAlbumsByAnimeId(1);
         assertThat(albums).isNotEmpty();
         assertThat(albums).isEqualTo(List.of(album1, album2));
     }
 
     @Test
-    void getPlaylistsByAnimeIdWithNonExistingAnime() {
-        given(albumRepository.getPlaylistsByAnimeId(1)).willReturn(
+    void getAlbumsByAnimeIdWithNonExistingAnime() {
+        given(albumRepository.getAlbumsByAnimeId(1)).willReturn(
                 Optional.empty());
-        assertThatThrownBy(() -> underTest.getPlaylistsByAnimeId(1))
+        assertThatThrownBy(() -> underTest.getAlbumsByAnimeId(1))
                 .isInstanceOf(AnimeNotFoundException.class)
                 .hasMessageContaining("Anime with id 1 not found");
-        verify(albumRepository).getPlaylistsByAnimeId(1);
+        verify(albumRepository).getAlbumsByAnimeId(1);
     }
 
     @Test
-    void getPlaylistById() {
+    void getAlbumById() {
         Anime anime = new Anime("Naruto","mock", Year.of(2002),"","");
         Album album = Album.builder()
                 .id(1)
@@ -134,19 +134,19 @@ class AlbumServiceTest {
                 .soundtracks(new ArrayList<>())
                 .build();
         given(albumRepository.findById(1)).willReturn(Optional.of(album));
-        Album provided = underTest.getPlaylistById(1);
+        Album provided = underTest.getAlbumById(1);
         verify(albumRepository).findById(1);
         assertThat(provided).isEqualTo(album);
     }
 
     @Test
-    void deletePlaylist() {
+    void deleteAlbum() {
         Album album1 = Album.builder()
                 .id(1)
                 .name("mock")
                 .soundtracks(new ArrayList<>())
                 .build();
-        underTest.deletePlaylist(1);
+        underTest.deleteAlbum(1);
         verify(albumRepository).deleteById(1);
     }
 }
