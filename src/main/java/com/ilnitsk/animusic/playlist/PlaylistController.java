@@ -1,9 +1,9 @@
 package com.ilnitsk.animusic.playlist;
 
 import com.ilnitsk.animusic.anime.AnimeRepository;
+import com.ilnitsk.animusic.playlist.dto.AlbumDto;
 import com.ilnitsk.animusic.playlist.dto.CreatePlaylistRequest;
 import com.ilnitsk.animusic.playlist.dto.PlaylistConverter;
-import com.ilnitsk.animusic.playlist.dto.PlaylistDto;
 import com.ilnitsk.animusic.playlist.dto.UpdatePlaylistDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,12 +33,12 @@ public class PlaylistController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден не найдено"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public List<PlaylistDto> getPlaylistsByAnime(@RequestParam("animeId") Integer animeId) {
+    public List<AlbumDto> getPlaylistsByAnime(@RequestParam("animeId") Integer animeId) {
         log.info("Requested playlists by anime {}", animeId);
         List<Album> albums = playlistService.getPlaylistsByAnimeId(animeId);
-        List<PlaylistDto> playlistDtos = playlistConverter.convertListToDto(albums);
-        playlistDtos.forEach(s -> s.setLink("/api/playlist/"+s.getId()));
-        return playlistDtos;
+        List<AlbumDto> albumDtos = playlistConverter.convertListToDto(albums);
+        albumDtos.forEach(s -> s.setLink("/api/playlist/"+s.getId()));
+        return albumDtos;
     }
 
     @GetMapping("{id}")
@@ -48,12 +48,12 @@ public class PlaylistController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public PlaylistDto getPlaylistById(@PathVariable Integer id, HttpServletRequest request) {
+    public AlbumDto getPlaylistById(@PathVariable Integer id, HttpServletRequest request) {
         log.info("Requested playlist with id {}", id);
         Album album = playlistService.getPlaylistById(id);
-        PlaylistDto playlistDto = playlistConverter.convertToDto(album);
-        playlistDto.setLink(request.getRequestURI());
-        return playlistDto;
+        AlbumDto albumDto = playlistConverter.convertToDto(album);
+        albumDto.setLink(request.getRequestURI());
+        return albumDto;
     }
 
     @GetMapping("/images/banner/{id}")
@@ -81,11 +81,11 @@ public class PlaylistController {
             @ApiResponse(responseCode = "200", description = "Успешное обновление альбома."),
             @ApiResponse(responseCode = "404", description = "Альбом не найден")
     })
-    public PlaylistDto updatePlaylist(@RequestBody UpdatePlaylistDto playlistDto, @PathVariable Integer playlistId) {
+    public AlbumDto updatePlaylist(@RequestBody UpdatePlaylistDto playlistDto, @PathVariable Integer playlistId) {
         Album album = playlistService.updatePlaylist(playlistDto,playlistId);
-        PlaylistDto newPlaylistDto = playlistConverter.convertToDto(album);
+        AlbumDto newAlbumDto = playlistConverter.convertToDto(album);
         log.info("Playlist id={} updated successfully",playlistId);
-        return newPlaylistDto;
+        return newAlbumDto;
     }
 
     @DeleteMapping("{id}")

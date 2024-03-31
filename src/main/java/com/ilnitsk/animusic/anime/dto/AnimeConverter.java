@@ -1,7 +1,6 @@
 package com.ilnitsk.animusic.anime.dto;
 
 import com.ilnitsk.animusic.anime.Anime;
-import com.ilnitsk.animusic.playlist.dto.PlaylistDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,7 @@ public class AnimeConverter {
 
         modelMapper.createTypeMap(Anime.class,AnimeDto.class);
 
-        modelMapper.createTypeMap(PlaylistDto.class, AlbumDto.class);
+//        modelMapper.createTypeMap(AlbumDto.class, AlbumDto.class);
 
     }
 
