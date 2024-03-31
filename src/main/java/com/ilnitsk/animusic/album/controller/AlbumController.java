@@ -32,9 +32,9 @@ public class AlbumController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден не найдено"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public List<AlbumItemDto> getPlaylistsByAnime(@RequestParam("animeId") Integer animeId) {
-        log.info("Requested playlists by anime {}", animeId);
-        List<Album> albums = albumService.getPlaylistsByAnimeId(animeId);
+    public List<AlbumItemDto> getAlbumsByAnime(@RequestParam("animeId") Integer animeId) {
+        log.info("Requested albums by anime {}", animeId);
+        List<Album> albums = albumService.getAlbumsByAnimeId(animeId);
         List<AlbumItemDto> albumDtos = albumConverter.convertListToItemDto(albums);
         return albumDtos;
     }
@@ -46,17 +46,17 @@ public class AlbumController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public AlbumDto getPlaylistById(@PathVariable Integer id, HttpServletRequest request) {
-        log.info("Requested playlist with id {}", id);
-        Album album = albumService.getPlaylistById(id);
+    public AlbumDto getAlbumById(@PathVariable Integer id, HttpServletRequest request) {
+        log.info("Requested album with id {}", id);
+        Album album = albumService.getAlbumById(id);
         AlbumDto albumDto = albumConverter.convertToDto(album);
         albumDto.setLink(request.getRequestURI());
         return albumDto;
     }
 
     @GetMapping("/images/banner/{id}")
-    public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer playlistId) {
-        return albumService.getBanner(playlistId);
+    public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer albumId) {
+        return albumService.getBanner(albumId);
     }
 
     @PostMapping
@@ -66,23 +66,23 @@ public class AlbumController {
             @ApiResponse(responseCode = "400", description = "Альбом уже существует"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public Album createPlaylist(@RequestBody CreateAlbumRequest request) {
-        Album album = albumService.createPlaylist(request);
+    public Album createAlbum(@RequestBody CreateAlbumRequest request) {
+        Album album = albumService.createAlbum(request);
 
-        log.info("Playlist {} in anime {} created",request.getName(),request.getAnimeId());
+        log.info("Album {} in anime {} created",request.getName(),request.getAnimeId());
         return album;
     }
 
-    @PutMapping("{playlistId}")
+    @PutMapping("{albumId}")
     @Operation(summary = "Метод для обновления альбома")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное обновление альбома."),
             @ApiResponse(responseCode = "404", description = "Альбом не найден")
     })
-    public AlbumDto updatePlaylist(@RequestBody UpdateAlbumDto playlistDto, @PathVariable Integer playlistId) {
-        Album album = albumService.updatePlaylist(playlistDto,playlistId);
+    public AlbumDto updateAlbum(@RequestBody UpdateAlbumDto albumDto, @PathVariable Integer albumId) {
+        Album album = albumService.updateAlbum(albumDto,albumId);
         AlbumDto newAlbumDto = albumConverter.convertToDto(album);
-        log.info("Playlist id={} updated successfully",playlistId);
+        log.info("Album id={} updated successfully",albumId);
         return newAlbumDto;
     }
 
@@ -93,8 +93,8 @@ public class AlbumController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public void deletePlaylist(@PathVariable Integer id) {
-        albumService.deletePlaylist(id);
-        log.info("Playlist with id {} deleted",id);
+    public void deleteAlbum(@PathVariable Integer id) {
+        albumService.deleteAlbum(id);
+        log.info("Album with id {} deleted",id);
     }
 }
