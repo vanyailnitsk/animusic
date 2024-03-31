@@ -2,7 +2,7 @@ package com.ilnitsk.animusic.soundtrack;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ilnitsk.animusic.album.Album;
-import com.ilnitsk.animusic.album.PlaylistRepository;
+import com.ilnitsk.animusic.album.AlbumRepository;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.exception.BadRequestException;
@@ -27,7 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 public class SoundtrackService {
     private final SoundtrackRepository soundtrackRepository;
     private final AnimeRepository animeRepository;
-    private final PlaylistRepository playlistRepository;
+    private final AlbumRepository albumRepository;
     private final FileService fileService;
     private final ImageService imageService;
     private final S3Service s3Service;
@@ -81,7 +81,7 @@ public class SoundtrackService {
     }
     @Transactional(timeout = 30)
     public Soundtrack createSoundtrack(MultipartFile audio, MultipartFile image,Soundtrack soundtrack, Integer playlistId) {
-        Album album = playlistRepository.findById(playlistId)
+        Album album = albumRepository.findById(playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
         Anime anime = album.getAnime();
         String fileName = "%s/audio/%s".formatted(anime.getFolderName(),soundtrack.getAnimeTitle());

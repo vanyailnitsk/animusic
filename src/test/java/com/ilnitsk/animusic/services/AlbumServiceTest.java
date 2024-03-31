@@ -1,8 +1,8 @@
 package com.ilnitsk.animusic.services;
 
 import com.ilnitsk.animusic.album.Album;
+import com.ilnitsk.animusic.album.AlbumRepository;
 import com.ilnitsk.animusic.album.AlbumService;
-import com.ilnitsk.animusic.album.PlaylistRepository;
 import com.ilnitsk.animusic.album.dto.CreatePlaylistRequest;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
@@ -30,13 +30,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class AlbumServiceTest {
     @Mock
-    private PlaylistRepository playlistRepository;
+    private AlbumRepository albumRepository;
     @Mock
     private AnimeRepository animeRepository;
     private AlbumService underTest;
     @BeforeEach
     void setUp() {
-        underTest = new AlbumService(playlistRepository, animeRepository, null);
+        underTest = new AlbumService(albumRepository, animeRepository, null);
     }
 
     @Test
@@ -50,11 +50,11 @@ class AlbumServiceTest {
                 "Endings",
                 "/"
         );
-        given(playlistRepository.existsByNameAndAnimeId(request.getName(),1))
+        given(albumRepository.existsByNameAndAnimeId(request.getName(),1))
                 .willReturn(false);
         underTest.createPlaylist(request);
         ArgumentCaptor<Album> playlistArgumentCaptor = ArgumentCaptor.forClass(Album.class);
-        verify(playlistRepository).save(playlistArgumentCaptor.capture());
+        verify(albumRepository).save(playlistArgumentCaptor.capture());
         Album album = playlistArgumentCaptor.getValue();
         assertThat(album.getAnime()).isEqualTo(anime);
         assertThat(album.getName()).isEqualTo(request.getName());
@@ -80,7 +80,7 @@ class AlbumServiceTest {
         anime.setId(1);
         when(animeRepository.findById(1)).thenReturn(Optional.of(anime));
 
-        when(playlistRepository.existsByNameAndAnimeId("Test Playlist", 1)).thenReturn(true);
+        when(albumRepository.existsByNameAndAnimeId("Test Playlist", 1)).thenReturn(true);
 
         assertThatThrownBy(() -> underTest.createPlaylist(request))
                 .isInstanceOf(BadRequestException.class)
@@ -106,22 +106,22 @@ class AlbumServiceTest {
                 .anime(anime)
                 .soundtracks(new ArrayList<>())
                 .build();
-        given(playlistRepository.getPlaylistsByAnimeId(1)).willReturn(
+        given(albumRepository.getPlaylistsByAnimeId(1)).willReturn(
                 Optional.of(List.of(album1, album2)));
         List<Album> albums = underTest.getPlaylistsByAnimeId(1);
-        verify(playlistRepository).getPlaylistsByAnimeId(1);
+        verify(albumRepository).getPlaylistsByAnimeId(1);
         assertThat(albums).isNotEmpty();
         assertThat(albums).isEqualTo(List.of(album1, album2));
     }
 
     @Test
     void getPlaylistsByAnimeIdWithNonExistingAnime() {
-        given(playlistRepository.getPlaylistsByAnimeId(1)).willReturn(
+        given(albumRepository.getPlaylistsByAnimeId(1)).willReturn(
                 Optional.empty());
         assertThatThrownBy(() -> underTest.getPlaylistsByAnimeId(1))
                 .isInstanceOf(AnimeNotFoundException.class)
                 .hasMessageContaining("Anime with id 1 not found");
-        verify(playlistRepository).getPlaylistsByAnimeId(1);
+        verify(albumRepository).getPlaylistsByAnimeId(1);
     }
 
     @Test
@@ -133,9 +133,9 @@ class AlbumServiceTest {
                 .anime(anime)
                 .soundtracks(new ArrayList<>())
                 .build();
-        given(playlistRepository.findById(1)).willReturn(Optional.of(album));
+        given(albumRepository.findById(1)).willReturn(Optional.of(album));
         Album provided = underTest.getPlaylistById(1);
-        verify(playlistRepository).findById(1);
+        verify(albumRepository).findById(1);
         assertThat(provided).isEqualTo(album);
     }
 
@@ -147,6 +147,6 @@ class AlbumServiceTest {
                 .soundtracks(new ArrayList<>())
                 .build();
         underTest.deletePlaylist(1);
-        verify(playlistRepository).deleteById(1);
+        verify(albumRepository).deleteById(1);
     }
 }

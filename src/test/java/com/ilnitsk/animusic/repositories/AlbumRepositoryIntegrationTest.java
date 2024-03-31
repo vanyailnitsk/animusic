@@ -2,7 +2,7 @@ package com.ilnitsk.animusic.repositories;
 
 
 import com.ilnitsk.animusic.album.Album;
-import com.ilnitsk.animusic.album.PlaylistRepository;
+import com.ilnitsk.animusic.album.AlbumRepository;
 import com.ilnitsk.animusic.album.dto.CreatePlaylistRequest;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
@@ -21,7 +21,7 @@ public class AlbumRepositoryIntegrationTest {
 
 
     @Autowired
-    private PlaylistRepository playlistRepository;
+    private AlbumRepository albumRepository;
 
     @Autowired
     private SoundtrackRepository soundtrackRepository;
@@ -41,10 +41,10 @@ public class AlbumRepositoryIntegrationTest {
         );
         Album album = request.getPlaylistData();
         album.setAnime(anime);
-        Album createdAlbum = playlistRepository.save(album);
+        Album createdAlbum = albumRepository.save(album);
         assertThat(createdAlbum).isNotNull();
         assertThat(createdAlbum.getAnime()).isNotNull();
-        assertThat(playlistRepository.getPlaylistsByAnimeId(1)).isNotEmpty();
+        assertThat(albumRepository.getPlaylistsByAnimeId(1)).isNotEmpty();
         assertThat(createdAlbum).isEqualTo(album);
         assertThat(createdAlbum.getSoundtracks()).isNull();
     }
@@ -70,12 +70,12 @@ public class AlbumRepositoryIntegrationTest {
         soundtrackRepository.save(soundtrack2);
         album.addSoundtrack(soundtrack1);
         album.addSoundtrack(soundtrack2);
-        playlistRepository.save(album);
-        Album createdAlbum = playlistRepository.findById(album.getId()).get();
+        albumRepository.save(album);
+        Album createdAlbum = albumRepository.findById(album.getId()).get();
         assertThat(createdAlbum.getSoundtracks()).hasSize(2);
-        playlistRepository.deleteById(album.getId());
+        albumRepository.deleteById(album.getId());
         Soundtrack afterDelete = soundtrackRepository.findById(1).get();
-        assertThat(playlistRepository.findById(1)).isEmpty();
+        assertThat(albumRepository.findById(1)).isEmpty();
         assertThat(afterDelete).isNotNull();
         assertThat(afterDelete.getAlbum()).isNull();
         assertThat(animeRepository.findById(1)).isNotNull();

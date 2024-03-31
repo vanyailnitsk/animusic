@@ -19,13 +19,13 @@ import java.util.Optional;
 
 @Service
 public class AlbumService {
-    private final PlaylistRepository playlistRepository;
+    private final AlbumRepository albumRepository;
     private final AnimeRepository animeRepository;
     private final AnimeService animeService;
 
     @Autowired
-    public AlbumService(PlaylistRepository playlistRepository, AnimeRepository animeRepository, AnimeService animeService) {
-        this.playlistRepository = playlistRepository;
+    public AlbumService(AlbumRepository albumRepository, AnimeRepository animeRepository, AnimeService animeService) {
+        this.albumRepository = albumRepository;
         this.animeRepository = animeRepository;
         this.animeService = animeService;
     }
@@ -36,19 +36,19 @@ public class AlbumService {
             throw new AnimeNotFoundException(request.getAnimeId());
         }
         Anime anime = animeOptional.get();
-        if (playlistRepository.existsByNameAndAnimeId(request.getName(),request.getAnimeId())) {
+        if (albumRepository.existsByNameAndAnimeId(request.getName(),request.getAnimeId())) {
             throw new BadRequestException(
                     "Playlist " + request.getName() + " in anime " +anime.getTitle()+" already exists"
             );
         }
         Album album = request.getPlaylistData();
         album.setAnime(anime);
-        playlistRepository.save(album);
+        albumRepository.save(album);
         return album;
     }
 
     public List<Album> getPlaylistsByAnimeId(Integer animeId) {
-        Optional<List<Album>> playlists = playlistRepository.getPlaylistsByAnimeId(animeId);
+        Optional<List<Album>> playlists = albumRepository.getPlaylistsByAnimeId(animeId);
         if (playlists.isEmpty()) {
             throw new AnimeNotFoundException(animeId);
         }
@@ -56,7 +56,7 @@ public class AlbumService {
     }
 
     public Album getPlaylistById(Integer id) {
-        Optional<Album> entity = playlistRepository.findById(id);
+        Optional<Album> entity = albumRepository.findById(id);
         if (entity.isEmpty()) {
             throw new PlaylistNotFoundException(id);
         }
@@ -87,18 +87,18 @@ public class AlbumService {
 
 
     public ResponseEntity<byte[]> getBanner(Integer playlistId) {
-        Album album = playlistRepository.findById(playlistId)
+        Album album = albumRepository.findById(playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
         return animeService.getBanner(album.getAnime().getId());
     }
 
     public void deletePlaylist(Integer id) {
-        playlistRepository.deleteById(id);
+        albumRepository.deleteById(id);
     }
 
     @Transactional
     public Album updatePlaylist(UpdatePlaylistDto playlistDto, Integer playlistId) {
-        return playlistRepository.findById(playlistId).map(
+        return albumRepository.findById(playlistId).map(
                 playlist -> {
                     playlist.setName(playlistDto.getName());
                     playlist.setImageUrl(playlistDto.getImageUrl());

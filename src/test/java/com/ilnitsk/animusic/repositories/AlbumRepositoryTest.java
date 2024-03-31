@@ -1,7 +1,7 @@
 package com.ilnitsk.animusic.repositories;
 
 import com.ilnitsk.animusic.album.Album;
-import com.ilnitsk.animusic.album.PlaylistRepository;
+import com.ilnitsk.animusic.album.AlbumRepository;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
 import org.junit.jupiter.api.Test;
@@ -14,11 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class AlbumRepositoryTest {
-    private PlaylistRepository underTest;
+    private AlbumRepository underTest;
     private AnimeRepository animeRepository;
 
     @Autowired
-    public AlbumRepositoryTest(PlaylistRepository underTest, AnimeRepository animeRepository) {
+    public AlbumRepositoryTest(AlbumRepository underTest, AnimeRepository animeRepository) {
         this.underTest = underTest;
         this.animeRepository = animeRepository;
     }
