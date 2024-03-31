@@ -8,13 +8,13 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table
+@Table(name = "playlist_soundtrack")
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class UserPlaylistSoundtrack {
+public class PlaylistSoundtrack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

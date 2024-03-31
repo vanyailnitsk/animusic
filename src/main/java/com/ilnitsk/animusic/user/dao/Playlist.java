@@ -23,5 +23,5 @@ public class Playlist {
     @JsonIgnore
     private User user;
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL)
-    private List<UserPlaylistSoundtrack> soundtracks;
+    private List<PlaylistSoundtrack> soundtracks;
 }

@@ -4,8 +4,8 @@ import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.soundtrack.Soundtrack;
 import com.ilnitsk.animusic.soundtrack.SoundtrackRepository;
 import com.ilnitsk.animusic.user.dao.Playlist;
+import com.ilnitsk.animusic.user.dao.PlaylistSoundtrack;
 import com.ilnitsk.animusic.user.dao.User;
-import com.ilnitsk.animusic.user.dao.UserPlaylistSoundtrack;
 import com.ilnitsk.animusic.user.repository.UserPlaylistRepository;
 import com.ilnitsk.animusic.user.repository.UserPlaylistSoundtrackRepository;
 import com.ilnitsk.animusic.user.repository.UserRepository;
@@ -55,7 +55,7 @@ public class UserMediaLibraryService {
         Soundtrack soundtrack = soundtrackRepository.findById(trackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(trackId));
         if (!userPlaylistSoundtrackRepository.playlistAlreadyContainsSoundtrack(playlist.getId(),soundtrack.getId())) {
-            UserPlaylistSoundtrack playlistSoundtrack = UserPlaylistSoundtrack.builder()
+            PlaylistSoundtrack playlistSoundtrack = PlaylistSoundtrack.builder()
                     .playlist(playlist)
                     .soundtrack(soundtrack)
                     .addedAt(LocalDateTime.now())
