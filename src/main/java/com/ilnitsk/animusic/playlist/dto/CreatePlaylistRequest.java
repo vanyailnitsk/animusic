@@ -1,6 +1,6 @@
 package com.ilnitsk.animusic.playlist.dto;
 
-import com.ilnitsk.animusic.playlist.Playlist;
+import com.ilnitsk.animusic.playlist.Album;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,8 +12,8 @@ public class CreatePlaylistRequest {
     private Integer animeId;
     private String name;
     private String imageUrl;
-    public Playlist getPlaylistData() {
-        return Playlist.builder()
+    public Album getPlaylistData() {
+        return Album.builder()
                 .name(name)
                 .imageUrl(imageUrl)
                 .build();

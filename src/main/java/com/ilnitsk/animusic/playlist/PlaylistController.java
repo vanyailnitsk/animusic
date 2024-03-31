@@ -35,8 +35,8 @@ public class PlaylistController {
     })
     public List<PlaylistDto> getPlaylistsByAnime(@RequestParam("animeId") Integer animeId) {
         log.info("Requested playlists by anime {}", animeId);
-        List<Playlist> playlists = playlistService.getPlaylistsByAnimeId(animeId);
-        List<PlaylistDto> playlistDtos = playlistConverter.convertListToDto(playlists);
+        List<Album> albums = playlistService.getPlaylistsByAnimeId(animeId);
+        List<PlaylistDto> playlistDtos = playlistConverter.convertListToDto(albums);
         playlistDtos.forEach(s -> s.setLink("/api/playlist/"+s.getId()));
         return playlistDtos;
     }
@@ -50,8 +50,8 @@ public class PlaylistController {
     })
     public PlaylistDto getPlaylistById(@PathVariable Integer id, HttpServletRequest request) {
         log.info("Requested playlist with id {}", id);
-        Playlist playlist = playlistService.getPlaylistById(id);
-        PlaylistDto playlistDto = playlistConverter.convertToDto(playlist);
+        Album album = playlistService.getPlaylistById(id);
+        PlaylistDto playlistDto = playlistConverter.convertToDto(album);
         playlistDto.setLink(request.getRequestURI());
         return playlistDto;
     }
@@ -68,11 +68,11 @@ public class PlaylistController {
             @ApiResponse(responseCode = "400", description = "Альбом уже существует"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public Playlist createPlaylist(@RequestBody CreatePlaylistRequest request) {
-        Playlist playlist = playlistService.createPlaylist(request);
+    public Album createPlaylist(@RequestBody CreatePlaylistRequest request) {
+        Album album = playlistService.createPlaylist(request);
 
         log.info("Playlist {} in anime {} created",request.getName(),request.getAnimeId());
-        return playlist;
+        return album;
     }
 
     @PutMapping("{playlistId}")
@@ -82,8 +82,8 @@ public class PlaylistController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден")
     })
     public PlaylistDto updatePlaylist(@RequestBody UpdatePlaylistDto playlistDto, @PathVariable Integer playlistId) {
-        Playlist playlist = playlistService.updatePlaylist(playlistDto,playlistId);
-        PlaylistDto newPlaylistDto = playlistConverter.convertToDto(playlist);
+        Album album = playlistService.updatePlaylist(playlistDto,playlistId);
+        PlaylistDto newPlaylistDto = playlistConverter.convertToDto(album);
         log.info("Playlist id={} updated successfully",playlistId);
         return newPlaylistDto;
     }

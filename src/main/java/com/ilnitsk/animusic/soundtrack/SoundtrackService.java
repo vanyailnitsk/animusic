@@ -8,7 +8,7 @@ import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.file.FileService;
 import com.ilnitsk.animusic.image.ImageService;
-import com.ilnitsk.animusic.playlist.Playlist;
+import com.ilnitsk.animusic.playlist.Album;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
 import com.ilnitsk.animusic.s3.S3Service;
 import com.ilnitsk.animusic.soundtrack.dto.UpdateSoundtrackDto;
@@ -81,9 +81,9 @@ public class SoundtrackService {
     }
     @Transactional(timeout = 30)
     public Soundtrack createSoundtrack(MultipartFile audio, MultipartFile image,Soundtrack soundtrack, Integer playlistId) {
-        Playlist playlist = playlistRepository.findById(playlistId)
+        Album album = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
-        Anime anime = playlist.getAnime();
+        Anime anime = album.getAnime();
         String fileName = "%s/audio/%s".formatted(anime.getFolderName(),soundtrack.getAnimeTitle());
         String blobKey = s3Service.createBlob(fileName,audio);
         soundtrack.setAnime(anime);
@@ -92,7 +92,7 @@ public class SoundtrackService {
             createImage(soundtrack,image);
         }
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
-        playlist.addSoundtrack(soundtrack);
+        album.addSoundtrack(soundtrack);
         log.info("Soundtrack {} created successfully",blobKey);
         return savedSoundtrack;
     }

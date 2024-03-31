@@ -30,7 +30,7 @@ public class PlaylistService {
         this.animeService = animeService;
     }
 
-    public Playlist createPlaylist(CreatePlaylistRequest request) {
+    public Album createPlaylist(CreatePlaylistRequest request) {
         Optional<Anime> animeOptional = animeRepository.findById(request.getAnimeId());
         if (animeOptional.isEmpty()) {
             throw new AnimeNotFoundException(request.getAnimeId());
@@ -41,32 +41,32 @@ public class PlaylistService {
                     "Playlist " + request.getName() + " in anime " +anime.getTitle()+" already exists"
             );
         }
-        Playlist playlist = request.getPlaylistData();
-        playlist.setAnime(anime);
-        playlistRepository.save(playlist);
-        return playlist;
+        Album album = request.getPlaylistData();
+        album.setAnime(anime);
+        playlistRepository.save(album);
+        return album;
     }
 
-    public List<Playlist> getPlaylistsByAnimeId(Integer animeId) {
-        Optional<List<Playlist>> playlists = playlistRepository.getPlaylistsByAnimeId(animeId);
+    public List<Album> getPlaylistsByAnimeId(Integer animeId) {
+        Optional<List<Album>> playlists = playlistRepository.getPlaylistsByAnimeId(animeId);
         if (playlists.isEmpty()) {
             throw new AnimeNotFoundException(animeId);
         }
         return playlists.get();
     }
 
-    public Playlist getPlaylistById(Integer id) {
-        Optional<Playlist> entity = playlistRepository.findById(id);
+    public Album getPlaylistById(Integer id) {
+        Optional<Album> entity = playlistRepository.findById(id);
         if (entity.isEmpty()) {
             throw new PlaylistNotFoundException(id);
         }
-        Playlist playlist = entity.get();
-        String animeTitle = playlist.getAnime().getTitle();
-        playlist.getSoundtracks()
+        Album album = entity.get();
+        String animeTitle = album.getAnime().getTitle();
+        album.getSoundtracks()
                 .forEach(s -> s.setAnimeName(animeTitle));
-        String playlistName = playlist.getName();
+        String playlistName = album.getName();
         if (playlistName.equals("Openings") || playlistName.equals("Endings")) {
-            playlist.getSoundtracks().sort(Comparator.comparingInt(
+            album.getSoundtracks().sort(Comparator.comparingInt(
                     a -> {
                         String title = a.getAnimeTitle();
                         if (title.matches(".*\\d+-\\d+.*")) {
@@ -87,9 +87,9 @@ public class PlaylistService {
 
 
     public ResponseEntity<byte[]> getBanner(Integer playlistId) {
-        Playlist playlist = playlistRepository.findById(playlistId)
+        Album album = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
-        return animeService.getBanner(playlist.getAnime().getId());
+        return animeService.getBanner(album.getAnime().getId());
     }
 
     public void deletePlaylist(Integer id) {
@@ -97,7 +97,7 @@ public class PlaylistService {
     }
 
     @Transactional
-    public Playlist updatePlaylist(UpdatePlaylistDto playlistDto,Integer playlistId) {
+    public Album updatePlaylist(UpdatePlaylistDto playlistDto, Integer playlistId) {
         return playlistRepository.findById(playlistId).map(
                 playlist -> {
                     playlist.setName(playlistDto.getName());

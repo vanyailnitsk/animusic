@@ -4,7 +4,7 @@ import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
-import com.ilnitsk.animusic.playlist.Playlist;
+import com.ilnitsk.animusic.playlist.Album;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
 import com.ilnitsk.animusic.playlist.PlaylistService;
 import com.ilnitsk.animusic.playlist.dto.CreatePlaylistRequest;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class PlaylistServiceTest {
+class AlbumServiceTest {
     @Mock
     private PlaylistRepository playlistRepository;
     @Mock
@@ -53,12 +53,12 @@ class PlaylistServiceTest {
         given(playlistRepository.existsByNameAndAnimeId(request.getName(),1))
                 .willReturn(false);
         underTest.createPlaylist(request);
-        ArgumentCaptor<Playlist> playlistArgumentCaptor = ArgumentCaptor.forClass(Playlist.class);
+        ArgumentCaptor<Album> playlistArgumentCaptor = ArgumentCaptor.forClass(Album.class);
         verify(playlistRepository).save(playlistArgumentCaptor.capture());
-        Playlist playlist = playlistArgumentCaptor.getValue();
-        assertThat(playlist.getAnime()).isEqualTo(anime);
-        assertThat(playlist.getName()).isEqualTo(request.getName());
-        assertThat(playlist.getImageUrl()).isEqualTo(request.getImageUrl());
+        Album album = playlistArgumentCaptor.getValue();
+        assertThat(album.getAnime()).isEqualTo(anime);
+        assertThat(album.getName()).isEqualTo(request.getName());
+        assertThat(album.getImageUrl()).isEqualTo(request.getImageUrl());
     }
 
     @Test
@@ -94,24 +94,24 @@ class PlaylistServiceTest {
     void getPlaylistsByAnimeId() {
         Anime anime = new Anime();
         anime.setId(1);
-        Playlist playlist1 = Playlist.builder()
+        Album album1 = Album.builder()
                 .id(1)
                 .name("mock")
                 .anime(anime)
                 .soundtracks(new ArrayList<>())
                 .build();
-        Playlist playlist2 = Playlist.builder()
+        Album album2 = Album.builder()
                 .id(2)
                 .name("mock1")
                 .anime(anime)
                 .soundtracks(new ArrayList<>())
                 .build();
         given(playlistRepository.getPlaylistsByAnimeId(1)).willReturn(
-                Optional.of(List.of(playlist1,playlist2)));
-        List<Playlist> playlists = underTest.getPlaylistsByAnimeId(1);
+                Optional.of(List.of(album1, album2)));
+        List<Album> albums = underTest.getPlaylistsByAnimeId(1);
         verify(playlistRepository).getPlaylistsByAnimeId(1);
-        assertThat(playlists).isNotEmpty();
-        assertThat(playlists).isEqualTo(List.of(playlist1,playlist2));
+        assertThat(albums).isNotEmpty();
+        assertThat(albums).isEqualTo(List.of(album1, album2));
     }
 
     @Test
@@ -127,21 +127,21 @@ class PlaylistServiceTest {
     @Test
     void getPlaylistById() {
         Anime anime = new Anime("Naruto","mock", Year.of(2002),"","");
-        Playlist playlist = Playlist.builder()
+        Album album = Album.builder()
                 .id(1)
                 .name("mock")
                 .anime(anime)
                 .soundtracks(new ArrayList<>())
                 .build();
-        given(playlistRepository.findById(1)).willReturn(Optional.of(playlist));
-        Playlist provided = underTest.getPlaylistById(1);
+        given(playlistRepository.findById(1)).willReturn(Optional.of(album));
+        Album provided = underTest.getPlaylistById(1);
         verify(playlistRepository).findById(1);
-        assertThat(provided).isEqualTo(playlist);
+        assertThat(provided).isEqualTo(album);
     }
 
     @Test
     void deletePlaylist() {
-        Playlist playlist1 = Playlist.builder()
+        Album album1 = Album.builder()
                 .id(1)
                 .name("mock")
                 .soundtracks(new ArrayList<>())

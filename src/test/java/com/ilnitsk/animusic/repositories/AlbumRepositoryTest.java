@@ -2,7 +2,7 @@ package com.ilnitsk.animusic.repositories;
 
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
-import com.ilnitsk.animusic.playlist.Playlist;
+import com.ilnitsk.animusic.playlist.Album;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +13,12 @@ import java.time.Year;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class PlaylistRepositoryTest {
+class AlbumRepositoryTest {
     private PlaylistRepository underTest;
     private AnimeRepository animeRepository;
 
     @Autowired
-    public PlaylistRepositoryTest(PlaylistRepository underTest,AnimeRepository animeRepository) {
+    public AlbumRepositoryTest(PlaylistRepository underTest, AnimeRepository animeRepository) {
         this.underTest = underTest;
         this.animeRepository = animeRepository;
     }
@@ -28,12 +28,12 @@ class PlaylistRepositoryTest {
         String title = "Naruto";
         Anime anime = new Anime(title,"mock", Year.of(2002),"","");
         animeRepository.save(anime);
-        Playlist playlist = Playlist.builder()
+        Album album = Album.builder()
                 .name("Openings")
                 .anime(anime)
                 .build();
-        underTest.save(playlist);
-        boolean provided = underTest.existsByNameAndAnimeId(playlist.getName(),anime.getId());
+        underTest.save(album);
+        boolean provided = underTest.existsByNameAndAnimeId(album.getName(),anime.getId());
         assertThat(provided).isTrue();
     }
     @Test
@@ -41,11 +41,11 @@ class PlaylistRepositoryTest {
         String title = "Naruto";
         Anime anime = new Anime(title,"mock", Year.of(2002),"","");
         animeRepository.save(anime);
-        Playlist playlist = Playlist.builder()
+        Album album = Album.builder()
                 .name("Openings")
                 .anime(anime)
                 .build();
-        underTest.save(playlist);
+        underTest.save(album);
         boolean provided = underTest.existsByNameAndAnimeId("Not existed",anime.getId());
         assertThat(provided).isFalse();
     }
@@ -54,12 +54,12 @@ class PlaylistRepositoryTest {
         String title = "Naruto";
         Anime anime = new Anime(title,"mock", Year.of(2002),"","");
         animeRepository.save(anime);
-        Playlist playlist = Playlist.builder()
+        Album album = Album.builder()
                 .name("Openings")
                 .anime(anime)
                 .build();
-        underTest.save(playlist);
-        boolean provided = underTest.existsByNameAndAnimeId(playlist.getName(),100500);
+        underTest.save(album);
+        boolean provided = underTest.existsByNameAndAnimeId(album.getName(),100500);
         assertThat(provided).isFalse();
     }
 }

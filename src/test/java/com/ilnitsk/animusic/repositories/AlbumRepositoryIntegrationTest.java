@@ -3,7 +3,7 @@ package com.ilnitsk.animusic.repositories;
 
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
-import com.ilnitsk.animusic.playlist.Playlist;
+import com.ilnitsk.animusic.playlist.Album;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
 import com.ilnitsk.animusic.playlist.dto.CreatePlaylistRequest;
 import com.ilnitsk.animusic.soundtrack.Soundtrack;
@@ -17,7 +17,7 @@ import java.time.Year;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-public class PlaylistRepositoryIntegrationTest {
+public class AlbumRepositoryIntegrationTest {
 
 
     @Autowired
@@ -39,23 +39,23 @@ public class PlaylistRepositoryIntegrationTest {
                 "My Playlist",
                 "/"
         );
-        Playlist playlist = request.getPlaylistData();
-        playlist.setAnime(anime);
-        Playlist createdPlaylist = playlistRepository.save(playlist);
-        assertThat(createdPlaylist).isNotNull();
-        assertThat(createdPlaylist.getAnime()).isNotNull();
+        Album album = request.getPlaylistData();
+        album.setAnime(anime);
+        Album createdAlbum = playlistRepository.save(album);
+        assertThat(createdAlbum).isNotNull();
+        assertThat(createdAlbum.getAnime()).isNotNull();
         assertThat(playlistRepository.getPlaylistsByAnimeId(1)).isNotEmpty();
-        assertThat(createdPlaylist).isEqualTo(playlist);
-        assertThat(createdPlaylist.getSoundtracks()).isNull();
+        assertThat(createdAlbum).isEqualTo(album);
+        assertThat(createdAlbum.getSoundtracks()).isNull();
     }
 
     @Test
     public void testDeletePlaylistWithRelatedEntities() {
         Anime anime = new Anime("Naruto", "mock", Year.of(2002), "", "");
         animeRepository.save(anime);
-        Playlist playlist = new Playlist();
-        playlist.setAnime(anime);
-        playlist.setName("My Playlist");
+        Album album = new Album();
+        album.setAnime(anime);
+        album.setName("My Playlist");
         Soundtrack soundtrack1 = Soundtrack.builder()
                 .animeTitle("Song 1")
                 .anime(anime)
@@ -68,16 +68,16 @@ public class PlaylistRepositoryIntegrationTest {
                 .build();
         soundtrack2.setAnime(anime);
         soundtrackRepository.save(soundtrack2);
-        playlist.addSoundtrack(soundtrack1);
-        playlist.addSoundtrack(soundtrack2);
-        playlistRepository.save(playlist);
-        Playlist createdPlaylist = playlistRepository.findById(playlist.getId()).get();
-        assertThat(createdPlaylist.getSoundtracks()).hasSize(2);
-        playlistRepository.deleteById(playlist.getId());
+        album.addSoundtrack(soundtrack1);
+        album.addSoundtrack(soundtrack2);
+        playlistRepository.save(album);
+        Album createdAlbum = playlistRepository.findById(album.getId()).get();
+        assertThat(createdAlbum.getSoundtracks()).hasSize(2);
+        playlistRepository.deleteById(album.getId());
         Soundtrack afterDelete = soundtrackRepository.findById(1).get();
         assertThat(playlistRepository.findById(1)).isEmpty();
         assertThat(afterDelete).isNotNull();
-        assertThat(afterDelete.getPlaylists()).isNull();
+        assertThat(afterDelete.getAlbums()).isNull();
         assertThat(animeRepository.findById(1)).isNotNull();
     }
 }

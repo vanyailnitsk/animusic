@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "album")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
 @ToString
-public class Playlist {
+public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

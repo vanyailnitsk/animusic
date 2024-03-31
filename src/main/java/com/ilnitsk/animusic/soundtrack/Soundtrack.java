@@ -3,7 +3,7 @@ package com.ilnitsk.animusic.soundtrack;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ilnitsk.animusic.anime.Anime;
-import com.ilnitsk.animusic.playlist.Playlist;
+import com.ilnitsk.animusic.playlist.Album;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -45,7 +45,7 @@ public class Soundtrack {
             foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
             inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
     @JsonBackReference
-    private List<Playlist> playlists = new ArrayList<>();
+    private List<Album> albums = new ArrayList<>();
 
     public Soundtrack(String originalTitle, String animeTitle) {
         this.originalTitle = originalTitle;

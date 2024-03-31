@@ -1,0 +1,1 @@
+ALTER TABLE playlist RENAME TO album;

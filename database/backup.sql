@@ -81,10 +81,10 @@ CREATE SEQUENCE public.image_seq
 
 
 --
--- Name: playlist; Type: TABLE; Schema: public; Owner: -
+-- Name: album; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.playlist (
+CREATE TABLE public.album (
     id bigint NOT NULL,
     image_url character varying(255),
     name character varying(255),
@@ -108,7 +108,7 @@ CREATE SEQUENCE public.playlist_id_seq
 -- Name: playlist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.playlist_id_seq OWNED BY public.playlist.id;
+ALTER SEQUENCE public.playlist_id_seq OWNED BY public.album.id;
 
 
 --
@@ -160,10 +160,10 @@ CREATE SEQUENCE public.soundtrack_seq
 
 
 --
--- Name: playlist id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: album id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.playlist ALTER COLUMN id SET DEFAULT nextval('public.playlist_id_seq'::regclass);
+ALTER TABLE ONLY public.album ALTER COLUMN id SET DEFAULT nextval('public.playlist_id_seq'::regclass);
 
 
 --
@@ -187,10 +187,10 @@ COPY public.anime (id, description, folder_name, release_year, studio, title, ba
 
 
 --
--- Data for Name: playlist; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: album; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.playlist (id, image_url, name, anime_id) FROM stdin;
+COPY public.album (id, image_url, name, anime_id) FROM stdin;
 102	/	Openings	1
 105	/	Openings	2
 109	/	Openings	3
@@ -375,10 +375,10 @@ ALTER TABLE ONLY public.anime
 
 
 --
--- Name: playlist playlist_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: album playlist_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.playlist
+ALTER TABLE ONLY public.album
     ADD CONSTRAINT playlist_pkey PRIMARY KEY (id);
 
 
@@ -411,7 +411,7 @@ ALTER TABLE ONLY public.anime
 --
 
 ALTER TABLE ONLY public.playlist_soundtrack
-    ADD CONSTRAINT fk_playlist FOREIGN KEY (playlist_id) REFERENCES public.playlist(id);
+    ADD CONSTRAINT fk_playlist FOREIGN KEY (playlist_id) REFERENCES public.album(id);
 
 
 --
@@ -431,10 +431,10 @@ ALTER TABLE ONLY public.soundtrack
 
 
 --
--- Name: playlist fkme5db1cotvt9moswpurta3xk3; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: album fkme5db1cotvt9moswpurta3xk3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.playlist
+ALTER TABLE ONLY public.album
     ADD CONSTRAINT fkme5db1cotvt9moswpurta3xk3 FOREIGN KEY (anime_id) REFERENCES public.anime(id);
 
 
