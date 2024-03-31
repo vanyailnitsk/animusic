@@ -7,9 +7,6 @@ import com.ilnitsk.animusic.playlist.Album;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -34,18 +31,10 @@ public class Soundtrack {
     @JsonProperty("animeName")
     private String animeName;
     private Integer duration;
-    @ManyToMany
-    @JoinTable(name = "playlist_soundtrack",
-            inverseJoinColumns = @JoinColumn(name = "playlist_id",
-                    nullable = false,
-                    updatable = false),
-            joinColumns = @JoinColumn(name = "soundtrack_id",
-                    nullable = false,
-                    updatable = false),
-            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
-            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "album_id", nullable = false)
     @JsonBackReference
-    private List<Album> albums = new ArrayList<>();
+    private Album album;
 
     public Soundtrack(String originalTitle, String animeTitle) {
         this.originalTitle = originalTitle;
