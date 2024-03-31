@@ -9,7 +9,6 @@ import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.anime.AnimeService;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
-import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class AlbumService {
         this.animeService = animeService;
     }
 
-    public Album createPlaylist(CreateAlbumRequest request) {
+    public Album createAlbum(CreateAlbumRequest request) {
         Optional<Anime> animeOptional = animeRepository.findById(request.getAnimeId());
         if (animeOptional.isEmpty()) {
             throw new AnimeNotFoundException(request.getAnimeId());
@@ -40,34 +39,34 @@ public class AlbumService {
         Anime anime = animeOptional.get();
         if (albumRepository.existsByNameAndAnimeId(request.getName(),request.getAnimeId())) {
             throw new BadRequestException(
-                    "Playlist " + request.getName() + " in anime " +anime.getTitle()+" already exists"
+                    "Album " + request.getName() + " in anime " +anime.getTitle()+" already exists"
             );
         }
-        Album album = request.getPlaylistData();
+        Album album = request.getAlbumData();
         album.setAnime(anime);
         albumRepository.save(album);
         return album;
     }
 
-    public List<Album> getPlaylistsByAnimeId(Integer animeId) {
-        Optional<List<Album>> playlists = albumRepository.getPlaylistsByAnimeId(animeId);
-        if (playlists.isEmpty()) {
+    public List<Album> getAlbumsByAnimeId(Integer animeId) {
+        Optional<List<Album>> albums = albumRepository.getAlbumsByAnimeId(animeId);
+        if (albums.isEmpty()) {
             throw new AnimeNotFoundException(animeId);
         }
-        return playlists.get();
+        return albums.get();
     }
 
-    public Album getPlaylistById(Integer id) {
+    public Album getAlbumById(Integer id) {
         Optional<Album> entity = albumRepository.findById(id);
         if (entity.isEmpty()) {
-            throw new PlaylistNotFoundException(id);
+            throw new AlbumNotFoundException(id);
         }
         Album album = entity.get();
         String animeTitle = album.getAnime().getTitle();
         album.getSoundtracks()
                 .forEach(s -> s.setAnimeName(animeTitle));
-        String playlistName = album.getName();
-        if (playlistName.equals("Openings") || playlistName.equals("Endings")) {
+        String albumName = album.getName();
+        if (albumName.equals("Openings") || albumName.equals("Endings")) {
             album.getSoundtracks().sort(Comparator.comparingInt(
                     a -> {
                         String title = a.getAnimeTitle();
@@ -88,25 +87,25 @@ public class AlbumService {
     }
 
 
-    public ResponseEntity<byte[]> getBanner(Integer playlistId) {
-        Album album = albumRepository.findById(playlistId)
-                .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
+    public ResponseEntity<byte[]> getBanner(Integer albumId) {
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> new AlbumNotFoundException(albumId));
         return animeService.getBanner(album.getAnime().getId());
     }
 
-    public void deletePlaylist(Integer id) {
+    public void deleteAlbum(Integer id) {
         albumRepository.deleteById(id);
     }
 
     @Transactional
-    public Album updatePlaylist(UpdateAlbumDto playlistDto, Integer playlistId) {
-        return albumRepository.findById(playlistId).map(
-                playlist -> {
-                    playlist.setName(playlistDto.getName());
-                    playlist.setImageUrl(playlistDto.getImageUrl());
-                    return playlist;
+    public Album updateAlbum(UpdateAlbumDto albumDto, Integer albumId) {
+        return albumRepository.findById(albumId).map(
+                album -> {
+                    album.setName(albumDto.getName());
+                    album.setImageUrl(albumDto.getImageUrl());
+                    return album;
                 }
-        ).orElseThrow(() -> new PlaylistNotFoundException(playlistId));
+        ).orElseThrow(() -> new AlbumNotFoundException(albumId));
     }
 }
 
