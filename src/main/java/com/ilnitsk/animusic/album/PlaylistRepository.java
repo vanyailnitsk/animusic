@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.playlist;
+package com.ilnitsk.animusic.album;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

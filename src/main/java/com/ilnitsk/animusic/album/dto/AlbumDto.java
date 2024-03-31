@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.playlist.dto;
+package com.ilnitsk.animusic.album.dto;
 
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
 import lombok.Data;

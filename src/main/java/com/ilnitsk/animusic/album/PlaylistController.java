@@ -1,7 +1,7 @@
-package com.ilnitsk.animusic.playlist;
+package com.ilnitsk.animusic.album;
 
+import com.ilnitsk.animusic.album.dto.*;
 import com.ilnitsk.animusic.anime.AnimeRepository;
-import com.ilnitsk.animusic.playlist.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

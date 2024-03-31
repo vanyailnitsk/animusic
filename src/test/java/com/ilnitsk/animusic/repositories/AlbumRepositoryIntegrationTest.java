@@ -1,11 +1,11 @@
 package com.ilnitsk.animusic.repositories;
 
 
+import com.ilnitsk.animusic.album.Album;
+import com.ilnitsk.animusic.album.PlaylistRepository;
+import com.ilnitsk.animusic.album.dto.CreatePlaylistRequest;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
-import com.ilnitsk.animusic.playlist.Album;
-import com.ilnitsk.animusic.playlist.PlaylistRepository;
-import com.ilnitsk.animusic.playlist.dto.CreatePlaylistRequest;
 import com.ilnitsk.animusic.soundtrack.Soundtrack;
 import com.ilnitsk.animusic.soundtrack.SoundtrackRepository;
 import org.junit.jupiter.api.Test;
@@ -77,7 +77,7 @@ public class AlbumRepositoryIntegrationTest {
         Soundtrack afterDelete = soundtrackRepository.findById(1).get();
         assertThat(playlistRepository.findById(1)).isEmpty();
         assertThat(afterDelete).isNotNull();
-        assertThat(afterDelete.getAlbums()).isNull();
+        assertThat(afterDelete.getAlbum()).isNull();
         assertThat(animeRepository.findById(1)).isNotNull();
     }
 }
