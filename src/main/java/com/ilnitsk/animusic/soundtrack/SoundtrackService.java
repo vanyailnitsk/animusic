@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.soundtrack;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.exception.BadRequestException;
@@ -11,6 +12,7 @@ import com.ilnitsk.animusic.playlist.Playlist;
 import com.ilnitsk.animusic.playlist.PlaylistRepository;
 import com.ilnitsk.animusic.s3.S3Service;
 import com.ilnitsk.animusic.soundtrack.dto.UpdateSoundtrackDto;
+import com.ilnitsk.animusic.util.JsonMergePatchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -29,6 +31,7 @@ public class SoundtrackService {
     private final FileService fileService;
     private final ImageService imageService;
     private final S3Service s3Service;
+    private final JsonMergePatchService jsonMergePatchService;
 
     public Soundtrack getSoundtrack(Integer id) {
         return soundtrackRepository.findById(id)
@@ -151,5 +154,12 @@ public class SoundtrackService {
         String blobKey = s3Service.createBlob(fileName,audio);
         soundtrack.setAudioFile(blobKey);
         return soundtrack;
+    }
+
+    public Soundtrack updateSoundtrack(JsonNode patch, Integer soundtrackId) {
+        Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
+                .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
+        Soundtrack soundtrackPatched = jsonMergePatchService.mergePatch(patch,soundtrack,Soundtrack.class);
+        return soundtrackRepository.save(soundtrackPatched);
     }
 }

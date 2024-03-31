@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.soundtrack;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackConverter;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
@@ -62,6 +63,21 @@ public class SoundtrackController {
                                           @PathVariable Integer soundtrackId) {
         Soundtrack soundtrack = soundtrackService.updateSoundtrack(updateSoundtrackDto,soundtrackId);
         SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrack);
+        log.info("Soundtrack id={} updated successfully",soundtrackId);
+        return soundtrackDto;
+    }
+
+    @PatchMapping("{soundtrackId}")
+    @Operation(summary = "Метод для обновления саундтрека")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное обновление саундтрека"),
+            @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
+            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
+    })
+    public SoundtrackDto patchSoundtrack(@RequestBody JsonNode jsonPatch,
+                                         @PathVariable Integer soundtrackId) {
+        Soundtrack soundtrackPatched = soundtrackService.updateSoundtrack(jsonPatch,soundtrackId);
+        SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrackPatched);
         log.info("Soundtrack id={} updated successfully",soundtrackId);
         return soundtrackDto;
     }
