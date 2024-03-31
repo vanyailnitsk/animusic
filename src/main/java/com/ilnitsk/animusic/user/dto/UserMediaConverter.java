@@ -1,6 +1,6 @@
 package com.ilnitsk.animusic.user.dto;
 
-import com.ilnitsk.animusic.user.dao.UserPlaylist;
+import com.ilnitsk.animusic.user.dao.Playlist;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +11,13 @@ public class UserMediaConverter {
     public UserMediaConverter(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
 
-        modelMapper.createTypeMap(UserPlaylist.class, UserPlaylistDto.class)
-                .addMapping(UserPlaylist::getName, UserPlaylistDto::setName)
-                .addMapping(UserPlaylist::getSoundtracks, UserPlaylistDto::setSoundtracks);
+        modelMapper.createTypeMap(Playlist.class, UserPlaylistDto.class)
+                .addMapping(Playlist::getName, UserPlaylistDto::setName)
+                .addMapping(Playlist::getSoundtracks, UserPlaylistDto::setSoundtracks);
     }
 
-    public UserPlaylistDto convertToDto(UserPlaylist userPlaylist) {
-        return modelMapper.map(userPlaylist,UserPlaylistDto.class);
+    public UserPlaylistDto convertToDto(Playlist playlist) {
+        return modelMapper.map(playlist,UserPlaylistDto.class);
     }
 
 }

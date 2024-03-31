@@ -22,7 +22,7 @@ public class UserPlaylistSoundtrack {
     @ManyToOne
     @JoinColumn(name = "playlist_id")
     @JsonBackReference
-    private UserPlaylist playlist;
+    private Playlist playlist;
 
     @ManyToOne
     @JoinColumn(name = "soundtrack_id")

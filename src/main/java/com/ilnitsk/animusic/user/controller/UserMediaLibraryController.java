@@ -1,6 +1,6 @@
 package com.ilnitsk.animusic.user.controller;
 
-import com.ilnitsk.animusic.user.dao.UserPlaylist;
+import com.ilnitsk.animusic.user.dao.Playlist;
 import com.ilnitsk.animusic.user.dto.UserMediaConverter;
 import com.ilnitsk.animusic.user.dto.UserPlaylistDto;
 import com.ilnitsk.animusic.user.service.UserMediaLibraryService;
@@ -28,7 +28,7 @@ public class UserMediaLibraryController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public UserPlaylistDto getFavouriteTracksPlaylist(HttpServletRequest request) {
-        UserPlaylist playlist = userMediaLibraryService.getFavouriteTracksPlaylist();
+        Playlist playlist = userMediaLibraryService.getFavouriteTracksPlaylist();
         UserPlaylistDto dto = userMediaConverter.convertToDto(playlist);
         dto.setLink(request.getRequestURI());
         return dto;
@@ -62,7 +62,7 @@ public class UserMediaLibraryController {
             @ApiResponse(responseCode = "200", description = "Успешное создание"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public UserPlaylist createPlaylist(@RequestParam String playlistName) {
+    public Playlist createPlaylist(@RequestParam String playlistName) {
         return userMediaLibraryService.createPlaylist(playlistName);
     }
 

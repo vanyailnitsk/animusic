@@ -26,9 +26,9 @@ public class User implements UserDetails {
     private String password;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "favourite_playlist_id")
-    private UserPlaylist favouriteTracks;
+    private Playlist favouriteTracks;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    public List<UserPlaylist> playlists;
+    public List<Playlist> playlists;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

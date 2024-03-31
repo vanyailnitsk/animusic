@@ -7,13 +7,13 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "user_playlist")
+@Table(name = "playlist")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class UserPlaylist {
+public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
