@@ -41,7 +41,7 @@ public class SecurityConfig {
             "/api/auth/login",
             "/api/auth/refresh",
             "/api/soundtracks/**",
-            "/api/playlist/**",
+            "/api/albums/**",
             "/api/anime/**",
             "/swagger-ui/**",
             "/v3/api-docs/**",

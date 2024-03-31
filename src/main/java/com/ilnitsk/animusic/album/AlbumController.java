@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/playlist")
+@RequestMapping("/api/albums")
 @Slf4j
 @RequiredArgsConstructor
 @Tag(name = "REST API для управления альбомами", description = "Предоставляет методы для управление альбомами")
-public class PlaylistController {
+public class AlbumController {
     private final AlbumService albumService;
     private final AnimeRepository animeRepository;
     private final AlbumConverter albumConverter;
