@@ -3,7 +3,7 @@ package com.ilnitsk.animusic.repositories;
 
 import com.ilnitsk.animusic.album.Album;
 import com.ilnitsk.animusic.album.AlbumRepository;
-import com.ilnitsk.animusic.album.dto.CreatePlaylistRequest;
+import com.ilnitsk.animusic.album.dto.CreateAlbumRequest;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.soundtrack.Soundtrack;
@@ -34,7 +34,7 @@ public class AlbumRepositoryIntegrationTest {
     public void testCreatePlaylistWithRelatedEntities() {
         Anime anime = new Anime("Naruto", "mock", Year.of(2002), "", "");
         animeRepository.save(anime);
-        CreatePlaylistRequest request = new CreatePlaylistRequest(
+        CreateAlbumRequest request = new CreateAlbumRequest(
                 anime.getId(),
                 "My Playlist",
                 "/"

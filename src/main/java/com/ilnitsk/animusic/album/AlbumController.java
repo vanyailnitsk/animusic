@@ -64,7 +64,7 @@ public class AlbumController {
             @ApiResponse(responseCode = "400", description = "Альбом уже существует"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public Album createPlaylist(@RequestBody CreatePlaylistRequest request) {
+    public Album createPlaylist(@RequestBody CreateAlbumRequest request) {
         Album album = albumService.createPlaylist(request);
 
         log.info("Playlist {} in anime {} created",request.getName(),request.getAnimeId());
@@ -77,7 +77,7 @@ public class AlbumController {
             @ApiResponse(responseCode = "200", description = "Успешное обновление альбома."),
             @ApiResponse(responseCode = "404", description = "Альбом не найден")
     })
-    public AlbumDto updatePlaylist(@RequestBody UpdatePlaylistDto playlistDto, @PathVariable Integer playlistId) {
+    public AlbumDto updatePlaylist(@RequestBody UpdateAlbumDto playlistDto, @PathVariable Integer playlistId) {
         Album album = albumService.updatePlaylist(playlistDto,playlistId);
         AlbumDto newAlbumDto = albumConverter.convertToDto(album);
         log.info("Playlist id={} updated successfully",playlistId);

@@ -1,7 +1,7 @@
 package com.ilnitsk.animusic.album;
 
-import com.ilnitsk.animusic.album.dto.CreatePlaylistRequest;
-import com.ilnitsk.animusic.album.dto.UpdatePlaylistDto;
+import com.ilnitsk.animusic.album.dto.CreateAlbumRequest;
+import com.ilnitsk.animusic.album.dto.UpdateAlbumDto;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.anime.AnimeService;
@@ -30,7 +30,7 @@ public class AlbumService {
         this.animeService = animeService;
     }
 
-    public Album createPlaylist(CreatePlaylistRequest request) {
+    public Album createPlaylist(CreateAlbumRequest request) {
         Optional<Anime> animeOptional = animeRepository.findById(request.getAnimeId());
         if (animeOptional.isEmpty()) {
             throw new AnimeNotFoundException(request.getAnimeId());
@@ -97,7 +97,7 @@ public class AlbumService {
     }
 
     @Transactional
-    public Album updatePlaylist(UpdatePlaylistDto playlistDto, Integer playlistId) {
+    public Album updatePlaylist(UpdateAlbumDto playlistDto, Integer playlistId) {
         return albumRepository.findById(playlistId).map(
                 playlist -> {
                     playlist.setName(playlistDto.getName());

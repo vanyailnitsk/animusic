@@ -3,7 +3,7 @@ package com.ilnitsk.animusic.services;
 import com.ilnitsk.animusic.album.Album;
 import com.ilnitsk.animusic.album.AlbumRepository;
 import com.ilnitsk.animusic.album.AlbumService;
-import com.ilnitsk.animusic.album.dto.CreatePlaylistRequest;
+import com.ilnitsk.animusic.album.dto.CreateAlbumRequest;
 import com.ilnitsk.animusic.anime.Anime;
 import com.ilnitsk.animusic.anime.AnimeRepository;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
@@ -45,7 +45,7 @@ class AlbumServiceTest {
         anime.setId(1);
         anime.setTitle("Naruto");
         given(animeRepository.findById(1)).willReturn(Optional.of(anime));
-        CreatePlaylistRequest request = new CreatePlaylistRequest(
+        CreateAlbumRequest request = new CreateAlbumRequest(
                 1,
                 "Endings",
                 "/"
@@ -63,7 +63,7 @@ class AlbumServiceTest {
 
     @Test
     public void testCreatePlaylistWithNonExistingAnime() {
-        CreatePlaylistRequest request = new CreatePlaylistRequest(1, "Test Playlist", "/test-image.jpg");
+        CreateAlbumRequest request = new CreateAlbumRequest(1, "Test Playlist", "/test-image.jpg");
 
         when(animeRepository.findById(1)).thenReturn(Optional.empty());
 
@@ -74,7 +74,7 @@ class AlbumServiceTest {
 
     @Test
     public void testCreatePlaylistWithDuplicateName() {
-        CreatePlaylistRequest request = new CreatePlaylistRequest(1, "Test Playlist", "/test-image.jpg");
+        CreateAlbumRequest request = new CreateAlbumRequest(1, "Test Playlist", "/test-image.jpg");
 
         Anime anime = new Anime();
         anime.setId(1);

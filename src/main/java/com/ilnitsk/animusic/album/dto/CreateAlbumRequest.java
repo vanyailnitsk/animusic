@@ -8,7 +8,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CreatePlaylistRequest {
+public class CreateAlbumRequest {
     private Integer animeId;
     private String name;
     private String imageUrl;
