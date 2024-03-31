@@ -12,7 +12,7 @@ public class CreateAlbumRequest {
     private Integer animeId;
     private String name;
     private String imageUrl;
-    public Album getPlaylistData() {
+    public Album getAlbumData() {
         return Album.builder()
                 .name(name)
                 .imageUrl(imageUrl)
