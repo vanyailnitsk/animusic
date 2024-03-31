@@ -13,7 +13,8 @@ public class SoundtrackConverter {
         this.modelMapper = modelMapper;
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-        modelMapper.createTypeMap(Soundtrack.class,SoundtrackEntityDto.class);
+        modelMapper.createTypeMap(Soundtrack.class,SoundtrackEntityDto.class)
+                .addMappings(mapper -> mapper.map(Soundtrack::getAlbum,SoundtrackEntityDto::setAlbum));
 
         modelMapper.createTypeMap(SoundtrackEntityDto.class,SoundtrackDto.class)
                 .addMappings(mapper -> mapper.map(src -> src,SoundtrackDto::setSoundtrack));
