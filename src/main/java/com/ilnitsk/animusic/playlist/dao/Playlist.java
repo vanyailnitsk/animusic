@@ -1,6 +1,7 @@
-package com.ilnitsk.animusic.user.dao;
+package com.ilnitsk.animusic.playlist.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ilnitsk.animusic.user.dao.User;
 import jakarta.persistence.*;
 import lombok.*;
 

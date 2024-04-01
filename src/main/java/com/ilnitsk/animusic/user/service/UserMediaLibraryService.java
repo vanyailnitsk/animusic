@@ -1,13 +1,13 @@
 package com.ilnitsk.animusic.user.service;
 
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
+import com.ilnitsk.animusic.playlist.dao.Playlist;
+import com.ilnitsk.animusic.playlist.dao.PlaylistSoundtrack;
+import com.ilnitsk.animusic.playlist.repository.UserPlaylistRepository;
+import com.ilnitsk.animusic.playlist.repository.UserPlaylistSoundtrackRepository;
 import com.ilnitsk.animusic.soundtrack.Soundtrack;
 import com.ilnitsk.animusic.soundtrack.SoundtrackRepository;
-import com.ilnitsk.animusic.user.dao.Playlist;
-import com.ilnitsk.animusic.user.dao.PlaylistSoundtrack;
 import com.ilnitsk.animusic.user.dao.User;
-import com.ilnitsk.animusic.user.repository.UserPlaylistRepository;
-import com.ilnitsk.animusic.user.repository.UserPlaylistSoundtrackRepository;
 import com.ilnitsk.animusic.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

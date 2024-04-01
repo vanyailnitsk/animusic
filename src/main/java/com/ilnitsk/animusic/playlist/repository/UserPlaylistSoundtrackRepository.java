@@ -1,6 +1,6 @@
-package com.ilnitsk.animusic.user.repository;
+package com.ilnitsk.animusic.playlist.repository;
 
-import com.ilnitsk.animusic.user.dao.PlaylistSoundtrack;
+import com.ilnitsk.animusic.playlist.dao.PlaylistSoundtrack;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

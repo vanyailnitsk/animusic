@@ -1,6 +1,7 @@
 package com.ilnitsk.animusic.user.dto;
 
-import com.ilnitsk.animusic.user.dao.Playlist;
+import com.ilnitsk.animusic.playlist.dao.Playlist;
+import com.ilnitsk.animusic.playlist.dto.UserPlaylistDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

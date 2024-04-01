@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.user.dao;
+package com.ilnitsk.animusic.playlist.dao;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ilnitsk.animusic.soundtrack.Soundtrack;

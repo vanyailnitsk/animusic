@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.user.dao;
 
+import com.ilnitsk.animusic.playlist.dao.Playlist;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
