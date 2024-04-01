@@ -56,15 +56,5 @@ public class UserMediaLibraryController {
         userMediaLibraryService.deleteTrackFromFavourites(trackId);
     }
 
-    @PostMapping
-    @Operation(summary = "Метод для создания плейлиста")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Успешное создание"),
-            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
-    })
-    public Playlist createPlaylist(@RequestParam String playlistName) {
-        return userMediaLibraryService.createPlaylist(playlistName);
-    }
-
 
 }
