@@ -54,3 +54,5 @@ timeweb:
 logging:
   file:
     name: logs/app.log
+#  level:
+#    web: info

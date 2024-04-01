@@ -2,6 +2,7 @@ package com.ilnitsk.animusic.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,9 +44,34 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(TokenRefreshException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
     public ErrorMessage expiredRefresh(TokenRefreshException ex, WebRequest request) {
         return new ErrorMessage(
                 HttpStatus.FORBIDDEN.value(),
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorMessage badCredentials(BadCredentialsException ex,WebRequest request) {
+        return new ErrorMessage(
+                HttpStatus.UNAUTHORIZED.value(),
+                new Date(),
+                "Wrong email or password!",
+                request.getDescription(false)
+        );
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorMessage invalidToken(InvalidTokenException ex,WebRequest request) {
+        return new ErrorMessage(
+                HttpStatus.UNAUTHORIZED.value(),
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false)

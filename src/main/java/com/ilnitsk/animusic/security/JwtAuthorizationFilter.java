@@ -2,8 +2,8 @@ package com.ilnitsk.animusic.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ilnitsk.animusic.security.service.JwtService;
-import io.jsonwebtoken.ClaimJwtException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,7 +47,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
-        catch (ClaimJwtException e){
+        catch (JwtException e){
             errorDetails.put("message", "Authentication Error");
             errorDetails.put("details",e.getMessage());
             response.setCharacterEncoding("UTF-8");
