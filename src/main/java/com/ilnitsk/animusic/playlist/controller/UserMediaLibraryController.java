@@ -1,9 +1,9 @@
-package com.ilnitsk.animusic.user.controller;
+package com.ilnitsk.animusic.playlist.controller;
 
 import com.ilnitsk.animusic.playlist.dao.Playlist;
 import com.ilnitsk.animusic.playlist.dto.PlaylistDto;
 import com.ilnitsk.animusic.playlist.dto.UserMediaConverter;
-import com.ilnitsk.animusic.user.service.UserMediaLibraryService;
+import com.ilnitsk.animusic.playlist.service.UserMediaLibraryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

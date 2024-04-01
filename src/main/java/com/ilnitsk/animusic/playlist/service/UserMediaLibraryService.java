@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.user.service;
+package com.ilnitsk.animusic.playlist.service;
 
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.playlist.dao.Playlist;
@@ -9,6 +9,7 @@ import com.ilnitsk.animusic.soundtrack.Soundtrack;
 import com.ilnitsk.animusic.soundtrack.SoundtrackRepository;
 import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.repository.UserRepository;
+import com.ilnitsk.animusic.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
