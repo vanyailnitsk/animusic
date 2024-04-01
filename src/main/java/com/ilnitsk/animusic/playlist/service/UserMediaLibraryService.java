@@ -25,6 +25,7 @@ public class UserMediaLibraryService {
     private final SoundtrackRepository soundtrackRepository;
     private final PlaylistRepository playlistRepository;
     private final PlaylistSoundtrackRepository playlistSoundtrackRepository;
+    private final PlaylistService playlistService;
 
     public Playlist getFavouriteTracksPlaylist() {
         User user = userService.getUserInSession();
@@ -32,22 +33,11 @@ public class UserMediaLibraryService {
     }
 
     @Transactional
-    public Playlist createPlaylist(String playlistName) {
-        User user = userService.getUserInSession();
-        Playlist playlist = Playlist.builder()
-                .name(playlistName)
-                .user(user)
-                .build();
-        user.setFavouriteTracks(playlist);
-        return playlistRepository.save(playlist);
-    }
-
-    @Transactional
     public void addTrackToFavourites(Integer trackId) {
         User user = userService.getUserInSession();
         Playlist playlist;
         if (user.getFavouriteTracks() == null) {
-            playlist = createPlaylist("Favourite tracks");
+            playlist = playlistService.createPlaylist("Favourite tracks");
             playlist.setSoundtracks(new ArrayList<>());
         }
         else {
