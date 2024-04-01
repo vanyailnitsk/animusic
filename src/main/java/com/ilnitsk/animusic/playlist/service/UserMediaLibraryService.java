@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +30,9 @@ public class UserMediaLibraryService {
 
     public Playlist getFavouriteTracksPlaylist() {
         User user = userService.getUserInSession();
-        return user.getFavouriteTracks();
+        Playlist favouriteTracks =  user.getFavouriteTracks();
+        favouriteTracks.getSoundtracks().sort(Comparator.comparing(PlaylistSoundtrack::getAddedAt).reversed());
+        return favouriteTracks;
     }
 
     @Transactional
