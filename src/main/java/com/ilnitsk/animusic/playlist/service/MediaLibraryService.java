@@ -20,7 +20,7 @@ import java.util.Comparator;
 
 @Service
 @RequiredArgsConstructor
-public class UserMediaLibraryService {
+public class MediaLibraryService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final SoundtrackRepository soundtrackRepository;
