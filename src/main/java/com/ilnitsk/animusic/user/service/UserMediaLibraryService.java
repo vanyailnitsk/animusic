@@ -3,8 +3,8 @@ package com.ilnitsk.animusic.user.service;
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.playlist.dao.Playlist;
 import com.ilnitsk.animusic.playlist.dao.PlaylistSoundtrack;
-import com.ilnitsk.animusic.playlist.repository.UserPlaylistRepository;
-import com.ilnitsk.animusic.playlist.repository.UserPlaylistSoundtrackRepository;
+import com.ilnitsk.animusic.playlist.repository.PlaylistRepository;
+import com.ilnitsk.animusic.playlist.repository.PlaylistSoundtrackRepository;
 import com.ilnitsk.animusic.soundtrack.Soundtrack;
 import com.ilnitsk.animusic.soundtrack.SoundtrackRepository;
 import com.ilnitsk.animusic.user.dao.User;
@@ -22,8 +22,8 @@ public class UserMediaLibraryService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final SoundtrackRepository soundtrackRepository;
-    private final UserPlaylistRepository userPlaylistRepository;
-    private final UserPlaylistSoundtrackRepository userPlaylistSoundtrackRepository;
+    private final PlaylistRepository playlistRepository;
+    private final PlaylistSoundtrackRepository playlistSoundtrackRepository;
 
     public Playlist getFavouriteTracksPlaylist() {
         User user = userService.getUserInSession();
@@ -38,7 +38,7 @@ public class UserMediaLibraryService {
                 .user(user)
                 .build();
         user.setFavouriteTracks(playlist);
-        return userPlaylistRepository.save(playlist);
+        return playlistRepository.save(playlist);
     }
 
     @Transactional
@@ -54,13 +54,13 @@ public class UserMediaLibraryService {
         }
         Soundtrack soundtrack = soundtrackRepository.findById(trackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(trackId));
-        if (!userPlaylistSoundtrackRepository.playlistAlreadyContainsSoundtrack(playlist.getId(),soundtrack.getId())) {
+        if (!playlistSoundtrackRepository.playlistAlreadyContainsSoundtrack(playlist.getId(),soundtrack.getId())) {
             PlaylistSoundtrack playlistSoundtrack = PlaylistSoundtrack.builder()
                     .playlist(playlist)
                     .soundtrack(soundtrack)
                     .addedAt(LocalDateTime.now())
                     .build();
-            userPlaylistSoundtrackRepository.save(playlistSoundtrack);
+            playlistSoundtrackRepository.save(playlistSoundtrack);
             playlist.getSoundtracks().add(playlistSoundtrack);
         }
     }
@@ -68,6 +68,6 @@ public class UserMediaLibraryService {
     public void deleteTrackFromFavourites(Integer trackId) {
         User user = userService.getUserInSession();
         Playlist favourites = user.getFavouriteTracks();
-        userPlaylistSoundtrackRepository.deleteTrackFromPlaylist(favourites.getId(),trackId);
+        playlistSoundtrackRepository.deleteTrackFromPlaylist(favourites.getId(),trackId);
     }
 }

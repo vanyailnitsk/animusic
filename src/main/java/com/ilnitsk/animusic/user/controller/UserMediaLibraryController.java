@@ -1,7 +1,7 @@
 package com.ilnitsk.animusic.user.controller;
 
 import com.ilnitsk.animusic.playlist.dao.Playlist;
-import com.ilnitsk.animusic.playlist.dto.UserPlaylistDto;
+import com.ilnitsk.animusic.playlist.dto.PlaylistDto;
 import com.ilnitsk.animusic.user.dto.UserMediaConverter;
 import com.ilnitsk.animusic.user.service.UserMediaLibraryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,9 +27,9 @@ public class UserMediaLibraryController {
             @ApiResponse(responseCode = "401", description = "Не авторизован"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public UserPlaylistDto getFavouriteTracksPlaylist(HttpServletRequest request) {
+    public PlaylistDto getFavouriteTracksPlaylist(HttpServletRequest request) {
         Playlist playlist = userMediaLibraryService.getFavouriteTracksPlaylist();
-        UserPlaylistDto dto = userMediaConverter.convertToDto(playlist);
+        PlaylistDto dto = userMediaConverter.convertToDto(playlist);
         dto.setLink(request.getRequestURI());
         return dto;
     }

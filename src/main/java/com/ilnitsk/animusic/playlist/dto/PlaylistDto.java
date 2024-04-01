@@ -5,8 +5,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UserPlaylistDto {
+public class PlaylistDto {
     private String name;
     private String link;
-    private List<UserPlaylistSoundtrackDTO> soundtracks;
+    private List<PlaylistSoundtrackDto> soundtracks;
 }

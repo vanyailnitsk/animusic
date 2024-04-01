@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface UserPlaylistSoundtrackRepository extends JpaRepository<PlaylistSoundtrack,Long> {
+public interface PlaylistSoundtrackRepository extends JpaRepository<PlaylistSoundtrack,Long> {
     @Query("SELECT COUNT(s) > 0 FROM PlaylistSoundtrack s where s.playlist.id= :playlist_id and s.soundtrack.id= :soundtrack_id")
     boolean playlistAlreadyContainsSoundtrack(
             @Param("playlist_id") Long playlist_id, @Param("soundtrack_id") Integer soundtrack_id);

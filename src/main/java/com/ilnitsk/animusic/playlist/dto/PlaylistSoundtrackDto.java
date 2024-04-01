@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class UserPlaylistSoundtrackDTO {
+public class PlaylistSoundtrackDto {
     private LocalDateTime addedAt;
     private SoundtrackEntityDto soundtrack;
 }
