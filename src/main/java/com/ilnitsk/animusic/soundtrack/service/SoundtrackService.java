@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.soundtrack;
+package com.ilnitsk.animusic.soundtrack.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ilnitsk.animusic.album.dao.Album;
@@ -11,7 +11,9 @@ import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.file.FileService;
 import com.ilnitsk.animusic.image.ImageService;
 import com.ilnitsk.animusic.s3.S3Service;
+import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import com.ilnitsk.animusic.soundtrack.dto.UpdateSoundtrackDto;
+import com.ilnitsk.animusic.soundtrack.repository.SoundtrackRepository;
 import com.ilnitsk.animusic.util.JsonMergePatchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

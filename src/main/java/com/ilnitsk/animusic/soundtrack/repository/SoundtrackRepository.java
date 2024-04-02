@@ -1,5 +1,6 @@
-package com.ilnitsk.animusic.soundtrack;
+package com.ilnitsk.animusic.soundtrack.repository;
 
+import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

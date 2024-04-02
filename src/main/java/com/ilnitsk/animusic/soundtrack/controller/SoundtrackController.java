@@ -1,11 +1,13 @@
-package com.ilnitsk.animusic.soundtrack;
+package com.ilnitsk.animusic.soundtrack.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ilnitsk.animusic.exception.BadRequestException;
+import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackConverter;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackRequest;
 import com.ilnitsk.animusic.soundtrack.dto.UpdateSoundtrackDto;
+import com.ilnitsk.animusic.soundtrack.service.SoundtrackService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
