@@ -30,7 +30,6 @@ public class MediaLibraryController {
     public PlaylistDto getFavouriteTracksPlaylist(HttpServletRequest request) {
         Playlist playlist = mediaLibraryService.getFavouriteTracksPlaylist();
         PlaylistDto dto = userMediaConverter.convertToDto(playlist);
-        dto.setLink(request.getRequestURI());
         return dto;
     }
 

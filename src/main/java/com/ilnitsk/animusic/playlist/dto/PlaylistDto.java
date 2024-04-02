@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class PlaylistDto {
+    private Long id;
     private String name;
-    private String link;
     private List<PlaylistSoundtrackDto> soundtracks;
 }
