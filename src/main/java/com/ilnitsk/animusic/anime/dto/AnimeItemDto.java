@@ -3,8 +3,7 @@ package com.ilnitsk.animusic.anime.dto;
 import lombok.Data;
 
 @Data
-public class AlbumDto {
+public class AnimeItemDto {
     private Integer id;
-    private String name;
-    private String imageUrl;
+    private String title;
 }

@@ -1,6 +1,6 @@
-package com.ilnitsk.animusic.playlist.dto;
+package com.ilnitsk.animusic.album.dto;
 
-import com.ilnitsk.animusic.playlist.Playlist;
+import com.ilnitsk.animusic.album.dao.Album;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,12 +8,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CreatePlaylistRequest {
+public class CreateAlbumRequest {
     private Integer animeId;
     private String name;
     private String imageUrl;
-    public Playlist getPlaylistData() {
-        return Playlist.builder()
+    public Album getAlbumData() {
+        return Album.builder()
                 .name(name)
                 .imageUrl(imageUrl)
                 .build();

@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.playlist;
+package com.ilnitsk.animusic.album.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "album")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
 @ToString
-public class Playlist {
+public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -28,16 +28,7 @@ public class Playlist {
     @JoinColumn(name = "anime_id")
     @JsonIgnore
     private Anime anime;
-    @ManyToMany(targetEntity = Soundtrack.class)
-    @JoinTable(name = "playlist_soundtrack",
-            inverseJoinColumns = @JoinColumn(name = "soundtrack_id",
-                    nullable = false,
-                    updatable = false),
-            joinColumns = @JoinColumn(name = "playlist_id",
-                    nullable = false,
-                    updatable = false),
-            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
-            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Soundtrack> soundtracks = new ArrayList<>();
     public void addSoundtrack(Soundtrack soundtrack) {

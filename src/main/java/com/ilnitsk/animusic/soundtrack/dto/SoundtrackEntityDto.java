@@ -1,10 +1,8 @@
 package com.ilnitsk.animusic.soundtrack.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ilnitsk.animusic.playlist.dto.PlaylistItemDto;
+import com.ilnitsk.animusic.album.dto.AlbumItemDto;
+import com.ilnitsk.animusic.anime.dto.AnimeItemDto;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class SoundtrackEntityDto {
@@ -14,10 +12,6 @@ public class SoundtrackEntityDto {
     private String audioFile;
     private String imageFile;
     private Integer duration;
-    @JsonIgnore
-    private List<PlaylistItemDto> playlists;
-
-    public PlaylistItemDto getAlbum() {
-        return playlists.get(0);
-    }
+    private AlbumItemDto album;
+    private AnimeItemDto anime;
 }

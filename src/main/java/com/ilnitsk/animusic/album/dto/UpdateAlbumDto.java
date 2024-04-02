@@ -1,9 +1,9 @@
-package com.ilnitsk.animusic.playlist.dto;
+package com.ilnitsk.animusic.album.dto;
 
 import lombok.Data;
 
 @Data
-public class UpdatePlaylistDto {
+public class UpdateAlbumDto {
     private String name;
     private String imageUrl;
 }

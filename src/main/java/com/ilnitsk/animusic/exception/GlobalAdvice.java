@@ -16,9 +16,9 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalAdvice extends ResponseEntityExceptionHandler {
     @ResponseBody
-    @ExceptionHandler(PlaylistNotFoundException.class)
+    @ExceptionHandler(AlbumNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String playlistNotFoundHandler(PlaylistNotFoundException ex) {
+    public String playlistNotFoundHandler(AlbumNotFoundException ex) {
         return ex.getMessage();
     }
 

@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.anime.dto;
 
+import com.ilnitsk.animusic.album.dto.AlbumItemDto;
 import lombok.Data;
 
 import java.time.Year;
@@ -16,5 +17,5 @@ public class AnimeDto {
     private String folderName;
     private String bannerImagePath;
     private String cardImagePath;
-    private List<AlbumDto> playlists = new ArrayList<>();
+    private List<AlbumItemDto> albums = new ArrayList<>();
 }

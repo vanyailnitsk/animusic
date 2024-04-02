@@ -1,10 +1,9 @@
-package com.ilnitsk.animusic.playlist;
+package com.ilnitsk.animusic.album.controller;
 
+import com.ilnitsk.animusic.album.dao.Album;
+import com.ilnitsk.animusic.album.dto.*;
+import com.ilnitsk.animusic.album.service.AlbumService;
 import com.ilnitsk.animusic.anime.AnimeRepository;
-import com.ilnitsk.animusic.playlist.dto.CreatePlaylistRequest;
-import com.ilnitsk.animusic.playlist.dto.PlaylistConverter;
-import com.ilnitsk.animusic.playlist.dto.PlaylistDto;
-import com.ilnitsk.animusic.playlist.dto.UpdatePlaylistDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -18,14 +17,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/playlist")
+@RequestMapping("/api/albums")
 @Slf4j
 @RequiredArgsConstructor
 @Tag(name = "REST API для управления альбомами", description = "Предоставляет методы для управление альбомами")
-public class PlaylistController {
-    private final PlaylistService playlistService;
+public class AlbumController {
+    private final AlbumService albumService;
     private final AnimeRepository animeRepository;
-    private final PlaylistConverter playlistConverter;
+    private final AlbumConverter albumConverter;
     @GetMapping
     @Operation(summary = "Метод для получения списка альбомов по animeId")
     @ApiResponses(value = {
@@ -33,12 +32,11 @@ public class PlaylistController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден не найдено"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public List<PlaylistDto> getPlaylistsByAnime(@RequestParam("animeId") Integer animeId) {
-        log.info("Requested playlists by anime {}", animeId);
-        List<Playlist> playlists = playlistService.getPlaylistsByAnimeId(animeId);
-        List<PlaylistDto> playlistDtos = playlistConverter.convertListToDto(playlists);
-        playlistDtos.forEach(s -> s.setLink("/api/playlist/"+s.getId()));
-        return playlistDtos;
+    public List<AlbumItemDto> getAlbumsByAnime(@RequestParam("animeId") Integer animeId) {
+        log.info("Requested albums by anime {}", animeId);
+        List<Album> albums = albumService.getAlbumsByAnimeId(animeId);
+        List<AlbumItemDto> albumDtos = albumConverter.convertListToItemDto(albums);
+        return albumDtos;
     }
 
     @GetMapping("{id}")
@@ -48,17 +46,17 @@ public class PlaylistController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public PlaylistDto getPlaylistById(@PathVariable Integer id, HttpServletRequest request) {
-        log.info("Requested playlist with id {}", id);
-        Playlist playlist = playlistService.getPlaylistById(id);
-        PlaylistDto playlistDto = playlistConverter.convertToDto(playlist);
-        playlistDto.setLink(request.getRequestURI());
-        return playlistDto;
+    public AlbumDto getAlbumById(@PathVariable Integer id, HttpServletRequest request) {
+        log.info("Requested album with id {}", id);
+        Album album = albumService.getAlbumById(id);
+        AlbumDto albumDto = albumConverter.convertToDto(album);
+        albumDto.setLink(request.getRequestURI());
+        return albumDto;
     }
 
     @GetMapping("/images/banner/{id}")
-    public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer playlistId) {
-        return playlistService.getBanner(playlistId);
+    public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer albumId) {
+        return albumService.getBanner(albumId);
     }
 
     @PostMapping
@@ -68,24 +66,24 @@ public class PlaylistController {
             @ApiResponse(responseCode = "400", description = "Альбом уже существует"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public Playlist createPlaylist(@RequestBody CreatePlaylistRequest request) {
-        Playlist playlist = playlistService.createPlaylist(request);
+    public Album createAlbum(@RequestBody CreateAlbumRequest request) {
+        Album album = albumService.createAlbum(request);
 
-        log.info("Playlist {} in anime {} created",request.getName(),request.getAnimeId());
-        return playlist;
+        log.info("Album {} in anime {} created",request.getName(),request.getAnimeId());
+        return album;
     }
 
-    @PutMapping("{playlistId}")
+    @PutMapping("{albumId}")
     @Operation(summary = "Метод для обновления альбома")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное обновление альбома."),
             @ApiResponse(responseCode = "404", description = "Альбом не найден")
     })
-    public PlaylistDto updatePlaylist(@RequestBody UpdatePlaylistDto playlistDto, @PathVariable Integer playlistId) {
-        Playlist playlist = playlistService.updatePlaylist(playlistDto,playlistId);
-        PlaylistDto newPlaylistDto = playlistConverter.convertToDto(playlist);
-        log.info("Playlist id={} updated successfully",playlistId);
-        return newPlaylistDto;
+    public AlbumDto updateAlbum(@RequestBody UpdateAlbumDto albumDto, @PathVariable Integer albumId) {
+        Album album = albumService.updateAlbum(albumDto,albumId);
+        AlbumDto newAlbumDto = albumConverter.convertToDto(album);
+        log.info("Album id={} updated successfully",albumId);
+        return newAlbumDto;
     }
 
     @DeleteMapping("{id}")
@@ -95,8 +93,8 @@ public class PlaylistController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public void deletePlaylist(@PathVariable Integer id) {
-        playlistService.deletePlaylist(id);
-        log.info("Playlist with id {} deleted",id);
+    public void deleteAlbum(@PathVariable Integer id) {
+        albumService.deleteAlbum(id);
+        log.info("Album with id {} deleted",id);
     }
 }
