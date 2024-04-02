@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.security;
+package com.ilnitsk.animusic.util;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.security;
+package com.ilnitsk.animusic.security.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ilnitsk.animusic.security.service.JwtService;

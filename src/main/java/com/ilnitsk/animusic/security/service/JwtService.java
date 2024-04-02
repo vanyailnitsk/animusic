@@ -1,7 +1,7 @@
 package com.ilnitsk.animusic.security.service;
 
-import com.ilnitsk.animusic.security.CookieUtils;
 import com.ilnitsk.animusic.user.dao.User;
+import com.ilnitsk.animusic.util.CookieUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

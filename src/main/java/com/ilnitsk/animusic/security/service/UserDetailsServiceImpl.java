@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.security;
+package com.ilnitsk.animusic.security.service;
 
 import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.repository.UserRepository;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class UserDetailsServiceUmpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository repository;
 
