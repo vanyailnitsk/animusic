@@ -2,11 +2,11 @@ package com.ilnitsk.animusic.security.service;
 
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.exception.InvalidTokenException;
-import com.ilnitsk.animusic.security.RefreshToken;
-import com.ilnitsk.animusic.security.RefreshTokenRepository;
+import com.ilnitsk.animusic.security.dao.RefreshToken;
 import com.ilnitsk.animusic.security.dto.AuthRequest;
 import com.ilnitsk.animusic.security.dto.JwtResponse;
 import com.ilnitsk.animusic.security.dto.RegisterRequest;
+import com.ilnitsk.animusic.security.repository.RefreshTokenRepository;
 import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.dto.UserDto;
 import com.ilnitsk.animusic.user.repository.UserRepository;

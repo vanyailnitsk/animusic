@@ -1,6 +1,6 @@
-package com.ilnitsk.animusic.anime;
+package com.ilnitsk.animusic.anime.repository;
 
-import com.ilnitsk.animusic.anime.Anime;
+import com.ilnitsk.animusic.anime.dao.Anime;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

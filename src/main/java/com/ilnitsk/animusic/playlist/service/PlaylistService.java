@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.playlist.service;
 
+import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
 import com.ilnitsk.animusic.playlist.dao.Playlist;
 import com.ilnitsk.animusic.playlist.repository.PlaylistRepository;
 import com.ilnitsk.animusic.user.dao.User;
@@ -18,12 +19,17 @@ public class PlaylistService {
 
     @Transactional
     public Playlist createPlaylist(String playlistName) {
-        User user = userService.getUserInSession();
+        User user = userService.getUserInSession().orElseThrow(() -> new RuntimeException("User not found in session"));
         Playlist playlist = Playlist.builder()
                 .name(playlistName)
                 .user(user)
                 .build();
         user.setFavouriteTracks(playlist);
         return playlistRepository.save(playlist);
+    }
+
+    public Playlist getPlaylistById(Long playlistId) {
+        return playlistRepository.findById(playlistId)
+                .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
     }
 }

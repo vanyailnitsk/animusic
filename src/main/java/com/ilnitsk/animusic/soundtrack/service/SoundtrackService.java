@@ -1,17 +1,18 @@
-package com.ilnitsk.animusic.soundtrack;
+package com.ilnitsk.animusic.soundtrack.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.album.repository.AlbumRepository;
-import com.ilnitsk.animusic.anime.Anime;
-import com.ilnitsk.animusic.anime.AnimeRepository;
+import com.ilnitsk.animusic.anime.dao.Anime;
 import com.ilnitsk.animusic.exception.AlbumNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.file.FileService;
 import com.ilnitsk.animusic.image.ImageService;
 import com.ilnitsk.animusic.s3.S3Service;
+import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import com.ilnitsk.animusic.soundtrack.dto.UpdateSoundtrackDto;
+import com.ilnitsk.animusic.soundtrack.repository.SoundtrackRepository;
 import com.ilnitsk.animusic.util.JsonMergePatchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,6 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @RequiredArgsConstructor
 public class SoundtrackService {
     private final SoundtrackRepository soundtrackRepository;
-    private final AnimeRepository animeRepository;
     private final AlbumRepository albumRepository;
     private final FileService fileService;
     private final ImageService imageService;

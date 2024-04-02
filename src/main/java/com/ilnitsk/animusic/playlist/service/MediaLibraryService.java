@@ -5,8 +5,8 @@ import com.ilnitsk.animusic.playlist.dao.Playlist;
 import com.ilnitsk.animusic.playlist.dao.PlaylistSoundtrack;
 import com.ilnitsk.animusic.playlist.repository.PlaylistRepository;
 import com.ilnitsk.animusic.playlist.repository.PlaylistSoundtrackRepository;
-import com.ilnitsk.animusic.soundtrack.Soundtrack;
-import com.ilnitsk.animusic.soundtrack.SoundtrackRepository;
+import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
+import com.ilnitsk.animusic.soundtrack.repository.SoundtrackRepository;
 import com.ilnitsk.animusic.user.dao.User;
 import com.ilnitsk.animusic.user.repository.UserRepository;
 import com.ilnitsk.animusic.user.service.UserService;
@@ -29,7 +29,7 @@ public class MediaLibraryService {
     private final PlaylistService playlistService;
 
     public Playlist getFavouriteTracksPlaylist() {
-        User user = userService.getUserInSession();
+        User user = userService.getUserInSession().orElseThrow(() -> new RuntimeException("User not found in session"));
         Playlist favouriteTracks =  user.getFavouriteTracks();
         favouriteTracks.getSoundtracks().sort(Comparator.comparing(PlaylistSoundtrack::getAddedAt).reversed());
         return favouriteTracks;
@@ -37,7 +37,7 @@ public class MediaLibraryService {
 
     @Transactional
     public void addTrackToFavourites(Integer trackId) {
-        User user = userService.getUserInSession();
+        User user = userService.getUserInSession().orElseThrow(() -> new RuntimeException("User not found in session"));
         Playlist playlist;
         if (user.getFavouriteTracks() == null) {
             playlist = playlistService.createPlaylist("Favourite tracks");
@@ -60,7 +60,7 @@ public class MediaLibraryService {
     }
 
     public void deleteTrackFromFavourites(Integer trackId) {
-        User user = userService.getUserInSession();
+        User user = userService.getUserInSession().orElseThrow(() -> new RuntimeException("User not found in session"));
         Playlist favourites = user.getFavouriteTracks();
         playlistSoundtrackRepository.deleteTrackFromPlaylist(favourites.getId(),trackId);
     }

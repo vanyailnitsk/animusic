@@ -1,8 +1,10 @@
-package com.ilnitsk.animusic.anime;
+package com.ilnitsk.animusic.anime.controller;
 
+import com.ilnitsk.animusic.anime.dao.Anime;
 import com.ilnitsk.animusic.anime.dto.AnimeConverter;
 import com.ilnitsk.animusic.anime.dto.AnimeDto;
 import com.ilnitsk.animusic.anime.dto.UpdateAnimeDto;
+import com.ilnitsk.animusic.anime.service.AnimeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

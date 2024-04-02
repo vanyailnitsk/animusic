@@ -1,6 +1,8 @@
-package com.ilnitsk.animusic.anime;
+package com.ilnitsk.animusic.anime.service;
 
+import com.ilnitsk.animusic.anime.dao.Anime;
 import com.ilnitsk.animusic.anime.dto.UpdateAnimeDto;
+import com.ilnitsk.animusic.anime.repository.AnimeRepository;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.image.ImageService;

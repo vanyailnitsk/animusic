@@ -3,7 +3,6 @@ package com.ilnitsk.animusic.album.controller;
 import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.album.dto.*;
 import com.ilnitsk.animusic.album.service.AlbumService;
-import com.ilnitsk.animusic.anime.AnimeRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,7 +22,6 @@ import java.util.List;
 @Tag(name = "REST API для управления альбомами", description = "Предоставляет методы для управление альбомами")
 public class AlbumController {
     private final AlbumService albumService;
-    private final AnimeRepository animeRepository;
     private final AlbumConverter albumConverter;
     @GetMapping
     @Operation(summary = "Метод для получения списка альбомов по animeId")

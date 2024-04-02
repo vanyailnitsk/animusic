@@ -1,7 +1,7 @@
 package com.ilnitsk.animusic.security.config;
 
-import com.ilnitsk.animusic.security.JwtAuthorizationFilter;
-import com.ilnitsk.animusic.security.UserDetailsServiceUmpl;
+import com.ilnitsk.animusic.security.controller.JwtAuthorizationFilter;
+import com.ilnitsk.animusic.security.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +32,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return new UserDetailsServiceUmpl();
+        return new UserDetailsServiceImpl();
     }
 
     public String[] openResources = {

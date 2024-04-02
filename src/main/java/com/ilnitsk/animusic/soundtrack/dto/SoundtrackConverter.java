@@ -1,6 +1,6 @@
 package com.ilnitsk.animusic.soundtrack.dto;
 
-import com.ilnitsk.animusic.soundtrack.Soundtrack;
+import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;

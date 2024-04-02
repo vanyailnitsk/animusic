@@ -1,9 +1,9 @@
-package com.ilnitsk.animusic.soundtrack;
+package com.ilnitsk.animusic.soundtrack.dao;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ilnitsk.animusic.album.dao.Album;
-import com.ilnitsk.animusic.anime.Anime;
+import com.ilnitsk.animusic.anime.dao.Anime;
 import jakarta.persistence.*;
 import lombok.*;
 

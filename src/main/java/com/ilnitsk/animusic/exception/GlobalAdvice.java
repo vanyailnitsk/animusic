@@ -30,6 +30,18 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ResponseBody
+    @ExceptionHandler(PlaylistNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorMessage playlistNotFound(PlaylistNotFoundException ex, WebRequest request) {
+        return new ErrorMessage(
+                HttpStatus.NOT_FOUND.value(),
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+    }
+
+    @ResponseBody
     @ExceptionHandler(SoundtrackNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String soundtrackNotFound(SoundtrackNotFoundException ex) {

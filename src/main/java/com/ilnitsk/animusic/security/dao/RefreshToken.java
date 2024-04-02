@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.security;
+package com.ilnitsk.animusic.security.dao;
 
 import com.ilnitsk.animusic.user.dao.User;
 import jakarta.persistence.*;

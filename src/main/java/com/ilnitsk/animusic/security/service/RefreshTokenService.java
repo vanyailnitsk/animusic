@@ -1,10 +1,10 @@
 package com.ilnitsk.animusic.security.service;
 
 import com.ilnitsk.animusic.exception.TokenRefreshException;
-import com.ilnitsk.animusic.security.CookieUtils;
-import com.ilnitsk.animusic.security.RefreshToken;
-import com.ilnitsk.animusic.security.RefreshTokenRepository;
+import com.ilnitsk.animusic.security.dao.RefreshToken;
+import com.ilnitsk.animusic.security.repository.RefreshTokenRepository;
 import com.ilnitsk.animusic.user.dao.User;
+import com.ilnitsk.animusic.util.CookieUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;

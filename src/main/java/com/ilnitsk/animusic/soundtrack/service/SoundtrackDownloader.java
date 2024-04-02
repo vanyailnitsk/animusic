@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.soundtrack;
+package com.ilnitsk.animusic.soundtrack.service;
 
 import com.ilnitsk.animusic.exception.BadRequestException;
 import lombok.extern.slf4j.Slf4j;

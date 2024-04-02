@@ -2,8 +2,8 @@ package com.ilnitsk.animusic.repositories;
 
 import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.album.repository.AlbumRepository;
-import com.ilnitsk.animusic.anime.Anime;
-import com.ilnitsk.animusic.anime.AnimeRepository;
+import com.ilnitsk.animusic.anime.dao.Anime;
+import com.ilnitsk.animusic.anime.repository.AnimeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

@@ -1,5 +1,6 @@
-package com.ilnitsk.animusic.security;
+package com.ilnitsk.animusic.security.repository;
 
+import com.ilnitsk.animusic.security.dao.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
