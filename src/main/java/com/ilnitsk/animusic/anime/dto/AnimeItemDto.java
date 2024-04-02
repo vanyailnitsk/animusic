@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class AnimeItemDto {
     private Integer id;
-    private String name;
+    private String title;
 }

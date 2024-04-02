@@ -15,6 +15,7 @@ public class AnimeConverter {
 
         modelMapper.createTypeMap(Anime.class,AnimeDto.class);
 
+        modelMapper.createTypeMap(Anime.class,AnimeItemDto.class);
 //        modelMapper.createTypeMap(AlbumDto.class, AlbumDto.class);
 
     }
