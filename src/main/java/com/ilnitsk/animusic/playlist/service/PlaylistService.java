@@ -18,7 +18,7 @@ public class PlaylistService {
 
     @Transactional
     public Playlist createPlaylist(String playlistName) {
-        User user = userService.getUserInSession();
+        User user = userService.getUserInSession().orElseThrow(() -> new RuntimeException("User not found in session"));
         Playlist playlist = Playlist.builder()
                 .name(playlistName)
                 .user(user)
