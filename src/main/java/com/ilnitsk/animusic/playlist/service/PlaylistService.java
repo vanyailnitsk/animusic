@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.playlist.service;
 
+import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
 import com.ilnitsk.animusic.playlist.dao.Playlist;
 import com.ilnitsk.animusic.playlist.repository.PlaylistRepository;
 import com.ilnitsk.animusic.user.dao.User;
@@ -25,5 +26,10 @@ public class PlaylistService {
                 .build();
         user.setFavouriteTracks(playlist);
         return playlistRepository.save(playlist);
+    }
+
+    public Playlist getPlaylistById(Long playlistId) {
+        return playlistRepository.findById(playlistId)
+                .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
     }
 }
