@@ -29,7 +29,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public UserDto getUser() {
-        User user = userService.getUserInSession();
+        User user = userService.getUserInSession().get();
         return new UserDto(user);
     }
 
