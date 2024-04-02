@@ -12,7 +12,7 @@ public class SoundtrackEntityDto {
     private String audioFile;
     private String imageFile;
     private Integer duration;
-    private Boolean saved;
+    private boolean saved;
     private AlbumItemDto album;
     private AnimeItemDto anime;
 }
