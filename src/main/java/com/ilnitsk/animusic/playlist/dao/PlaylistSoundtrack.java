@@ -5,7 +5,7 @@ import com.ilnitsk.animusic.soundtrack.Soundtrack;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "playlist_soundtrack")
@@ -29,5 +29,5 @@ public class PlaylistSoundtrack {
     private Soundtrack soundtrack;
 
     @Column(name = "added_at")
-    private LocalDateTime addedAt;
+    private Date addedAt;
 }

@@ -14,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +52,7 @@ public class MediaLibraryService {
             PlaylistSoundtrack playlistSoundtrack = PlaylistSoundtrack.builder()
                     .playlist(playlist)
                     .soundtrack(soundtrack)
-                    .addedAt(LocalDateTime.now())
+                    .addedAt(new Date())
                     .build();
             playlistSoundtrackRepository.save(playlistSoundtrack);
             playlist.getSoundtracks().add(playlistSoundtrack);
