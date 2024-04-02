@@ -1,6 +1,8 @@
 package com.ilnitsk.animusic.soundtrack.service;
 
 import com.ilnitsk.animusic.album.dto.AlbumDto;
+import com.ilnitsk.animusic.playlist.dto.PlaylistDto;
+import com.ilnitsk.animusic.playlist.dto.PlaylistSoundtrackDto;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackEntityDto;
 import com.ilnitsk.animusic.user.dao.User;
@@ -48,6 +50,16 @@ public class SoundtrackSavedAspect {
         Set<Integer> savedTracks = getUserSavedTracksIds();
         albumDto.getSoundtracks().stream()
                 .map(SoundtrackDto::getSoundtrack)
+                .filter(s -> savedTracks.contains(s.getId()))
+                .forEach(s -> s.setSaved(true));
+    }
+
+    @AfterReturning(pointcut = "execution(* com.ilnitsk.animusic.playlist.dto.UserMediaConverter.convertToDto(..))", returning = "dto")
+    public void setSavedToPlaylist(Object dto) {
+        PlaylistDto playlistDto = (PlaylistDto) dto;
+        Set<Integer> savedTracks = getUserSavedTracksIds();
+        playlistDto.getSoundtracks().stream()
+                .map(PlaylistSoundtrackDto::getSoundtrack)
                 .filter(s -> savedTracks.contains(s.getId()))
                 .forEach(s -> s.setSaved(true));
     }
