@@ -8,5 +8,6 @@ import java.util.List;
 public class PlaylistDto {
     private Long id;
     private String name;
+    private PlaylistOwnerDto addedBy;
     private List<PlaylistSoundtrackDto> soundtracks;
 }
