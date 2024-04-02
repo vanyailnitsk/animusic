@@ -1,6 +1,6 @@
 package com.ilnitsk.animusic.anime.dto;
 
-import com.ilnitsk.animusic.anime.Anime;
+import com.ilnitsk.animusic.anime.dao.Anime;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
