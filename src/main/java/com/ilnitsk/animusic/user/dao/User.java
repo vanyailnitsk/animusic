@@ -31,6 +31,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     public List<Playlist> playlists;
 
+    public String getName() {
+        return username;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
