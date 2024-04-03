@@ -13,8 +13,7 @@ public class AlbumConverter {
     public AlbumConverter(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
 
-        modelMapper.createTypeMap(Album.class, AlbumDto.class)
-                .addMapping(Album::getBannerLink, AlbumDto::setBannerLink);
+        modelMapper.createTypeMap(Album.class, AlbumDto.class);
         modelMapper.createTypeMap(Album.class, AlbumItemDto.class);
         modelMapper.createTypeMap(AlbumDto.class,AlbumItemDto.class);
     }
