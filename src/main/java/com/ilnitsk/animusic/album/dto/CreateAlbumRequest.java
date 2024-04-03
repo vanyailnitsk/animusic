@@ -15,7 +15,6 @@ public class CreateAlbumRequest {
     public Album getAlbumData() {
         return Album.builder()
                 .name(name)
-                .imageUrl(imageUrl)
                 .build();
     }
 }

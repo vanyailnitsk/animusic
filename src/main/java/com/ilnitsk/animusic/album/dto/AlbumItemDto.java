@@ -6,5 +6,4 @@ import lombok.Data;
 public class AlbumItemDto {
     private Integer id;
     private String name;
-    private String imageUrl;
 }

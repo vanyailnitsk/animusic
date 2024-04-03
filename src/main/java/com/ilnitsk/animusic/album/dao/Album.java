@@ -28,7 +28,6 @@ public class Album {
     @JoinColumn(name = "anime_id")
     @JsonIgnore
     private Anime anime;
-    private String imageUrl;
     @OneToOne
     @JoinColumn(name = "cover_art_id")
     private CoverArt coverArt;

@@ -14,4 +14,6 @@ public class CoverArt {
     private String colorLight;
     @Column(name = "color_dark")
     private String colorDark;
+    @Column(name = "image_url")
+    private String imageUrl;
 }

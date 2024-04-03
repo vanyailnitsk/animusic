@@ -103,7 +103,6 @@ public class AlbumService {
         return albumRepository.findById(albumId).map(
                 album -> {
                     album.setName(albumDto.getName());
-                    album.setImageUrl(albumDto.getImageUrl());
                     return album;
                 }
         ).orElseThrow(() -> new AlbumNotFoundException(albumId));

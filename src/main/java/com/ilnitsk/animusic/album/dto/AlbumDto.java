@@ -9,7 +9,6 @@ import java.util.List;
 public class AlbumDto {
     private Integer id;
     private String name;
-    private String imageUrl;
     private String bannerLink;
     private String link;
     private List<SoundtrackDto> soundtracks;
