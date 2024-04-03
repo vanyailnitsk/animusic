@@ -3,6 +3,7 @@ package com.ilnitsk.animusic.anime.dao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ilnitsk.animusic.album.dao.Album;
+import com.ilnitsk.animusic.image.dao.AnimeBannerImage;
 import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,6 +32,9 @@ public class Anime {
     @Column(unique = true)
     private String folderName;
     private String bannerImagePath;
+    @OneToOne
+    @JoinColumn(name = "banner_id")
+    private AnimeBannerImage bannerImage;
     private String cardImagePath;
     @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonIgnore
