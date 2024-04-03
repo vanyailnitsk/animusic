@@ -23,11 +23,15 @@ public class Album {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
-    private String imageUrl;
     @ManyToOne
     @JoinColumn(name = "anime_id")
     @JsonIgnore
     private Anime anime;
+    private String imageUrl;
+    @Column(length = 7,name = "color_dark")
+    private String colorDark;
+    @Column(length = 7,name = "color_light")
+    private String colorLight;
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Soundtrack> soundtracks = new ArrayList<>();
