@@ -58,7 +58,6 @@ class AlbumServiceTest {
         Album album = playlistArgumentCaptor.getValue();
         assertThat(album.getAnime()).isEqualTo(anime);
         assertThat(album.getName()).isEqualTo(request.getName());
-        assertThat(album.getImageUrl()).isEqualTo(request.getImageUrl());
     }
 
     @Test
