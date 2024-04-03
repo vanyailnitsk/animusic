@@ -16,7 +16,7 @@ public class CoverArtDto {
     }
 
     public void setColorLight(String colorLight) {
-        colors.setColorDark(colorLight);
+        colors.setColorLight(colorLight);
     }
 
     @Data
