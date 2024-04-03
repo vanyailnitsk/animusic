@@ -3,6 +3,7 @@ package com.ilnitsk.animusic.album.dao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ilnitsk.animusic.anime.dao.Anime;
+import com.ilnitsk.animusic.image.CoverArt;
 import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,10 +29,9 @@ public class Album {
     @JsonIgnore
     private Anime anime;
     private String imageUrl;
-    @Column(length = 7,name = "color_dark")
-    private String colorDark;
-    @Column(length = 7,name = "color_light")
-    private String colorLight;
+    @OneToOne
+    @JoinColumn(name = "cover_art_id")
+    private CoverArt coverArt;
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Soundtrack> soundtracks = new ArrayList<>();
