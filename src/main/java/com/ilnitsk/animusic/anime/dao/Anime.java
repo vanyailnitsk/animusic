@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.image.dao.AnimeBannerImage;
+import com.ilnitsk.animusic.image.dao.Image;
 import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,9 @@ public class Anime {
     @OneToOne
     @JoinColumn(name = "banner_id")
     private AnimeBannerImage bannerImage;
+    @OneToOne
+    @JoinColumn(name = "card_image_id")
+    private Image cardImage;
     private String cardImagePath;
     @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonIgnore
