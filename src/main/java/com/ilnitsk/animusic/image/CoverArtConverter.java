@@ -11,7 +11,6 @@ public class CoverArtConverter {
         this.modelMapper = modelMapper;
 
         modelMapper.createTypeMap(CoverArt.class,CoverArtDto.class)
-                .addMapping(CoverArt::getImageUrl,CoverArtDto::setImageUrl)
                 .addMapping(CoverArt::getColorDark,CoverArtDto::setColorDark)
                 .addMapping(CoverArt::getColorLight,CoverArtDto::setColorLight);
     }
