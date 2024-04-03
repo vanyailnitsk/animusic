@@ -1,11 +1,12 @@
 package com.ilnitsk.animusic.image;
 
+import com.ilnitsk.animusic.image.dto.ImageDto;
 import lombok.Data;
 
 @Data
 public class CoverArtDto {
     private Colors colors;
-    private String imageUrl;
+    private ImageDto image;
 
     public CoverArtDto() {
         colors = new Colors();
