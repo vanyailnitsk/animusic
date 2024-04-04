@@ -11,6 +11,8 @@ import com.ilnitsk.animusic.exception.AlbumNotFoundException;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.image.dao.CoverArt;
+import com.ilnitsk.animusic.image.dto.CoverArtConverter;
+import com.ilnitsk.animusic.image.dto.CreateCoverDto;
 import com.ilnitsk.animusic.image.service.CoverArtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ public class AlbumService {
     private final AnimeRepository animeRepository;
     private final AnimeService animeService;
     private final CoverArtService coverArtService;
+    private final CoverArtConverter coverArtConverter;
 
     public Album createAlbum(CreateAlbumDto request) {
         Optional<Anime> animeOptional = animeRepository.findById(request.getAnimeId());
@@ -95,14 +98,18 @@ public class AlbumService {
         ).orElseThrow(() -> new AlbumNotFoundException(albumId));
     }
 
-    public CoverArt createCoverArt(Integer albumId, MultipartFile imageFile, CoverArt coverArt) {
+    @Transactional
+    public CoverArt createCoverArt(Integer albumId, MultipartFile imageFile, CreateCoverDto coverArtDto) {
         Album album = albumRepository.findById(albumId)
                 .orElseThrow(() -> new AlbumNotFoundException(albumId));
-        return coverArtService.createCoverArt(
+        CoverArt coverArt = coverArtConverter.convertToEntity(coverArtDto);
+        CoverArt newCoverArt = coverArtService.createCoverArt(
                 album.getAnime().getFolderName(),
                 album.getName().toUpperCase(),
                 imageFile,
                 coverArt);
+        album.setCoverArt(newCoverArt);
+        return newCoverArt;
     }
 }
 
