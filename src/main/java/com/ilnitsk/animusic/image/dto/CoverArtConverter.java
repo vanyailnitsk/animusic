@@ -21,4 +21,8 @@ public class CoverArtConverter {
     public CoverArt convertToEntity(CreateCoverDto dto) {
         return modelMapper.map(dto,CoverArt.class);
     }
+
+    public CoverArtDto convertToDto(CoverArt dao) {
+        return modelMapper.map(dao,CoverArtDto.class);
+    }
 }
