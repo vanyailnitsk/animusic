@@ -1,7 +1,7 @@
 package com.ilnitsk.animusic.album.service;
 
 import com.ilnitsk.animusic.album.dao.Album;
-import com.ilnitsk.animusic.album.dto.CreateAlbumRequest;
+import com.ilnitsk.animusic.album.dto.CreateAlbumDto;
 import com.ilnitsk.animusic.album.dto.UpdateAlbumDto;
 import com.ilnitsk.animusic.album.repository.AlbumRepository;
 import com.ilnitsk.animusic.anime.dao.Anime;
@@ -31,7 +31,7 @@ public class AlbumService {
         this.animeService = animeService;
     }
 
-    public Album createAlbum(CreateAlbumRequest request) {
+    public Album createAlbum(CreateAlbumDto request) {
         Optional<Anime> animeOptional = animeRepository.findById(request.getAnimeId());
         if (animeOptional.isEmpty()) {
             throw new AnimeNotFoundException(request.getAnimeId());

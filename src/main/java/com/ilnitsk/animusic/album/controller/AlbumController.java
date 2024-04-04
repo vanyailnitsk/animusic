@@ -59,7 +59,7 @@ public class AlbumController {
             @ApiResponse(responseCode = "400", description = "Альбом уже существует"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public Album createAlbum(@RequestBody CreateAlbumRequest request) {
+    public Album createAlbum(@RequestBody CreateAlbumDto request) {
         Album album = albumService.createAlbum(request);
 
         log.info("Album {} in anime {} created",request.getName(),request.getAnimeId());

@@ -2,7 +2,7 @@ package com.ilnitsk.animusic.repositories;
 
 
 import com.ilnitsk.animusic.album.dao.Album;
-import com.ilnitsk.animusic.album.dto.CreateAlbumRequest;
+import com.ilnitsk.animusic.album.dto.CreateAlbumDto;
 import com.ilnitsk.animusic.album.repository.AlbumRepository;
 import com.ilnitsk.animusic.anime.dao.Anime;
 import com.ilnitsk.animusic.anime.repository.AnimeRepository;
@@ -34,10 +34,9 @@ public class AlbumRepositoryIntegrationTest {
     public void testCreatePlaylistWithRelatedEntities() {
         Anime anime = new Anime("Naruto", "mock", Year.of(2002), "", "");
         animeRepository.save(anime);
-        CreateAlbumRequest request = new CreateAlbumRequest(
+        CreateAlbumDto request = new CreateAlbumDto(
                 anime.getId(),
-                "My Playlist",
-                "/"
+                "My Playlist"
         );
         Album album = request.getAlbumData();
         album.setAnime(anime);

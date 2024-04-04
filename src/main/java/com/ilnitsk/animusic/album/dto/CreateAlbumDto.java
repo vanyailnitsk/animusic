@@ -8,10 +8,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CreateAlbumRequest {
+public class CreateAlbumDto {
     private Integer animeId;
     private String name;
-    private String imageUrl;
     public Album getAlbumData() {
         return Album.builder()
                 .name(name)
