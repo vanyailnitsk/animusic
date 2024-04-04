@@ -89,7 +89,7 @@ public class SoundtrackService {
         soundtrack.setAnime(anime);
         soundtrack.setAudioFile(blobKey);
         if (!image.isEmpty()) {
-            createImage(soundtrack,image);
+            imageService.createSoundtrackImage(soundtrack,image);
         }
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
         album.addSoundtrack(soundtrack);
@@ -97,17 +97,13 @@ public class SoundtrackService {
         return savedSoundtrack;
     }
 
-    public void createImage(Soundtrack soundtrack,MultipartFile image) {
-        String fileName = "%s/images/%s".formatted(soundtrack.getAnime().getFolderName(),soundtrack.getAnimeTitle());
-        String blobKey = s3Service.createBlob(fileName,image);
-        soundtrack.setImageFile(blobKey);
-    }
+
 
     @Transactional
     public Soundtrack setImage(Integer soundtrackId, MultipartFile image) {
         Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
-        createImage(soundtrack,image);
+        imageService.createSoundtrackImage(soundtrack,image);
         return soundtrack;
     }
 
@@ -116,7 +112,7 @@ public class SoundtrackService {
                 .orElseThrow(() -> new SoundtrackNotFoundException(id));
         String folderName = soundtrack.getAnime().getFolderName();
         s3Service.deleteObject(soundtrack.getAudioFile());
-        s3Service.deleteObject(soundtrack.getImageFile());
+        imageService.deleteImage(soundtrack.getImage());
         soundtrackRepository.deleteById(id);
         log.info("Soundtrack {}/{} removed successfully", folderName, soundtrack.getAnimeTitle());
     }

@@ -26,7 +26,7 @@ public class Soundtrack {
     private Anime anime;
     private String animeTitle;
     private String audioFile;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image image;
     private Integer duration;
