@@ -26,7 +26,6 @@ public class Soundtrack {
     private Anime anime;
     private String animeTitle;
     private String audioFile;
-    private String imageFile;
     @OneToOne
     @JoinColumn(name = "image_id")
     private Image image;
