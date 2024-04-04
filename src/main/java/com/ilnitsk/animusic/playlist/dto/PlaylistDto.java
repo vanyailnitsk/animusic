@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.playlist.dto;
 
+import com.ilnitsk.animusic.image.CoverArtDto;
 import lombok.Data;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public class PlaylistDto {
     private String name;
     private PlaylistOwnerDto addedBy;
     private List<PlaylistSoundtrackDto> soundtracks;
+    private CoverArtDto coverArt;
 }
