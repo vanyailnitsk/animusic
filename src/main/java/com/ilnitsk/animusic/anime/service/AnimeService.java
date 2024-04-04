@@ -9,7 +9,6 @@ import com.ilnitsk.animusic.image.service.ImageService;
 import com.ilnitsk.animusic.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,16 +55,6 @@ public class AnimeService {
         animeRepository.deleteById(animeId);
     }
 
-    public ResponseEntity<byte[]> getBanner(Integer animeId) {
-        Anime anime = animeRepository.findById(animeId)
-                .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        String banner = anime.getBannerImagePath();
-        if (banner == null || banner.isEmpty()) {
-            return imageService.getDefaultBanner();
-        }
-        return imageService.getImage(anime.getFolderName(),banner);
-    }
-
     public String createBanner(Anime anime,MultipartFile banner) {
         String bannerName = "%s/images/%s".formatted(anime.getFolderName(),"banner");
         return s3Service.createBlob(bannerName,banner);
@@ -77,16 +66,6 @@ public class AnimeService {
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
         String bannerPath = createBanner(anime,banner);
         anime.setBannerImagePath(bannerPath);
-    }
-
-    public ResponseEntity<byte[]> getCard(Integer animeId) {
-        Anime anime = animeRepository.findById(animeId)
-                .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        String card = anime.getCardImagePath();
-        if (card == null || card.isEmpty()) {
-            return imageService.getDefaultCard();
-        }
-        return imageService.getImage(anime.getFolderName(),card);
     }
 
     public String createCard(Anime anime,MultipartFile card) {

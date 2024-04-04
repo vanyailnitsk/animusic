@@ -11,7 +11,6 @@ import com.ilnitsk.animusic.exception.AlbumNotFoundException;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,13 +81,6 @@ public class AlbumService {
             ));
         }
         return entity.get();
-    }
-
-
-    public ResponseEntity<byte[]> getBanner(Integer albumId) {
-        Album album = albumRepository.findById(albumId)
-                .orElseThrow(() -> new AlbumNotFoundException(albumId));
-        return animeService.getBanner(album.getAnime().getId());
     }
 
     public void deleteAlbum(Integer id) {

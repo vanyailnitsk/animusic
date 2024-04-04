@@ -131,12 +131,6 @@ public class SoundtrackController {
         return soundtrackDto;
     }
 
-    @GetMapping("/images/{soundtrackId}")
-    @Deprecated
-    public ResponseEntity<byte[]> getSoundtrackImage(@PathVariable Integer soundtrackId) {
-        return soundtrackService.getSoundtrackImage(soundtrackId);
-    }
-
     @PutMapping("/update-duration")
     @Operation(summary = "Метод для изменения длительности саундтрека")
     @ApiResponses(value = {

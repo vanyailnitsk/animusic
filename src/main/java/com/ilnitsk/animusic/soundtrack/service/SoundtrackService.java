@@ -97,16 +97,6 @@ public class SoundtrackService {
         return savedSoundtrack;
     }
 
-    public ResponseEntity<byte[]> getSoundtrackImage(Integer soundtrackId) {
-        Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
-                .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
-        String imageFile = soundtrack.getImageFile();
-        if (imageFile == null || imageFile.isEmpty()) {
-            return imageService.getDefaultSoundtrackImage();
-        }
-        return imageService.getImage(soundtrack.getAnime().getFolderName(),imageFile);
-    }
-
     public void createImage(Soundtrack soundtrack,MultipartFile image) {
         String fileName = "%s/images/%s".formatted(soundtrack.getAnime().getFolderName(),soundtrack.getAnimeTitle());
         String blobKey = s3Service.createBlob(fileName,image);

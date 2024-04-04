@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -78,20 +77,12 @@ public class AnimeController {
         return animeDto;
     }
 
-    @GetMapping("/images/banner/{id}")
-    public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer animeId) {
-        return animeService.getBanner(animeId);
-    }
     @PostMapping("/images/banner/{id}")
     public void setBanner(@PathVariable("id") Integer animeId,
                               @RequestPart(value = "banner") MultipartFile banner) {
         animeService.setBanner(animeId,banner);
     }
 
-    @GetMapping("/images/card/{id}")
-    public ResponseEntity<byte[]> getCard(@PathVariable("id") Integer animeId) {
-        return animeService.getCard(animeId);
-    }
     @PostMapping("/images/card/{id}")
     public void setCard(@PathVariable("id") Integer animeId,
                               @RequestPart(value = "card") MultipartFile card) {

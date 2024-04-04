@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,10 +51,6 @@ public class AlbumController {
         return albumDto;
     }
 
-    @GetMapping("/images/banner/{id}")
-    public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer albumId) {
-        return albumService.getBanner(albumId);
-    }
 
     @PostMapping
     @Operation(summary = "Метод для создания альбома")
