@@ -3,6 +3,10 @@ package com.ilnitsk.animusic.album.controller;
 import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.album.dto.*;
 import com.ilnitsk.animusic.album.service.AlbumService;
+import com.ilnitsk.animusic.image.dao.CoverArt;
+import com.ilnitsk.animusic.image.dto.CoverArtConverter;
+import com.ilnitsk.animusic.image.dto.CoverArtDto;
+import com.ilnitsk.animusic.image.dto.CreateCoverDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -11,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,6 +27,7 @@ import java.util.List;
 public class AlbumController {
     private final AlbumService albumService;
     private final AlbumConverter albumConverter;
+    private final CoverArtConverter coverArtConverter;
     @GetMapping
     @Operation(summary = "Метод для получения списка альбомов по animeId")
     @ApiResponses(value = {
@@ -64,6 +70,14 @@ public class AlbumController {
 
         log.info("Album {} in anime {} created",request.getName(),request.getAnimeId());
         return album;
+    }
+
+    @PostMapping("cover-art/{albumId}")
+    public CoverArtDto createAlbumCover(@PathVariable Integer albumId,
+                                        @RequestPart(value = "imageFile") MultipartFile imageFile,
+                                        @ModelAttribute CreateCoverDto coverArtDto) {
+        CoverArt coverArt = albumService.createCoverArt(albumId,imageFile,coverArtDto);
+        return coverArtConverter.convertToDto(coverArt);
     }
 
     @PutMapping("{albumId}")
