@@ -20,12 +20,21 @@ public class ImageService {
         String fileName = IMAGES_PATH.formatted(soundtrack.getAnime().getFolderName(),soundtrack.getAnimeTitle());
         String blobKey = s3Service.createBlob(fileName,image);
         imageEntity.setSource(blobKey);
+        imageRepository.save(imageEntity);
         soundtrack.setImage(imageEntity);
     }
 
     public void deleteImage(Image image) {
         s3Service.deleteObject(image.getSource());
         imageRepository.delete(image);
+    }
+
+    public Image createImage(String animeName,String imageName,MultipartFile image) {
+        Image imageEntity = new Image();
+        String fileName = IMAGES_PATH.formatted(animeName,imageName);
+        String blobKey = s3Service.createBlob(fileName,image);
+        imageEntity.setSource(blobKey);
+        return imageRepository.save(imageEntity);
     }
 
 }
