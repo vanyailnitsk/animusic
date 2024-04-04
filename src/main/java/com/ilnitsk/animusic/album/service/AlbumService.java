@@ -10,26 +10,24 @@ import com.ilnitsk.animusic.anime.service.AnimeService;
 import com.ilnitsk.animusic.exception.AlbumNotFoundException;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ilnitsk.animusic.image.dao.CoverArt;
+import com.ilnitsk.animusic.image.service.CoverArtService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AnimeRepository animeRepository;
     private final AnimeService animeService;
-
-    @Autowired
-    public AlbumService(AlbumRepository albumRepository, AnimeRepository animeRepository, AnimeService animeService) {
-        this.albumRepository = albumRepository;
-        this.animeRepository = animeRepository;
-        this.animeService = animeService;
-    }
+    private final CoverArtService coverArtService;
 
     public Album createAlbum(CreateAlbumDto request) {
         Optional<Anime> animeOptional = animeRepository.findById(request.getAnimeId());
@@ -95,6 +93,16 @@ public class AlbumService {
                     return album;
                 }
         ).orElseThrow(() -> new AlbumNotFoundException(albumId));
+    }
+
+    public CoverArt createCoverArt(Integer albumId, MultipartFile imageFile, CoverArt coverArt) {
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> new AlbumNotFoundException(albumId));
+        return coverArtService.createCoverArt(
+                album.getAnime().getFolderName(),
+                album.getName().toUpperCase(),
+                imageFile,
+                coverArt);
     }
 }
 
