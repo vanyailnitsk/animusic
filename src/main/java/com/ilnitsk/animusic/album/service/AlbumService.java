@@ -63,9 +63,6 @@ public class AlbumService {
             throw new AlbumNotFoundException(id);
         }
         Album album = entity.get();
-        String animeTitle = album.getAnime().getTitle();
-        album.getSoundtracks()
-                .forEach(s -> s.setAnimeName(animeTitle));
         String albumName = album.getName();
         if (albumName.equals("Openings") || albumName.equals("Endings")) {
             album.getSoundtracks().sort(Comparator.comparingInt(

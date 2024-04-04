@@ -29,8 +29,6 @@ public class AnimeService {
     public Anime getAnimeInfo(Integer animeId) {
         Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        anime.getSoundtracks()
-                .forEach(s -> s.setAnimeName(anime.getTitle()));
         return anime;
     }
 
