@@ -1,10 +1,12 @@
 package com.ilnitsk.animusic.image.service;
 
-import lombok.AllArgsConstructor;
+import com.ilnitsk.animusic.image.repository.ImageRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ImageService {
+    private final ImageRepository imageRepository;
 
 }
