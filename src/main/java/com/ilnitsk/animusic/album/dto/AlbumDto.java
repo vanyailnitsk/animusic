@@ -1,7 +1,7 @@
 package com.ilnitsk.animusic.album.dto;
 
 import com.ilnitsk.animusic.anime.dto.AnimeItemDto;
-import com.ilnitsk.animusic.image.CoverArtDto;
+import com.ilnitsk.animusic.image.dto.CoverArtDto;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
 import lombok.Data;
 

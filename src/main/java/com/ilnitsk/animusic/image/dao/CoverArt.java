@@ -1,6 +1,5 @@
-package com.ilnitsk.animusic.image;
+package com.ilnitsk.animusic.image.dao;
 
-import com.ilnitsk.animusic.image.dao.Image;
 import jakarta.persistence.*;
 import lombok.Data;
 

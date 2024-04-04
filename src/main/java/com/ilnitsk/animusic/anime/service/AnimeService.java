@@ -5,7 +5,7 @@ import com.ilnitsk.animusic.anime.dto.UpdateAnimeDto;
 import com.ilnitsk.animusic.anime.repository.AnimeRepository;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
-import com.ilnitsk.animusic.image.ImageService;
+import com.ilnitsk.animusic.image.service.ImageService;
 import com.ilnitsk.animusic.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

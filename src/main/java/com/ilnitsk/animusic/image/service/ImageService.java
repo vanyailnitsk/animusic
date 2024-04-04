@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.image;
+package com.ilnitsk.animusic.image.service;
 
 import com.ilnitsk.animusic.file.FileService;
 import lombok.AllArgsConstructor;

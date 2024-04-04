@@ -8,7 +8,7 @@ import com.ilnitsk.animusic.exception.AlbumNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
 import com.ilnitsk.animusic.file.FileService;
-import com.ilnitsk.animusic.image.ImageService;
+import com.ilnitsk.animusic.image.service.ImageService;
 import com.ilnitsk.animusic.s3.S3Service;
 import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import com.ilnitsk.animusic.soundtrack.dto.UpdateSoundtrackDto;

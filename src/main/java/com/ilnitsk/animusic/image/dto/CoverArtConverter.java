@@ -1,5 +1,6 @@
-package com.ilnitsk.animusic.image;
+package com.ilnitsk.animusic.image.dto;
 
+import com.ilnitsk.animusic.image.dao.CoverArt;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ public class CoverArtConverter {
     public CoverArtConverter(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
 
-        modelMapper.createTypeMap(CoverArt.class,CoverArtDto.class)
+        modelMapper.createTypeMap(CoverArt.class, CoverArtDto.class)
                 .addMapping(CoverArt::getColorDark,CoverArtDto::setColorDark)
                 .addMapping(CoverArt::getColorLight,CoverArtDto::setColorLight);
     }

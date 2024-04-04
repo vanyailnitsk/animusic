@@ -1,6 +1,5 @@
-package com.ilnitsk.animusic.image;
+package com.ilnitsk.animusic.image.dto;
 
-import com.ilnitsk.animusic.image.dto.ImageDto;
 import lombok.Data;
 
 @Data
