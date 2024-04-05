@@ -5,6 +5,9 @@ import com.ilnitsk.animusic.anime.dto.AnimeConverter;
 import com.ilnitsk.animusic.anime.dto.AnimeDto;
 import com.ilnitsk.animusic.anime.dto.UpdateAnimeDto;
 import com.ilnitsk.animusic.anime.service.AnimeService;
+import com.ilnitsk.animusic.image.dao.AnimeBannerImage;
+import com.ilnitsk.animusic.image.dto.AnimeBannerImageConverter;
+import com.ilnitsk.animusic.image.dto.AnimeBannerImageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -24,6 +27,7 @@ import java.util.List;
 public class AnimeController {
     private final AnimeService animeService;
     private final AnimeConverter animeConverter;
+    private final AnimeBannerImageConverter bannerImageConverter;
 
     @GetMapping("/{animeId}")
     @Operation(summary = "Метод для получения аниме по id")
@@ -78,9 +82,11 @@ public class AnimeController {
     }
 
     @PostMapping("/images/banner/{id}")
-    public void setBanner(@PathVariable("id") Integer animeId,
-                              @RequestPart(value = "banner") MultipartFile banner) {
-        animeService.setBanner(animeId,banner);
+    public AnimeBannerImageDto setBanner(@PathVariable("id") Integer animeId,
+                                         @RequestPart(value = "banner") MultipartFile banner,
+                                         @ModelAttribute AnimeBannerImage bannerImage) {
+        AnimeBannerImage bannerCreated = animeService.setBanner(animeId,banner,bannerImage);
+        return bannerImageConverter.convertToDto(bannerCreated);
     }
 
     @PostMapping("/images/card/{id}")

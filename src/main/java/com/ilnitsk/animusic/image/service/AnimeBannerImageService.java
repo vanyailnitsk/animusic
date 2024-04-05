@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.image.service;
 
+import com.ilnitsk.animusic.anime.dao.Anime;
 import com.ilnitsk.animusic.image.dao.AnimeBannerImage;
 import com.ilnitsk.animusic.image.dao.Image;
 import com.ilnitsk.animusic.image.repository.AnimeBannerImageRepository;
@@ -15,9 +16,8 @@ public class AnimeBannerImageService {
     private final ImageService imageService;
 
     @Transactional
-    public AnimeBannerImage createAnimeBannerImage(
-            String animeFolder, String imageName, MultipartFile imageFile, AnimeBannerImage banner) {
-        Image image = imageService.createImage(animeFolder,imageName,imageFile);
+    public AnimeBannerImage createAnimeBannerImage(Anime anime, MultipartFile imageFile, AnimeBannerImage banner) {
+        Image image = imageService.createImage(anime.getFolderName(),"banner",imageFile);
         banner.setImage(image);
         return bannerImageRepository.save(banner);
     }
