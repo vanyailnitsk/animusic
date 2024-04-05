@@ -39,7 +39,6 @@ public class Anime {
     @OneToOne
     @JoinColumn(name = "card_image_id")
     private Image cardImage;
-    private String cardImagePath;
     @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Soundtrack> soundtracks = new ArrayList<>();
