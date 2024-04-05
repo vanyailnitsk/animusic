@@ -4,6 +4,7 @@ import com.ilnitsk.animusic.image.dao.CoverArt;
 import com.ilnitsk.animusic.image.dao.Image;
 import com.ilnitsk.animusic.image.repository.CoverArtRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,5 +20,16 @@ public class CoverArtService {
         Image image = imageService.createAnimeImage(animeFolder,imageName,imageFile);
         coverArt.setImage(image);
         return coverArtRepository.save(coverArt);
+    }
+
+    @Transactional
+    public CoverArt createPlaylistCoverArt(Integer userId, String playlistName, MultipartFile imageFile,CoverArt coverArt) {
+        Image image = imageService.createImageForUser(userId,generateHexKey(playlistName),imageFile);
+        coverArt.setImage(image);
+        return coverArtRepository.save(coverArt);
+    }
+
+    public static String generateHexKey(String input) {
+        return DigestUtils.md5Hex(input);
     }
 }
