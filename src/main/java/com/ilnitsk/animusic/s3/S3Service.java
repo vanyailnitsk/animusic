@@ -77,14 +77,4 @@ public class S3Service {
         return createBlob(fileName,content,"image/jpeg");
     }
 
-
-    public String createAudio(String fileName, MultipartFile content) {
-        String extension = getFileExtension(content.getOriginalFilename());
-        String contentType = switch (extension) {
-            case ".ogg" -> "audio/ogg";
-            case ".mp3" -> "audio/mpeg";
-            default -> "application/octet-stream";
-        };
-        return createBlob(fileName,content,contentType);
-    }
 }

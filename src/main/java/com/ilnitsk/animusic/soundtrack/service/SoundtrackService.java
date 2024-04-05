@@ -85,7 +85,7 @@ public class SoundtrackService {
                 .orElseThrow(() -> new AlbumNotFoundException(playlistId));
         Anime anime = album.getAnime();
         String fileName = "%s/audio/%s".formatted(anime.getFolderName(),soundtrack.getAnimeTitle());
-        String blobKey = s3Service.createAudio(fileName,audio);
+        String blobKey = createAudio(fileName,audio);
         soundtrack.setAnime(anime);
         soundtrack.setAudioFile(blobKey);
         if (!image.isEmpty()) {
@@ -137,7 +137,7 @@ public class SoundtrackService {
             throw new BadRequestException("Содержимое аудиофайла не может быть пустым!");
         }
         String fileName = "%s/audio/%s".formatted(soundtrack.getAnime().getFolderName(),soundtrack.getAnimeTitle());
-        String blobKey = s3Service.createAudio(fileName,audio);
+        String blobKey = createAudio(fileName,audio);
         soundtrack.setAudioFile(blobKey);
         return soundtrack;
     }
@@ -147,5 +147,15 @@ public class SoundtrackService {
                 .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
         Soundtrack soundtrackPatched = jsonMergePatchService.mergePatch(patch,soundtrack,Soundtrack.class);
         return soundtrackRepository.save(soundtrackPatched);
+    }
+
+    public String createAudio(String fileName, MultipartFile content) {
+        String extension = s3Service.getFileExtension(content.getOriginalFilename());
+        String contentType = switch (extension) {
+            case ".ogg" -> "audio/ogg";
+            case ".mp3" -> "audio/mpeg";
+            default -> "application/octet-stream";
+        };
+        return s3Service.createBlob(fileName,content,contentType);
     }
 }
