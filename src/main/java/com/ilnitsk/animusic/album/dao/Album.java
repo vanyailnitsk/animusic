@@ -21,7 +21,7 @@ import java.util.List;
 @ToString
 public class Album {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     @ManyToOne
