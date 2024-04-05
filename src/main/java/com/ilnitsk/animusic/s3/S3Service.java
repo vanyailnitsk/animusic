@@ -72,9 +72,4 @@ public class S3Service {
         }
     }
 
-
-    public String createImage(String fileName, MultipartFile content) {
-        return createBlob(fileName,content,"image/jpeg");
-    }
-
 }
