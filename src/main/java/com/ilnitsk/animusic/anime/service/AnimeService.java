@@ -65,11 +65,12 @@ public class AnimeService {
     }
 
     @Transactional
-    public void setCard(Integer animeId, MultipartFile card) {
+    public Image setCard(Integer animeId, MultipartFile card) {
         Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
         Image cardImage = imageService.createImage(anime.getFolderName(),"card",card);
         anime.setCardImage(cardImage);
+        return cardImage;
     }
 
     @Transactional
