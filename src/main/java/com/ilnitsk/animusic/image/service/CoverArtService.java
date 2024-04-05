@@ -15,8 +15,8 @@ public class CoverArtService {
     private final ImageService imageService;
 
     @Transactional
-    public CoverArt createCoverArt(String animeFolder, String imageName, MultipartFile imageFile,CoverArt coverArt) {
-        Image image = imageService.createImage(animeFolder,imageName,imageFile);
+    public CoverArt createAnimeCoverArt(String animeFolder, String imageName, MultipartFile imageFile,CoverArt coverArt) {
+        Image image = imageService.createAnimeImage(animeFolder,imageName,imageFile);
         coverArt.setImage(image);
         return coverArtRepository.save(coverArt);
     }

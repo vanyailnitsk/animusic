@@ -14,12 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageService {
     private final ImageRepository imageRepository;
     private final S3Service s3Service;
-    private static final String IMAGES_PATH = "%s/images/%s";
+    private static final String ANIME_IMAGES_PATH = "%s/images/%s";
     private final String CONTENT_TYPE = "image/jpeg";
 
     public void createSoundtrackImage(Soundtrack soundtrack, MultipartFile image) {
         Image imageEntity = new Image();
-        String fileName = IMAGES_PATH.formatted(soundtrack.getAnime().getFolderName(), soundtrack.getAnimeTitle());
+        String fileName = ANIME_IMAGES_PATH.formatted(soundtrack.getAnime().getFolderName(), soundtrack.getAnimeTitle());
         String blobKey = s3Service.createBlob(fileName, image,CONTENT_TYPE);
         imageEntity.setSource(blobKey);
         imageRepository.save(imageEntity);
@@ -32,9 +32,9 @@ public class ImageService {
     }
 
     @Transactional
-    public Image createImage(String animeName, String imageName, MultipartFile image) {
+    public Image createAnimeImage(String animeName, String imageName, MultipartFile image) {
         Image imageEntity = new Image();
-        String fileName = IMAGES_PATH.formatted(animeName, imageName);
+        String fileName = ANIME_IMAGES_PATH.formatted(animeName, imageName);
         String blobKey = s3Service.createBlob(fileName, image, CONTENT_TYPE);
         imageEntity.setSource(blobKey);
         return imageRepository.save(imageEntity);

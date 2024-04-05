@@ -68,7 +68,7 @@ public class AnimeService {
     public Image setCard(Integer animeId, MultipartFile card) {
         Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        Image cardImage = imageService.createImage(anime.getFolderName(),"card",card);
+        Image cardImage = imageService.createAnimeImage(anime.getFolderName(),"card",card);
         anime.setCardImage(cardImage);
         return cardImage;
     }
