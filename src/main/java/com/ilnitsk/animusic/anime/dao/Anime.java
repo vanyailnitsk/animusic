@@ -32,7 +32,6 @@ public class Anime {
     private String description;
     @Column(unique = true)
     private String folderName;
-    private String bannerImagePath;
     @OneToOne
     @JoinColumn(name = "banner_id")
     private AnimeBannerImage bannerImage;

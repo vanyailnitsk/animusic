@@ -37,8 +37,5 @@ public class Album {
     public void addSoundtrack(Soundtrack soundtrack) {
         soundtracks.add(soundtrack);
     }
-    public String getBannerLink() {
-        return anime.getBannerImagePath();
-    }
 
 }
