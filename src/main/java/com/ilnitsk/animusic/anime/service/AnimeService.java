@@ -57,7 +57,7 @@ public class AnimeService {
 
     public String createBanner(Anime anime,MultipartFile banner) {
         String bannerName = "%s/images/%s".formatted(anime.getFolderName(),"banner");
-        return s3Service.createBlob(bannerName,banner);
+        return s3Service.createImage(bannerName,banner);
     }
 
     @Transactional
@@ -70,7 +70,7 @@ public class AnimeService {
 
     public String createCard(Anime anime,MultipartFile card) {
         String cardName = "%s/images/%s".formatted(anime.getFolderName(),"card");
-        return s3Service.createBlob(cardName,card);
+        return s3Service.createImage(cardName,card);
     }
 
     @Transactional

@@ -23,10 +23,11 @@ public class S3Service {
     private final S3Client s3Client;
     private final S3Config s3Config;
 
-    public void putObject(String key,byte[] file) {
+    public void putObject(String key,byte[] file,String contentType) {
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(s3Config.getBucket())
                 .key(key)
+                .contentType(contentType)
                 .build();
         s3Client.putObject(objectRequest, RequestBody.fromBytes(file));
     }
@@ -61,13 +62,29 @@ public class S3Service {
         return fileName.substring(fileName.lastIndexOf('.'));
     }
 
-    public String createBlob(String fileName, MultipartFile content) {
+    public String createBlob(String fileName, MultipartFile content,String contentType) {
         String key = fileName+getFileExtension(content.getOriginalFilename());
         try {
-            putObject(key,content.getBytes());
+            putObject(key,content.getBytes(),contentType);
             return key;
         } catch (IOException e) {
             throw new RuntimeException("Битый файл!");
         }
+    }
+
+
+    public String createImage(String fileName, MultipartFile content) {
+        return createBlob(fileName,content,"image/jpeg");
+    }
+
+
+    public String createAudio(String fileName, MultipartFile content) {
+        String extension = getFileExtension(content.getOriginalFilename());
+        String contentType = switch (extension) {
+            case ".ogg" -> "audio/ogg";
+            case ".mp3" -> "audio/mpeg";
+            default -> "application/octet-stream";
+        };
+        return createBlob(fileName,content,contentType);
     }
 }

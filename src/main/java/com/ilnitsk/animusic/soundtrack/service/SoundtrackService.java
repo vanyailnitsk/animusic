@@ -85,7 +85,7 @@ public class SoundtrackService {
                 .orElseThrow(() -> new AlbumNotFoundException(playlistId));
         Anime anime = album.getAnime();
         String fileName = "%s/audio/%s".formatted(anime.getFolderName(),soundtrack.getAnimeTitle());
-        String blobKey = s3Service.createBlob(fileName,audio);
+        String blobKey = s3Service.createAudio(fileName,audio);
         soundtrack.setAnime(anime);
         soundtrack.setAudioFile(blobKey);
         if (!image.isEmpty()) {
@@ -137,7 +137,7 @@ public class SoundtrackService {
             throw new BadRequestException("Содержимое аудиофайла не может быть пустым!");
         }
         String fileName = "%s/audio/%s".formatted(soundtrack.getAnime().getFolderName(),soundtrack.getAnimeTitle());
-        String blobKey = s3Service.createBlob(fileName,audio);
+        String blobKey = s3Service.createAudio(fileName,audio);
         soundtrack.setAudioFile(blobKey);
         return soundtrack;
     }
