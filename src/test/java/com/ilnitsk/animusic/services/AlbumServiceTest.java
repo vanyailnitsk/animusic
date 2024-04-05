@@ -36,7 +36,7 @@ class AlbumServiceTest {
     private AlbumService underTest;
     @BeforeEach
     void setUp() {
-        underTest = new AlbumService(albumRepository, animeRepository, null);
+        underTest = new AlbumService(albumRepository, animeRepository, null,null,null);
     }
 
     @Test
