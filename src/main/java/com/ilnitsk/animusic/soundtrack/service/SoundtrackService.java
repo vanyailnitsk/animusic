@@ -1,6 +1,7 @@
 package com.ilnitsk.animusic.soundtrack.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.album.repository.AlbumRepository;
 import com.ilnitsk.animusic.anime.dao.Anime;
@@ -34,6 +35,7 @@ public class SoundtrackService {
     private final ImageService imageService;
     private final S3Service s3Service;
     private final JsonMergePatchService jsonMergePatchService;
+    private final ObjectMapper objectMapper;
 
     public Soundtrack getSoundtrack(Integer id) {
         return soundtrackRepository.findById(id)
@@ -148,8 +150,9 @@ public class SoundtrackService {
     public Soundtrack updateSoundtrack(JsonNode patch, Integer soundtrackId) {
         Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
-        Soundtrack soundtrackPatched = jsonMergePatchService.mergePatch(patch,soundtrack,Soundtrack.class);
-        return soundtrackRepository.save(soundtrackPatched);
+        Soundtrack res = jsonMergePatchService.mergePatch(patch,soundtrack, Soundtrack.class);
+        soundtrackRepository.save(res);
+        return res;
     }
 
     public String createAudio(String fileName, MultipartFile content) {
