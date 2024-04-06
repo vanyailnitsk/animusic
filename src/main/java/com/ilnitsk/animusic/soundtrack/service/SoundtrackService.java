@@ -94,7 +94,7 @@ public class SoundtrackService {
             imageService.createSoundtrackImage(soundtrack,image);
         }
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
-        album.addSoundtrack(soundtrack);
+        soundtrack.setAlbum(album);
         log.info("Soundtrack {} created successfully",blobKey);
         return savedSoundtrack;
     }
