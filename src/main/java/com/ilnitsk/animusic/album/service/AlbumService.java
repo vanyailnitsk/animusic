@@ -103,7 +103,7 @@ public class AlbumService {
         Album album = albumRepository.findById(albumId)
                 .orElseThrow(() -> new AlbumNotFoundException(albumId));
         CoverArt coverArt = coverArtConverter.convertToEntity(coverArtDto);
-        CoverArt newCoverArt = coverArtService.createCoverArt(
+        CoverArt newCoverArt = coverArtService.createAlbumCoverArt(
                 album.getAnime().getFolderName(),
                 album.getName().toUpperCase(),
                 imageFile,
