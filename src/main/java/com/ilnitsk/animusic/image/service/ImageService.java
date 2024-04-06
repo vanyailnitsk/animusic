@@ -15,6 +15,7 @@ public class ImageService {
     private final ImageRepository imageRepository;
     private final S3Service s3Service;
     private static final String ANIME_IMAGES_PATH = "%s/images/%s";
+    private static final String USER_IMAGES_PATH = "users/%d/%s";
     private final String CONTENT_TYPE = "image/jpeg";
 
     public void createSoundtrackImage(Soundtrack soundtrack, MultipartFile image) {
@@ -35,6 +36,14 @@ public class ImageService {
     public Image createAnimeImage(String animeName, String imageName, MultipartFile image) {
         Image imageEntity = new Image();
         String fileName = ANIME_IMAGES_PATH.formatted(animeName, imageName);
+        String blobKey = s3Service.createBlob(fileName, image, CONTENT_TYPE);
+        imageEntity.setSource(blobKey);
+        return imageRepository.save(imageEntity);
+    }
+
+    public Image createImageForUser(Integer userId,String imageName,MultipartFile image) {
+        Image imageEntity = new Image();
+        String fileName = USER_IMAGES_PATH.formatted(userId,image);
         String blobKey = s3Service.createBlob(fileName, image, CONTENT_TYPE);
         imageEntity.setSource(blobKey);
         return imageRepository.save(imageEntity);
