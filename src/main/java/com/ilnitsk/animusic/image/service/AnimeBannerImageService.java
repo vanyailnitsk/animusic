@@ -17,7 +17,7 @@ public class AnimeBannerImageService {
 
     @Transactional
     public AnimeBannerImage createAnimeBannerImage(Anime anime, MultipartFile imageFile, AnimeBannerImage banner) {
-        Image image = imageService.createImage(anime.getFolderName(),"banner",imageFile);
+        Image image = imageService.createAnimeImage(anime.getFolderName(),"banner",imageFile);
         banner.setImage(image);
         return bannerImageRepository.save(banner);
     }
