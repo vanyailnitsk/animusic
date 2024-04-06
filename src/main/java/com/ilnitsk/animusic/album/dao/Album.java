@@ -3,7 +3,7 @@ package com.ilnitsk.animusic.album.dao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ilnitsk.animusic.anime.dao.Anime;
-import com.ilnitsk.animusic.image.CoverArt;
+import com.ilnitsk.animusic.image.dao.CoverArt;
 import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,9 +36,6 @@ public class Album {
     private List<Soundtrack> soundtracks = new ArrayList<>();
     public void addSoundtrack(Soundtrack soundtrack) {
         soundtracks.add(soundtrack);
-    }
-    public String getBannerLink() {
-        return anime.getBannerImagePath();
     }
 
 }

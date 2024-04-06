@@ -20,9 +20,15 @@ public class SoundtrackConverter {
                 .addMappings(mapper -> mapper.map(src -> src,SoundtrackDto::setSoundtrack));
         modelMapper.createTypeMap(Soundtrack.class,SoundtrackDto.class)
                 .addMappings(mapper -> mapper.map(src -> src,SoundtrackDto::setSoundtrack));
+
+        modelMapper.createTypeMap(CreateSoundtrackDto.class,Soundtrack.class);
     }
 
     public SoundtrackDto convertToDto(Soundtrack soundtrack) {
         return modelMapper.map(soundtrack,SoundtrackDto.class);
+    }
+
+    public Soundtrack convertToEntity(CreateSoundtrackDto createSoundtrackDto) {
+        return modelMapper.map(createSoundtrackDto,Soundtrack.class);
     }
 }

@@ -5,13 +5,18 @@ import com.ilnitsk.animusic.anime.dto.AnimeConverter;
 import com.ilnitsk.animusic.anime.dto.AnimeDto;
 import com.ilnitsk.animusic.anime.dto.UpdateAnimeDto;
 import com.ilnitsk.animusic.anime.service.AnimeService;
+import com.ilnitsk.animusic.image.dao.AnimeBannerImage;
+import com.ilnitsk.animusic.image.dao.Image;
+import com.ilnitsk.animusic.image.dto.AnimeBannerImageConverter;
+import com.ilnitsk.animusic.image.dto.AnimeBannerImageDto;
+import com.ilnitsk.animusic.image.dto.ImageConverter;
+import com.ilnitsk.animusic.image.dto.ImageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +30,8 @@ import java.util.List;
 public class AnimeController {
     private final AnimeService animeService;
     private final AnimeConverter animeConverter;
+    private final AnimeBannerImageConverter bannerImageConverter;
+    private final ImageConverter imageConverter;
 
     @GetMapping("/{animeId}")
     @Operation(summary = "Метод для получения аниме по id")
@@ -78,24 +85,19 @@ public class AnimeController {
         return animeDto;
     }
 
-    @GetMapping("/images/banner/{id}")
-    public ResponseEntity<byte[]> getBanner(@PathVariable("id") Integer animeId) {
-        return animeService.getBanner(animeId);
-    }
     @PostMapping("/images/banner/{id}")
-    public void setBanner(@PathVariable("id") Integer animeId,
-                              @RequestPart(value = "banner") MultipartFile banner) {
-        animeService.setBanner(animeId,banner);
+    public AnimeBannerImageDto setBanner(@PathVariable("id") Integer animeId,
+                                         @RequestPart(value = "banner") MultipartFile banner,
+                                         @ModelAttribute AnimeBannerImage bannerImage) {
+        AnimeBannerImage bannerCreated = animeService.setBanner(animeId,banner,bannerImage);
+        return bannerImageConverter.convertToDto(bannerCreated);
     }
 
-    @GetMapping("/images/card/{id}")
-    public ResponseEntity<byte[]> getCard(@PathVariable("id") Integer animeId) {
-        return animeService.getCard(animeId);
-    }
     @PostMapping("/images/card/{id}")
-    public void setCard(@PathVariable("id") Integer animeId,
-                              @RequestPart(value = "card") MultipartFile card) {
-        animeService.setCard(animeId,card);
+    public ImageDto setCard(@PathVariable("id") Integer animeId,
+                            @RequestPart(value = "card") MultipartFile card) {
+        Image cardCreated = animeService.setCard(animeId,card);
+        return imageConverter.convertToDto(cardCreated);
     }
 
     @DeleteMapping("{id}")

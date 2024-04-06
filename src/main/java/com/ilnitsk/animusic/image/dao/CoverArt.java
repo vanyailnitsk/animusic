@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.image;
+package com.ilnitsk.animusic.image.dao;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -14,6 +14,7 @@ public class CoverArt {
     private String colorLight;
     @Column(name = "color_dark")
     private String colorDark;
-    @Column(name = "image_url")
-    private String imageUrl;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id")
+    private Image image;
 }

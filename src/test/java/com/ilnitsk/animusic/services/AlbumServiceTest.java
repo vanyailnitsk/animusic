@@ -1,7 +1,7 @@
 package com.ilnitsk.animusic.services;
 
 import com.ilnitsk.animusic.album.dao.Album;
-import com.ilnitsk.animusic.album.dto.CreateAlbumRequest;
+import com.ilnitsk.animusic.album.dto.CreateAlbumDto;
 import com.ilnitsk.animusic.album.repository.AlbumRepository;
 import com.ilnitsk.animusic.album.service.AlbumService;
 import com.ilnitsk.animusic.anime.dao.Anime;
@@ -36,7 +36,7 @@ class AlbumServiceTest {
     private AlbumService underTest;
     @BeforeEach
     void setUp() {
-        underTest = new AlbumService(albumRepository, animeRepository, null);
+        underTest = new AlbumService(albumRepository, animeRepository, null,null,null);
     }
 
     @Test
@@ -45,10 +45,9 @@ class AlbumServiceTest {
         anime.setId(1);
         anime.setTitle("Naruto");
         given(animeRepository.findById(1)).willReturn(Optional.of(anime));
-        CreateAlbumRequest request = new CreateAlbumRequest(
+        CreateAlbumDto request = new CreateAlbumDto(
                 1,
-                "Endings",
-                "/"
+                "Endings"
         );
         given(albumRepository.existsByNameAndAnimeId(request.getName(),1))
                 .willReturn(false);
@@ -62,7 +61,7 @@ class AlbumServiceTest {
 
     @Test
     public void testCreateAlbumWithNonExistingAnime() {
-        CreateAlbumRequest request = new CreateAlbumRequest(1, "Test Album", "/test-image.jpg");
+        CreateAlbumDto request = new CreateAlbumDto(1, "Test Album");
 
         when(animeRepository.findById(1)).thenReturn(Optional.empty());
 
@@ -73,7 +72,7 @@ class AlbumServiceTest {
 
     @Test
     public void testCreateAlbumWithDuplicateName() {
-        CreateAlbumRequest request = new CreateAlbumRequest(1, "Test Album", "/test-image.jpg");
+        CreateAlbumDto request = new CreateAlbumDto(1, "Test Album");
 
         Anime anime = new Anime();
         anime.setId(1);
