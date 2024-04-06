@@ -1,5 +1,9 @@
 package com.ilnitsk.animusic.playlist.controller;
 
+import com.ilnitsk.animusic.image.dao.CoverArt;
+import com.ilnitsk.animusic.image.dto.CoverArtConverter;
+import com.ilnitsk.animusic.image.dto.CoverArtDto;
+import com.ilnitsk.animusic.image.dto.CreateCoverDto;
 import com.ilnitsk.animusic.playlist.dao.Playlist;
 import com.ilnitsk.animusic.playlist.dto.PlaylistDto;
 import com.ilnitsk.animusic.playlist.dto.UserMediaConverter;
@@ -10,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/playlists")
@@ -18,10 +23,11 @@ import org.springframework.web.bind.annotation.*;
 public class PlaylistController {
     private final PlaylistService playlistService;
     private final UserMediaConverter userMediaConverter;
+    private final CoverArtConverter coverArtConverter;
 
     @GetMapping("{playlistId}")
     @Operation(summary = "Метод для получения плейлиста по Id")
-    public PlaylistDto getPlaylistById(@PathVariable Long playlistId) {
+    public PlaylistDto getPlaylistById(@PathVariable Integer playlistId) {
         Playlist playlist = playlistService.getPlaylistById(playlistId);
         return userMediaConverter.convertToDto(playlist);
     }
@@ -34,6 +40,14 @@ public class PlaylistController {
     })
     public Playlist createPlaylist(@RequestParam String playlistName) {
         return playlistService.createPlaylist(playlistName);
+    }
+
+    @PostMapping("cover-art/{playlistId}")
+    public CoverArtDto createAlbumCover(@PathVariable Integer playlistId,
+                                        @RequestPart(value = "imageFile") MultipartFile imageFile,
+                                        @ModelAttribute CreateCoverDto coverArtDto) {
+        CoverArt coverArt = playlistService.createCoverArt(playlistId,imageFile,coverArtDto);
+        return coverArtConverter.convertToDto(coverArt);
     }
 
 }

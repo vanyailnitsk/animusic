@@ -43,7 +43,7 @@ public class ImageService {
 
     public Image createImageForUser(Integer userId,String imageName,MultipartFile image) {
         Image imageEntity = new Image();
-        String fileName = USER_IMAGES_PATH.formatted(userId,image);
+        String fileName = USER_IMAGES_PATH.formatted(userId,imageName);
         String blobKey = s3Service.createBlob(fileName, image, CONTENT_TYPE);
         imageEntity.setSource(blobKey);
         return imageRepository.save(imageEntity);

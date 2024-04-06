@@ -24,12 +24,13 @@ public class CoverArtService {
 
     @Transactional
     public CoverArt createPlaylistCoverArt(Integer userId, String playlistName, MultipartFile imageFile,CoverArt coverArt) {
-        Image image = imageService.createImageForUser(userId,generateHexKey(playlistName),imageFile);
+        Image image = imageService.createImageForUser(userId,generateHash(playlistName,10),imageFile);
         coverArt.setImage(image);
         return coverArtRepository.save(coverArt);
     }
 
-    public static String generateHexKey(String input) {
-        return DigestUtils.md5Hex(input);
+    public static String generateHash(String input, int desiredLength) {
+        String hash = DigestUtils.sha256Hex(input);
+        return hash.substring(0, Math.min(desiredLength, hash.length()));
     }
 }
