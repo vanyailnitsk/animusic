@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.util.Objects;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -110,11 +112,12 @@ public class SoundtrackService {
     public void remove(Integer id) {
         Soundtrack soundtrack = soundtrackRepository.findById(id)
                 .orElseThrow(() -> new SoundtrackNotFoundException(id));
-        String folderName = soundtrack.getAnime().getFolderName();
         s3Service.deleteObject(soundtrack.getAudioFile());
-        imageService.deleteImage(soundtrack.getImage());
+        if (Objects.nonNull(soundtrack.getImage())) {
+            imageService.deleteImage(soundtrack.getImage());
+        }
         soundtrackRepository.deleteById(id);
-        log.info("Soundtrack {}/{} removed successfully", folderName, soundtrack.getAnimeTitle());
+        log.info("Soundtrack {} : {} removed successfully",id,soundtrack.getAudioFile());
     }
 
     @Transactional
