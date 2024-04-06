@@ -75,7 +75,7 @@ public class SoundtrackService {
     }
 
     public void updateTrackDuration(Soundtrack soundtrack) {
-        soundtrack.setDuration(fileService.getTrackDuration(soundtrack.getAnime().getFolderName(),soundtrack.getAudioFile()));
+        soundtrack.setDuration(fileService.getTrackDuration(soundtrack.getAnime().getFolderName(), soundtrack.getAudioFile()));
         soundtrackRepository.save(soundtrack);
     }
 
@@ -83,31 +83,31 @@ public class SoundtrackService {
         soundtrackRepository.findAll()
                 .forEach(this::updateTrackDuration);
     }
+
     @Transactional(timeout = 30)
-    public Soundtrack createSoundtrack(MultipartFile audio, MultipartFile image,Soundtrack soundtrack, Integer playlistId) {
-        Album album = albumRepository.findById(playlistId)
-                .orElseThrow(() -> new AlbumNotFoundException(playlistId));
+    public Soundtrack createSoundtrack(MultipartFile audio, MultipartFile image, Soundtrack soundtrack, Integer albumId) {
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> new AlbumNotFoundException(albumId));
         Anime anime = album.getAnime();
-        String fileName = "%s/audio/%s".formatted(anime.getFolderName(),soundtrack.getAnimeTitle());
-        String blobKey = createAudio(fileName,audio);
+        String fileName = "%s/audio/%s".formatted(anime.getFolderName(), soundtrack.getAnimeTitle());
+        String blobKey = createAudio(fileName, audio);
         soundtrack.setAnime(anime);
         soundtrack.setAudioFile(blobKey);
-        if (!image.isEmpty()) {
-            imageService.createSoundtrackImage(soundtrack,image);
+        if (image != null && !image.isEmpty()) {
+            imageService.createSoundtrackImage(soundtrack, image);
         }
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
         soundtrack.setAlbum(album);
-        log.info("Soundtrack {} created successfully",blobKey);
+        log.info("Soundtrack {} created successfully", blobKey);
         return savedSoundtrack;
     }
-
 
 
     @Transactional
     public Soundtrack setImage(Integer soundtrackId, MultipartFile image) {
         Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
-        imageService.createSoundtrackImage(soundtrack,image);
+        imageService.createSoundtrackImage(soundtrack, image);
         return soundtrack;
     }
 
@@ -119,7 +119,7 @@ public class SoundtrackService {
             imageService.deleteImage(soundtrack.getImage());
         }
         soundtrackRepository.deleteById(id);
-        log.info("Soundtrack {} : {} removed successfully",id,soundtrack.getAudioFile());
+        log.info("Soundtrack {} : {} removed successfully", id, soundtrack.getAudioFile());
     }
 
     @Transactional
@@ -141,8 +141,8 @@ public class SoundtrackService {
         if (audio.isEmpty()) {
             throw new BadRequestException("Содержимое аудиофайла не может быть пустым!");
         }
-        String fileName = "%s/audio/%s".formatted(soundtrack.getAnime().getFolderName(),soundtrack.getAnimeTitle());
-        String blobKey = createAudio(fileName,audio);
+        String fileName = "%s/audio/%s".formatted(soundtrack.getAnime().getFolderName(), soundtrack.getAnimeTitle());
+        String blobKey = createAudio(fileName, audio);
         soundtrack.setAudioFile(blobKey);
         return soundtrack;
     }
@@ -150,7 +150,7 @@ public class SoundtrackService {
     public Soundtrack updateSoundtrack(JsonNode patch, Integer soundtrackId) {
         Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
-        Soundtrack res = jsonMergePatchService.mergePatch(patch,soundtrack, Soundtrack.class);
+        Soundtrack res = jsonMergePatchService.mergePatch(patch, soundtrack, Soundtrack.class);
         soundtrackRepository.save(res);
         return res;
     }
@@ -162,6 +162,6 @@ public class SoundtrackService {
             case ".mp3" -> "audio/mpeg";
             default -> "application/octet-stream";
         };
-        return s3Service.createBlob(fileName,content,contentType);
+        return s3Service.createBlob(fileName, content, contentType);
     }
 }

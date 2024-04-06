@@ -93,13 +93,14 @@ public class SoundtrackController {
     })
     public SoundtrackDto createFromFile(@RequestPart(value = "audio") MultipartFile audio,
                                      @RequestPart(value = "image",required = false) MultipartFile image,
-                                     @ModelAttribute CreateSoundtrackDto request) {
+                                     @ModelAttribute CreateSoundtrackDto request,
+                                        @RequestParam("albumId") Integer albumId) {
         Soundtrack soundtrack = soundtrackConverter.convertToEntity(request);
         if (audio.isEmpty()) {
             throw new BadRequestException("No mp3-file provided");
         }
         soundtrack = soundtrackService.createSoundtrack(
-                audio, image, soundtrack, request.getPlaylistId()
+                audio, image, soundtrack, albumId
         );
         return soundtrackConverter.convertToDto(soundtrack);
     }

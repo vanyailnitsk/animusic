@@ -6,6 +6,5 @@ import lombok.Data;
 public class CreateSoundtrackDto {
     private String originalTitle;
     private String animeTitle;
-    private Integer playlistId;
     private Integer duration;
 }
