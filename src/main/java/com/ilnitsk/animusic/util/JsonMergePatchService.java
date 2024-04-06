@@ -15,8 +15,8 @@ public class JsonMergePatchService {
 
     public <T> T mergePatch(JsonNode patch, T targetBean, Class<T> beanClass) {
         try {
-            JsonNode orig = mapper.valueToTree(targetBean);
-            JsonNode patched = JsonMergePatch.fromJson(patch).apply(orig);
+            JsonNode original = mapper.valueToTree(targetBean);
+            JsonNode patched = JsonMergePatch.fromJson(patch).apply(original);
             return mapper.treeToValue(patched,beanClass);
         } catch (Exception e) {
             throw new BadRequestException("Invalid patch request",e);
