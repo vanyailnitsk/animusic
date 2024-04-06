@@ -3,9 +3,9 @@ package com.ilnitsk.animusic.soundtrack.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
+import com.ilnitsk.animusic.soundtrack.dto.CreateSoundtrackDto;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackConverter;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
-import com.ilnitsk.animusic.soundtrack.dto.SoundtrackRequest;
 import com.ilnitsk.animusic.soundtrack.dto.UpdateSoundtrackDto;
 import com.ilnitsk.animusic.soundtrack.service.SoundtrackService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -91,15 +91,17 @@ public class SoundtrackController {
             @ApiResponse(responseCode = "400", description = "Саундтрек уже существует"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public Soundtrack createFromFile(@RequestPart(value = "audio") MultipartFile audio,
+    public SoundtrackDto createFromFile(@RequestPart(value = "audio") MultipartFile audio,
                                      @RequestPart(value = "image",required = false) MultipartFile image,
-                                     @ModelAttribute SoundtrackRequest request) {
+                                     @ModelAttribute CreateSoundtrackDto request) {
+        Soundtrack soundtrack = soundtrackConverter.convertToEntity(request);
         if (audio.isEmpty()) {
             throw new BadRequestException("No mp3-file provided");
         }
-        return soundtrackService.createSoundtrack(
-                audio, image, request.createSoundtrack(), request.getPlaylistId()
+        soundtrack = soundtrackService.createSoundtrack(
+                audio, image, soundtrack, request.getPlaylistId()
         );
+        return soundtrackConverter.convertToDto(soundtrack);
     }
 
     @PutMapping("/audio/{soundtrackId}")
