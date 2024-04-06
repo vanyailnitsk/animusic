@@ -1,8 +1,6 @@
 package com.ilnitsk.animusic.soundtrack.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.fge.jsonpatch.JsonPatchException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import com.ilnitsk.animusic.soundtrack.dto.CreateSoundtrackDto;
@@ -79,7 +77,7 @@ public class SoundtrackController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public SoundtrackDto patchSoundtrack(@RequestBody JsonNode jsonPatch,
-                                         @PathVariable Integer soundtrackId) throws JsonPatchException, JsonProcessingException {
+                                         @PathVariable Integer soundtrackId) {
         Soundtrack soundtrackPatched = soundtrackService.updateSoundtrack(jsonPatch,soundtrackId);
         SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrackPatched);
         log.info("Soundtrack id={} updated successfully",soundtrackId);
