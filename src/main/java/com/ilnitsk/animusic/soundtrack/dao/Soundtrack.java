@@ -1,6 +1,5 @@
 package com.ilnitsk.animusic.soundtrack.dao;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.anime.dao.Anime;
 import com.ilnitsk.animusic.image.dao.Image;
@@ -22,7 +21,6 @@ public class Soundtrack {
     private String originalTitle;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "anime_id", nullable = false)
-    @JsonBackReference
     private Anime anime;
     private String animeTitle;
     private String audioFile;
@@ -32,7 +30,6 @@ public class Soundtrack {
     private Integer duration;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "album_id", nullable = false)
-    @JsonBackReference
     private Album album;
 
     public Soundtrack(String originalTitle, String animeTitle) {

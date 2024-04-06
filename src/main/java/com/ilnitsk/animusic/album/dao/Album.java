@@ -1,7 +1,6 @@
 package com.ilnitsk.animusic.album.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ilnitsk.animusic.anime.dao.Anime;
 import com.ilnitsk.animusic.image.dao.CoverArt;
 import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
@@ -32,7 +31,7 @@ public class Album {
     @JoinColumn(name = "cover_art_id")
     private CoverArt coverArt;
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Soundtrack> soundtracks = new ArrayList<>();
     public void addSoundtrack(Soundtrack soundtrack) {
         soundtracks.add(soundtrack);
