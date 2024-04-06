@@ -12,6 +12,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class SoundtrackSavedAspect {
 
     public Set<Integer> getUserSavedTracksIds() {
         Optional<User> user = userService.getUserInSession();
-        if (user.isEmpty()) {
+        if (user.isEmpty() || Objects.nonNull(user.get().getFavouriteTracks())) {
             return Set.of();
         }
         Set<Integer> savedTracksIds = user.get().getFavouriteTracks().getSoundtracks()
@@ -44,24 +45,29 @@ public class SoundtrackSavedAspect {
                 .collect(Collectors.toSet());
         return savedTracksIds;
     }
+
     @AfterReturning(pointcut = "execution(* com.ilnitsk.animusic.album.dto.AlbumConverter.convertToDto(..))", returning = "dto")
     public void setSavedToAlbum(Object dto) {
         AlbumDto albumDto = (AlbumDto) dto;
         Set<Integer> savedTracks = getUserSavedTracksIds();
-        albumDto.getSoundtracks().stream()
-                .map(SoundtrackDto::getSoundtrack)
-                .filter(s -> savedTracks.contains(s.getId()))
-                .forEach(s -> s.setSaved(true));
+        if (Objects.nonNull(albumDto.getSoundtracks())) {
+            albumDto.getSoundtracks().stream()
+                    .map(SoundtrackDto::getSoundtrack)
+                    .filter(s -> savedTracks.contains(s.getId()))
+                    .forEach(s -> s.setSaved(true));
+        }
     }
 
     @AfterReturning(pointcut = "execution(* com.ilnitsk.animusic.playlist.dto.UserMediaConverter.convertToDto(..))", returning = "dto")
     public void setSavedToPlaylist(Object dto) {
         PlaylistDto playlistDto = (PlaylistDto) dto;
         Set<Integer> savedTracks = getUserSavedTracksIds();
-        playlistDto.getSoundtracks().stream()
-                .map(PlaylistSoundtrackDto::getSoundtrack)
-                .filter(s -> savedTracks.contains(s.getId()))
-                .forEach(s -> s.setSaved(true));
+        if (Objects.nonNull(playlistDto.getSoundtracks())) {
+            playlistDto.getSoundtracks().stream()
+                    .map(PlaylistSoundtrackDto::getSoundtrack)
+                    .filter(s -> savedTracks.contains(s.getId()))
+                    .forEach(s -> s.setSaved(true));
+        }
     }
 
 }
