@@ -2,6 +2,8 @@ package com.ilnitsk.animusic.security.service;
 
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.exception.InvalidTokenException;
+import com.ilnitsk.animusic.playlist.dao.Playlist;
+import com.ilnitsk.animusic.playlist.repository.PlaylistRepository;
 import com.ilnitsk.animusic.security.dao.RefreshToken;
 import com.ilnitsk.animusic.security.dto.AuthRequest;
 import com.ilnitsk.animusic.security.dto.JwtResponse;
@@ -29,14 +31,17 @@ public class AuthService {
     private final AuthenticationProvider authenticationManager;
     private final RefreshTokenRepository refreshTokenRepository;
     private final RefreshTokenService refreshTokenService;
+    private final PlaylistRepository playlistRepository;
 
     @Transactional
     public JwtResponse register(RegisterRequest registerRequest) {
         User user = registerRequest.toUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Playlist playlist = Playlist.builder().name("Favourite tracks").user(user).build();
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new BadRequestException("Username уже занят!");
         }
+        user.setFavouriteTracks(playlist);
         userRepository.save(user);
         String jwt = jwtService.createToken(user);
         ResponseCookie responseCookie = refreshTokenService.generateRefreshCookie(user);
