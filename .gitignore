@@ -10,7 +10,8 @@ database/data
 flyway.env
 files-test
 *.tmpl
-*/prometheus/wal
+monitoring/prometheus/*
+monitoring/grafana/grafana.db
 index.html
 create.sql
 logs/

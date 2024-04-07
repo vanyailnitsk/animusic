@@ -31,7 +31,15 @@ management:
   endpoints:
     web:
       exposure:
-        include: info, health, logfile, loggers, env
+        include: health,prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 
 storage:
   directory: ${storage}
@@ -56,3 +64,4 @@ logging:
     name: logs/app.log
 #  level:
 #    web: info
+

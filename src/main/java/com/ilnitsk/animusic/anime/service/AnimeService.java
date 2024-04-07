@@ -36,6 +36,7 @@ public class AnimeService {
     }
 
     public List<Anime> getAllAnime() {
+        log.info("Requested all anime list");
         return animeRepository.findAllByOrderByTitle();
     }
 
