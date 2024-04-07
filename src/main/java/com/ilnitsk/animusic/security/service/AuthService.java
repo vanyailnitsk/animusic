@@ -39,7 +39,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Playlist playlist = Playlist.builder().name("Favourite tracks").user(user).build();
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new BadRequestException("Username уже занят!");
+            throw new BadRequestException("Email уже занят!");
         }
         user.setFavouriteTracks(playlist);
         userRepository.save(user);
