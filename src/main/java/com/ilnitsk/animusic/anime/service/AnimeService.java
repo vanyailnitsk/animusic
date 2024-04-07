@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.anime.service;
 
+import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.anime.dao.Anime;
 import com.ilnitsk.animusic.anime.dto.UpdateAnimeDto;
 import com.ilnitsk.animusic.anime.repository.AnimeRepository;
@@ -32,6 +33,17 @@ public class AnimeService {
     public Anime getAnimeInfo(Integer animeId) {
         Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
+        List<Album> albums = anime.getAlbums();
+        if (albums!= null) {
+            albums.sort((a1,a2) -> {
+                List<String> categoryOrder = List.of("Openings", "Endings", "Themes", "Scene songs");
+
+                int index1 = categoryOrder.indexOf(a1.getName());
+                int index2 = categoryOrder.indexOf(a2.getName());
+
+                return Integer.compare(index1, index2);
+            });
+        }
         return anime;
     }
 
