@@ -16,8 +16,7 @@ public class AnimeConverter {
         modelMapper.createTypeMap(Anime.class,AnimeDto.class);
 
         modelMapper.createTypeMap(Anime.class,AnimeItemDto.class);
-//        modelMapper.createTypeMap(AlbumDto.class, AlbumDto.class);
-
+        modelMapper.createTypeMap(UpdateAnimeDto.class,Anime.class);
     }
 
     public AnimeDto convertToDto(Anime playlist) {
@@ -26,5 +25,9 @@ public class AnimeConverter {
 
     public List<AnimeDto> convertListToDto(List<Anime> animeList) {
         return animeList.stream().map(this::convertToDto).toList();
+    }
+
+    public Anime convertToEntity(UpdateAnimeDto dto) {
+        return modelMapper.map(dto,Anime.class);
     }
 }

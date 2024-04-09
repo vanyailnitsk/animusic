@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.Year;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -26,7 +24,7 @@ class AlbumRepositoryTest {
     @Test
     void existsByNameAndAnimeId() {
         String title = "Naruto";
-        Anime anime = new Anime(title,"mock", Year.of(2002),"","");
+        Anime anime = new Anime(title,"mock", "","");
         animeRepository.save(anime);
         Album album = Album.builder()
                 .name("Openings")
@@ -39,7 +37,7 @@ class AlbumRepositoryTest {
     @Test
     void notExistsByNameAndAnimeIdOfName() {
         String title = "Naruto";
-        Anime anime = new Anime(title,"mock", Year.of(2002),"","");
+        Anime anime = new Anime(title,"mock", "","");
         animeRepository.save(anime);
         Album album = Album.builder()
                 .name("Openings")
@@ -52,7 +50,7 @@ class AlbumRepositoryTest {
     @Test
     void notExistsByNameAndAnimeIdOfAnimeId() {
         String title = "Naruto";
-        Anime anime = new Anime(title,"mock", Year.of(2002),"","");
+        Anime anime = new Anime(title,"mock", "","");
         animeRepository.save(anime);
         Album album = Album.builder()
                 .name("Openings")

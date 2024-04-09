@@ -8,7 +8,6 @@ import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,8 @@ public class Anime {
     @Column(unique = true)
     private String title;
     private String studio;
-    private Year releaseYear;
+    @Column(name = "release_year")
+    private Integer releaseYear;
     private String description;
     @Column(unique = true)
     private String folderName;
@@ -44,10 +44,9 @@ public class Anime {
     @JsonIgnore
     private List<Album> albums = new ArrayList<>();
 
-    public Anime(String title, String studio, Year releaseYear, String description, String folderName) {
+    public Anime(String title, String studio, String description, String folderName) {
         this.title = title;
         this.studio = studio;
-        this.releaseYear = releaseYear;
         this.description = description;
         this.folderName = folderName;
     }

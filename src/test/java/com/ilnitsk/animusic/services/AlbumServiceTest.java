@@ -15,7 +15,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -124,7 +123,7 @@ class AlbumServiceTest {
 
     @Test
     void getAlbumById() {
-        Anime anime = new Anime("Naruto","mock", Year.of(2002),"","");
+        Anime anime = new Anime("Naruto","mock", "","");
         Album album = Album.builder()
                 .id(1)
                 .name("mock")

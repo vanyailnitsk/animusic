@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Year;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,7 +34,7 @@ class AnimeServiceTest {
 
     @Test
     void canGetAnimeInfo() {
-        Anime anime = new Anime("Naruto", "mock", Year.of(2002), "", "");
+        Anime anime = new Anime("Naruto", "mock", "", "");
         anime.setId(1);
         given(animeRepository.findById(anime.getId()))
                 .willReturn(Optional.of(anime));
@@ -54,10 +53,10 @@ class AnimeServiceTest {
 
     @Test
     void willThrowWhenTitleTaken() {
-        Anime anime = new Anime("Naruto", "mock", Year.of(2002), "", "");
+        Anime anime = new Anime("Naruto", "mock",  "", "");
         given(animeRepository.existsAnimeByTitle(anime.getTitle()))
                 .willReturn(true);
-        assertThatThrownBy(() -> underTest.createAnime(anime,null,null))
+        assertThatThrownBy(() -> underTest.createAnime(anime))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Anime " + anime.getTitle() + " already exists");
         verify(animeRepository, never()).save(any());

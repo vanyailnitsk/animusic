@@ -63,12 +63,11 @@ public class AnimeController {
             @ApiResponse(responseCode = "400", description = "Название аниме занято"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public AnimeDto createAnime(@RequestPart(value = "banner") MultipartFile banner,
-                             @RequestPart(value = "card") MultipartFile card,
-                             @ModelAttribute Anime anime) {
+    public AnimeDto createAnime(@RequestBody UpdateAnimeDto createDto) {
+        Anime anime = animeConverter.convertToEntity(createDto);
+        anime = animeService.createAnime(anime);
         log.info("Anime {} created", anime.getTitle());
-        Anime createdAnime = animeService.createAnime(anime,banner,card);
-        return animeConverter.convertToDto(createdAnime);
+        return animeConverter.convertToDto(anime);
     }
 
     @PutMapping("{animeId}")

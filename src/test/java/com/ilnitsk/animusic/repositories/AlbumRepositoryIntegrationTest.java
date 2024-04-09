@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.Year;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -32,7 +30,7 @@ public class AlbumRepositoryIntegrationTest {
 
     @Test
     public void testCreatePlaylistWithRelatedEntities() {
-        Anime anime = new Anime("Naruto", "mock", Year.of(2002), "", "");
+        Anime anime = new Anime("Naruto", "mock",  "", "");
         animeRepository.save(anime);
         CreateAlbumDto request = new CreateAlbumDto(
                 anime.getId(),
@@ -50,7 +48,7 @@ public class AlbumRepositoryIntegrationTest {
 
     @Test
     public void testDeletePlaylistWithRelatedEntities() {
-        Anime anime = new Anime("Naruto", "mock", Year.of(2002), "", "");
+        Anime anime = new Anime("Naruto", "mock", "", "");
         animeRepository.save(anime);
         Album album = new Album();
         album.setAnime(anime);

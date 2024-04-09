@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.Year;
 import java.util.List;
 
 @Service
@@ -53,7 +52,7 @@ public class AnimeService {
     }
 
     @Transactional
-    public Anime createAnime(Anime anime, MultipartFile banner, MultipartFile card) {
+    public Anime createAnime(Anime anime) {
         boolean existsTitle = animeRepository
                 .existsAnimeByTitle(anime.getTitle());
         if (existsTitle) {
@@ -61,6 +60,7 @@ public class AnimeService {
                     "Anime " + anime.getTitle() + " already exists"
             );
         }
+        System.out.println(anime.getReleaseYear());
         animeRepository.save(anime);
         return animeRepository.save(anime);
     }
@@ -92,7 +92,7 @@ public class AnimeService {
                 anime -> {
                     anime.setTitle(updateAnimeDto.getTitle());
                     anime.setStudio(updateAnimeDto.getStudio());
-                    anime.setReleaseYear(Year.of(updateAnimeDto.getReleaseYear()));
+                    anime.setReleaseYear(updateAnimeDto.getReleaseYear());
                     anime.setDescription(updateAnimeDto.getDescription());
                     anime.setFolderName(updateAnimeDto.getFolderName());
                     return anime;
