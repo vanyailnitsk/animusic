@@ -36,11 +36,11 @@ services:
       port: 8081
       storage: "/animusic"
       JWT_SECRET: ${JWT_SECRET}
-      s3-url: http://s3.localhost.localstack.cloud:4566
-      s3-bucket: test
-      s3-region: eu-west-2
-      s3-accesskey: test
-      s3-secretkey: test
+      s3-url: ${s3-url}
+      s3-bucket: ${s3-bucket}
+      s3-region: ${s3-region}
+      s3-accesskey: ${s3-accesskey}
+      s3-secretkey: ${s3-secretkey}
     volumes:
       - ${STORAGE}:/animusic
     ports:
