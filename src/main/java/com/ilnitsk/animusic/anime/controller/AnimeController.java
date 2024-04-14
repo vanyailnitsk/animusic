@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -57,6 +58,7 @@ public class AnimeController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Метод для создания аниме")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное создание аниме"),
@@ -71,6 +73,7 @@ public class AnimeController {
     }
 
     @PutMapping("{animeId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Метод для обновления аниме")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное обновление аниме"),
@@ -85,6 +88,7 @@ public class AnimeController {
     }
 
     @PostMapping("/images/banner/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public AnimeBannerImageDto setBanner(@PathVariable("id") Integer animeId,
                                          @RequestPart(value = "banner") MultipartFile banner,
                                          @ModelAttribute AnimeBannerImage bannerImage) {
@@ -93,6 +97,7 @@ public class AnimeController {
     }
 
     @PostMapping("/images/card/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ImageDto setCard(@PathVariable("id") Integer animeId,
                             @RequestPart(value = "card") MultipartFile card) {
         Image cardCreated = animeService.setCard(animeId,card);
@@ -100,6 +105,7 @@ public class AnimeController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Метод для удаления аниме")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное удаление."),
