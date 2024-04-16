@@ -2,6 +2,8 @@ package com.ilnitsk.animusic.security.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ilnitsk.animusic.security.service.JwtService;
+import com.ilnitsk.animusic.user.dao.User;
+import com.ilnitsk.animusic.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -14,11 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +30,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final ObjectMapper mapper;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -42,8 +45,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             Claims claims = jwtService.resolveClaims(request);
             if (claims != null && jwtService.validateClaims(claims)){
                 String username = claims.getSubject();
+                User user = userRepository.findByEmail(username)
+                        .orElseThrow(() -> new UsernameNotFoundException(username));
                 Authentication authentication =
-                        new UsernamePasswordAuthenticationToken(username,"",new ArrayList<>());
+                        new UsernamePasswordAuthenticationToken(username,"",user.getRoles());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

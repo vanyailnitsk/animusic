@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,6 +60,7 @@ public class AlbumController {
 
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Метод для создания альбома")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное создание альбома."),
@@ -73,6 +75,7 @@ public class AlbumController {
     }
 
     @PostMapping("cover-art/{albumId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public CoverArtDto createAlbumCover(@PathVariable Integer albumId,
                                         @RequestPart(value = "imageFile") MultipartFile imageFile,
                                         @ModelAttribute CreateCoverDto coverArtDto) {
@@ -81,6 +84,7 @@ public class AlbumController {
     }
 
     @PutMapping("{albumId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Метод для обновления альбома")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное обновление альбома."),
@@ -94,6 +98,7 @@ public class AlbumController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Удаление альбома")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное удаление альбома."),

@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRange;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -55,6 +56,7 @@ public class SoundtrackController {
     }
 
     @PutMapping("{soundtrackId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Метод для обновления саундтрека")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное обновление саундтрека"),
@@ -70,6 +72,7 @@ public class SoundtrackController {
     }
 
     @PatchMapping("{soundtrackId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Метод для обновления саундтрека")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное обновление саундтрека"),
@@ -85,6 +88,7 @@ public class SoundtrackController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Метод для создания саундтрека")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное создание саундтрека"),
@@ -106,6 +110,7 @@ public class SoundtrackController {
     }
 
     @PutMapping("/audio/{soundtrackId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Метод для обновления аудиофайла у саундтрека")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное обновления саундтрека"),
@@ -120,6 +125,7 @@ public class SoundtrackController {
     }
 
     @PutMapping("/images/{soundtrackId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Метод для установки изображения саундтрека")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешная установка изображения"),
@@ -134,18 +140,8 @@ public class SoundtrackController {
         return soundtrackDto;
     }
 
-    @PutMapping("/update-duration")
-    @Operation(summary = "Метод для изменения длительности саундтрека")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Успешное изменение длительности"),
-            @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
-            @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
-    })
-    public void updateSoundtracksDuration() {
-        soundtrackService.updateAllTracksDuration();
-    }
-
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Метод для удаления саундтрека по id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешное удаления саундтрека"),
