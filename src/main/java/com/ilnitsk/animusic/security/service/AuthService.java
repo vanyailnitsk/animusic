@@ -37,7 +37,7 @@ public class AuthService {
     public JwtResponse register(RegisterRequest registerRequest) {
         User user = registerRequest.toUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Playlist playlist = Playlist.builder().name("Favourite tracks").user(user).build();
+        Playlist playlist = Playlist.builder().name("Favourite tracks").build();
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new BadRequestException("Email уже занят!");
         }
