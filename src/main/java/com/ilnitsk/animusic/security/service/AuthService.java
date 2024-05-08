@@ -56,11 +56,11 @@ public class AuthService {
     public JwtResponse authenticate(AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
+                        request.email(),
+                        request.password()
                 )
         );
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new BadRequestException("Invalid credentials"));
         String jwt = jwtService.createToken(user);
         ResponseCookie responseCookie = refreshTokenService.generateRefreshCookie(user);
