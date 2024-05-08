@@ -1,7 +1,6 @@
 package com.ilnitsk.animusic.soundtrack.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.album.repository.AlbumRepository;
 import com.ilnitsk.animusic.anime.dao.Anime;
@@ -35,7 +34,6 @@ public class SoundtrackService {
     private final ImageService imageService;
     private final S3Service s3Service;
     private final JsonMergePatchService jsonMergePatchService;
-    private final ObjectMapper objectMapper;
 
     public Soundtrack getSoundtrack(Integer id) {
         return soundtrackRepository.findById(id)
@@ -58,9 +56,7 @@ public class SoundtrackService {
                 rangeEnd = fileSize - 1;
             }
             byte[] audioContent = fileService.getAudioContent(animeFolder, trackName, rangeStart, rangeEnd);
-            stream = out -> {
-                out.write(audioContent);
-            };
+            stream = out -> out.write(audioContent);
             headers.set(HttpHeaders.CONTENT_LENGTH, String.valueOf(rangeEnd - rangeStart + 1));
             headers.set(HttpHeaders.CONTENT_RANGE, "bytes " + rangeStart + "-" + rangeEnd + "/" + fileSize);
             headers.setContentType(MediaType.parseMediaType("audio/mpeg"));
@@ -72,16 +68,6 @@ public class SoundtrackService {
         };
         headers.set(HttpHeaders.CONTENT_TYPE, "audio/mpeg");
         return new ResponseEntity<>(stream, headers, HttpStatus.OK);
-    }
-
-    public void updateTrackDuration(Soundtrack soundtrack) {
-        soundtrack.setDuration(fileService.getTrackDuration(soundtrack.getAnime().getFolderName(), soundtrack.getAudioFile()));
-        soundtrackRepository.save(soundtrack);
-    }
-
-    public void updateAllTracksDuration() {
-        soundtrackRepository.findAll()
-                .forEach(this::updateTrackDuration);
     }
 
     @Transactional(timeout = 30)
@@ -126,9 +112,9 @@ public class SoundtrackService {
     public Soundtrack updateSoundtrack(UpdateSoundtrackDto updateSoundtrackDto, Integer soundtrackId) {
         return soundtrackRepository.findById(soundtrackId).map(
                 soundtrack -> {
-                    soundtrack.setOriginalTitle(updateSoundtrackDto.getOriginalTitle());
-                    soundtrack.setAnimeTitle(updateSoundtrackDto.getAnimeTitle());
-                    soundtrack.setDuration(updateSoundtrackDto.getDuration());
+                    soundtrack.setOriginalTitle(updateSoundtrackDto.originalTitle());
+                    soundtrack.setAnimeTitle(updateSoundtrackDto.animeTitle());
+                    soundtrack.setDuration(updateSoundtrackDto.duration());
                     return soundtrack;
                 }
         ).orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
