@@ -2,7 +2,6 @@ package com.ilnitsk.animusic.image.dto;
 
 import lombok.Data;
 
-@Data
 public class CoverArtDto {
     private Colors colors;
     private ImageDto image;
