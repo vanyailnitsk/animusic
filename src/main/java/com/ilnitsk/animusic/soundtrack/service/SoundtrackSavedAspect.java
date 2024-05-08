@@ -50,8 +50,8 @@ public class SoundtrackSavedAspect {
     public void setSavedToAlbum(Object dto) {
         AlbumDto albumDto = (AlbumDto) dto;
         Set<Integer> savedTracks = getUserSavedTracksIds();
-        if (Objects.nonNull(albumDto.getSoundtracks())) {
-            albumDto.getSoundtracks().stream()
+        if (Objects.nonNull(albumDto.soundtracks())) {
+            albumDto.soundtracks().stream()
                     .map(SoundtrackDto::getSoundtrack)
                     .filter(s -> savedTracks.contains(s.getId()))
                     .forEach(s -> s.setSaved(true));

@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,8 +38,7 @@ public class AlbumController {
     public List<AlbumItemDto> getAlbumsByAnime(@RequestParam("animeId") Integer animeId) {
         log.info("Requested albums by anime {}", animeId);
         List<Album> albums = albumService.getAlbumsByAnimeId(animeId);
-        List<AlbumItemDto> albumDtos = albumConverter.convertListToItemDto(albums);
-        return albumDtos;
+        return albumConverter.convertListToItemDto(albums);
     }
 
     @GetMapping("{id}")
@@ -50,12 +48,10 @@ public class AlbumController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public AlbumDto getAlbumById(@PathVariable Integer id, HttpServletRequest request) {
+    public AlbumDto getAlbumById(@PathVariable Integer id) {
         log.info("Requested album with id {}", id);
         Album album = albumService.getAlbumById(id);
-        AlbumDto albumDto = albumConverter.convertToDto(album);
-        albumDto.setLink(request.getRequestURI());
-        return albumDto;
+        return albumConverter.convertToDto(album);
     }
 
 

@@ -3,16 +3,14 @@ package com.ilnitsk.animusic.album.dto;
 import com.ilnitsk.animusic.anime.dto.AnimeItemDto;
 import com.ilnitsk.animusic.image.dto.CoverArtDto;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
-import lombok.Data;
 
 import java.util.List;
 
-@Data
-public class AlbumDto {
-    private Integer id;
-    private String name;
-    private AnimeItemDto anime;
-    private String link;
-    private List<SoundtrackDto> soundtracks;
-    private CoverArtDto coverArt;
-}
+public record AlbumDto(
+        Integer id,
+        String name,
+        AnimeItemDto anime,
+        String link,
+        List<SoundtrackDto> soundtracks,
+        CoverArtDto coverArt
+){}
