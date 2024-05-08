@@ -90,11 +90,11 @@ public class AnimeService {
     public Anime updateAnime(UpdateAnimeDto updateAnimeDto, Integer animeId) {
         return animeRepository.findById(animeId).map(
                 anime -> {
-                    anime.setTitle(updateAnimeDto.getTitle());
-                    anime.setStudio(updateAnimeDto.getStudio());
-                    anime.setReleaseYear(updateAnimeDto.getReleaseYear());
-                    anime.setDescription(updateAnimeDto.getDescription());
-                    anime.setFolderName(updateAnimeDto.getFolderName());
+                    anime.setTitle(updateAnimeDto.title());
+                    anime.setStudio(updateAnimeDto.studio());
+                    anime.setReleaseYear(updateAnimeDto.releaseYear());
+                    anime.setDescription(updateAnimeDto.description());
+                    anime.setFolderName(updateAnimeDto.folderName());
                     return anime;
                 }
         ).orElseThrow(() -> new AnimeNotFoundException(animeId));
