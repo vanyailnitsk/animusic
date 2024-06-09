@@ -5,35 +5,43 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.8</version>
+        <version>3.2.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.ilnitsk</groupId>
-    <artifactId>animusic</artifactId>
-    <version>1.0-RELEASE</version>
-    <name>animusic</name>
-    <description>Application for listening to music from anime</description>
-    <properties>
-        <java.version>17</java.version>
-    </properties>
+    <groupId>com.animusic</groupId>
+    <artifactId>server</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>album</module>
+        <module>anime</module>
+        <module>api</module>
+        <module>image</module>
+        <module>playlist</module>
+        <module>s3</module>
+        <module>security</module>
+        <module>soundtrack</module>
+        <module>utils</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>3.2.6</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -48,8 +56,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.7</version>
+        </dependency>
+
+
+
+
+
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -60,16 +78,8 @@
         <!--			<artifactId>spring-security-test</artifactId>-->
         <!--			<scope>test</scope>-->
         <!--		</dependency>-->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.6</version>
-        </dependency>
+
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -81,34 +91,15 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/net.jthink/jaudiotagger -->
-        <dependency>
-            <groupId>net.jthink</groupId>
-            <artifactId>jaudiotagger</artifactId>
-            <version>3.0.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>net.jthink</groupId>-->
+<!--            <artifactId>jaudiotagger</artifactId>-->
+<!--            <version>3.0.1</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
-            <version>0.11.5</version>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-impl</artifactId>
-            <version>0.11.5</version>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-jackson</artifactId>
-            <version>0.11.5</version>
-        </dependency>
 
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>s3</artifactId>
-            <version>2.20.26</version>
-        </dependency>
+
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -144,42 +135,34 @@
             <version>1.13</version>
         </dependency>
 
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.15</version>
-        </dependency>
-
-
-
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>9.5.1</version>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
 <!--                <configuration>-->
-<!--                    <url>${spring.da}</url>-->
-<!--                    <user>${env.DB_USER}</user>-->
-<!--                    <password>${env.DB_PASSWORD}</password>-->
+<!--                    <excludes>-->
+<!--                        <exclude>-->
+<!--                            <groupId>org.projectlombok</groupId>-->
+<!--                            <artifactId>lombok</artifactId>-->
+<!--                        </exclude>-->
+<!--                    </excludes>-->
 <!--                </configuration>-->
-            </plugin>
-        </plugins>
-    </build>
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.flywaydb</groupId>-->
+<!--                <artifactId>flyway-maven-plugin</artifactId>-->
+<!--                <version>9.5.1</version>-->
+<!--                &lt;!&ndash;                <configuration>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <url>${spring.da}</url>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <user>${env.DB_USER}</user>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <password>${env.DB_PASSWORD}</password>&ndash;&gt;-->
+<!--                &lt;!&ndash;                </configuration>&ndash;&gt;-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
 </project>
