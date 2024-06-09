@@ -1,18 +1,14 @@
 package com.animusic.album.service;
 
+import com.animusic.album.AlbumAlreadyExistsException;
+import com.animusic.album.AlbumNotFoundException;
 import com.animusic.album.dao.Album;
-import com.animusic.album.dto.CreateAlbumDto;
-import com.animusic.album.dto.UpdateAlbumDto;
 import com.animusic.album.repository.AlbumRepository;
-import com.ilnitsk.animusic.anime.dao.Anime;
-import com.ilnitsk.animusic.anime.repository.AnimeRepository;
-import com.ilnitsk.animusic.exception.AlbumNotFoundException;
-import com.ilnitsk.animusic.exception.AnimeNotFoundException;
-import com.ilnitsk.animusic.exception.BadRequestException;
-import com.ilnitsk.animusic.image.dao.CoverArt;
-import com.ilnitsk.animusic.image.dto.CoverArtConverter;
-import com.ilnitsk.animusic.image.dto.CreateCoverDto;
-import com.ilnitsk.animusic.image.service.CoverArtService;
+import com.animusic.anime.AnimeNotFoundException;
+import com.animusic.anime.dao.Anime;
+import com.animusic.anime.service.AnimeService;
+import com.animusic.image.dao.CoverArt;
+import com.animusic.image.service.CoverArtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,22 +22,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AlbumService {
     private final AlbumRepository albumRepository;
-    private final AnimeRepository animeRepository;
+    private final AnimeService animeService;
     private final CoverArtService coverArtService;
-    private final CoverArtConverter coverArtConverter;
 
-    public Album createAlbum(CreateAlbumDto request) {
-        Optional<Anime> animeOptional = animeRepository.findById(request.getAnimeId());
-        if (animeOptional.isEmpty()) {
-            throw new AnimeNotFoundException(request.getAnimeId());
+    @Transactional
+    public Album createAlbum(Album album, Integer animeId) {
+        Anime anime = animeService.getAnimeInfo(animeId);
+        if (albumRepository.existsByNameAndAnimeId(album.getName(), animeId)) {
+            throw new AlbumAlreadyExistsException(album.getName(), animeId);
         }
-        Anime anime = animeOptional.get();
-        if (albumRepository.existsByNameAndAnimeId(request.getName(),request.getAnimeId())) {
-            throw new BadRequestException(
-                    "Album " + request.getName() + " in anime " +anime.getTitle()+" already exists"
-            );
-        }
-        Album album = request.getAlbumData();
         album.setAnime(anime);
         albumRepository.save(album);
         return album;
@@ -87,27 +76,30 @@ public class AlbumService {
     }
 
     @Transactional
-    public Album updateAlbum(UpdateAlbumDto albumDto, Integer albumId) {
+    public Album updateAlbumName(String newName, Integer albumId) {
         return albumRepository.findById(albumId).map(
                 album -> {
-                    album.setName(albumDto.getName());
+                    album.setName(newName);
                     return album;
                 }
         ).orElseThrow(() -> new AlbumNotFoundException(albumId));
     }
 
     @Transactional
-    public CoverArt createCoverArt(Integer albumId, MultipartFile imageFile, CreateCoverDto coverArtDto) {
+    public CoverArt createCoverArt(Integer albumId, MultipartFile imageFile, String colorLight, String colorDark) {
         Album album = albumRepository.findById(albumId)
                 .orElseThrow(() -> new AlbumNotFoundException(albumId));
-        CoverArt coverArt = coverArtConverter.convertToEntity(coverArtDto);
-        CoverArt newCoverArt = coverArtService.createAlbumCoverArt(
+        CoverArt coverArt = CoverArt.builder()
+                .colorLight(colorLight)
+                .colorDark(colorDark)
+                .build();
+        coverArt = coverArtService.createAlbumCoverArt(
                 album.getAnime().getFolderName(),
                 album.getName().toUpperCase(),
                 imageFile,
                 coverArt);
-        album.setCoverArt(newCoverArt);
-        return newCoverArt;
+        album.setCoverArt(coverArt);
+        return coverArt;
     }
 }
 

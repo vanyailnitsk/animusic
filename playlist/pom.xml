@@ -12,6 +12,11 @@
     <artifactId>playlist</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.animusic</groupId>
+            <artifactId>soundtrack</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
 

@@ -1,10 +1,8 @@
 package com.animusic.api;
 
+import com.animusic.api.dto.SoundtrackDto;
+import com.animusic.api.dto.UpdateSoundtrackDto;
 import com.animusic.soundtrack.dao.Soundtrack;
-import com.animusic.soundtrack.dto.CreateSoundtrackDto;
-import com.animusic.soundtrack.dto.SoundtrackConverter;
-import com.animusic.soundtrack.dto.SoundtrackDto;
-import com.animusic.soundtrack.dto.UpdateSoundtrackDto;
 import com.animusic.soundtrack.service.SoundtrackService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ilnitsk.animusic.exception.BadRequestException;
@@ -14,34 +12,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRange;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/soundtracks")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "REST API для управления саундтреками", description = "Предоставляет методы для управления саундтреками")
+@Tag(name = "REST API для управления саундтреками")
 public class SoundtrackController {
     private final SoundtrackService soundtrackService;
-    private final SoundtrackConverter soundtrackConverter;
-
-    @GetMapping("/play/{trackId}")
-    @Deprecated
-    public ResponseEntity<StreamingResponseBody> playTrack(
-            @PathVariable Integer trackId,
-            @RequestHeader(value = HttpHeaders.RANGE, required = false) String range) {
-        List<HttpRange> httpRangeList = HttpRange.parseRanges(range);
-        log.info("Playing track: {}", trackId);
-        return soundtrackService.getAudioStream(trackId, !httpRangeList.isEmpty() ? httpRangeList.get(0) : null);
-    }
 
     @GetMapping("{soundtrackId}")
     @Operation(summary = "Метод для получения саундтрека по id")
@@ -52,7 +33,7 @@ public class SoundtrackController {
     })
     public SoundtrackDto getSoundtrack(@PathVariable Integer soundtrackId) {
         Soundtrack soundtrack = soundtrackService.getSoundtrack(soundtrackId);
-        return soundtrackConverter.convertToDto(soundtrack);
+        return SoundtrackDto.fromSoundtrack(soundtrack);
     }
 
     @PutMapping("{soundtrackId}")
@@ -65,10 +46,14 @@ public class SoundtrackController {
     })
     public SoundtrackDto updateSoundtrack(@RequestBody UpdateSoundtrackDto updateSoundtrackDto,
                                           @PathVariable Integer soundtrackId) {
-        Soundtrack soundtrack = soundtrackService.updateSoundtrack(updateSoundtrackDto,soundtrackId);
-        SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrack);
-        log.info("Soundtrack id={} updated successfully",soundtrackId);
-        return soundtrackDto;
+        Soundtrack soundtrack = soundtrackService.updateSoundtrack(
+                soundtrackId,
+                updateSoundtrackDto.originalTitle(),
+                updateSoundtrackDto.animeTitle(),
+                updateSoundtrackDto.duration()
+        );
+        log.info("Soundtrack id={} updated successfully", soundtrackId);
+        return SoundtrackDto.fromSoundtrack(soundtrack);
     }
 
     @PatchMapping("{soundtrackId}")
@@ -81,10 +66,9 @@ public class SoundtrackController {
     })
     public SoundtrackDto patchSoundtrack(@RequestBody JsonNode jsonPatch,
                                          @PathVariable Integer soundtrackId) {
-        Soundtrack soundtrackPatched = soundtrackService.updateSoundtrack(jsonPatch,soundtrackId);
-        SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrackPatched);
-        log.info("Soundtrack id={} updated successfully",soundtrackId);
-        return soundtrackDto;
+        Soundtrack soundtrackPatched = soundtrackService.updateSoundtrack(jsonPatch, soundtrackId);
+        log.info("Soundtrack id={} updated successfully", soundtrackId);
+        return SoundtrackDto.fromSoundtrack(soundtrackPatched);
     }
 
     @PostMapping
@@ -96,17 +80,17 @@ public class SoundtrackController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public SoundtrackDto createFromFile(@RequestPart(value = "audio") MultipartFile audio,
-                                     @RequestPart(value = "image",required = false) MultipartFile image,
-                                     @ModelAttribute CreateSoundtrackDto request,
+                                        @RequestPart(value = "image", required = false) MultipartFile image,
+                                        @ModelAttribute CreateSoundtrackDto request,
                                         @RequestParam("albumId") Integer albumId) {
-        Soundtrack soundtrack = soundtrackConverter.convertToEntity(request);
+        Soundtrack soundtrack = request.toSoundtrack();
         if (audio.isEmpty()) {
             throw new BadRequestException("No mp3-file provided");
         }
         soundtrack = soundtrackService.createSoundtrack(
                 audio, image, soundtrack, albumId
         );
-        return soundtrackConverter.convertToDto(soundtrack);
+        return SoundtrackDto.fromSoundtrack(soundtrack);
     }
 
     @PutMapping("/audio/{soundtrackId}")
@@ -117,11 +101,10 @@ public class SoundtrackController {
             @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
             @ApiResponse(responseCode = "400", description = "Пустой аудиофайл")
     })
-    public SoundtrackDto updateAudioFile(@RequestPart("audio") MultipartFile audio,@PathVariable Integer soundtrackId) {
-        Soundtrack soundtrack = soundtrackService.updateAudio(audio,soundtrackId);
-        SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrack);
-        log.info("Soundtrack id={} audio updated to {}",soundtrackId,soundtrack.getAudioFile());
-        return soundtrackDto;
+    public SoundtrackDto updateAudioFile(@RequestPart("audio") MultipartFile audio, @PathVariable Integer soundtrackId) {
+        Soundtrack soundtrack = soundtrackService.updateAudio(audio, soundtrackId);
+        log.info("Soundtrack id={} audio updated to {}", soundtrackId, soundtrack.getAudioFile());
+        return SoundtrackDto.fromSoundtrack(soundtrack);
     }
 
     @PutMapping("/images/{soundtrackId}")
@@ -134,10 +117,9 @@ public class SoundtrackController {
     })
     public SoundtrackDto setSoundtrackImage(@PathVariable Integer soundtrackId,
                                             @RequestPart(value = "image") MultipartFile image) {
-        Soundtrack soundtrack = soundtrackService.setImage(soundtrackId,image);
-        SoundtrackDto soundtrackDto = soundtrackConverter.convertToDto(soundtrack);
-        log.info("Image of Soundtrack with id={} updated to '{}'",soundtrackId,soundtrack.getImage().getSource());
-        return soundtrackDto;
+        Soundtrack soundtrack = soundtrackService.setImage(soundtrackId, image);
+        log.info("Image of Soundtrack with id={} updated to '{}'", soundtrackId, soundtrack.getImage().getSource());
+        return SoundtrackDto.fromSoundtrack(soundtrack);
     }
 
     @DeleteMapping("{id}")
@@ -150,5 +132,19 @@ public class SoundtrackController {
     })
     public void deleteSoundtrack(@PathVariable Integer id) {
         soundtrackService.remove(id);
+    }
+
+    record CreateSoundtrackDto(
+            String originalTitle,
+            String animeTitle,
+            Integer duration
+    ) {
+        public Soundtrack toSoundtrack() {
+            return Soundtrack.builder()
+                    .originalTitle(originalTitle)
+                    .animeTitle(animeTitle)
+                    .duration(duration)
+                    .build();
+        }
     }
 }

@@ -1,8 +1,8 @@
 package com.animusic.playlist.dao;
 
+import com.animusic.image.dao.CoverArt;
+import com.animusic.user.dao.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ilnitsk.animusic.image.dao.CoverArt;
-import com.ilnitsk.animusic.user.dao.User;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.exception;
+package com.animusic.album;
 
 public class AlbumNotFoundException extends RuntimeException{
     public AlbumNotFoundException(Integer id) {

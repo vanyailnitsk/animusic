@@ -1,4 +1,4 @@
-package com.animusic.soundtrack.dto;
+package com.animusic.api.dto;
 
 public record UpdateSoundtrackDto(
         String originalTitle,

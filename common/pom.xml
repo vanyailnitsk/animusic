@@ -6,10 +6,9 @@
         <groupId>com.animusic</groupId>
         <artifactId>server</artifactId>
         <version>1.0</version>
-
     </parent>
 
-    <artifactId>utils</artifactId>
+    <artifactId>common</artifactId>
 
     <dependencies>
         <dependency>

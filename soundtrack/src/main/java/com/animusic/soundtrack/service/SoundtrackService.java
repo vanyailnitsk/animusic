@@ -1,26 +1,24 @@
 package com.animusic.soundtrack.service;
 
+import com.animusic.album.dao.Album;
+import com.animusic.album.service.AlbumService;
+import com.animusic.anime.dao.Anime;
+import com.animusic.image.dao.Image;
+import com.animusic.image.service.ImageService;
+import com.animusic.s3.S3Service;
+import com.animusic.soundtrack.SoundtrackNotFoundException;
 import com.animusic.soundtrack.dao.Soundtrack;
-import com.animusic.soundtrack.dto.UpdateSoundtrackDto;
 import com.animusic.soundtrack.repository.SoundtrackRepository;
+import com.animusic.utils.InvalidDataException;
+import com.animusic.utils.JsonMergePatchService;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.ilnitsk.animusic.album.dao.Album;
-import com.ilnitsk.animusic.album.repository.AlbumRepository;
-import com.ilnitsk.animusic.anime.dao.Anime;
-import com.ilnitsk.animusic.exception.AlbumNotFoundException;
-import com.ilnitsk.animusic.exception.BadRequestException;
-import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
-import com.ilnitsk.animusic.file.FileService;
-import com.ilnitsk.animusic.image.service.ImageService;
-import com.ilnitsk.animusic.s3.S3Service;
-import com.ilnitsk.animusic.util.JsonMergePatchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.io.IOException;
 import java.util.Objects;
 
 @Service
@@ -28,8 +26,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class SoundtrackService {
     private final SoundtrackRepository soundtrackRepository;
-    private final AlbumRepository albumRepository;
-    private final FileService fileService;
+    private final AlbumService albumService;
     private final ImageService imageService;
     private final S3Service s3Service;
     private final JsonMergePatchService jsonMergePatchService;
@@ -39,47 +36,17 @@ public class SoundtrackService {
                 .orElseThrow(() -> new SoundtrackNotFoundException(id));
     }
 
-    public ResponseEntity<StreamingResponseBody> getAudioStream(Integer trackId, HttpRange range) {
-        Soundtrack soundtrack = soundtrackRepository.findById(trackId)
-                .orElseThrow(() -> new SoundtrackNotFoundException(trackId));
-        String animeFolder = soundtrack.getAnime().getFolderName();
-        String trackName = soundtrack.getAudioFile();
-        HttpHeaders headers = new HttpHeaders();
-        StreamingResponseBody stream;
-        if (range != null) {
-            headers.set(HttpHeaders.ACCEPT_RANGES, "bytes");
-            int fileSize = fileService.getAudioFileSize(animeFolder, trackName);
-            int rangeStart = (int) range.getRangeStart(0);
-            int rangeEnd = rangeStart + 2000000;
-            if (rangeEnd >= fileSize) {
-                rangeEnd = fileSize - 1;
-            }
-            byte[] audioContent = fileService.getAudioContent(animeFolder, trackName, rangeStart, rangeEnd);
-            stream = out -> out.write(audioContent);
-            headers.set(HttpHeaders.CONTENT_LENGTH, String.valueOf(rangeEnd - rangeStart + 1));
-            headers.set(HttpHeaders.CONTENT_RANGE, "bytes " + rangeStart + "-" + rangeEnd + "/" + fileSize);
-            headers.setContentType(MediaType.parseMediaType("audio/mpeg"));
-            return new ResponseEntity<>(stream, headers, HttpStatus.PARTIAL_CONTENT);
-        }
-        stream = out -> {
-            int fileSize = fileService.getAudioFileSize(animeFolder, trackName);
-            out.write(fileService.getAudioContent(animeFolder, trackName, 0, fileSize - 1));
-        };
-        headers.set(HttpHeaders.CONTENT_TYPE, "audio/mpeg");
-        return new ResponseEntity<>(stream, headers, HttpStatus.OK);
-    }
-
     @Transactional(timeout = 30)
     public Soundtrack createSoundtrack(MultipartFile audio, MultipartFile image, Soundtrack soundtrack, Integer albumId) {
-        Album album = albumRepository.findById(albumId)
-                .orElseThrow(() -> new AlbumNotFoundException(albumId));
+        Album album = albumService.getAlbumById(albumId);
         Anime anime = album.getAnime();
         String fileName = "%s/audio/%s".formatted(anime.getFolderName(), soundtrack.getAnimeTitle());
         String blobKey = createAudio(fileName, audio);
         soundtrack.setAnime(anime);
         soundtrack.setAudioFile(blobKey);
         if (image != null && !image.isEmpty()) {
-            imageService.createSoundtrackImage(soundtrack, image);
+            Image savedImage = imageService.createSoundtrackImage(anime.getFolderName(),soundtrack.getAnimeTitle(),image);
+            soundtrack.setImage(savedImage);
         }
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
         soundtrack.setAlbum(album);
@@ -92,7 +59,8 @@ public class SoundtrackService {
     public Soundtrack setImage(Integer soundtrackId, MultipartFile image) {
         Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
-        imageService.createSoundtrackImage(soundtrack, image);
+        Image savedImage = imageService.createSoundtrackImage(soundtrack.getAnime().getFolderName(),soundtrack.getAnimeTitle(),image);
+        soundtrack.setImage(savedImage);
         return soundtrack;
     }
 
@@ -108,12 +76,17 @@ public class SoundtrackService {
     }
 
     @Transactional
-    public Soundtrack updateSoundtrack(UpdateSoundtrackDto updateSoundtrackDto, Integer soundtrackId) {
+    public Soundtrack updateSoundtrack(
+            Integer soundtrackId,
+            String originalTitle,
+            String animeTitle,
+            Integer duration
+    ) {
         return soundtrackRepository.findById(soundtrackId).map(
                 soundtrack -> {
-                    soundtrack.setOriginalTitle(updateSoundtrackDto.originalTitle());
-                    soundtrack.setAnimeTitle(updateSoundtrackDto.animeTitle());
-                    soundtrack.setDuration(updateSoundtrackDto.duration());
+                    soundtrack.setOriginalTitle(originalTitle);
+                    soundtrack.setAnimeTitle(animeTitle);
+                    soundtrack.setDuration(duration);
                     return soundtrack;
                 }
         ).orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
@@ -124,7 +97,7 @@ public class SoundtrackService {
         Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
         if (audio.isEmpty()) {
-            throw new BadRequestException("Содержимое аудиофайла не может быть пустым!");
+            throw new InvalidDataException("Содержимое аудиофайла не может быть пустым!");
         }
         String fileName = "%s/audio/%s".formatted(soundtrack.getAnime().getFolderName(), soundtrack.getAnimeTitle());
         String blobKey = createAudio(fileName, audio);
@@ -147,6 +120,10 @@ public class SoundtrackService {
             case ".mp3" -> "audio/mpeg";
             default -> "application/octet-stream";
         };
-        return s3Service.createBlob(fileName, content, contentType);
+        try {
+            return s3Service.createBlob(fileName, content.getBytes(), contentType);
+        } catch (IOException e) {
+            throw new RuntimeException("Error on saving audiofile to S3",e);
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.animusic.playlist.dao;
 
+import com.animusic.soundtrack.dao.Soundtrack;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import jakarta.persistence.*;
 import lombok.*;
 

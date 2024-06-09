@@ -1,7 +1,5 @@
 package com.animusic.api.dto;
 
-import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
-
 import java.util.List;
 
 public record AlbumDto(

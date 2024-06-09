@@ -1,4 +1,4 @@
-package com.animusic.playlist.dto;
+package com.animusic.api.dto;
 
 import com.animusic.playlist.dao.Playlist;
 import com.ilnitsk.animusic.user.dao.User;

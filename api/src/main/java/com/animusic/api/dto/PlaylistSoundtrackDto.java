@@ -1,6 +1,5 @@
-package com.animusic.playlist.dto;
+package com.animusic.api.dto;
 
-import com.ilnitsk.animusic.soundtrack.dto.SoundtrackEntityDto;
 import lombok.Data;
 
 import java.util.Date;

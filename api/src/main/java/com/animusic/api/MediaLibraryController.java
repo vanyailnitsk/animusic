@@ -1,8 +1,8 @@
 package com.animusic.api;
 
+import com.animusic.api.dto.PlaylistDto;
+import com.animusic.api.dto.UserMediaConverter;
 import com.animusic.playlist.dao.Playlist;
-import com.animusic.playlist.dto.PlaylistDto;
-import com.animusic.playlist.dto.UserMediaConverter;
 import com.animusic.playlist.service.MediaLibraryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

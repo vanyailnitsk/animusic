@@ -48,7 +48,7 @@
         </dependency>
         <dependency>
             <groupId>com.animusic</groupId>
-            <artifactId>utils</artifactId>
+            <artifactId>common</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>

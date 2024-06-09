@@ -12,7 +12,31 @@
     <artifactId>soundtrack</artifactId>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.animusic</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.animusic</groupId>
+            <artifactId>image</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.animusic</groupId>
+            <artifactId>anime</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.animusic</groupId>
+            <artifactId>album</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.animusic</groupId>
+            <artifactId>user</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
 

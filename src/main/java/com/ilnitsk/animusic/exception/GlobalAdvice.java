@@ -1,8 +1,10 @@
 package com.ilnitsk.animusic.exception;
 
+import com.animusic.album.AlbumNotFoundException;
 import com.animusic.anime.AnimeNotFoundException;
 import com.animusic.security.InvalidTokenException;
 import com.animusic.security.TokenRefreshException;
+import com.animusic.soundtrack.SoundtrackNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;

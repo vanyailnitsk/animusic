@@ -1,8 +1,8 @@
 package com.animusic.soundtrack.dao;
 
-import com.ilnitsk.animusic.album.dao.Album;
-import com.ilnitsk.animusic.anime.dao.Anime;
-import com.ilnitsk.animusic.image.dao.Image;
+import com.animusic.album.dao.Album;
+import com.animusic.anime.dao.Anime;
+import com.animusic.image.dao.Image;
 import jakarta.persistence.*;
 import lombok.*;
 

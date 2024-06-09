@@ -17,14 +17,14 @@ public class CoverArtService {
 
     @Transactional
     public CoverArt createAlbumCoverArt(String animeFolder, String imageName, MultipartFile imageFile, CoverArt coverArt) {
-        Image image = imageService.createAnimeImage(animeFolder,imageName,imageFile);
+        Image image = imageService.createAnimeImage(animeFolder, imageName, imageFile);
         coverArt.setImage(image);
         return coverArtRepository.save(coverArt);
     }
 
     @Transactional
-    public CoverArt createPlaylistCoverArt(Integer userId, String playlistName, MultipartFile imageFile,CoverArt coverArt) {
-        Image image = imageService.createImageForUser(userId,generateHash(playlistName,10),imageFile);
+    public CoverArt createPlaylistCoverArt(Integer userId, String playlistName, MultipartFile imageFile, CoverArt coverArt) {
+        Image image = imageService.createImageForUser(userId, generateHash(playlistName, 10), imageFile);
         coverArt.setImage(image);
         return coverArtRepository.save(coverArt);
     }

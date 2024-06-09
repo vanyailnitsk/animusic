@@ -1,13 +1,9 @@
 package com.animusic.api;
 
+import com.animusic.api.dto.PlaylistDto;
+import com.animusic.api.dto.UserMediaConverter;
 import com.animusic.playlist.dao.Playlist;
-import com.animusic.playlist.dto.PlaylistDto;
-import com.animusic.playlist.dto.UserMediaConverter;
 import com.animusic.playlist.service.PlaylistService;
-import com.ilnitsk.animusic.image.dao.CoverArt;
-import com.ilnitsk.animusic.image.dto.CoverArtConverter;
-import com.ilnitsk.animusic.image.dto.CoverArtDto;
-import com.ilnitsk.animusic.image.dto.CreateCoverDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

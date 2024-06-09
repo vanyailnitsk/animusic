@@ -1,6 +1,5 @@
-package com.animusic.playlist.dto;
+package com.animusic.api.dto;
 
-import com.ilnitsk.animusic.image.dto.CoverArtDto;
 import lombok.Data;
 
 import java.util.List;

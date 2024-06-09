@@ -2,9 +2,13 @@ package com.animusic.album.dao;
 
 import com.animusic.anime.dao.Anime;
 import com.animusic.image.dao.CoverArt;
+import com.animusic.soundtrack.dao.Soundtrack;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "album")
@@ -26,5 +30,11 @@ public class Album {
     @OneToOne
     @JoinColumn(name = "cover_art_id")
     private CoverArt coverArt;
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Soundtrack> soundtracks = new ArrayList<>();
+    public void addSoundtrack(Soundtrack soundtrack) {
+        soundtracks.add(soundtrack);
+    }
 
 }

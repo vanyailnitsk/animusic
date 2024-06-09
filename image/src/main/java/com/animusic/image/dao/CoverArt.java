@@ -1,11 +1,13 @@
 package com.animusic.image.dao;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Table
 @Data
+@Builder
 public class CoverArt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +19,7 @@ public class CoverArt {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image image;
+
+    public CoverArt() {
+    }
 }
