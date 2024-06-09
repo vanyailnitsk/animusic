@@ -1,10 +1,8 @@
 package com.animusic.anime.dao;
 
+import com.animusic.image.dao.AnimeBannerImage;
+import com.animusic.image.dao.Image;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ilnitsk.animusic.album.dao.Album;
-import com.ilnitsk.animusic.image.dao.AnimeBannerImage;
-import com.ilnitsk.animusic.image.dao.Image;
-import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
 import jakarta.persistence.*;
 import lombok.*;
 

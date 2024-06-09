@@ -1,4 +1,4 @@
-package com.ilnitsk.animusic.exception;
+package com.animusic.anime;
 
 public class AnimeNotFoundException extends RuntimeException{
     public AnimeNotFoundException(Integer id) {

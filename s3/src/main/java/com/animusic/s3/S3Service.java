@@ -3,7 +3,6 @@ package com.animusic.s3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -62,14 +61,9 @@ public class S3Service {
         return fileName.substring(fileName.lastIndexOf('.'));
     }
 
-    public String createBlob(String fileName, MultipartFile content,String contentType) {
-        String key = fileName+getFileExtension(content.getOriginalFilename());
-        try {
-            putObject(key,content.getBytes(),contentType);
-            return key;
-        } catch (IOException e) {
-            throw new RuntimeException("Битый файл!");
-        }
+    public String createBlob(String fileName, byte[] content,String contentType) {
+        putObject(fileName,content,contentType);
+        return fileName;
     }
 
 }

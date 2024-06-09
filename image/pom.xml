@@ -12,6 +12,15 @@
     <artifactId>image</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.animusic</groupId>
+            <artifactId>s3</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
 

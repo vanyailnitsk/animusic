@@ -5,12 +5,6 @@ import com.animusic.anime.dto.AnimeConverter;
 import com.animusic.anime.dto.AnimeDto;
 import com.animusic.anime.dto.UpdateAnimeDto;
 import com.animusic.anime.service.AnimeService;
-import com.ilnitsk.animusic.image.dao.AnimeBannerImage;
-import com.ilnitsk.animusic.image.dao.Image;
-import com.ilnitsk.animusic.image.dto.AnimeBannerImageConverter;
-import com.ilnitsk.animusic.image.dto.AnimeBannerImageDto;
-import com.ilnitsk.animusic.image.dto.ImageConverter;
-import com.ilnitsk.animusic.image.dto.ImageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -46,6 +40,7 @@ public class AnimeController {
         Anime anime = animeService.getAnimeInfo(animeId);
         return animeConverter.convertToDto(anime);
     }
+
     @GetMapping
     @Operation(summary = "Метод для получения списка всех аниме.")
     @ApiResponses(value = {
@@ -80,10 +75,10 @@ public class AnimeController {
             @ApiResponse(responseCode = "404", description = "Аниме не найдено"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public AnimeDto updateAnime(@RequestBody UpdateAnimeDto updateAnimeDto,@PathVariable Integer animeId) {
-        Anime anime = animeService.updateAnime(updateAnimeDto,animeId);
+    public AnimeDto updateAnime(@RequestBody UpdateAnimeDto updateAnimeDto, @PathVariable Integer animeId) {
+        Anime anime = animeService.updateAnime(updateAnimeDto, animeId);
         AnimeDto animeDto = animeConverter.convertToDto(anime);
-        log.info("Anime id={} updated successfully",animeId);
+        log.info("Anime id={} updated successfully", animeId);
         return animeDto;
     }
 
@@ -92,7 +87,7 @@ public class AnimeController {
     public AnimeBannerImageDto setBanner(@PathVariable("id") Integer animeId,
                                          @RequestPart(value = "banner") MultipartFile banner,
                                          @ModelAttribute AnimeBannerImage bannerImage) {
-        AnimeBannerImage bannerCreated = animeService.setBanner(animeId,banner,bannerImage);
+        AnimeBannerImage bannerCreated = animeService.setBanner(animeId, banner, bannerImage);
         return bannerImageConverter.convertToDto(bannerCreated);
     }
 
@@ -100,7 +95,7 @@ public class AnimeController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ImageDto setCard(@PathVariable("id") Integer animeId,
                             @RequestPart(value = "card") MultipartFile card) {
-        Image cardCreated = animeService.setCard(animeId,card);
+        Image cardCreated = animeService.setCard(animeId, card);
         return imageConverter.convertToDto(cardCreated);
     }
 

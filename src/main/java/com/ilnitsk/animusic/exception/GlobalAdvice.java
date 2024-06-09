@@ -1,5 +1,6 @@
 package com.ilnitsk.animusic.exception;
 
+import com.animusic.anime.AnimeNotFoundException;
 import com.animusic.security.InvalidTokenException;
 import com.animusic.security.TokenRefreshException;
 import org.springframework.http.HttpStatus;

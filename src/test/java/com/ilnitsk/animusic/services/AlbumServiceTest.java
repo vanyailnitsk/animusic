@@ -1,12 +1,12 @@
 package com.ilnitsk.animusic.services;
 
+import com.animusic.anime.AnimeNotFoundException;
 import com.ilnitsk.animusic.album.dao.Album;
 import com.ilnitsk.animusic.album.dto.CreateAlbumDto;
 import com.ilnitsk.animusic.album.repository.AlbumRepository;
 import com.ilnitsk.animusic.album.service.AlbumService;
 import com.ilnitsk.animusic.anime.dao.Anime;
 import com.ilnitsk.animusic.anime.repository.AnimeRepository;
-import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

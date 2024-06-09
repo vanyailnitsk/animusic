@@ -1,9 +1,9 @@
 package com.ilnitsk.animusic.services;
 
+import com.animusic.anime.AnimeNotFoundException;
 import com.ilnitsk.animusic.anime.dao.Anime;
 import com.ilnitsk.animusic.anime.repository.AnimeRepository;
 import com.ilnitsk.animusic.anime.service.AnimeService;
-import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
 import com.ilnitsk.animusic.image.service.ImageService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
