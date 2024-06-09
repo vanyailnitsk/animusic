@@ -1,7 +1,5 @@
-package com.animusic.album.dto;
+package com.animusic.api.dto;
 
-import com.ilnitsk.animusic.anime.dto.AnimeItemDto;
-import com.ilnitsk.animusic.image.dto.CoverArtDto;
 import com.ilnitsk.animusic.soundtrack.dto.SoundtrackDto;
 
 import java.util.List;

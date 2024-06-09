@@ -1,14 +1,9 @@
 package com.animusic.anime.service;
 
+import com.animusic.anime.AnimeAlreadyExistsException;
+import com.animusic.anime.AnimeNotFoundException;
 import com.animusic.anime.dao.Anime;
-import com.animusic.anime.dto.UpdateAnimeDto;
 import com.animusic.anime.repository.AnimeRepository;
-import com.ilnitsk.animusic.album.dao.Album;
-import com.ilnitsk.animusic.exception.AnimeNotFoundException;
-import com.ilnitsk.animusic.exception.BadRequestException;
-import com.ilnitsk.animusic.image.service.AnimeBannerImageService;
-import com.ilnitsk.animusic.image.service.ImageService;
-import com.ilnitsk.animusic.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,26 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AnimeService {
     private final AnimeRepository animeRepository;
-    private final ImageService imageService;
-    private final S3Service s3Service;
-    private final AnimeBannerImageService bannerImageService;
+    private final AnimeImageService animeImageService;
 
 
     public Anime getAnimeInfo(Integer animeId) {
-        Anime anime = animeRepository.findById(animeId)
+        return animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        List<Album> albums = anime.getAlbums();
-        if (albums!= null) {
-            albums.sort((a1,a2) -> {
-                List<String> categoryOrder = List.of("Openings", "Endings", "Themes", "Scene songs");
-
-                int index1 = categoryOrder.indexOf(a1.getName());
-                int index2 = categoryOrder.indexOf(a2.getName());
-
-                return Integer.compare(index1, index2);
-            });
-        }
-        return anime;
     }
 
     public List<Anime> getAllAnime() {
@@ -53,9 +34,7 @@ public class AnimeService {
         boolean existsTitle = animeRepository
                 .existsAnimeByTitle(anime.getTitle());
         if (existsTitle) {
-            throw new BadRequestException(
-                    "Anime " + anime.getTitle() + " already exists"
-            );
+            throw new AnimeAlreadyExistsException(anime.getTitle());
         }
         animeRepository.save(anime);
         return animeRepository.save(anime);
@@ -67,14 +46,14 @@ public class AnimeService {
 
 
     @Transactional
-    public Anime updateAnime(UpdateAnimeDto updateAnimeDto, Integer animeId) {
+    public Anime updateAnime(Anime updateAnime, Integer animeId) {
         return animeRepository.findById(animeId).map(
                 anime -> {
-                    anime.setTitle(updateAnimeDto.title());
-                    anime.setStudio(updateAnimeDto.studio());
-                    anime.setReleaseYear(updateAnimeDto.releaseYear());
-                    anime.setDescription(updateAnimeDto.description());
-                    anime.setFolderName(updateAnimeDto.folderName());
+                    anime.setTitle(updateAnime.getTitle());
+                    anime.setStudio(updateAnime.getStudio());
+                    anime.setReleaseYear(updateAnime.getReleaseYear());
+                    anime.setDescription(updateAnime.getDescription());
+                    anime.setFolderName(updateAnime.getFolderName());
                     return anime;
                 }
         ).orElseThrow(() -> new AnimeNotFoundException(animeId));

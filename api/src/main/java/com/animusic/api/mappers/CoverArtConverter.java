@@ -1,8 +1,8 @@
 package com.animusic.api.mappers;
 
+import com.animusic.api.dto.CoverArtDto;
+import com.animusic.api.dto.CreateCoverDto;
 import com.animusic.image.dao.CoverArt;
-import com.animusic.image.dto.CoverArtDto;
-import com.animusic.image.dto.CreateCoverDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

@@ -12,6 +12,11 @@
     <artifactId>album</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.animusic</groupId>
+            <artifactId>anime</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
 

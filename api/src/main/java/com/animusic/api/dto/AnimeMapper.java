@@ -1,30 +1,20 @@
-package com.animusic.anime.dto;
+package com.animusic.api.dto;
 
 import com.animusic.anime.dao.Anime;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
-public class AnimeConverter {
+public class AnimeMapper {
     private final ModelMapper modelMapper;
 
-    public AnimeConverter(ModelMapper modelMapper) {
+    public AnimeMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
 
-        modelMapper.createTypeMap(Anime.class,AnimeDto.class);
+        modelMapper.createTypeMap(Anime.class, RichAnimeDto.class);
 
         modelMapper.createTypeMap(Anime.class,AnimeItemDto.class);
         modelMapper.createTypeMap(UpdateAnimeDto.class,Anime.class);
-    }
-
-    public AnimeDto convertToDto(Anime playlist) {
-        return modelMapper.map(playlist,AnimeDto.class);
-    }
-
-    public List<AnimeDto> convertListToDto(List<Anime> animeList) {
-        return animeList.stream().map(this::convertToDto).toList();
     }
 
     public Anime convertToEntity(UpdateAnimeDto dto) {

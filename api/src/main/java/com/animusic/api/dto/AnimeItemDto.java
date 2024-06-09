@@ -1,4 +1,4 @@
-package com.animusic.anime.dto;
+package com.animusic.api.dto;
 
 public record AnimeItemDto(
         Integer id,

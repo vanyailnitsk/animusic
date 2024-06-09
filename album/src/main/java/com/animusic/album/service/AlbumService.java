@@ -6,7 +6,6 @@ import com.animusic.album.dto.UpdateAlbumDto;
 import com.animusic.album.repository.AlbumRepository;
 import com.ilnitsk.animusic.anime.dao.Anime;
 import com.ilnitsk.animusic.anime.repository.AnimeRepository;
-import com.ilnitsk.animusic.anime.service.AnimeService;
 import com.ilnitsk.animusic.exception.AlbumNotFoundException;
 import com.ilnitsk.animusic.exception.AnimeNotFoundException;
 import com.ilnitsk.animusic.exception.BadRequestException;
@@ -28,7 +27,6 @@ import java.util.Optional;
 public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AnimeRepository animeRepository;
-    private final AnimeService animeService;
     private final CoverArtService coverArtService;
     private final CoverArtConverter coverArtConverter;
 

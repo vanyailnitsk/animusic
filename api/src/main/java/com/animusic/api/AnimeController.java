@@ -1,10 +1,13 @@
 package com.animusic.api;
 
+import com.animusic.album.dao.Album;
+import com.animusic.album.service.AlbumService;
 import com.animusic.anime.dao.Anime;
-import com.animusic.anime.dto.AnimeConverter;
-import com.animusic.anime.dto.AnimeDto;
-import com.animusic.anime.dto.UpdateAnimeDto;
 import com.animusic.anime.service.AnimeService;
+import com.animusic.api.dto.AnimeDto;
+import com.animusic.api.dto.AnimeMapper;
+import com.animusic.api.dto.RichAnimeDto;
+import com.animusic.api.dto.UpdateAnimeDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -13,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,9 +26,8 @@ import java.util.List;
 @Tag(name = "REST API для управления аниме", description = "Предоставляет методы для информации по аниме")
 public class AnimeController {
     private final AnimeService animeService;
-    private final AnimeConverter animeConverter;
-    private final AnimeBannerImageConverter bannerImageConverter;
-    private final ImageConverter imageConverter;
+    private final AnimeMapper animeMapper;
+    private final AlbumService albumService;
 
     @GetMapping("/{animeId}")
     @Operation(summary = "Метод для получения аниме по id")
@@ -35,10 +36,21 @@ public class AnimeController {
             @ApiResponse(responseCode = "404", description = "Аниме не найдено"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public AnimeDto getAnimeInfo(@PathVariable Integer animeId) {
+    public RichAnimeDto getAnimeInfo(@PathVariable Integer animeId) {
         log.info("Requested anime {} info", animeId);
         Anime anime = animeService.getAnimeInfo(animeId);
-        return animeConverter.convertToDto(anime);
+        List<Album> albums = albumService.getAlbumsByAnimeId(animeId);
+        if (albums!= null) {
+            albums.sort((a1,a2) -> {
+                List<String> categoryOrder = List.of("Openings", "Endings", "Themes", "Scene songs");
+
+                int index1 = categoryOrder.indexOf(a1.getName());
+                int index2 = categoryOrder.indexOf(a2.getName());
+
+                return Integer.compare(index1, index2);
+            });
+        }
+        return RichAnimeDto.fromAnime(anime,albums);
     }
 
     @GetMapping
@@ -49,7 +61,7 @@ public class AnimeController {
     })
     public List<AnimeDto> getAllAnime() {
         List<Anime> anime = animeService.getAllAnime();
-        return animeConverter.convertListToDto(anime);
+        return anime.stream().map(AnimeDto::fromAnime).toList();
     }
 
     @PostMapping
@@ -61,10 +73,10 @@ public class AnimeController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public AnimeDto createAnime(@RequestBody UpdateAnimeDto createDto) {
-        Anime anime = animeConverter.convertToEntity(createDto);
+        Anime anime = animeMapper.convertToEntity(createDto);
         anime = animeService.createAnime(anime);
         log.info("Anime {} created", anime.getTitle());
-        return animeConverter.convertToDto(anime);
+        return AnimeDto.fromAnime(anime);
     }
 
     @PutMapping("{animeId}")
@@ -75,28 +87,12 @@ public class AnimeController {
             @ApiResponse(responseCode = "404", description = "Аниме не найдено"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public AnimeDto updateAnime(@RequestBody UpdateAnimeDto updateAnimeDto, @PathVariable Integer animeId) {
-        Anime anime = animeService.updateAnime(updateAnimeDto, animeId);
-        AnimeDto animeDto = animeConverter.convertToDto(anime);
+    public RichAnimeDto updateAnime(@RequestBody Anime updateAnime, @PathVariable Integer animeId) {
+        Anime anime = animeService.updateAnime(updateAnime, animeId);
+        List<Album> albums = albumService.getAlbumsByAnimeId(animeId);
+        RichAnimeDto richAnimeDto = RichAnimeDto.fromAnime(anime,albums);
         log.info("Anime id={} updated successfully", animeId);
-        return animeDto;
-    }
-
-    @PostMapping("/images/banner/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public AnimeBannerImageDto setBanner(@PathVariable("id") Integer animeId,
-                                         @RequestPart(value = "banner") MultipartFile banner,
-                                         @ModelAttribute AnimeBannerImage bannerImage) {
-        AnimeBannerImage bannerCreated = animeService.setBanner(animeId, banner, bannerImage);
-        return bannerImageConverter.convertToDto(bannerCreated);
-    }
-
-    @PostMapping("/images/card/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ImageDto setCard(@PathVariable("id") Integer animeId,
-                            @RequestPart(value = "card") MultipartFile card) {
-        Image cardCreated = animeService.setCard(animeId, card);
-        return imageConverter.convertToDto(cardCreated);
+        return richAnimeDto;
     }
 
     @DeleteMapping("{id}")

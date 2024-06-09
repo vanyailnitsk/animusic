@@ -1,7 +1,7 @@
 package com.animusic.api.mappers;
 
+import com.animusic.api.dto.ImageDto;
 import com.animusic.image.dao.Image;
-import com.animusic.image.dto.ImageDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

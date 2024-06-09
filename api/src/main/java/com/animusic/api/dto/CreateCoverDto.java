@@ -1,4 +1,4 @@
-package com.animusic.image.dto;
+package com.animusic.api.dto;
 
 import lombok.Data;
 

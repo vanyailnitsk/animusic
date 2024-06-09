@@ -1,7 +1,7 @@
 package com.animusic.api.mappers;
 
+import com.animusic.api.dto.AnimeBannerImageDto;
 import com.animusic.image.dao.AnimeBannerImage;
-import com.animusic.image.dto.AnimeBannerImageDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

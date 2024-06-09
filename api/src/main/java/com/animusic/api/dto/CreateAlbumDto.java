@@ -1,4 +1,4 @@
-package com.animusic.album.dto;
+package com.animusic.api.dto;
 
 import com.animusic.album.dao.Album;
 import lombok.AllArgsConstructor;

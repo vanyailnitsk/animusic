@@ -2,12 +2,8 @@ package com.animusic.anime.dao;
 
 import com.animusic.image.dao.AnimeBannerImage;
 import com.animusic.image.dao.Image;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,12 +31,6 @@ public class Anime {
     @OneToOne
     @JoinColumn(name = "card_image_id")
     private Image cardImage;
-    @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Soundtrack> soundtracks = new ArrayList<>();
-    @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Album> albums = new ArrayList<>();
 
     public Anime(String title, String studio, String description, String folderName) {
         this.title = title;
