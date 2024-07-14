@@ -13,17 +13,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "playlist_soundtrack")
-@RequiredArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PlaylistSoundtrack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
