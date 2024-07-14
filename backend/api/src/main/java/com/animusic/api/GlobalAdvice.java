@@ -1,7 +1,11 @@
 package com.animusic.api;
 
+import java.util.Date;
+import java.util.Map;
+
 import com.animusic.album.AlbumNotFoundException;
 import com.animusic.anime.AnimeNotFoundException;
+import com.animusic.playlist.PlaylistNotFoundException;
 import com.animusic.security.InvalidTokenException;
 import com.animusic.security.TokenRefreshException;
 import com.animusic.soundtrack.SoundtrackNotFoundException;
@@ -15,9 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.util.Date;
-import java.util.Map;
 
 @ControllerAdvice
 public class GlobalAdvice extends ResponseEntityExceptionHandler {
@@ -57,7 +58,7 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> badRequest(BadRequestException ex) {
-        return ResponseEntity.badRequest().body(Map.of("error",ex.getMessage()));
+        return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
     }
 
     @ExceptionHandler(TokenRefreshException.class)
@@ -75,7 +76,7 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorMessage badCredentials(BadCredentialsException ex,WebRequest request) {
+    public ErrorMessage badCredentials(BadCredentialsException ex, WebRequest request) {
         return new ErrorMessage(
                 HttpStatus.UNAUTHORIZED.value(),
                 new Date(),
@@ -87,7 +88,7 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidTokenException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorMessage invalidToken(InvalidTokenException ex,WebRequest request) {
+    public ErrorMessage invalidToken(InvalidTokenException ex, WebRequest request) {
         return new ErrorMessage(
                 HttpStatus.UNAUTHORIZED.value(),
                 new Date(),
@@ -99,7 +100,7 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorMessage accessDenied(AccessDeniedException ex,WebRequest request) {
+    public ErrorMessage accessDenied(AccessDeniedException ex, WebRequest request) {
         return new ErrorMessage(
                 HttpStatus.FORBIDDEN.value(),
                 new Date(),

@@ -1,6 +1,8 @@
 package com.animusic.security.service;
 
-import com.animusic.core.CookieUtils;
+import java.time.Instant;
+import java.util.UUID;
+
 import com.animusic.core.db.model.User;
 import com.animusic.security.TokenRefreshException;
 import com.animusic.security.dao.RefreshToken;
@@ -9,9 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.util.UUID;
 
 @Service
 public class RefreshTokenService {

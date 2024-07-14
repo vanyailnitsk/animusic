@@ -1,7 +1,7 @@
 package com.animusic.api;
 
+import com.animusic.api.dto.UserDto;
 import com.animusic.core.db.model.User;
-import com.animusic.user.dto.UserDto;
 import com.animusic.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,7 +30,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public UserDto getUser(@AuthenticationPrincipal User currentUser) {
-        User user = userService.findByEmail(currentUser.getEmail());
+        User user = userService.findByEmailOrThrow(currentUser.getEmail());
         return new UserDto(user);
     }
 

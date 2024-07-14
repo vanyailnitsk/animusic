@@ -1,14 +1,12 @@
 package com.animusic.playlist.service;
 
+import com.animusic.core.db.model.CoverArt;
 import com.animusic.core.db.model.Playlist;
+import com.animusic.core.db.model.User;
 import com.animusic.core.db.table.PlaylistRepository;
-import com.ilnitsk.animusic.exception.PlaylistNotFoundException;
-import com.ilnitsk.animusic.image.dao.CoverArt;
-import com.ilnitsk.animusic.image.dto.CoverArtConverter;
-import com.ilnitsk.animusic.image.dto.CreateCoverDto;
-import com.ilnitsk.animusic.image.service.CoverArtService;
-import com.ilnitsk.animusic.user.dao.User;
-import com.ilnitsk.animusic.user.service.UserService;
+import com.animusic.image.service.CoverArtService;
+import com.animusic.playlist.PlaylistNotFoundException;
+import com.animusic.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final UserService userService;
-    private final CoverArtConverter coverArtConverter;
     private final CoverArtService coverArtService;
 
     @Transactional
@@ -41,10 +38,9 @@ public class PlaylistService {
     }
 
     @Transactional
-    public CoverArt createCoverArt(Integer playlistId, MultipartFile imageFile, CreateCoverDto coverArtDto) {
+    public CoverArt createCoverArt(Integer playlistId, MultipartFile imageFile, CoverArt coverArt) {
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundException(playlistId));
-        CoverArt coverArt = coverArtConverter.convertToEntity(coverArtDto);
         CoverArt newCoverArt = coverArtService.createPlaylistCoverArt(
                 playlist.getUser().getId(),
                 playlist.getName(),

@@ -1,11 +1,11 @@
 package com.animusic.anime.service;
 
 import com.animusic.anime.AnimeNotFoundException;
-import com.animusic.anime.dao.Anime;
-import com.animusic.anime.repository.AnimeRepository;
-import com.animusic.image.dao.AnimeBannerImage;
-import com.animusic.image.dao.Image;
-import com.animusic.image.repository.AnimeBannerImageRepository;
+import com.animusic.core.db.model.Anime;
+import com.animusic.core.db.model.AnimeBannerImage;
+import com.animusic.core.db.model.Image;
+import com.animusic.core.db.table.AnimeBannerImageRepository;
+import com.animusic.core.db.table.AnimeRepository;
 import com.animusic.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

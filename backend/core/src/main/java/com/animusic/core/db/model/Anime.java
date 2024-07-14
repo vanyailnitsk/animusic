@@ -1,18 +1,24 @@
 package com.animusic.core.db.model;
 
-import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
-
-import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.Builder;
+import lombok.Data;
 
 @Entity
 @Table(name = "anime")
 @Builder
-@Value
-@RequiredArgsConstructor
+@Data
 public class Anime {
     @Id
     @GeneratedValue
@@ -40,13 +46,9 @@ public class Anime {
     private Image cardImage;
 
     @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Soundtrack> soundtracks = new ArrayList<>();
+    private List<Soundtrack> soundtracks;
 
     @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Album> albums = new ArrayList<>();
-
-    public Anime() {
-
-    }
+    private List<Album> albums;
 }
 

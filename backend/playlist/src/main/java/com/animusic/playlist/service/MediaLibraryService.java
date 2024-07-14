@@ -1,22 +1,22 @@
 package com.animusic.playlist.service;
 
-import com.animusic.core.db.model.Playlist;
-import com.animusic.core.db.model.PlaylistSoundtrack;
-import com.animusic.core.db.table.PlaylistRepository;
-import com.animusic.core.db.table.PlaylistSoundtrackRepository;
-import com.ilnitsk.animusic.exception.SoundtrackNotFoundException;
-import com.ilnitsk.animusic.soundtrack.dao.Soundtrack;
-import com.ilnitsk.animusic.soundtrack.repository.SoundtrackRepository;
-import com.ilnitsk.animusic.user.dao.User;
-import com.ilnitsk.animusic.user.repository.UserRepository;
-import com.ilnitsk.animusic.user.service.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+
+import com.animusic.core.db.model.Playlist;
+import com.animusic.core.db.model.PlaylistSoundtrack;
+import com.animusic.core.db.model.Soundtrack;
+import com.animusic.core.db.model.User;
+import com.animusic.core.db.table.PlaylistRepository;
+import com.animusic.core.db.table.PlaylistSoundtrackRepository;
+import com.animusic.core.db.table.SoundtrackRepository;
+import com.animusic.core.db.table.UserRepository;
+import com.animusic.soundtrack.SoundtrackNotFoundException;
+import com.animusic.user.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor

@@ -1,7 +1,7 @@
 package com.animusic.api.mappers;
 
+import com.animusic.api.AlbumCoverController;
 import com.animusic.api.dto.CoverArtDto;
-import com.animusic.api.dto.CreateCoverDto;
 import com.animusic.core.db.model.CoverArt;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -13,14 +13,10 @@ public class CoverArtConverter {
     public CoverArtConverter(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
 
-        modelMapper.createTypeMap(CoverArt.class, CoverArtDto.class)
-                .addMapping(CoverArt::getColorDark,CoverArtDto::setColorDark)
-                .addMapping(CoverArt::getColorLight,CoverArtDto::setColorLight);
-
-        modelMapper.createTypeMap(CreateCoverDto.class,CoverArt.class);
+        modelMapper.createTypeMap(AlbumCoverController.CreateCoverDto.class,CoverArt.class);
     }
 
-    public CoverArt convertToEntity(CreateCoverDto dto) {
+    public CoverArt convertToEntity(AlbumCoverController.CreateCoverDto dto) {
         return modelMapper.map(dto,CoverArt.class);
     }
 

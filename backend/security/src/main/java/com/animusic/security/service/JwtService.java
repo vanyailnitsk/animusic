@@ -1,6 +1,9 @@
 package com.animusic.security.service;
 
-import com.animusic.core.CookieUtils;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.List;
+
 import com.animusic.core.db.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -12,10 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
-
-import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.List;
 
 @Service
 @Slf4j

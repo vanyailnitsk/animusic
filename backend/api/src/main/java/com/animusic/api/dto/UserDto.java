@@ -1,9 +1,9 @@
-package com.animusic.user.dto;
+package com.animusic.api.dto;
+
+import java.util.Collection;
 
 import com.animusic.core.db.model.User;
 import lombok.Data;
-
-import java.util.Collection;
 
 @Data
 public class UserDto {

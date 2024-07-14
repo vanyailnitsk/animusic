@@ -2,11 +2,16 @@ package com.animusic.api.dto;
 
 import com.animusic.core.db.model.CoverArt;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
-public record CoverArtDto(
-        Colors colors,
-        ImageDto image
-) {
+@Value
+@Builder
+public class CoverArtDto {
+    Colors colors;
+
+    ImageDto image;
+
     @AllArgsConstructor
     static class Colors {
         private String colorLight;
@@ -14,9 +19,9 @@ public record CoverArtDto(
     }
 
     public static CoverArtDto fromCoverArt(CoverArt coverArt) {
-        return new CoverArtDto(
-                new Colors(coverArt.getColorLight(),coverArt.getColorDark()),
-                ImageDto.fromImage(coverArt.getImage())
-        );
+        return CoverArtDto.builder()
+                .colors(new Colors(coverArt.getColorLight(), coverArt.getColorDark()))
+                .image(ImageDto.fromImage(coverArt.getImage()))
+                .build();
     }
 }

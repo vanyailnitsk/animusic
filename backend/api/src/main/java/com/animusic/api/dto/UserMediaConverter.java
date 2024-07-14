@@ -1,7 +1,7 @@
 package com.animusic.api.dto;
 
 import com.animusic.core.db.model.Playlist;
-import com.ilnitsk.animusic.user.dao.User;
+import com.animusic.core.db.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

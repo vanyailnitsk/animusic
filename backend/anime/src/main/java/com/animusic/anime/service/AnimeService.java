@@ -1,15 +1,15 @@
 package com.animusic.anime.service;
 
+import java.util.List;
+
 import com.animusic.anime.AnimeAlreadyExistsException;
 import com.animusic.anime.AnimeNotFoundException;
-import com.animusic.anime.dao.Anime;
-import com.animusic.anime.repository.AnimeRepository;
+import com.animusic.core.db.model.Anime;
+import com.animusic.core.db.table.AnimeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Slf4j
