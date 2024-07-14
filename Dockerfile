@@ -1,7 +1,7 @@
 FROM maven:3.8.7-openjdk-18 AS build
 WORKDIR /app
-COPY pom.xml .
-COPY src ./src
+COPY backend/pom.xml .
+COPY backend ./src
 RUN mvn clean package -DskipTests
 
 FROM openjdk:18
