@@ -13,14 +13,14 @@ public class CoverArtConverter {
     public CoverArtConverter(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
 
-        modelMapper.createTypeMap(AlbumCoverController.CreateCoverDto.class,CoverArt.class);
+        modelMapper.createTypeMap(AlbumCoverController.CreateCoverDto.class, CoverArt.class);
     }
 
     public CoverArt convertToEntity(AlbumCoverController.CreateCoverDto dto) {
-        return modelMapper.map(dto,CoverArt.class);
+        return modelMapper.map(dto, CoverArt.class);
     }
 
     public CoverArtDto convertToDto(CoverArt dao) {
-        return modelMapper.map(dao,CoverArtDto.class);
+        return modelMapper.map(dao, CoverArtDto.class);
     }
 }

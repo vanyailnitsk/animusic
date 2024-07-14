@@ -1,9 +1,9 @@
 package com.animusic.api.dto;
 
+import java.util.List;
+
 import com.animusic.core.db.model.Album;
 import com.animusic.core.db.model.Anime;
-
-import java.util.List;
 
 public record RichAnimeDto(
         Integer id,

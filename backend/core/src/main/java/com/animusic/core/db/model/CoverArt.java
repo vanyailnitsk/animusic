@@ -11,13 +11,11 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table
 @Data
 @Builder
-@RequiredArgsConstructor
 public class CoverArt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

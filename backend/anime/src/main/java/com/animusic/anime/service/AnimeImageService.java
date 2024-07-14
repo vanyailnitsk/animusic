@@ -25,7 +25,7 @@ public class AnimeImageService {
     public AnimeBannerImage setBanner(Integer animeId, MultipartFile banner, AnimeBannerImage bannerImage) {
         Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        Image image = imageService.createAnimeImage(anime.getFolderName(),"banner",banner);
+        Image image = imageService.createAnimeImage(anime.getFolderName(), "banner", banner);
         bannerImage.setImage(image);
         bannerImage = bannerImageRepository.save(bannerImage);
         anime.setBannerImage(bannerImage);
@@ -36,7 +36,7 @@ public class AnimeImageService {
     public Image setCard(Integer animeId, MultipartFile card) {
         Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        Image cardImage = imageService.createAnimeImage(anime.getFolderName(),"card",card);
+        Image cardImage = imageService.createAnimeImage(anime.getFolderName(), "card", card);
         anime.setCardImage(cardImage);
         return cardImage;
     }

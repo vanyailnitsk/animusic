@@ -39,10 +39,10 @@ public class AnimeService {
         animeRepository.save(anime);
         return animeRepository.save(anime);
     }
+
     public void deleteAnime(Integer animeId) {
         animeRepository.deleteById(animeId);
     }
-
 
 
     @Transactional

@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/collection")
 @RequiredArgsConstructor
-@Tag(name = "REST API для управления медиатекой пользователя", description = "Предоставляет методы для управления медиатекой пользователя")
+@Tag(name = "REST API для управления медиатекой пользователя", description = "Предоставляет методы для управления " +
+        "медиатекой пользователя")
 public class MediaLibraryController {
     private final MediaLibraryService mediaLibraryService;
     private final UserMediaConverter userMediaConverter;

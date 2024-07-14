@@ -1,5 +1,9 @@
 package com.animusic.album.service;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+
 import com.animusic.album.AlbumAlreadyExistsException;
 import com.animusic.album.AlbumNotFoundException;
 import com.animusic.anime.AnimeNotFoundException;
@@ -13,10 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

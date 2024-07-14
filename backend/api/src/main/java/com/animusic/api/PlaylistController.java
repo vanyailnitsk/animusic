@@ -49,10 +49,13 @@ public class PlaylistController {
     }
 
     @PostMapping("cover-art/{playlistId}")
-    public CoverArtDto createAlbumCover(@PathVariable Integer playlistId,
-                                        @RequestPart(value = "imageFile") MultipartFile imageFile,
-                                        @ModelAttribute AlbumCoverController.CreateCoverDto coverArtDto) {
-        CoverArt coverArt = playlistService.createCoverArt(playlistId, imageFile, coverArtConverter.convertToEntity(coverArtDto));
+    public CoverArtDto createAlbumCover(
+            @PathVariable Integer playlistId,
+            @RequestPart(value = "imageFile") MultipartFile imageFile,
+            @ModelAttribute AlbumCoverController.CreateCoverDto coverArtDto
+    ) {
+        CoverArt coverArt = playlistService.createCoverArt(playlistId, imageFile,
+                coverArtConverter.convertToEntity(coverArtDto));
         return coverArtConverter.convertToDto(coverArt);
     }
 

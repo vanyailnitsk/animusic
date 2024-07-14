@@ -25,9 +25,11 @@ public class AlbumCoverController {
 
     @PostMapping("{albumId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public CoverArtDto createAlbumCover(@PathVariable Integer albumId,
-                                        @RequestPart(value = "imageFile") MultipartFile imageFile,
-                                        @ModelAttribute CreateCoverDto coverArtDto) {
+    public CoverArtDto createAlbumCover(
+            @PathVariable Integer albumId,
+            @RequestPart(value = "imageFile") MultipartFile imageFile,
+            @ModelAttribute CreateCoverDto coverArtDto
+    ) {
         CoverArt coverArt = albumService.createCoverArt(
                 albumId,
                 imageFile,

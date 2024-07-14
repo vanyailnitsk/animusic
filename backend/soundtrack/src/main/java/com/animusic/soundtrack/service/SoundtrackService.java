@@ -1,5 +1,8 @@
 package com.animusic.soundtrack.service;
 
+import java.io.IOException;
+import java.util.Objects;
+
 import com.animusic.album.service.AlbumService;
 import com.animusic.core.InvalidDataException;
 import com.animusic.core.JsonMergePatchService;
@@ -18,9 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.Objects;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -37,7 +37,12 @@ public class SoundtrackService {
     }
 
     @Transactional(timeout = 30)
-    public Soundtrack createSoundtrack(MultipartFile audio, MultipartFile image, Soundtrack soundtrack, Integer albumId) {
+    public Soundtrack createSoundtrack(
+            MultipartFile audio,
+            MultipartFile image,
+            Soundtrack soundtrack,
+            Integer albumId
+    ) {
         Album album = albumService.getAlbumById(albumId);
         Anime anime = album.getAnime();
         String fileName = "%s/audio/%s".formatted(anime.getFolderName(), soundtrack.getAnimeTitle());
@@ -45,7 +50,8 @@ public class SoundtrackService {
         soundtrack.setAnime(anime);
         soundtrack.setAudioFile(blobKey);
         if (image != null && !image.isEmpty()) {
-            Image savedImage = imageService.createSoundtrackImage(anime.getFolderName(),soundtrack.getAnimeTitle(),image);
+            Image savedImage = imageService.createSoundtrackImage(anime.getFolderName(), soundtrack.getAnimeTitle(),
+                    image);
             soundtrack.setImage(savedImage);
         }
         Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
@@ -59,7 +65,8 @@ public class SoundtrackService {
     public Soundtrack setImage(Integer soundtrackId, MultipartFile image) {
         Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
-        Image savedImage = imageService.createSoundtrackImage(soundtrack.getAnime().getFolderName(),soundtrack.getAnimeTitle(),image);
+        Image savedImage = imageService.createSoundtrackImage(soundtrack.getAnime().getFolderName(),
+                soundtrack.getAnimeTitle(), image);
         soundtrack.setImage(savedImage);
         return soundtrack;
     }
@@ -123,7 +130,7 @@ public class SoundtrackService {
         try {
             return s3Service.createBlob(fileName, content.getBytes(), contentType);
         } catch (IOException e) {
-            throw new RuntimeException("Error on saving audiofile to S3",e);
+            throw new RuntimeException("Error on saving audiofile to S3", e);
         }
     }
 }

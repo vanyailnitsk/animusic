@@ -18,7 +18,7 @@ public class JsonMergePatchService {
             JsonNode patched = JsonMergePatch.fromJson(patch).apply(original);
             return mapper.treeToValue(patched, beanClass);
         } catch (Exception e) {
-            throw new RuntimeException("Invalid patch request",e);
+            throw new RuntimeException("Invalid patch request", e);
         }
     }
 

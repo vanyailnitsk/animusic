@@ -1,5 +1,7 @@
 package com.animusic.api;
 
+import java.util.List;
+
 import com.animusic.album.service.AlbumService;
 import com.animusic.anime.service.AnimeService;
 import com.animusic.api.dto.AnimeDto;
@@ -15,9 +17,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/anime")
@@ -40,8 +47,8 @@ public class AnimeController {
         log.info("Requested anime {} info", animeId);
         Anime anime = animeService.getAnimeInfo(animeId);
         List<Album> albums = albumService.getAlbumsByAnimeId(animeId);
-        if (albums!= null) {
-            albums.sort((a1,a2) -> {
+        if (albums != null) {
+            albums.sort((a1, a2) -> {
                 List<String> categoryOrder = List.of("Openings", "Endings", "Themes", "Scene songs");
 
                 int index1 = categoryOrder.indexOf(a1.getName());
@@ -50,7 +57,7 @@ public class AnimeController {
                 return Integer.compare(index1, index2);
             });
         }
-        return RichAnimeDto.fromAnime(anime,albums);
+        return RichAnimeDto.fromAnime(anime, albums);
     }
 
     @GetMapping
@@ -90,7 +97,7 @@ public class AnimeController {
     public RichAnimeDto updateAnime(@RequestBody Anime updateAnime, @PathVariable Integer animeId) {
         Anime anime = animeService.updateAnime(updateAnime, animeId);
         List<Album> albums = albumService.getAlbumsByAnimeId(animeId);
-        RichAnimeDto richAnimeDto = RichAnimeDto.fromAnime(anime,albums);
+        RichAnimeDto richAnimeDto = RichAnimeDto.fromAnime(anime, albums);
         log.info("Anime id={} updated successfully", animeId);
         return richAnimeDto;
     }

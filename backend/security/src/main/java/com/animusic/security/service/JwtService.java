@@ -31,7 +31,7 @@ public class JwtService {
     private CookieUtils cookieUtils;
 
     @Autowired
-    public JwtService(CookieUtils cookieUtils){
+    public JwtService(CookieUtils cookieUtils) {
         this.cookieUtils = cookieUtils;
     }
 
@@ -48,7 +48,7 @@ public class JwtService {
 
     public ResponseCookie generateJwtCookie(User user) {
         String jwt = createToken(user);
-        return cookieUtils.generateCookie("access-token",jwt,"/api");
+        return cookieUtils.generateCookie("access-token", jwt, "/api");
     }
 
 
@@ -89,7 +89,7 @@ public class JwtService {
         try {
             return claims.getExpiration().after(new Date());
         } catch (Exception e) {
-            log.warn("Claims is invalid: {}",claims.getSubject());
+            log.warn("Claims is invalid: {}", claims.getSubject());
             return false;
         }
     }

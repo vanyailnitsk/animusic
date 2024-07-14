@@ -1,5 +1,8 @@
 package com.animusic.s3;
 
+import java.io.IOException;
+import java.util.Objects;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,9 +14,6 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
-import java.io.IOException;
-import java.util.Objects;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class S3Service {
     private final S3Client s3Client;
     private final S3Config s3Config;
 
-    public void putObject(String key,byte[] file,String contentType) {
+    public void putObject(String key, byte[] file, String contentType) {
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(s3Config.getBucket())
                 .key(key)
@@ -61,8 +61,8 @@ public class S3Service {
         return fileName.substring(fileName.lastIndexOf('.'));
     }
 
-    public String createBlob(String fileName, byte[] content,String contentType) {
-        putObject(fileName,content,contentType);
+    public String createBlob(String fileName, byte[] content, String contentType) {
+        putObject(fileName, content, contentType);
         return fileName;
     }
 

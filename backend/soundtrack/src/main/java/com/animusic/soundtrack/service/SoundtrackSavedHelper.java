@@ -1,16 +1,16 @@
 package com.animusic.soundtrack.service;
 
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.animusic.core.db.model.Soundtrack;
 import com.animusic.core.db.model.User;
 import com.animusic.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Aspect
 @Component
@@ -36,7 +36,8 @@ public class SoundtrackSavedHelper {
                 .collect(Collectors.toSet());
     }
 
-//    @AfterReturning(pointcut = "execution(* com.ilnitsk.animusic.album.dto.AlbumConverter.convertToDto(..))", returning = "dto")
+//    @AfterReturning(pointcut = "execution(* com.ilnitsk.animusic.album.dto.AlbumConverter.convertToDto(..))",
+//    returning = "dto")
 //    public void setSavedToAlbum(Object dto) {
 //        AlbumDto albumDto = (AlbumDto) dto;
 //        Set<Integer> savedTracks = getUserSavedTracksIds();
@@ -48,7 +49,8 @@ public class SoundtrackSavedHelper {
 //        }
 //    }
 //
-//    @AfterReturning(pointcut = "execution(* com.ilnitsk.animusic.playlist.dto.UserMediaConverter.convertToDto(..))", returning = "dto")
+//    @AfterReturning(pointcut = "execution(* com.ilnitsk.animusic.playlist.dto.UserMediaConverter.convertToDto(..))
+//    ", returning = "dto")
 //    public void setSavedToPlaylist(Object dto) {
 //        PlaylistDto playlistDto = (PlaylistDto) dto;
 //        Set<Integer> savedTracks = getUserSavedTracksIds();

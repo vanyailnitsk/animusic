@@ -1,10 +1,10 @@
 package com.animusic.api.dto;
 
+import java.util.List;
+
 import com.animusic.core.db.model.Album;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class AlbumConverter {
@@ -15,7 +15,7 @@ public class AlbumConverter {
 
         modelMapper.createTypeMap(Album.class, AlbumDto.class);
         modelMapper.createTypeMap(Album.class, AlbumItemDto.class);
-        modelMapper.createTypeMap(AlbumDto.class,AlbumItemDto.class);
+        modelMapper.createTypeMap(AlbumDto.class, AlbumItemDto.class);
     }
 
     public AlbumDto convertToDto(Album album) {
@@ -27,7 +27,7 @@ public class AlbumConverter {
     }
 
     public AlbumItemDto convertToItemDto(Album album) {
-        return modelMapper.map(album,AlbumItemDto.class);
+        return modelMapper.map(album, AlbumItemDto.class);
     }
 
     public List<AlbumItemDto> convertListToItemDto(List<Album> albums) {

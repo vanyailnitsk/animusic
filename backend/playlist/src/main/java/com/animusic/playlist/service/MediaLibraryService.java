@@ -30,7 +30,7 @@ public class MediaLibraryService {
 
     public Playlist getFavouriteTracksPlaylist() {
         User user = userService.getUserInSession().orElseThrow(() -> new RuntimeException("User not found in session"));
-        Playlist favouriteTracks =  user.getFavouriteTracks();
+        Playlist favouriteTracks = user.getFavouriteTracks();
         favouriteTracks.getSoundtracks().sort(Comparator.comparing(PlaylistSoundtrack::getAddedAt).reversed());
         return favouriteTracks;
     }
@@ -42,13 +42,12 @@ public class MediaLibraryService {
         if (user.getFavouriteTracks() == null) {
             playlist = playlistService.createPlaylist("Favourite tracks");
             playlist.setSoundtracks(new ArrayList<>());
-        }
-        else {
+        } else {
             playlist = user.getFavouriteTracks();
         }
         Soundtrack soundtrack = soundtrackRepository.findById(trackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(trackId));
-        if (!playlistSoundtrackRepository.playlistAlreadyContainsSoundtrack(playlist.getId(),soundtrack.getId())) {
+        if (!playlistSoundtrackRepository.playlistAlreadyContainsSoundtrack(playlist.getId(), soundtrack.getId())) {
             PlaylistSoundtrack playlistSoundtrack = PlaylistSoundtrack.builder()
                     .playlist(playlist)
                     .soundtrack(soundtrack)
@@ -62,6 +61,6 @@ public class MediaLibraryService {
     public void deleteTrackFromFavourites(Integer trackId) {
         User user = userService.getUserInSession().orElseThrow(() -> new RuntimeException("User not found in session"));
         Playlist favourites = user.getFavouriteTracks();
-        playlistSoundtrackRepository.deleteTrackFromPlaylist(favourites.getId(),trackId);
+        playlistSoundtrackRepository.deleteTrackFromPlaylist(favourites.getId(), trackId);
     }
 }

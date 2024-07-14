@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "REST API для управления данными пользователя", description = "Предоставляет методы для управления данными пользователя")
+@Tag(name = "REST API для управления данными пользователя", description = "Предоставляет методы для управления " +
+        "данными пользователя")
 public class UserController {
     private final UserService userService;
 

@@ -16,6 +16,6 @@ public class AnimeBannerImageConverter {
     }
 
     public AnimeBannerImageDto convertToDto(AnimeBannerImage bannerImage) {
-        return modelMapper.map(bannerImage,AnimeBannerImageDto.class);
+        return modelMapper.map(bannerImage, AnimeBannerImageDto.class);
     }
 }

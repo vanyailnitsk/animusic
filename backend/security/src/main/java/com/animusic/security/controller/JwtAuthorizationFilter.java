@@ -1,5 +1,9 @@
 package com.animusic.security.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.animusic.core.db.model.User;
 import com.animusic.security.service.JwtService;
 import com.animusic.user.service.UserService;
@@ -19,10 +23,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 @Component
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -32,27 +32,30 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final UserService userService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
         Map<String, Object> errorDetails = new HashMap<>();
 
         try {
             String accessToken = jwtService.resolveToken(request);
-            if (accessToken == null ) {
+            if (accessToken == null) {
                 filterChain.doFilter(request, response);
                 return;
             }
             Claims claims = jwtService.resolveClaims(request);
-            if (claims != null && jwtService.validateClaims(claims)){
+            if (claims != null && jwtService.validateClaims(claims)) {
                 String username = claims.getSubject();
                 User user = userService.findByEmailOrThrow(username);
                 Authentication authentication =
-                        new UsernamePasswordAuthenticationToken(username,"",user.getRoles());
+                        new UsernamePasswordAuthenticationToken(username, "", user.getRoles());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        }
-        catch (JwtException e){
+        } catch (JwtException e) {
             errorDetails.put("message", "Authentication Error");
-            errorDetails.put("details",e.getMessage());
+            errorDetails.put("details", e.getMessage());
             response.setCharacterEncoding("UTF-8");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);

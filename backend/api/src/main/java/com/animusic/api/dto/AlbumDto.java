@@ -9,4 +9,5 @@ public record AlbumDto(
         String link,
         List<SoundtrackDto> soundtracks,
         CoverArtDto coverArt
-){}
+) {
+}

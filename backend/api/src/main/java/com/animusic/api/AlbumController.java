@@ -1,5 +1,7 @@
 package com.animusic.api;
 
+import java.util.List;
+
 import com.animusic.album.service.AlbumService;
 import com.animusic.api.dto.AlbumConverter;
 import com.animusic.api.dto.AlbumDto;
@@ -12,9 +14,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/albums")
@@ -24,6 +32,7 @@ import java.util.List;
 public class AlbumController {
     private final AlbumService albumService;
     private final AlbumConverter albumConverter;
+
     @GetMapping
     @Operation(summary = "Метод для получения списка альбомов по animeId")
     @ApiResponses(value = {
@@ -60,9 +69,9 @@ public class AlbumController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public AlbumDto createAlbum(@RequestBody CreateAlbumDto request, @PathVariable Integer animeId) {
-        Album album = albumService.createAlbum(request.toAlbum(),animeId);
+        Album album = albumService.createAlbum(request.toAlbum(), animeId);
         AlbumDto albumDto = albumConverter.convertToDto(album);
-        log.info("Album {} in anime {} created",album.getName(),animeId);
+        log.info("Album {} in anime {} created", album.getName(), animeId);
         return albumDto;
     }
 
@@ -74,9 +83,9 @@ public class AlbumController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден")
     })
     public AlbumDto updateAlbumName(@RequestBody UpdateAlbumDto albumDto, @PathVariable Integer albumId) {
-        Album album = albumService.updateAlbumName(albumDto.name(),albumId);
+        Album album = albumService.updateAlbumName(albumDto.name(), albumId);
         AlbumDto newAlbumDto = albumConverter.convertToDto(album);
-        log.info("Album id={} updated successfully",albumId);
+        log.info("Album id={} updated successfully", albumId);
         return newAlbumDto;
     }
 
@@ -90,10 +99,10 @@ public class AlbumController {
     })
     public void deleteAlbum(@PathVariable Integer id) {
         albumService.deleteAlbum(id);
-        log.info("Album with id {} deleted",id);
+        log.info("Album with id {} deleted", id);
     }
 
-    record CreateAlbumDto (String name){
+    record CreateAlbumDto(String name) {
         public Album toAlbum() {
             return Album.builder()
                     .name(name)
@@ -101,6 +110,6 @@ public class AlbumController {
         }
     }
 
-    record UpdateAlbumDto (String name,String imageUrl) {
+    record UpdateAlbumDto(String name, String imageUrl) {
     }
 }

@@ -1,10 +1,10 @@
 package com.animusic.api;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 @AllArgsConstructor

@@ -37,7 +37,7 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
         JwtResponse response = authService.register(request);
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE,response.getRefreshTokenCookie().toString())
+                .header(HttpHeaders.SET_COOKIE, response.getRefreshTokenCookie().toString())
                 .body(JwtResponseDto.fromJwtResponse(response));
     }
 
@@ -51,7 +51,7 @@ public class AuthController {
     public ResponseEntity<?> authenticate(@RequestBody AuthRequest request) {
         JwtResponse response = authService.authenticate(request);
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE,response.getRefreshTokenCookie().toString())
+                .header(HttpHeaders.SET_COOKIE, response.getRefreshTokenCookie().toString())
                 .body(JwtResponseDto.fromJwtResponse(response));
     }
 
@@ -65,7 +65,7 @@ public class AuthController {
     public ResponseEntity<?> refresh(HttpServletRequest request) {
         JwtResponse response = authService.updateToken(request);
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE,response.getRefreshTokenCookie().toString())
+                .header(HttpHeaders.SET_COOKIE, response.getRefreshTokenCookie().toString())
                 .body(JwtResponseDto.fromJwtResponse(response));
     }
 }

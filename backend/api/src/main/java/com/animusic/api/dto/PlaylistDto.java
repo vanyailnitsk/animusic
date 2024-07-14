@@ -1,8 +1,8 @@
 package com.animusic.api.dto;
 
-import lombok.Data;
-
 import java.util.List;
+
+import lombok.Data;
 
 @Data
 public class PlaylistDto {

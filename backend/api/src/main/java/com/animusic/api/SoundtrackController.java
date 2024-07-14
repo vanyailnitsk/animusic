@@ -12,7 +12,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -43,8 +54,10 @@ public class SoundtrackController {
             @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public SoundtrackDto updateSoundtrack(@RequestBody UpdateSoundtrackDto updateSoundtrackDto,
-                                          @PathVariable Integer soundtrackId) {
+    public SoundtrackDto updateSoundtrack(
+            @RequestBody UpdateSoundtrackDto updateSoundtrackDto,
+            @PathVariable Integer soundtrackId
+    ) {
         Soundtrack soundtrack = soundtrackService.updateSoundtrack(
                 soundtrackId,
                 updateSoundtrackDto.originalTitle(),
@@ -63,8 +76,10 @@ public class SoundtrackController {
             @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public SoundtrackDto patchSoundtrack(@RequestBody JsonNode jsonPatch,
-                                         @PathVariable Integer soundtrackId) {
+    public SoundtrackDto patchSoundtrack(
+            @RequestBody JsonNode jsonPatch,
+            @PathVariable Integer soundtrackId
+    ) {
         Soundtrack soundtrackPatched = soundtrackService.updateSoundtrack(jsonPatch, soundtrackId);
         log.info("Soundtrack id={} updated successfully", soundtrackId);
         return SoundtrackDto.fromSoundtrack(soundtrackPatched);
@@ -78,10 +93,12 @@ public class SoundtrackController {
             @ApiResponse(responseCode = "400", description = "Саундтрек уже существует"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public SoundtrackDto createFromFile(@RequestPart(value = "audio") MultipartFile audio,
-                                        @RequestPart(value = "image", required = false) MultipartFile image,
-                                        @ModelAttribute CreateSoundtrackDto request,
-                                        @RequestParam("albumId") Integer albumId) {
+    public SoundtrackDto createFromFile(
+            @RequestPart(value = "audio") MultipartFile audio,
+            @RequestPart(value = "image", required = false) MultipartFile image,
+            @ModelAttribute CreateSoundtrackDto request,
+            @RequestParam("albumId") Integer albumId
+    ) {
         Soundtrack soundtrack = request.toSoundtrack();
         if (audio.isEmpty()) {
             throw new BadRequestException("No mp3-file provided");
@@ -100,7 +117,10 @@ public class SoundtrackController {
             @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
             @ApiResponse(responseCode = "400", description = "Пустой аудиофайл")
     })
-    public SoundtrackDto updateAudioFile(@RequestPart("audio") MultipartFile audio, @PathVariable Integer soundtrackId) {
+    public SoundtrackDto updateAudioFile(
+            @RequestPart("audio") MultipartFile audio,
+            @PathVariable Integer soundtrackId
+    ) {
         Soundtrack soundtrack = soundtrackService.updateAudio(audio, soundtrackId);
         log.info("Soundtrack id={} audio updated to {}", soundtrackId, soundtrack.getAudioFile());
         return SoundtrackDto.fromSoundtrack(soundtrack);
@@ -114,8 +134,10 @@ public class SoundtrackController {
             @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public SoundtrackDto setSoundtrackImage(@PathVariable Integer soundtrackId,
-                                            @RequestPart(value = "image") MultipartFile image) {
+    public SoundtrackDto setSoundtrackImage(
+            @PathVariable Integer soundtrackId,
+            @RequestPart(value = "image") MultipartFile image
+    ) {
         Soundtrack soundtrack = soundtrackService.setImage(soundtrackId, image);
         log.info("Image of Soundtrack with id={} updated to '{}'", soundtrackId, soundtrack.getImage().getSource());
         return SoundtrackDto.fromSoundtrack(soundtrack);

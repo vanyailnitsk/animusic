@@ -13,11 +13,11 @@ public class AnimeMapper {
 
         modelMapper.createTypeMap(Anime.class, RichAnimeDto.class);
 
-        modelMapper.createTypeMap(Anime.class,AnimeItemDto.class);
-        modelMapper.createTypeMap(UpdateAnimeDto.class,Anime.class);
+        modelMapper.createTypeMap(Anime.class, AnimeItemDto.class);
+        modelMapper.createTypeMap(UpdateAnimeDto.class, Anime.class);
     }
 
     public Anime convertToEntity(UpdateAnimeDto dto) {
-        return modelMapper.map(dto,Anime.class);
+        return modelMapper.map(dto, Anime.class);
     }
 }

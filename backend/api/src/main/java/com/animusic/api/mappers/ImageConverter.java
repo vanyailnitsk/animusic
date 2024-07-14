@@ -16,6 +16,6 @@ public class ImageConverter {
     }
 
     public ImageDto convertToDto(Image image) {
-        return modelMapper.map(image,ImageDto.class);
+        return modelMapper.map(image, ImageDto.class);
     }
 }

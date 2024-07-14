@@ -1,5 +1,7 @@
 package com.animusic.user.service;
 
+import java.util.Optional;
+
 import com.animusic.core.db.model.User;
 import com.animusic.core.db.table.UserRepository;
 import com.animusic.user.UserAlreadyExistsException;
@@ -8,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

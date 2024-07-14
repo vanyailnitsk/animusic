@@ -18,9 +18,11 @@ public class RefreshTokenService {
     private final Integer refreshTTLhours;
     private final CookieUtils cookieUtils;
 
-    public RefreshTokenService(RefreshTokenRepository refreshTokenRepository,
-                               @Value("${token.refreshExpirationHours}") Integer refreshTTLhours,
-                               CookieUtils cookieUtils) {
+    public RefreshTokenService(
+            RefreshTokenRepository refreshTokenRepository,
+            @Value("${token.refreshExpirationHours}") Integer refreshTTLhours,
+            CookieUtils cookieUtils
+    ) {
         this.refreshTokenRepository = refreshTokenRepository;
         this.refreshTTLhours = refreshTTLhours;
         this.cookieUtils = cookieUtils;
@@ -29,7 +31,7 @@ public class RefreshTokenService {
     public RefreshToken createRefreshToken(User user) {
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(user)
-                .expireDate(Instant.now().plusSeconds(refreshTTLhours*60*60))
+                .expireDate(Instant.now().plusSeconds(refreshTTLhours * 60 * 60))
                 .token(UUID.randomUUID().toString())
                 .build();
         refreshTokenRepository.save(refreshToken);
@@ -46,10 +48,10 @@ public class RefreshTokenService {
 
     public ResponseCookie generateRefreshCookie(User user) {
         String refreshToken = createRefreshToken(user).getToken();
-        return cookieUtils.generateCookie("refresh-token",refreshToken,"/api/auth/refresh");
+        return cookieUtils.generateCookie("refresh-token", refreshToken, "/api/auth/refresh");
     }
 
     public String getRefreshFromCookie(HttpServletRequest request) {
-        return cookieUtils.getCookieValueByName(request,"refresh-token");
+        return cookieUtils.getCookieValueByName(request, "refresh-token");
     }
 }

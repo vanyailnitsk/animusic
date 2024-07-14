@@ -7,6 +7,6 @@ public record AnimeItemDto(
         String title
 ) {
     public static AnimeItemDto fromAnime(Anime anime) {
-        return new AnimeItemDto(anime.getId(),anime.getTitle());
+        return new AnimeItemDto(anime.getId(), anime.getTitle());
     }
 }

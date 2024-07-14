@@ -16,14 +16,24 @@ public class CoverArtService {
     private final ImageService imageService;
 
     @Transactional
-    public CoverArt createAlbumCoverArt(String animeFolder, String imageName, MultipartFile imageFile, CoverArt coverArt) {
+    public CoverArt createAlbumCoverArt(
+            String animeFolder,
+            String imageName,
+            MultipartFile imageFile,
+            CoverArt coverArt
+    ) {
         Image image = imageService.createAnimeImage(animeFolder, imageName, imageFile);
         coverArt.setImage(image);
         return coverArtRepository.save(coverArt);
     }
 
     @Transactional
-    public CoverArt createPlaylistCoverArt(Integer userId, String playlistName, MultipartFile imageFile, CoverArt coverArt) {
+    public CoverArt createPlaylistCoverArt(
+            Integer userId,
+            String playlistName,
+            MultipartFile imageFile,
+            CoverArt coverArt
+    ) {
         Image image = imageService.createImageForUser(userId, generateHash(playlistName, 10), imageFile);
         coverArt.setImage(image);
         return coverArtRepository.save(coverArt);
