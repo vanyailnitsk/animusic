@@ -16,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AnimeService {
     private final AnimeRepository animeRepository;
-    private final AnimeImageService animeImageService;
-
 
     public Anime getAnimeInfo(Integer animeId) {
         return animeRepository.findById(animeId)
