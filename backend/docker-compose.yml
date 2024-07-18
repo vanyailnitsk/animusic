@@ -1,0 +1,50 @@
+version: "3.9"
+services:
+  animusic-db:
+    container_name: animusic_postgres
+    build:
+      context: ../database
+      dockerfile: ../database/Dockerfile
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    volumes:
+      - type: bind
+        source: ./database/data
+        target: /var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -U postgres -d animusic' ]
+      start_period: 10s
+      interval: 20s
+      timeout: 5s
+      retries: 5
+    command: postgres -c stats_temp_directory=/tmp
+    ports:
+      - "5433:5432"
+
+  spring-app:
+    container_name: spring-app
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    environment:
+      DB_URL: jdbc:postgresql://animusic-db:5432/animusic
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      port: 8081
+      storage: "/animusic"
+      JWT_SECRET: ${JWT_SECRET}
+      s3-url: ${s3-url}
+      s3-bucket: ${s3-bucket}
+      s3-region: ${s3-region}
+      s3-accesskey: ${s3-accesskey}
+      s3-secretkey: ${s3-secretkey}
+    volumes:
+      - ${STORAGE}:/animusic
+    ports:
+      - "8081:8081"
+    depends_on:
+      animusic-db:
+        condition: service_healthy

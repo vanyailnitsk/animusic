@@ -6,7 +6,7 @@ target/
 *.mp3
 **/.DS_Store
 database/data
-.env
+backend/.env
 flyway.env
 files-test
 *.tmpl
@@ -15,6 +15,7 @@ monitoring/grafana/grafana.db
 index.html
 create.sql
 logs/
+out/
 
 ### STS ###
 .apt_generated
