@@ -2,7 +2,7 @@
 --changeset vanyailnitsk:create_playlist_table
 create table playlist
 (
-    id           bigserial primary key,
+    id serial primary key,
     name         varchar(255),
     user_id      integer not null,
     cover_art_id integer

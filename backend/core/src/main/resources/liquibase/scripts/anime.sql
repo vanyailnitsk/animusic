@@ -2,7 +2,7 @@
 --changeset vanyailnitsk:create_anime_table
 create table anime
 (
-    id            integer not null primary key,
+    id serial primary key,
     description   varchar(255),
     folder_name   varchar(255),
     release_year  integer,
