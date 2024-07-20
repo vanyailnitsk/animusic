@@ -8,14 +8,17 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional(propagation = Propagation.REQUIRED)
 public interface AnimeRepository extends RepositoryBase<Anime, Integer> {
     Optional<Anime> findAnimeByTitle(String title);
 
     boolean existsAnimeByTitle(String title);
 
-    List<Anime> findAllByOrderByTitle();
+    List<Anime> findAllOrderByTitle();
 
     @RequiredArgsConstructor
     class Impl implements AnimeRepository {
@@ -81,7 +84,7 @@ public interface AnimeRepository extends RepositoryBase<Anime, Integer> {
         }
 
         @Override
-        public List<Anime> findAllByOrderByTitle() {
+        public List<Anime> findAllOrderByTitle() {
             return entityManager.createQuery("SELECT a FROM Anime a ORDER BY a.title", Anime.class)
                     .getResultList();
         }
