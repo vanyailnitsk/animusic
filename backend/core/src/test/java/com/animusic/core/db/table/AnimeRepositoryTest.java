@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         AnimusicApplication.class,
         DatabaseConfig.class
 })
-@Transactional
+//@Transactional
 @Sql
 @Slf4j
 @DataJpaTest
@@ -65,29 +64,39 @@ class AnimeRepositoryTest {
     }
 
     @Test
+    void saveGoodCase() {
+        var anime = Anime.builder()
+                .title("Naruto")
+                .description("empty")
+                .studio("MAPPA")
+                .releaseYear(2003)
+                .folderName("Naruto")
+                .build();
+        animeRepository.save(anime);
+        assertThat(anime.getId()).isNotNull();
+    }
+
+    @Test
     void getAllAnime() {
         assertThat(animeRepository.findAll().size()).isEqualTo(4);
     }
 
-    //    @Test
+    @Test
     void deleteById() {
-        assertContainsById(1);
-
-        var anime = animeRepository.findById(1);
+        assertThat(animeRepository.findById(1)).isNotEmpty();
         animeRepository.deleteById(1);
-        System.out.println(animeRepository.findAll().size());
         assertThat(animeRepository.findById(1)).isEmpty();
-        assertNotContainsById(1);
     }
 
-    //    @Test
+    @Test
     void deleteAllById() {
         var ids = List.of(1, 2);
-        assertContainsByIds(ids);
+        assertThat(animeRepository.findById(1)).isNotEmpty();
+        assertThat(animeRepository.findById(2)).isNotEmpty();
 
         animeRepository.deleteAllById(ids);
-        System.out.println(animeRepository.findAll().size());
-        assertNotContainsByIds(ids);
+        assertThat(animeRepository.findById(1)).isEmpty();
+        assertThat(animeRepository.findById(2)).isEmpty();
     }
 
     @Test
@@ -122,21 +131,5 @@ class AnimeRepositoryTest {
     void existsAnimeByTitle() {
         var exists = animeRepository.existsAnimeByTitle("Anime-4");
         assertThat(exists).isEqualTo(true);
-    }
-
-    void assertContainsByIds(List<Integer> ids) {
-        ids.forEach(this::assertContainsById);
-    }
-
-    void assertContainsById(Integer id) {
-        assertThat(animeRepository.existsById(id)).isTrue();
-    }
-
-    void assertNotContainsByIds(List<Integer> ids) {
-        ids.forEach(this::assertNotContainsById);
-    }
-
-    void assertNotContainsById(Integer id) {
-        assertThat(animeRepository.existsById(id)).isFalse();
     }
 }
