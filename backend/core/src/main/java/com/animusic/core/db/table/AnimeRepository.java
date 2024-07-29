@@ -5,75 +5,33 @@ import java.util.Optional;
 
 import com.animusic.core.db.model.Anime;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.stereotype.Component;
 
-@Repository
-public interface AnimeRepository extends RepositoryBase<Anime, Integer> {
+@Component
+@NoRepositoryBean
+public interface AnimeRepository extends CrudRepository<Anime, Integer> {
     Optional<Anime> findAnimeByTitle(String title);
 
     boolean existsAnimeByTitle(String title);
 
     List<Anime> findAllOrderByTitle();
 
-    @RequiredArgsConstructor
-    class Impl implements AnimeRepository {
-        @PersistenceContext
-        private final EntityManager entityManager;
+    class Impl extends RepositoryBase<Anime, Integer> implements AnimeRepository {
 
-        @Override
-        public Optional<Anime> findById(Integer id) {
-            return Optional.ofNullable(entityManager.find(Anime.class, id));
-        }
-
-        @Override
-        public boolean existsById(Integer id) {
-            return entityManager.find(Anime.class, id) != null;
-        }
-
-        @Override
-        public long count() {
-            return entityManager.createQuery("SELECT COUNT(a) FROM Anime a", Long.class).getSingleResult();
-        }
-
-        @Override
-        @Transactional
-        public void deleteById(Integer id) {
-            var anime = entityManager.find(Anime.class, id);
-            if (anime != null) {
-                entityManager.remove(anime);
-            }
-        }
-
-        @Override
-        public void delete(Anime entity) {
-            entityManager.remove(entity);
-        }
-
-        @Override
-        public List<Anime> findAll() {
-            return entityManager.createQuery("SELECT a FROM Anime a", Anime.class).getResultList();
-        }
-
-        @Override
-        @Transactional
-        public Anime save(Anime anime) {
-            if (anime.getId() == null) {
-                entityManager.persist(anime);
-                return anime;
-            } else {
-                return entityManager.merge(anime);
-            }
+        public Impl(EntityManager entityManager) {
+            super(entityManager, Anime.class);
         }
 
         @Override
         public Optional<Anime> findAnimeByTitle(String title) {
-            return entityManager.createQuery("SELECT a FROM Anime a WHERE a.title = :title", Anime.class)
-                    .setParameter("title", title)
-                    .getResultStream()
-                    .findAny();
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            var query = cb.createQuery(Anime.class);
+            var root = query.from(Anime.class);
+            query.select(root)
+                    .where(cb.equal(root.get("title"), title));
+            return Optional.ofNullable(entityManager.createQuery(query).getSingleResult());
         }
 
         @Override
@@ -88,11 +46,6 @@ public interface AnimeRepository extends RepositoryBase<Anime, Integer> {
         public List<Anime> findAllOrderByTitle() {
             return entityManager.createQuery("SELECT a FROM Anime a ORDER BY a.title", Anime.class)
                     .getResultList();
-        }
-
-        @Override
-        public void deleteAll() {
-            entityManager.createQuery("DELETE from Anime a").executeUpdate();
         }
     }
 }
