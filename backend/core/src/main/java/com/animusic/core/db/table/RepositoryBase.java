@@ -110,11 +110,13 @@ public abstract class RepositoryBase<E, ID> implements CrudRepository<E, ID> {
         findById(id).ifPresent(this::delete);
     }
 
+    @Transactional
     @Override
     public void delete(E entity) {
         entityManager.remove(entity);
     }
 
+    @Transactional
     @Override
     public void deleteAllById(Iterable<? extends ID> ids) {
         ids.forEach(this::deleteById);
