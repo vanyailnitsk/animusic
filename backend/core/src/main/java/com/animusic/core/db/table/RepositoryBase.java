@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaDelete;
@@ -44,6 +45,7 @@ public abstract class RepositoryBase<E, ID> implements CrudRepository<E, ID> {
         }
     }
 
+    @Transactional
     @Override
     public <S extends E> Iterable<S> saveAll(Iterable<S> entities) {
         Assert.notNull(entities, "Entities must not be null");
@@ -145,9 +147,17 @@ public abstract class RepositoryBase<E, ID> implements CrudRepository<E, ID> {
         return entityManager.createQuery(query);
     }
 
-    private static Order toJpaOrder(Sort.Order order, From<?, ?> from, CriteriaBuilder cb) {
+    protected static Order toJpaOrder(Sort.Order order, From<?, ?> from, CriteriaBuilder cb) {
         Expression<?> expression = from.get(order.getProperty());
         return order.isAscending() ? cb.asc(expression) : cb.desc(expression);
+    }
+
+    public static <T> Optional<T> getOptionalResult(TypedQuery<T> query) {
+        try {
+            return Optional.of(query.getSingleResult());
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 
     private boolean isNew(E entity) {
