@@ -3,10 +3,7 @@ package com.animusic.core.db.table;
 import com.animusic.core.db.model.PlaylistSoundtrack;
 import jakarta.persistence.EntityManager;
 import lombok.NonNull;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,12 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @NoRepositoryBean
 public interface PlaylistSoundtrackRepository extends CrudRepository<PlaylistSoundtrack, Long> {
 
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM PlaylistSoundtrack s where s.playlist.id = :playlist_id and s.soundtrack.id = :soundtrack_id")
-    void deleteTrackFromPlaylist(
-            @Param("playlist_id") Integer playlist_id, @Param("soundtrack_id") Integer soundtrack_id
-    );
+    void deleteTrackFromPlaylist(Integer playlist_id, Integer soundtrack_id);
 
     class Impl extends RepositoryBase<PlaylistSoundtrack, Long> implements PlaylistSoundtrackRepository {
 
