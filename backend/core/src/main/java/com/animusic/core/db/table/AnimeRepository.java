@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.animusic.core.db.model.Anime;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,7 @@ public interface AnimeRepository extends CrudRepository<Anime, Integer> {
             var root = query.from(Anime.class);
             query.select(root)
                     .where(cb.equal(root.get("title"), title));
-            return Optional.ofNullable(entityManager.createQuery(query).getSingleResult());
+            return getOptionalResult(entityManager.createQuery(query));
         }
 
         @Override
@@ -44,8 +45,8 @@ public interface AnimeRepository extends CrudRepository<Anime, Integer> {
 
         @Override
         public List<Anime> findAllOrderByTitle() {
-            return entityManager.createQuery("SELECT a FROM Anime a ORDER BY a.title", Anime.class)
-                    .getResultList();
+            var query = getQuery(Sort.Order.asc("title"));
+            return query.getResultList();
         }
     }
 }

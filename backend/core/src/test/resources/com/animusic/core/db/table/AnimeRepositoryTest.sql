@@ -27,3 +27,6 @@ VALUES (3, 'Anime-3', 'empty', 'anime3', 2003, 'MAPPA', 3, 3);
 
 INSERT INTO anime (id, title, description, folder_name, release_year, studio)
 VALUES (4, 'Anime-4', 'empty', 'anime4', 2003, 'MAPPA');
+
+-- Need to set new id after using manual inserting ids
+select setval('anime_id_seq', (select max(id) from anime));
