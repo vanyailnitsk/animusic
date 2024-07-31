@@ -7,7 +7,6 @@ create table soundtrack
     original_title varchar(255),
     audio_file     varchar(255),
     anime_id       integer not null,
-    image_file     varchar(255),
     duration       integer,
     album_id       integer not null,
     image_id       integer
