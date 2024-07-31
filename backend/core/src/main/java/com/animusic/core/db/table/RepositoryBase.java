@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import com.animusic.core.db.model.Anime;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
@@ -21,6 +20,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.VisibleForTesting;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -164,7 +164,8 @@ public abstract class RepositoryBase<E, ID> implements CrudRepository<E, ID> {
         }
     }
 
-    private boolean isNew(E entity) {
+    @VisibleForTesting
+    protected boolean isNew(E entity) {
         try {
             Field field = entity.getClass().getDeclaredField("id");
             field.setAccessible(true);
