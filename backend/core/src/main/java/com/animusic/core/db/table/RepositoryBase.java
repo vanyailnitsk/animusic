@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.animusic.core.db.model.Anime;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
@@ -27,6 +28,7 @@ import org.springframework.util.Assert;
 
 @RequiredArgsConstructor
 public abstract class RepositoryBase<E, ID> implements CrudRepository<E, ID> {
+
     @NonNull
     protected final EntityManager entityManager;
 
@@ -87,13 +89,13 @@ public abstract class RepositoryBase<E, ID> implements CrudRepository<E, ID> {
             return Collections.emptyList();
         }
 
-        var cb = entityManager.getCriteriaBuilder();
-        var cq = cb.createQuery(domainClass);
-        Root<E> root = cq.from(domainClass);
-        cq.where(root.get("id").in(ids));
-        TypedQuery<E> query = getQuery(null);
+        List<E> results = new ArrayList<>();
 
-        return query.getResultList();
+        for (ID id : ids) {
+            findById(id).ifPresent(results::add);
+        }
+
+        return results;
     }
 
     @Override
