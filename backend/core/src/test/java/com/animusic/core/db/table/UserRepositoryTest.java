@@ -14,6 +14,9 @@ class UserRepositoryTest extends DatabaseTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    PlaylistRepository playlistRepository;
+
     @Test
     void findByEmail() {
         assertThat(userRepository.findByEmail("email")).isEmpty();
@@ -25,4 +28,5 @@ class UserRepositoryTest extends DatabaseTest {
         userRepository.save(user);
         assertThat(userRepository.findByEmail("email").get()).isEqualTo(user);
     }
+
 }

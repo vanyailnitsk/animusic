@@ -27,32 +27,12 @@
         </dependency>
         <dependency>
             <groupId>com.animusic</groupId>
-            <artifactId>album</artifactId>
+            <artifactId>content</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>com.animusic</groupId>
-            <artifactId>anime</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.animusic</groupId>
-            <artifactId>image</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.animusic</groupId>
-            <artifactId>playlist</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.animusic</groupId>
-            <artifactId>security</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.animusic</groupId>
-            <artifactId>soundtrack</artifactId>
+            <artifactId>user</artifactId>
             <version>1.0</version>
         </dependency>
 

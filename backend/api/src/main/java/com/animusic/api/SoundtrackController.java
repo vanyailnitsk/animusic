@@ -2,8 +2,8 @@ package com.animusic.api;
 
 import com.animusic.api.dto.SoundtrackDto;
 import com.animusic.api.dto.UpdateSoundtrackDto;
+import com.animusic.content.soundtrack.SoundtrackService;
 import com.animusic.core.db.model.Soundtrack;
-import com.animusic.soundtrack.service.SoundtrackService;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Tag(name = "REST API для управления саундтреками")
 public class SoundtrackController {
+
     private final SoundtrackService soundtrackService;
 
     @GetMapping("{soundtrackId}")

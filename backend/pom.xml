@@ -14,16 +14,12 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>album</module>
-        <module>anime</module>
         <module>api</module>
-        <module>image</module>
-        <module>playlist</module>
-        <module>s3</module>
-        <module>security</module>
-        <module>soundtrack</module>
+        <module>content</module>
         <module>core</module>
+        <module>s3</module>
         <module>user</module>
+        <module>common</module>
     </modules>
 
     <dependencyManagement>

@@ -2,10 +2,11 @@ package com.animusic.api;
 
 import java.util.List;
 
-import com.animusic.album.service.AlbumService;
 import com.animusic.api.dto.AlbumConverter;
 import com.animusic.api.dto.AlbumDto;
 import com.animusic.api.dto.AlbumItemDto;
+import com.animusic.content.album.AlbumService;
+import com.animusic.content.anime.AnimeNotFoundException;
 import com.animusic.core.db.model.Album;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,7 +31,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "REST API для управления альбомами", description = "Предоставляет методы для управление альбомами")
 public class AlbumController {
+
     private final AlbumService albumService;
+
     private final AlbumConverter albumConverter;
 
     @GetMapping
@@ -42,7 +45,8 @@ public class AlbumController {
     })
     public List<AlbumItemDto> getAlbumsByAnime(@RequestParam("animeId") Integer animeId) {
         log.info("Requested albums by anime {}", animeId);
-        List<Album> albums = albumService.getAlbumsByAnimeId(animeId);
+        var albums = albumService.getAlbumsByAnimeId(animeId)
+                .orElseThrow(() -> new AnimeNotFoundException(animeId));
         return albumConverter.convertListToItemDto(albums);
     }
 

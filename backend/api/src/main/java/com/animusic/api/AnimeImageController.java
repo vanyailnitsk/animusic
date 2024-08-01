@@ -1,10 +1,10 @@
 package com.animusic.api;
 
-import com.animusic.anime.service.AnimeImageService;
 import com.animusic.api.dto.AnimeBannerImageDto;
 import com.animusic.api.dto.ImageDto;
 import com.animusic.api.mappers.AnimeBannerImageConverter;
 import com.animusic.api.mappers.ImageConverter;
+import com.animusic.content.anime.AnimeImageService;
 import com.animusic.core.db.model.AnimeBannerImage;
 import com.animusic.core.db.model.Image;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,6 +29,7 @@ public class AnimeImageController {
     private final AnimeImageService animeImageService;
 
     private final AnimeBannerImageConverter bannerImageConverter;
+
     private final ImageConverter imageConverter;
 
     @PostMapping("banner/{animeId}")
