@@ -4,9 +4,9 @@ import com.animusic.api.dto.CoverArtDto;
 import com.animusic.api.dto.PlaylistDto;
 import com.animusic.api.dto.UserMediaConverter;
 import com.animusic.api.mappers.CoverArtConverter;
+import com.animusic.content.playlist.PlaylistService;
 import com.animusic.core.db.model.CoverArt;
 import com.animusic.core.db.model.Playlist;
-import com.animusic.playlist.service.PlaylistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Tag(name = "REST API для управления плейлистами", description = "Предоставляет методы для управления плейлистами")
 public class PlaylistController {
+
     private final PlaylistService playlistService;
     private final UserMediaConverter userMediaConverter;
     private final CoverArtConverter coverArtConverter;

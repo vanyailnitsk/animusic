@@ -1,7 +1,7 @@
 package com.animusic.api;
 
-import com.animusic.album.service.AlbumService;
 import com.animusic.api.dto.CoverArtDto;
+import com.animusic.content.album.AlbumService;
 import com.animusic.core.db.model.CoverArt;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Tag(name = "REST API для управления обложкой альбома")
 public class AlbumCoverController {
+
     private final AlbumService albumService;
 
     @PostMapping("{albumId}")

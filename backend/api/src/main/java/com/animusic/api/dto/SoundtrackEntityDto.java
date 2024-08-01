@@ -1,7 +1,7 @@
 package com.animusic.api.dto;
 
+import com.animusic.content.soundtrack.SoundtrackSavedHelper;
 import com.animusic.core.db.model.Soundtrack;
-import com.animusic.soundtrack.service.SoundtrackSavedHelper;
 
 public record SoundtrackEntityDto(
         Integer id,

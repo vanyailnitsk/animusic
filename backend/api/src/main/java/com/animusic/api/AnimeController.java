@@ -2,13 +2,13 @@ package com.animusic.api;
 
 import java.util.List;
 
-import com.animusic.album.service.AlbumService;
-import com.animusic.anime.service.AnimeService;
 import com.animusic.api.dto.AnimeDto;
 import com.animusic.api.dto.AnimeMapper;
 import com.animusic.api.dto.RichAnimeDto;
 import com.animusic.api.dto.UpdateAnimeDto;
-import com.animusic.core.db.model.Album;
+import com.animusic.content.album.AlbumService;
+import com.animusic.content.anime.AnimeNotFoundException;
+import com.animusic.content.anime.AnimeService;
 import com.animusic.core.db.model.Anime;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,8 +32,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "REST API для управления аниме", description = "Предоставляет методы для информации по аниме")
 public class AnimeController {
+
     private final AnimeService animeService;
+
     private final AnimeMapper animeMapper;
+
     private final AlbumService albumService;
 
     @GetMapping("/{animeId}")
@@ -45,18 +48,17 @@ public class AnimeController {
     })
     public RichAnimeDto getAnimeInfo(@PathVariable Integer animeId) {
         log.info("Requested anime {} info", animeId);
-        Anime anime = animeService.getAnimeInfo(animeId);
-        List<Album> albums = albumService.getAlbumsByAnimeId(animeId);
-        if (albums != null) {
-            albums.sort((a1, a2) -> {
-                List<String> categoryOrder = List.of("Openings", "Endings", "Themes", "Scene songs");
+        var anime = animeService.getAnime(animeId)
+                .orElseThrow(() -> new AnimeNotFoundException(animeId));
+        var albums = anime.getAlbums();
+        albums.sort((a1, a2) -> {
+            List<String> categoryOrder = List.of("Openings", "Endings", "Themes", "Scene songs");
 
-                int index1 = categoryOrder.indexOf(a1.getName());
-                int index2 = categoryOrder.indexOf(a2.getName());
+            int index1 = categoryOrder.indexOf(a1.getName());
+            int index2 = categoryOrder.indexOf(a2.getName());
 
-                return Integer.compare(index1, index2);
-            });
-        }
+            return Integer.compare(index1, index2);
+        });
         return RichAnimeDto.fromAnime(anime, albums);
     }
 
@@ -96,7 +98,7 @@ public class AnimeController {
     })
     public RichAnimeDto updateAnime(@RequestBody Anime updateAnime, @PathVariable Integer animeId) {
         Anime anime = animeService.updateAnime(updateAnime, animeId);
-        List<Album> albums = albumService.getAlbumsByAnimeId(animeId);
+        var albums = anime.getAlbums();
         RichAnimeDto richAnimeDto = RichAnimeDto.fromAnime(anime, albums);
         log.info("Anime id={} updated successfully", animeId);
         return richAnimeDto;

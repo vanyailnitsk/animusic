@@ -2,8 +2,8 @@ package com.animusic.api;
 
 import com.animusic.api.dto.PlaylistDto;
 import com.animusic.api.dto.UserMediaConverter;
+import com.animusic.content.playlist.MediaLibraryService;
 import com.animusic.core.db.model.Playlist;
-import com.animusic.playlist.service.MediaLibraryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "REST API для управления медиатекой пользователя", description = "Предоставляет методы для управления " +
         "медиатекой пользователя")
 public class MediaLibraryController {
+
     private final MediaLibraryService mediaLibraryService;
+
     private final UserMediaConverter userMediaConverter;
 
     @GetMapping
@@ -33,7 +35,7 @@ public class MediaLibraryController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public PlaylistDto getFavouriteTracksPlaylist() {
-        Playlist playlist = mediaLibraryService.getFavouriteTracksPlaylist();
+        Playlist playlist = mediaLibraryService.getFavouritePlaylistOrCreate();
         PlaylistDto dto = userMediaConverter.convertToDto(playlist);
         return dto;
     }

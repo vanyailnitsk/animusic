@@ -1,10 +1,10 @@
 package com.animusic.api;
 
 import com.animusic.api.dto.JwtResponseDto;
-import com.animusic.security.dao.JwtResponse;
-import com.animusic.security.dto.AuthRequest;
-import com.animusic.security.dto.RegisterRequest;
-import com.animusic.security.service.AuthService;
+import com.animusic.user.dao.JwtResponse;
+import com.animusic.user.dto.AuthRequest;
+import com.animusic.user.dto.RegisterRequest;
+import com.animusic.user.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Tag(name = "REST API для авторизации", description = "Предоставляет методы для аутентификации и авторизации")
 public class AuthController {
+
     private final AuthService authService;
 
     @PostMapping("/register")

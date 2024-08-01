@@ -3,12 +3,12 @@ package com.animusic.api;
 import java.util.Date;
 import java.util.Map;
 
-import com.animusic.album.AlbumNotFoundException;
-import com.animusic.anime.AnimeNotFoundException;
-import com.animusic.playlist.PlaylistNotFoundException;
-import com.animusic.security.InvalidTokenException;
-import com.animusic.security.TokenRefreshException;
-import com.animusic.soundtrack.SoundtrackNotFoundException;
+import com.animusic.content.album.AlbumNotFoundException;
+import com.animusic.content.anime.AnimeNotFoundException;
+import com.animusic.content.playlist.PlaylistNotFoundException;
+import com.animusic.content.soundtrack.SoundtrackNotFoundException;
+import com.animusic.user.InvalidTokenException;
+import com.animusic.user.TokenRefreshException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
