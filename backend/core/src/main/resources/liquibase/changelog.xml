@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <!--    <includeAll path="scripts/" relativeToChangelogFile="true"/>-->
+    <include file="scripts/images.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/anime_banner.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/anime.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/cover_art.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/album.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/soundtrack.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/users.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/user_roles.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/refresh_token.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/playlist.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/playlist_soundtrack.sql" relativeToChangelogFile="true"/>
+</databaseChangeLog>

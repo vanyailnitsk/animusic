@@ -1,25 +1,32 @@
 package com.animusic.core.db.table;
 
 import com.animusic.core.db.model.PlaylistSoundtrack;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import jakarta.persistence.EntityManager;
+import lombok.NonNull;
+import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
-public interface PlaylistSoundtrackRepository extends JpaRepository<PlaylistSoundtrack, Long> {
-    @Query("SELECT COUNT(s) > 0 FROM PlaylistSoundtrack s where s.playlist.id= :playlist_id and s.soundtrack.id= " +
-            ":soundtrack_id")
-    boolean playlistAlreadyContainsSoundtrack(
-            @Param("playlist_id") Integer playlist_id, @Param("soundtrack_id") Integer soundtrack_id
-    );
+@Component
+@NoRepositoryBean
+public interface PlaylistSoundtrackRepository extends CrudRepository<PlaylistSoundtrack, Long> {
 
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM PlaylistSoundtrack s where s.playlist.id = :playlist_id and s.soundtrack.id = :soundtrack_id")
-    void deleteTrackFromPlaylist(
-            @Param("playlist_id") Integer playlist_id, @Param("soundtrack_id") Integer soundtrack_id
-    );
+    void deleteTrackFromPlaylist(Integer playlist_id, Integer soundtrack_id);
+
+    class Impl extends RepositoryBase<PlaylistSoundtrack, Long> implements PlaylistSoundtrackRepository {
+
+        public Impl(@NonNull EntityManager entityManager) {
+            super(entityManager, PlaylistSoundtrack.class);
+        }
+
+        @Override
+        @Transactional
+        public void deleteTrackFromPlaylist(Integer playlist_id, Integer soundtrack_id) {
+            var query = "DELETE FROM PlaylistSoundtrack s where s.playlist.id = :p_id and s.soundtrack.id = :s_id";
+            entityManager.createQuery(query)
+                    .setParameter("p_id", playlist_id)
+                    .setParameter("s_id", soundtrack_id)
+                    .executeUpdate();
+        }
+    }
 }

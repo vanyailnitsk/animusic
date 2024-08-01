@@ -15,12 +15,6 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
-  flyway:
-    locations: filesystem:./database/migration
-    baseline-on-migrate: true
-    url: jdbc:postgresql://localhost:5433/animusic
-    user: ${DB_USER}
-    password: ${DB_PASSWORD}
   config:
     import: optional:file:.env[.properties]
   output:

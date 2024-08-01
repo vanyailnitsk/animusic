@@ -2,7 +2,6 @@ package com.animusic.core.db.model;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,13 +22,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlaylistSoundtrack {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "playlist_id")
-    @JsonBackReference
     private Playlist playlist;
 
     @ManyToOne
