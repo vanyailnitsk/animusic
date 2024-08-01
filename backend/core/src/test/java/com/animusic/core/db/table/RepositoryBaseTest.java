@@ -4,26 +4,21 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import com.animusic.core.AnimusicApplication;
-import com.animusic.core.conf.DatabaseConfig;
+import com.animusic.core.db.DatabaseTest;
 import com.animusic.core.db.model.TestPerson;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringJUnitConfig({
-        AnimusicApplication.class,
-        DatabaseConfig.class
-})
+@Transactional
 @Sql(scripts = "RepositoryBaseTest.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = "cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
-@Transactional
-class RepositoryBaseTest {
+class RepositoryBaseTest extends DatabaseTest {
+
     @Autowired
     RepositoryBase<TestPerson, Integer> testPersonRepository;
 
@@ -182,14 +177,6 @@ class RepositoryBaseTest {
         testPersonRepository.deleteAll();
 
         assertThat(testPersonRepository.findAll()).isEqualTo(List.of());
-    }
-
-    @Test
-    void getQuery() {
-    }
-
-    @Test
-    void toJpaOrder() {
     }
 
     @Test
