@@ -6,6 +6,7 @@ import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -35,6 +36,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true)
     private String username;
 
     private String email;

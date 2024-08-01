@@ -1,6 +1,6 @@
 package com.animusic.api.dto;
 
-import com.animusic.user.dao.JwtResponse;
+import com.animusic.user.JwtResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

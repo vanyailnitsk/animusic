@@ -1,7 +1,7 @@
 package com.animusic.api;
 
 import com.animusic.api.dto.JwtResponseDto;
-import com.animusic.user.dao.JwtResponse;
+import com.animusic.user.JwtResponse;
 import com.animusic.user.dto.AuthRequest;
 import com.animusic.user.dto.RegisterRequest;
 import com.animusic.user.service.AuthService;

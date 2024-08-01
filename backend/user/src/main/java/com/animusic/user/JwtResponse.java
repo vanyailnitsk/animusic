@@ -1,4 +1,4 @@
-package com.animusic.user.dao;
+package com.animusic.user;
 
 import com.animusic.core.db.model.User;
 import lombok.AllArgsConstructor;

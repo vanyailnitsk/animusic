@@ -3,10 +3,10 @@ package com.animusic.user.service;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.animusic.core.db.model.RefreshToken;
 import com.animusic.core.db.model.User;
+import com.animusic.core.db.table.RefreshTokenRepository;
 import com.animusic.user.TokenRefreshException;
-import com.animusic.user.dao.RefreshToken;
-import com.animusic.user.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;

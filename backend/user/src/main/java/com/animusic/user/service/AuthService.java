@@ -1,13 +1,13 @@
 package com.animusic.user.service;
 
 import com.animusic.core.db.model.Playlist;
+import com.animusic.core.db.model.RefreshToken;
 import com.animusic.core.db.model.User;
+import com.animusic.core.db.table.RefreshTokenRepository;
 import com.animusic.user.InvalidTokenException;
-import com.animusic.user.dao.JwtResponse;
-import com.animusic.user.dao.RefreshToken;
+import com.animusic.user.JwtResponse;
 import com.animusic.user.dto.AuthRequest;
 import com.animusic.user.dto.RegisterRequest;
-import com.animusic.user.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;

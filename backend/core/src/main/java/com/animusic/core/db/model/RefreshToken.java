@@ -1,8 +1,7 @@
-package com.animusic.user.dao;
+package com.animusic.core.db.model;
 
 import java.time.Instant;
 
-import com.animusic.core.db.model.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,11 +16,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@Table(name = "refresh_token")
 @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
