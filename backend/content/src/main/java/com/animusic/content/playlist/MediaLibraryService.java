@@ -1,9 +1,10 @@
-package com.animusic.playlist.service;
+package com.animusic.content.playlist;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Optional;
 
+import com.animusic.content.soundtrack.SoundtrackNotFoundException;
 import com.animusic.core.db.model.Playlist;
 import com.animusic.core.db.model.PlaylistSoundtrack;
 import com.animusic.core.db.model.Soundtrack;
@@ -11,43 +12,49 @@ import com.animusic.core.db.model.User;
 import com.animusic.core.db.table.PlaylistRepository;
 import com.animusic.core.db.table.PlaylistSoundtrackRepository;
 import com.animusic.core.db.table.SoundtrackRepository;
-import com.animusic.core.db.table.UserRepository;
-import com.animusic.soundtrack.SoundtrackNotFoundException;
 import com.animusic.user.service.UserService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.animusic.core.db.table.PlaylistRepository.FAVOURITE_PLAYLIST_NAME;
 
 @Service
 @RequiredArgsConstructor
 public class MediaLibraryService {
     private final UserService userService;
-    private final UserRepository userRepository;
     private final SoundtrackRepository soundtrackRepository;
     private final PlaylistRepository playlistRepository;
     private final PlaylistSoundtrackRepository playlistSoundtrackRepository;
     private final PlaylistService playlistService;
 
-    public Playlist getFavouriteTracksPlaylist() {
-        User user = userService.getUserInSession().orElseThrow(() -> new RuntimeException("User not found in session"));
-        Playlist favouriteTracks = user.getFavouriteTracks();
-        favouriteTracks.getSoundtracks().sort(Comparator.comparing(PlaylistSoundtrack::getAddedAt).reversed());
+    public Optional<Playlist> getFavouritePlaylist(@NonNull User user) {
+        var favouriteTracks = playlistRepository.getUserFavouritePlaylist(user.getId());
+        if (favouriteTracks.isEmpty()) {
+            return favouriteTracks;
+        }
+        favouriteTracks.get().getSoundtracks().sort(Comparator.comparing(PlaylistSoundtrack::getAddedAt).reversed());
         return favouriteTracks;
     }
 
     @Transactional
+    public Playlist getFavouritePlaylistOrCreate() {
+        var user = userService.getUserInSession()
+                .orElseThrow(() -> new RuntimeException("User not found in session"));
+        return getFavouritePlaylist(user)
+                .orElse(playlistService.createPlaylist(FAVOURITE_PLAYLIST_NAME));
+    }
+
+    @Transactional
     public void addTrackToFavourites(Integer trackId) {
-        User user = userService.getUserInSession().orElseThrow(() -> new RuntimeException("User not found in session"));
-        Playlist playlist;
-        if (user.getFavouriteTracks() == null) {
-            playlist = playlistService.createPlaylist("Favourite tracks");
-            playlist.setSoundtracks(new ArrayList<>());
-        } else {
-            playlist = user.getFavouriteTracks();
-        }
+        Playlist playlist = getFavouritePlaylistOrCreate();
         Soundtrack soundtrack = soundtrackRepository.findById(trackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(trackId));
-        if (!playlistSoundtrackRepository.playlistAlreadyContainsSoundtrack(playlist.getId(), soundtrack.getId())) {
+        boolean alreadyContainsTrack = playlist.getSoundtracks().stream()
+                .map(s -> s.getSoundtrack().getId())
+                .anyMatch(s -> s.equals(trackId));
+        if (!alreadyContainsTrack) {
             PlaylistSoundtrack playlistSoundtrack = PlaylistSoundtrack.builder()
                     .playlist(playlist)
                     .soundtrack(soundtrack)
@@ -60,7 +67,9 @@ public class MediaLibraryService {
 
     public void deleteTrackFromFavourites(Integer trackId) {
         User user = userService.getUserInSession().orElseThrow(() -> new RuntimeException("User not found in session"));
-        Playlist favourites = user.getFavouriteTracks();
-        playlistSoundtrackRepository.deleteTrackFromPlaylist(favourites.getId(), trackId);
+        var favourites = getFavouritePlaylist(user);
+        favourites.ifPresent(
+                playlist -> playlistSoundtrackRepository.deleteTrackFromPlaylist(playlist.getId(), trackId)
+        );
     }
 }
