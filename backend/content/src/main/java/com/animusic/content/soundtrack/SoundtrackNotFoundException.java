@@ -1,4 +1,4 @@
-package com.animusic.soundtrack;
+package com.animusic.content.soundtrack;
 
 public class SoundtrackNotFoundException extends RuntimeException {
     public SoundtrackNotFoundException(Integer id) {

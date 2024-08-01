@@ -1,4 +1,4 @@
-package com.animusic.anime;
+package com.animusic.content.anime;
 
 public class AnimeNotFoundException extends RuntimeException {
     public AnimeNotFoundException(Integer id) {

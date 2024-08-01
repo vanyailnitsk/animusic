@@ -1,12 +1,11 @@
-package com.animusic.anime.service;
+package com.animusic.content.anime;
 
-import com.animusic.anime.AnimeNotFoundException;
+import com.animusic.content.image.ImageService;
 import com.animusic.core.db.model.Anime;
 import com.animusic.core.db.model.AnimeBannerImage;
 import com.animusic.core.db.model.Image;
 import com.animusic.core.db.table.AnimeBannerImageRepository;
 import com.animusic.core.db.table.AnimeRepository;
-import com.animusic.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

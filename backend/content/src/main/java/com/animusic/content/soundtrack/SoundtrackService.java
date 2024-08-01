@@ -1,9 +1,10 @@
-package com.animusic.soundtrack.service;
+package com.animusic.content.soundtrack;
 
 import java.io.IOException;
 import java.util.Objects;
 
-import com.animusic.album.service.AlbumService;
+import com.animusic.content.album.AlbumService;
+import com.animusic.content.image.ImageService;
 import com.animusic.core.InvalidDataException;
 import com.animusic.core.JsonMergePatchService;
 import com.animusic.core.db.model.Album;
@@ -11,9 +12,7 @@ import com.animusic.core.db.model.Anime;
 import com.animusic.core.db.model.Image;
 import com.animusic.core.db.model.Soundtrack;
 import com.animusic.core.db.table.SoundtrackRepository;
-import com.animusic.image.service.ImageService;
 import com.animusic.s3.S3Service;
-import com.animusic.soundtrack.SoundtrackNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

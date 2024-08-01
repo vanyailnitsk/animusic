@@ -1,18 +1,16 @@
-package com.animusic.album.service;
+package com.animusic.content.album;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import com.animusic.album.AlbumAlreadyExistsException;
-import com.animusic.album.AlbumNotFoundException;
-import com.animusic.anime.AnimeNotFoundException;
-import com.animusic.anime.service.AnimeService;
+import com.animusic.content.anime.AnimeNotFoundException;
+import com.animusic.content.anime.AnimeService;
+import com.animusic.content.image.CoverArtService;
 import com.animusic.core.db.model.Album;
 import com.animusic.core.db.model.Anime;
 import com.animusic.core.db.model.CoverArt;
 import com.animusic.core.db.table.AlbumRepository;
-import com.animusic.image.service.CoverArtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +25,8 @@ public class AlbumService {
 
     @Transactional
     public Album createAlbum(Album album, Integer animeId) {
-        Anime anime = animeService.getAnimeInfo(animeId);
+        Anime anime = animeService.getAnime(animeId)
+                .orElseThrow(() -> new AnimeNotFoundException(animeId));
         if (albumRepository.existsByNameAndAnimeId(album.getName(), animeId)) {
             throw new AlbumAlreadyExistsException(album.getName(), animeId);
         }
@@ -36,12 +35,9 @@ public class AlbumService {
         return album;
     }
 
-    public List<Album> getAlbumsByAnimeId(Integer animeId) {
-        Optional<List<Album>> albums = albumRepository.getAlbumsByAnimeId(animeId);
-        if (albums.isEmpty()) {
-            throw new AnimeNotFoundException(animeId);
-        }
-        return albums.get();
+    public Optional<List<Album>> getAlbumsByAnimeId(Integer animeId) {
+        var anime = animeService.getAnime(animeId);
+        return anime.map(Anime::getAlbums);
     }
 
     public Album getAlbumById(Integer id) {

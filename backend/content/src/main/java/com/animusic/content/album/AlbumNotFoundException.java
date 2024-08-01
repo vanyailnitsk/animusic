@@ -1,4 +1,4 @@
-package com.animusic.album;
+package com.animusic.content.album;
 
 public class AlbumNotFoundException extends RuntimeException {
     public AlbumNotFoundException(Integer id) {

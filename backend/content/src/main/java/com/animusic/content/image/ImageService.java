@@ -1,4 +1,4 @@
-package com.animusic.image.service;
+package com.animusic.content.image;
 
 import java.io.IOException;
 

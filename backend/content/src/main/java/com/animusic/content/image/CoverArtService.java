@@ -1,12 +1,12 @@
-package com.animusic.image.service;
+package com.animusic.content.image;
 
 import com.animusic.core.db.model.CoverArt;
 import com.animusic.core.db.model.Image;
 import com.animusic.core.db.table.CoverArtRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -40,7 +40,7 @@ public class CoverArtService {
     }
 
     public static String generateHash(String input, int desiredLength) {
-        String hash = DigestUtils.sha256Hex(input);
+        String hash = DigestUtils.md5DigestAsHex(input.getBytes());
         return hash.substring(0, Math.min(desiredLength, hash.length()));
     }
 }

@@ -1,9 +1,8 @@
-package com.animusic.anime.service;
+package com.animusic.content.anime;
 
 import java.util.List;
+import java.util.Optional;
 
-import com.animusic.anime.AnimeAlreadyExistsException;
-import com.animusic.anime.AnimeNotFoundException;
 import com.animusic.core.db.model.Anime;
 import com.animusic.core.db.table.AnimeRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class AnimeService {
     private final AnimeRepository animeRepository;
 
-    public Anime getAnimeInfo(Integer animeId) {
-        return animeRepository.findById(animeId)
-                .orElseThrow(() -> new AnimeNotFoundException(animeId));
+    public Optional<Anime> getAnime(Integer animeId) {
+        return animeRepository.findById(animeId);
     }
 
     public List<Anime> getAllAnime() {
         log.info("Requested all anime list");
-        return animeRepository.findAllByOrderByTitle();
+        return animeRepository.findAllOrderByTitle();
     }
 
     @Transactional

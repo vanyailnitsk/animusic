@@ -1,11 +1,10 @@
-package com.animusic.playlist.service;
+package com.animusic.content.playlist;
 
+import com.animusic.content.image.CoverArtService;
 import com.animusic.core.db.model.CoverArt;
 import com.animusic.core.db.model.Playlist;
 import com.animusic.core.db.model.User;
 import com.animusic.core.db.table.PlaylistRepository;
-import com.animusic.image.service.CoverArtService;
-import com.animusic.playlist.PlaylistNotFoundException;
 import com.animusic.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,6 @@ public class PlaylistService {
                 .name(playlistName)
                 .user(user)
                 .build();
-        user.setFavouriteTracks(playlist);
         return playlistRepository.save(playlist);
     }
 

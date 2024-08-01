@@ -9,25 +9,24 @@
 
     </parent>
 
-    <artifactId>album</artifactId>
+    <artifactId>content</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.animusic</groupId>
-            <artifactId>anime</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.animusic</groupId>
-            <artifactId>image</artifactId>
-            <version>1.0</version>
-        </dependency>
         <dependency>
             <groupId>com.animusic</groupId>
             <artifactId>core</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.animusic</groupId>
+            <artifactId>s3</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.animusic</groupId>
+            <artifactId>user</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
-
 
 </project>
