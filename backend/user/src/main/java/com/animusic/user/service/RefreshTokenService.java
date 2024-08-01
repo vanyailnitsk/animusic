@@ -1,12 +1,12 @@
-package com.animusic.security.service;
+package com.animusic.user.service;
 
 import java.time.Instant;
 import java.util.UUID;
 
 import com.animusic.core.db.model.User;
-import com.animusic.security.TokenRefreshException;
-import com.animusic.security.dao.RefreshToken;
-import com.animusic.security.repository.RefreshTokenRepository;
+import com.animusic.user.TokenRefreshException;
+import com.animusic.user.dao.RefreshToken;
+import com.animusic.user.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;

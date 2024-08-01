@@ -1,4 +1,4 @@
-package com.animusic.security;
+package com.animusic.user;
 
 public class TokenRefreshException extends RuntimeException {
     public TokenRefreshException(String token, String message) {

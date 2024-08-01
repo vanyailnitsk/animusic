@@ -1,4 +1,4 @@
-package com.animusic.security.dao;
+package com.animusic.user.dao;
 
 import java.time.Instant;
 

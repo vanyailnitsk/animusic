@@ -1,4 +1,4 @@
-package com.animusic.security.service;
+package com.animusic.user.service;
 
 import java.time.ZonedDateTime;
 import java.util.Date;

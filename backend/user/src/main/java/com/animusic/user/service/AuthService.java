@@ -1,14 +1,13 @@
-package com.animusic.security.service;
+package com.animusic.user.service;
 
 import com.animusic.core.db.model.Playlist;
 import com.animusic.core.db.model.User;
-import com.animusic.security.InvalidTokenException;
-import com.animusic.security.dao.JwtResponse;
-import com.animusic.security.dao.RefreshToken;
-import com.animusic.security.dto.AuthRequest;
-import com.animusic.security.dto.RegisterRequest;
-import com.animusic.security.repository.RefreshTokenRepository;
-import com.animusic.user.service.UserService;
+import com.animusic.user.InvalidTokenException;
+import com.animusic.user.dao.JwtResponse;
+import com.animusic.user.dao.RefreshToken;
+import com.animusic.user.dto.AuthRequest;
+import com.animusic.user.dto.RegisterRequest;
+import com.animusic.user.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
@@ -34,7 +33,7 @@ public class AuthService {
         User user = registerRequest.toUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Playlist playlist = Playlist.builder().name("Favourite tracks").build();
-        user.setFavouriteTracks(playlist);
+        playlist.setUser(user);
         userService.createUserOrThrow(user);
         String jwt = jwtService.createToken(user);
         ResponseCookie responseCookie = refreshTokenService.generateRefreshCookie(user);

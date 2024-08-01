@@ -1,4 +1,4 @@
-package com.animusic.security.dto;
+package com.animusic.user.dto;
 
 import com.animusic.core.db.model.User;
 import lombok.AllArgsConstructor;

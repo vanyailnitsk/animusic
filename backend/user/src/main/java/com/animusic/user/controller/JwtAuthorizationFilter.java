@@ -1,11 +1,11 @@
-package com.animusic.security.controller;
+package com.animusic.user.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.animusic.core.db.model.User;
-import com.animusic.security.service.JwtService;
+import com.animusic.user.service.JwtService;
 import com.animusic.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;

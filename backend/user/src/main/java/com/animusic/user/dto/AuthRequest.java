@@ -1,4 +1,4 @@
-package com.animusic.security.dto;
+package com.animusic.user.dto;
 
 public record AuthRequest(
         String email,

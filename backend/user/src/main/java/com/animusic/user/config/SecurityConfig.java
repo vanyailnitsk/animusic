@@ -1,9 +1,9 @@
-package com.animusic.security.config;
+package com.animusic.user.config;
 
 import java.util.Arrays;
 
-import com.animusic.security.controller.JwtAuthorizationFilter;
-import com.animusic.security.service.UserDetailsServiceImpl;
+import com.animusic.user.controller.JwtAuthorizationFilter;
+import com.animusic.user.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,8 +1,8 @@
-package com.animusic.security.repository;
+package com.animusic.user.repository;
 
 import java.util.Optional;
 
-import com.animusic.security.dao.RefreshToken;
+import com.animusic.user.dao.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
