@@ -1,1 +1,0 @@
-ALTER TABLE soundtrack add column duration integer;
