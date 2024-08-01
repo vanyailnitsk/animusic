@@ -19,6 +19,7 @@
         <module>core</module>
         <module>s3</module>
         <module>user</module>
+        <module>common</module>
     </modules>
 
     <dependencyManagement>

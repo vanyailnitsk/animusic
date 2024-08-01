@@ -1,6 +1,6 @@
 package com.animusic.core.db;
 
-import com.animusic.core.conf.TestingDbConfiguration;
+import com.animusic.common.TestingDbConfiguration;
 import com.animusic.core.db.table.TestPersonRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
