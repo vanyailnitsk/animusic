@@ -1,5 +1,7 @@
 package com.animusic.core.conf;
 
+import java.sql.SQLException;
+
 import javax.sql.DataSource;
 
 import com.animusic.core.db.table.AlbumRepository;
@@ -12,8 +14,11 @@ import com.animusic.core.db.table.PlaylistSoundtrackRepository;
 import com.animusic.core.db.table.RefreshTokenRepository;
 import com.animusic.core.db.table.SoundtrackRepository;
 import com.animusic.core.db.table.UserRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import liquibase.integration.spring.SpringLiquibase;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -22,8 +27,16 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableJpaRepositories(basePackages = "com.animusic.core.db.table")
 @EnableTransactionManagement
+@Slf4j
 public class DatabaseConfig {
 
+    @Autowired
+    DataSource dataSource;
+
+    @PostConstruct
+    public void setup() throws SQLException {
+        log.info("Using database: {}", dataSource.getConnection().getMetaData().getURL());
+    }
     @Bean
     public SpringLiquibase liquibase(DataSource dataSource) {
         SpringLiquibase liquibase = new SpringLiquibase();
