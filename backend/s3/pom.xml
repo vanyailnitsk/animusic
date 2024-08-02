@@ -17,9 +17,10 @@
             <artifactId>s3</artifactId>
             <version>2.20.26</version>
         </dependency>
+
         <dependency>
             <groupId>com.animusic</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>common</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>

@@ -3,6 +3,7 @@ package com.animusic.s3;
 import java.io.IOException;
 import java.util.Objects;
 
+import com.animusic.common.S3Properties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,12 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 public class S3Service {
 
     private final S3Client s3Client;
-    private final S3Config s3Config;
+
+    private final S3Properties s3Properties;
 
     public void putObject(String key, byte[] file, String contentType) {
         PutObjectRequest objectRequest = PutObjectRequest.builder()
-                .bucket(s3Config.getBucket())
+                .bucket(s3Properties.getBucket())
                 .key(key)
                 .contentType(contentType)
                 .build();
@@ -33,7 +35,7 @@ public class S3Service {
 
     public byte[] getObject(String key) {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                .bucket(s3Config.getBucket())
+                .bucket(s3Properties.getBucket())
                 .key(key)
                 .build();
         ResponseInputStream<GetObjectResponse> object = s3Client.getObject(getObjectRequest);
@@ -47,7 +49,7 @@ public class S3Service {
     public void deleteObject(String key) {
         if (!Objects.isNull(key)) {
             DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-                    .bucket(s3Config.getBucket())
+                    .bucket(s3Properties.getBucket())
                     .key(key)
                     .build();
             s3Client.deleteObject(deleteObjectRequest);
