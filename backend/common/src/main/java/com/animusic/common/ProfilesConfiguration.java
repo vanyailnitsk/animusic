@@ -6,8 +6,8 @@ import org.springframework.context.annotation.PropertySources;
 
 @Configuration
 @PropertySources({
+        @PropertySource("classpath:application.properties"),
         @PropertySource("classpath:application-${spring.profiles.active}.properties"),
-        @PropertySource("classpath:application.properties")
 })
 public class ProfilesConfiguration {
 
