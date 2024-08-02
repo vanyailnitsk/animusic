@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
+import com.animusic.common.JwtProperties;
 import com.animusic.core.db.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -12,7 +13,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
@@ -20,19 +20,24 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class JwtService {
 
-    @Value("${token.secret}")
-    private String secret_key;
-    @Value("${token.expirationMinutes}")
-    private long TTL_MINUTES;
-    @Value("${token.refreshExpirationHours}")
-    private long REFRESH_TTL_HOURS;
+    private final String SECRET_KEY;
+
+    private final long TTL_MINUTES;
+
+    private final long REFRESH_TTL_HOURS;
+
     private final String TOKEN_HEADER = "Authorization";
+
     private final String TOKEN_PREFIX = "Bearer ";
+
     private CookieUtils cookieUtils;
 
     @Autowired
-    public JwtService(CookieUtils cookieUtils) {
+    public JwtService(CookieUtils cookieUtils, JwtProperties jwtProperties) {
         this.cookieUtils = cookieUtils;
+        this.SECRET_KEY = jwtProperties.getSecret();
+        this.TTL_MINUTES = jwtProperties.getExpirationMinutes();
+        this.REFRESH_TTL_HOURS = jwtProperties.getRefreshExpirationHours();
     }
 
     public String createToken(User user) {
@@ -42,7 +47,7 @@ public class JwtService {
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(tokenValidity)
-                .signWith(SignatureAlgorithm.HS256, secret_key)
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
 
@@ -57,7 +62,7 @@ public class JwtService {
     }
 
     private Claims parseJwtClaims(String token) {
-        return Jwts.parser().setSigningKey(secret_key).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
     public Claims resolveClaims(HttpServletRequest req) {
