@@ -1,6 +1,6 @@
 package com.animusic.core.db;
 
-import com.animusic.common.TestingDbConfiguration;
+import com.animusic.common.ProfilesConfiguration;
 import com.animusic.core.db.table.TestPersonRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({TestingDbConfiguration.class})
+@Import({ProfilesConfiguration.class})
 public class TestDbConfiguration {
 
     @Bean

@@ -35,4 +35,9 @@ public class S3Config {
                 .build();
         return client;
     }
+
+    @Bean
+    public S3Service s3Service(S3Client s3Client) {
+        return new S3Service(s3Client, properties);
+    }
 }
