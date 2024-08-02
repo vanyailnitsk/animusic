@@ -1,4 +1,4 @@
-package com.animusic.api;
+package com.animusic.api.controller;
 
 import com.animusic.api.dto.UserDto;
 import com.animusic.core.db.model.User;

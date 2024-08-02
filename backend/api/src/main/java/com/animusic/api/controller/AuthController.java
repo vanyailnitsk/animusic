@@ -1,4 +1,4 @@
-package com.animusic.api;
+package com.animusic.api.controller;
 
 import com.animusic.api.dto.JwtResponseDto;
 import com.animusic.user.JwtResponse;

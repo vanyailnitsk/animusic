@@ -1,5 +1,6 @@
-package com.animusic.api;
+package com.animusic.api.controller;
 
+import com.animusic.api.BadRequestException;
 import com.animusic.api.dto.SoundtrackDto;
 import com.animusic.api.dto.UpdateSoundtrackDto;
 import com.animusic.content.soundtrack.SoundtrackService;

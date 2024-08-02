@@ -1,4 +1,4 @@
-package com.animusic.api;
+package com.animusic.api.controller;
 
 import java.util.List;
 
