@@ -2,38 +2,42 @@ package com.animusic.s3;
 
 import java.net.URI;
 
-import lombok.Data;
+import com.animusic.common.PropertiesConfig;
+import com.animusic.common.S3Properties;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
-@ConfigurationProperties(prefix = "timeweb.s3")
+@Import(PropertiesConfig.class)
+@Getter
 @RequiredArgsConstructor
-@Data
 public class S3Config {
-    private String url;
-    private String bucket;
-    private String region;
-    @Value("access-key")
-    private String accessKey;
-    @Value("secret-key")
-    private String secretKey;
+
+    private final S3Properties properties;
 
     @Bean
     public S3Client s3Client() {
-        AwsCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
+        AwsCredentials credentials = AwsBasicCredentials.create(
+                properties.getAccessKey(),
+                properties.getSecretKey()
+        );
         S3Client client = S3Client.builder()
                 .credentialsProvider(() -> credentials)
-                .endpointOverride(URI.create(url))
-                .region(Region.of(region))
+                .endpointOverride(URI.create(properties.getUrl()))
+                .region(Region.of(properties.getRegion()))
                 .build();
         return client;
+    }
+
+    @Bean
+    public S3Service s3Service(S3Client s3Client) {
+        return new S3Service(s3Client, properties);
     }
 }

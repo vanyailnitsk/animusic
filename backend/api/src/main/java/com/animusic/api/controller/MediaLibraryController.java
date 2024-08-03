@@ -1,4 +1,4 @@
-package com.animusic.api;
+package com.animusic.api.controller;
 
 import com.animusic.api.dto.PlaylistDto;
 import com.animusic.api.dto.UserMediaConverter;

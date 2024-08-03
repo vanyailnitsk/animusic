@@ -1,4 +1,4 @@
-package com.animusic.api;
+package com.animusic.api.controller;
 
 import com.animusic.api.dto.CoverArtDto;
 import com.animusic.api.dto.PlaylistDto;

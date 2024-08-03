@@ -1,6 +1,6 @@
 package com.animusic.api.mappers;
 
-import com.animusic.api.AlbumCoverController;
+import com.animusic.api.controller.AlbumCoverController;
 import com.animusic.api.dto.CoverArtDto;
 import com.animusic.core.db.model.CoverArt;
 import org.modelmapper.ModelMapper;
