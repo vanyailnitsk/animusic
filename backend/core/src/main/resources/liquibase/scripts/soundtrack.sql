@@ -2,7 +2,7 @@
 --changeset vanyailnitsk:create_soundtrack_table
 create table soundtrack
 (
-    id             integer not null primary key,
+    id serial primary key,
     anime_title    varchar(255),
     original_title varchar(255),
     audio_file     varchar(255),
