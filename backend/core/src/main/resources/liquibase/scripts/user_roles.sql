@@ -2,7 +2,7 @@
 --changeset vanyailnitsk:create_user_roles_table
 create table user_roles
 (
-    user_id serial not null,
+    user_id integer not null not null,
     roles   varchar(255) not null
 );
 
