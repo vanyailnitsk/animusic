@@ -43,7 +43,7 @@ public class MediaLibraryService {
         var user = userService.getUserInSession()
                 .orElseThrow(() -> new RuntimeException("User not found in session"));
         return getFavouritePlaylist(user)
-                .orElse(playlistService.createPlaylist(FAVOURITE_PLAYLIST_NAME));
+                .orElseGet(() -> playlistService.createPlaylist(FAVOURITE_PLAYLIST_NAME));
     }
 
     @Transactional

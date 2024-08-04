@@ -1,4 +1,4 @@
-package com.animusic.core.conf;
+package com.animusic.api.mappers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
