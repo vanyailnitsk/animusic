@@ -1,0 +1,55 @@
+.album__card__wrapper {
+    width: 190px;
+    height: 201px;
+    display: flex;
+    position: relative;
+    transition: .2s linear;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.album__card__image_wrapper {
+    width: 150px;
+    height: 150px;
+    border-radius: 7px;
+    margin-top: 13px;
+    position: relative;
+    overflow: hidden;
+    transition: .2s linear;
+}
+
+.album__card__image {
+    width: 100%;
+    transition: .2s linear;
+    height: 100%;
+}
+
+.album__card__image_wrapper:hover .album__card__image {
+    opacity: 0.2;
+}
+
+.album__card__image_wrapper:hover .album__card__actions {
+    transform: translateY(0%);
+}
+
+.album__card__wrapper span {
+    font-size: 15px;
+}
+
+.album__card__actions {
+    width: 98%;
+    height: 20%;
+    position: absolute;
+    transform: translateY(160%);
+    bottom: 10%;
+    transition: .2s linear;
+    left: 3%;
+}
+
+.album__card__actions_img {
+    width: 40px;
+    height: 40px;
+}
+

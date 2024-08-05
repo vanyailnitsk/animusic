@@ -1,0 +1,60 @@
+.albums {
+    width: 922px;
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin-left: 30px;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    gap: 54px;
+    justify-content: space-between;
+}
+
+@media screen and (min-width: 320px) and (max-width: 409px) {
+    .albums {
+        width: 190px;
+        margin-inline: auto;
+        display: grid;
+        height: auto;
+        gap: 30px;
+        margin-top: 10px;
+        grid-template-columns:190px;
+    }
+}
+
+@media screen and (min-width: 410px) and (max-width: 655px) {
+    .albums {
+        width: 410px;
+        margin-inline: auto;
+        display: grid;
+        height: auto;
+        gap: 30px;
+        margin-top: 10px;
+        grid-template-columns:190px 190px;
+    }
+}
+
+@media screen and (min-width: 656px) and (max-width: 1290px) {
+    .albums {
+        width: 630px;
+        margin-inline: auto;
+        display: grid;
+        height: auto;
+        gap: 30px;
+        margin-top: 10px;
+        grid-template-columns:190px 190px 190px;
+    }
+}
+
+@media screen and (min-width: 922px) and (max-width: 980px) {
+    .albums {
+        width: 922px;
+        margin-inline: auto;
+        display: grid;
+        height: auto;
+        gap: 30px;
+        margin-top: 10px;
+        grid-template-columns:190px 190px 190px 190px;
+    }
+}
