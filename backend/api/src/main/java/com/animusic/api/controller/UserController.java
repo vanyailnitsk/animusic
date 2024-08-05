@@ -22,7 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "REST API для управления данными пользователя", description = "Предоставляет методы для управления " +
         "данными пользователя")
 public class UserController {
+
     private final UserService userService;
+
+    private final UserMapper userMapper;
 
     @GetMapping("")
     @Operation(summary = "Метод для получения данных пользователя")
@@ -33,7 +36,7 @@ public class UserController {
     })
     public UserDto getUser(@AuthenticationPrincipal User currentUser) {
         User user = userService.findByEmailOrThrow(currentUser.getEmail());
-        return UserMapper.fromUser(user);
+        return userMapper.fromUser(user);
     }
 
 }

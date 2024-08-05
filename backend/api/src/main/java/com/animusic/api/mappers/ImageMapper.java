@@ -4,10 +4,12 @@ import com.animusic.api.dto.AnimeBannerImageDto;
 import com.animusic.api.dto.ImageDto;
 import com.animusic.core.db.model.AnimeBannerImage;
 import com.animusic.core.db.model.Image;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ImageMapper {
 
     @Nullable
@@ -20,7 +22,7 @@ public class ImageMapper {
         );
     }
 
-    public AnimeBannerImageDto fromBanner(AnimeBannerImage bannerImage) {
+    public AnimeBannerImageDto fromAnimeBanner(AnimeBannerImage bannerImage) {
         var image = fromImage(bannerImage.getImage());
         return new AnimeBannerImageDto(bannerImage.getColor(), image);
     }

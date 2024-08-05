@@ -8,10 +8,22 @@ import com.animusic.api.dto.SoundtrackEntityDto;
 import com.animusic.content.soundtrack.SoundtrackSavedHelper;
 import com.animusic.core.db.model.PlaylistSoundtrack;
 import com.animusic.core.db.model.Soundtrack;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class SoundtrackMapper {
+
+    @NonNull
+    private ImageMapper imageMapper;
+
+    @NonNull
+    private AlbumMapper albumMapper;
+
+    @NonNull
+    private AnimeMapper animeMapper;
 
     public SoundtrackDto fromSoundtrack(Soundtrack soundtrack) {
         return new SoundtrackDto(soundtrackEntity(soundtrack));
@@ -23,16 +35,16 @@ public class SoundtrackMapper {
                 soundtrack.getOriginalTitle(),
                 soundtrack.getAnimeTitle(),
                 soundtrack.getAudioFile(),
-                ImageMapper.fromImage(soundtrack.getImage()),
+                imageMapper.fromImage(soundtrack.getImage()),
                 soundtrack.getDuration(),
                 SoundtrackSavedHelper.isSaved(soundtrack),
-                AlbumMapper.albumItemDto(soundtrack.getAlbum()),
-                AnimeMapper.animeItemDto(soundtrack.getAnime())
+                albumMapper.albumItemDto(soundtrack.getAlbum()),
+                animeMapper.animeItemDto(soundtrack.getAnime())
         );
     }
 
     public List<SoundtrackEntityDto> soundtracksList(List<Soundtrack> soundtracks) {
-        return soundtracks.stream().map(SoundtrackMapper::soundtrackEntity).toList();
+        return soundtracks.stream().map(this::soundtrackEntity).toList();
     }
 
     public List<SoundtrackDto> soundtrackDtos(List<Soundtrack> soundtracks) {

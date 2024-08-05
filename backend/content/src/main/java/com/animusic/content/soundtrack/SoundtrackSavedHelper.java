@@ -9,18 +9,22 @@ import com.animusic.core.db.model.Soundtrack;
 import com.animusic.core.db.model.User;
 import com.animusic.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class SoundtrackSavedHelper {
 
-    private UserService userService;
+    @Setter
+    private static SoundtrackSavedHelper savedHelper;
 
-    private MediaLibraryService mediaLibraryService;
+    private final UserService userService;
 
-    public boolean isSaved(Soundtrack soundtrack) {
-        Set<Integer> savedTracks = getUserSavedTracksIds();
+    private final MediaLibraryService mediaLibraryService;
+
+    public static boolean isSaved(Soundtrack soundtrack) {
+        Set<Integer> savedTracks = savedHelper.getUserSavedTracksIds();
         return savedTracks.contains(soundtrack.getId());
     }
 

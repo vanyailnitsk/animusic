@@ -32,6 +32,8 @@ public class PlaylistController {
 
     private final PlaylistMapper playlistMapper;
 
+    private final CoverArtMapper coverArtMapper;
+
     @GetMapping("{playlistId}")
     @Operation(summary = "Метод для получения плейлиста по Id")
     public PlaylistDto getPlaylistById(@PathVariable Integer playlistId) {
@@ -63,7 +65,7 @@ public class PlaylistController {
                 playlistId,
                 imageFile,
                 coverArt);
-        return CoverArtMapper.fromCoverArt(created);
+        return coverArtMapper.fromCoverArt(created);
     }
 
 }

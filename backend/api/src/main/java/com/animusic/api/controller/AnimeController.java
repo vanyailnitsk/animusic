@@ -34,6 +34,8 @@ public class AnimeController {
 
     private final AnimeService animeService;
 
+    private AnimeMapper animeMapper;
+
     @GetMapping("/{animeId}")
     @Operation(summary = "Метод для получения аниме по id")
     @ApiResponses(value = {
@@ -45,7 +47,7 @@ public class AnimeController {
         log.info("Requested anime {} info", animeId);
         var anime = animeService.getAnime(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        var response = AnimeMapper.richAnimeDto(anime);
+        var response = animeMapper.richAnimeDto(anime);
         var albums = response.albums();
         albums.sort((a1, a2) -> {
             List<String> categoryOrder = List.of("Openings", "Endings", "Themes", "Scene songs");
@@ -66,7 +68,7 @@ public class AnimeController {
     })
     public List<AnimeDto> getAllAnime() {
         List<Anime> anime = animeService.getAllAnime();
-        return anime.stream().map(AnimeMapper::fromAnime).toList();
+        return anime.stream().map(animeMapper::fromAnime).toList();
     }
 
     @PostMapping
@@ -87,7 +89,7 @@ public class AnimeController {
                 .build();
         var animeCreated = animeService.createAnime(anime);
         log.info("Anime {} created", anime.getTitle());
-        return AnimeMapper.fromAnime(animeCreated);
+        return animeMapper.fromAnime(animeCreated);
     }
 
     @PutMapping("{animeId}")
@@ -100,7 +102,7 @@ public class AnimeController {
     })
     public RichAnimeDto updateAnime(@RequestBody Anime updateAnime, @PathVariable Integer animeId) {
         Anime anime = animeService.updateAnime(updateAnime, animeId);
-        RichAnimeDto richAnimeDto = AnimeMapper.richAnimeDto(anime);
+        RichAnimeDto richAnimeDto = animeMapper.richAnimeDto(anime);
         log.info("Anime id={} updated successfully", animeId);
         return richAnimeDto;
     }
