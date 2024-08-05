@@ -1,23 +1,13 @@
 package com.animusic.api.dto;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class PlaylistOwnerDto {
-    private Integer id;
-    private String name;
-    private Avatar avatar;
+    Integer id;
+    String name;
+    Avatar avatar;
 
-    public PlaylistOwnerDto() {
-        avatar = new Avatar();
-    }
-
-    @Data
-    class Avatar {
-        private String url = "pain-avatar.jpeg";
-
-        public String getUrl() {
-            return url;
-        }
+    public record Avatar(String url) {
     }
 }

@@ -3,10 +3,9 @@ package com.animusic.api.controller;
 import java.util.List;
 
 import com.animusic.api.dto.AnimeDto;
-import com.animusic.api.dto.AnimeMapper;
+import com.animusic.api.dto.CreateAnimeDto;
 import com.animusic.api.dto.RichAnimeDto;
-import com.animusic.api.dto.UpdateAnimeDto;
-import com.animusic.content.album.AlbumService;
+import com.animusic.api.mappers.AnimeMapper;
 import com.animusic.content.anime.AnimeNotFoundException;
 import com.animusic.content.anime.AnimeService;
 import com.animusic.core.db.model.Anime;
@@ -35,10 +34,6 @@ public class AnimeController {
 
     private final AnimeService animeService;
 
-    private final AnimeMapper animeMapper;
-
-    private final AlbumService albumService;
-
     @GetMapping("/{animeId}")
     @Operation(summary = "Метод для получения аниме по id")
     @ApiResponses(value = {
@@ -50,16 +45,17 @@ public class AnimeController {
         log.info("Requested anime {} info", animeId);
         var anime = animeService.getAnime(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        var albums = anime.getAlbums();
+        var response = AnimeMapper.richAnimeDto(anime);
+        var albums = response.albums();
         albums.sort((a1, a2) -> {
             List<String> categoryOrder = List.of("Openings", "Endings", "Themes", "Scene songs");
 
-            int index1 = categoryOrder.indexOf(a1.getName());
-            int index2 = categoryOrder.indexOf(a2.getName());
+            int index1 = categoryOrder.indexOf(a1.name());
+            int index2 = categoryOrder.indexOf(a2.name());
 
             return Integer.compare(index1, index2);
         });
-        return RichAnimeDto.fromAnime(anime, albums);
+        return response;
     }
 
     @GetMapping
@@ -70,7 +66,7 @@ public class AnimeController {
     })
     public List<AnimeDto> getAllAnime() {
         List<Anime> anime = animeService.getAllAnime();
-        return anime.stream().map(AnimeDto::fromAnime).toList();
+        return anime.stream().map(AnimeMapper::fromAnime).toList();
     }
 
     @PostMapping
@@ -81,11 +77,17 @@ public class AnimeController {
             @ApiResponse(responseCode = "400", description = "Название аниме занято"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public AnimeDto createAnime(@RequestBody UpdateAnimeDto createDto) {
-        Anime anime = animeMapper.convertToEntity(createDto);
-        anime = animeService.createAnime(anime);
+    public AnimeDto createAnime(@RequestBody CreateAnimeDto createDto) {
+        Anime anime = Anime.builder()
+                .title(createDto.title())
+                .studio(createDto.studio())
+                .releaseYear(createDto.releaseYear())
+                .description(createDto.description())
+                .folderName(createDto.folderName())
+                .build();
+        var animeCreated = animeService.createAnime(anime);
         log.info("Anime {} created", anime.getTitle());
-        return AnimeDto.fromAnime(anime);
+        return AnimeMapper.fromAnime(animeCreated);
     }
 
     @PutMapping("{animeId}")
@@ -98,8 +100,7 @@ public class AnimeController {
     })
     public RichAnimeDto updateAnime(@RequestBody Anime updateAnime, @PathVariable Integer animeId) {
         Anime anime = animeService.updateAnime(updateAnime, animeId);
-        var albums = anime.getAlbums();
-        RichAnimeDto richAnimeDto = RichAnimeDto.fromAnime(anime, albums);
+        RichAnimeDto richAnimeDto = AnimeMapper.richAnimeDto(anime);
         log.info("Anime id={} updated successfully", animeId);
         return richAnimeDto;
     }

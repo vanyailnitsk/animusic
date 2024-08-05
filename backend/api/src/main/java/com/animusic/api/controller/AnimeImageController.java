@@ -2,8 +2,7 @@ package com.animusic.api.controller;
 
 import com.animusic.api.dto.AnimeBannerImageDto;
 import com.animusic.api.dto.ImageDto;
-import com.animusic.api.mappers.AnimeBannerImageConverter;
-import com.animusic.api.mappers.ImageConverter;
+import com.animusic.api.mappers.ImageMapper;
 import com.animusic.content.anime.AnimeImageService;
 import com.animusic.core.db.model.AnimeBannerImage;
 import com.animusic.core.db.model.Image;
@@ -28,10 +27,6 @@ public class AnimeImageController {
 
     private final AnimeImageService animeImageService;
 
-    private final AnimeBannerImageConverter bannerImageConverter;
-
-    private final ImageConverter imageConverter;
-
     @PostMapping("banner/{animeId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public AnimeBannerImageDto setBanner(
@@ -40,7 +35,7 @@ public class AnimeImageController {
             @ModelAttribute AnimeBannerImage bannerImage
     ) {
         AnimeBannerImage bannerCreated = animeImageService.setBanner(animeId, banner, bannerImage);
-        return bannerImageConverter.convertToDto(bannerCreated);
+        return ImageMapper.fromAnimeBanner(bannerCreated);
     }
 
     @PostMapping("card/{animeId}")
@@ -50,6 +45,6 @@ public class AnimeImageController {
             @RequestPart(value = "card") MultipartFile card
     ) {
         Image cardCreated = animeImageService.setCard(animeId, card);
-        return imageConverter.convertToDto(cardCreated);
+        return ImageMapper.fromImage(cardCreated);
     }
 }

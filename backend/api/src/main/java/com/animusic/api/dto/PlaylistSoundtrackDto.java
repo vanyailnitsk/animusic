@@ -2,10 +2,10 @@ package com.animusic.api.dto;
 
 import java.util.Date;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class PlaylistSoundtrackDto {
-    private Date addedAt;
-    private SoundtrackEntityDto soundtrack;
+    Date addedAt;
+    SoundtrackEntityDto soundtrack;
 }

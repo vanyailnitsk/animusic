@@ -1,7 +1,7 @@
 package com.animusic.api.controller;
 
 import com.animusic.api.dto.PlaylistDto;
-import com.animusic.api.dto.UserMediaConverter;
+import com.animusic.api.mappers.PlaylistMapper;
 import com.animusic.content.playlist.MediaLibraryService;
 import com.animusic.core.db.model.Playlist;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,8 +25,6 @@ public class MediaLibraryController {
 
     private final MediaLibraryService mediaLibraryService;
 
-    private final UserMediaConverter userMediaConverter;
-
     @GetMapping
     @Operation(summary = "Метод для получения списка любимых треков")
     @ApiResponses(value = {
@@ -36,7 +34,7 @@ public class MediaLibraryController {
     })
     public PlaylistDto getFavouriteTracksPlaylist() {
         Playlist playlist = mediaLibraryService.getFavouritePlaylistOrCreate();
-        PlaylistDto dto = userMediaConverter.convertToDto(playlist);
+        PlaylistDto dto = PlaylistMapper.convertToDto(playlist);
         return dto;
     }
 

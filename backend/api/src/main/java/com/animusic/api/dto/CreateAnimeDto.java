@@ -1,6 +1,6 @@
 package com.animusic.api.dto;
 
-public record UpdateAnimeDto(
+public record CreateAnimeDto(
         String title,
         String studio,
         Integer releaseYear,
