@@ -1,9 +1,22 @@
 package com.animusic.content.conf;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import com.animusic.content.playlist.MediaLibraryService;
+import com.animusic.content.soundtrack.SoundtrackSavedHelper;
+import com.animusic.core.conf.DatabaseConfig;
+import com.animusic.user.service.UserService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
-@EnableAutoConfiguration
+@Import({
+        DatabaseConfig.class,
+})
 public class ContentConfig {
+    @Bean
+    public SoundtrackSavedHelper savedHelper(UserService userService, MediaLibraryService mediaLibraryService) {
+        var soundtrackSavedHelper = new SoundtrackSavedHelper(userService, mediaLibraryService);
+        SoundtrackSavedHelper.setSavedHelper(soundtrackSavedHelper);
+        return soundtrackSavedHelper;
+    }
 }
