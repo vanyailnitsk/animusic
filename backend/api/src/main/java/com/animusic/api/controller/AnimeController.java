@@ -68,7 +68,7 @@ public class AnimeController {
     })
     public List<AnimeDto> getAllAnime() {
         List<Anime> anime = animeService.getAllAnime();
-        return anime.stream().map(animeMapper::fromAnime).toList();
+        return anime.stream().map(AnimeMapper::fromAnime).toList();
     }
 
     @PostMapping

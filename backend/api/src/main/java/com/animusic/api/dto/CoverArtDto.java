@@ -1,6 +1,5 @@
 package com.animusic.api.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Value;
 
 @Value
@@ -13,9 +12,10 @@ public class CoverArtDto {
         this.image = image;
         this.colors = new Colors(colorLight, colorDark);
     }
-    @AllArgsConstructor
+
+    @Value
     public static class Colors {
-        private String colorLight;
-        private String colorDark;
+        String colorLight;
+        String colorDark;
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
-    public UserDto fromUser(User user) {
+    public static UserDto fromUser(User user) {
         return new UserDto(
                 user.getId(),
                 user.getUsername(),
@@ -18,7 +18,7 @@ public class UserMapper {
         );
     }
 
-    public PlaylistOwnerDto playlistOwner(User user) {
+    public static PlaylistOwnerDto playlistOwner(User user) {
         // Mocked until users will have avatar
         var avatar = new PlaylistOwnerDto.Avatar("pain-avatar.jpeg");
         return new PlaylistOwnerDto(
