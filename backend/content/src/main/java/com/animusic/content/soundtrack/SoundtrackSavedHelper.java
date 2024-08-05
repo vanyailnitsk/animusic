@@ -15,14 +15,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SoundtrackSavedHelper {
 
-    private static SoundtrackSavedHelper soundtrackSavedHelper;
-
     private UserService userService;
 
     private MediaLibraryService mediaLibraryService;
 
-    public static boolean isSaved(Soundtrack soundtrack) {
-        Set<Integer> savedTracks = soundtrackSavedHelper.getUserSavedTracksIds();
+    public boolean isSaved(Soundtrack soundtrack) {
+        Set<Integer> savedTracks = getUserSavedTracksIds();
         return savedTracks.contains(soundtrack.getId());
     }
 

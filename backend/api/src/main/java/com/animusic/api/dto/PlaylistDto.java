@@ -2,13 +2,13 @@ package com.animusic.api.dto;
 
 import java.util.List;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class PlaylistDto {
-    private Long id;
-    private String name;
-    private PlaylistOwnerDto addedBy;
-    private List<PlaylistSoundtrackDto> soundtracks;
-    private CoverArtDto coverArt;
+    Integer id;
+    String name;
+    PlaylistOwnerDto addedBy;
+    List<PlaylistSoundtrackDto> soundtracks;
+    CoverArtDto coverArt;
 }

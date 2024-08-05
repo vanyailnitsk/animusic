@@ -2,8 +2,8 @@ package com.animusic.api.controller;
 
 import com.animusic.api.dto.CoverArtDto;
 import com.animusic.api.dto.PlaylistDto;
-import com.animusic.api.dto.UserMediaConverter;
-import com.animusic.api.mappers.CoverArtConverter;
+import com.animusic.api.mappers.CoverArtMapper;
+import com.animusic.api.mappers.PlaylistMapper;
 import com.animusic.content.playlist.PlaylistService;
 import com.animusic.core.db.model.CoverArt;
 import com.animusic.core.db.model.Playlist;
@@ -29,14 +29,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class PlaylistController {
 
     private final PlaylistService playlistService;
-    private final UserMediaConverter userMediaConverter;
-    private final CoverArtConverter coverArtConverter;
+
+    private final PlaylistMapper playlistMapper;
 
     @GetMapping("{playlistId}")
     @Operation(summary = "Метод для получения плейлиста по Id")
     public PlaylistDto getPlaylistById(@PathVariable Integer playlistId) {
         Playlist playlist = playlistService.getPlaylistById(playlistId);
-        return userMediaConverter.convertToDto(playlist);
+        return playlistMapper.convertToDto(playlist);
     }
 
     @PostMapping
@@ -55,9 +55,15 @@ public class PlaylistController {
             @RequestPart(value = "imageFile") MultipartFile imageFile,
             @ModelAttribute AlbumCoverController.CreateCoverDto coverArtDto
     ) {
-        CoverArt coverArt = playlistService.createCoverArt(playlistId, imageFile,
-                coverArtConverter.convertToEntity(coverArtDto));
-        return coverArtConverter.convertToDto(coverArt);
+        CoverArt coverArt = CoverArt.builder()
+                .colorLight(coverArtDto.colorLight())
+                .colorDark(coverArtDto.colorDark())
+                .build();
+        CoverArt created = playlistService.createCoverArt(
+                playlistId,
+                imageFile,
+                coverArt);
+        return CoverArtMapper.fromCoverArt(created);
     }
 
 }

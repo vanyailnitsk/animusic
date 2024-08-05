@@ -1,6 +1,7 @@
 package com.animusic.api.controller;
 
 import com.animusic.api.dto.UserDto;
+import com.animusic.api.mappers.UserMapper;
 import com.animusic.core.db.model.User;
 import com.animusic.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +33,7 @@ public class UserController {
     })
     public UserDto getUser(@AuthenticationPrincipal User currentUser) {
         User user = userService.findByEmailOrThrow(currentUser.getEmail());
-        return new UserDto(user);
+        return UserMapper.fromUser(user);
     }
 
 }

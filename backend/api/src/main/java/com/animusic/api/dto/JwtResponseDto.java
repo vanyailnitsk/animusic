@@ -1,6 +1,5 @@
 package com.animusic.api.dto;
 
-import com.animusic.user.JwtResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -25,8 +24,4 @@ public class JwtResponseDto {
     @Schema(name = "user", description = "Данные об авторизованном пользователе")
     private UserDto user;
 
-    public static JwtResponseDto fromJwtResponse(JwtResponse jwtResponse) {
-        return new JwtResponseDto(jwtResponse.getAccessToken(), jwtResponse.getRefreshTokenCookie(),
-                UserDto.fromUser(jwtResponse.getUser()));
-    }
 }

@@ -2,9 +2,6 @@ package com.animusic.api.dto;
 
 import java.util.List;
 
-import com.animusic.core.db.model.Album;
-import com.animusic.core.db.model.Anime;
-
 public record RichAnimeDto(
         Integer id,
         String title,
@@ -16,20 +13,4 @@ public record RichAnimeDto(
         ImageDto cardImage,
         List<AlbumItemDto> albums
 ) {
-    public static RichAnimeDto fromAnime(Anime anime, List<Album> albums) {
-        if (albums == null) {
-            albums = List.of();
-        }
-        return new RichAnimeDto(
-                anime.getId(),
-                anime.getTitle(),
-                anime.getStudio(),
-                anime.getReleaseYear(),
-                anime.getDescription(),
-                anime.getFolderName(),
-                AnimeBannerImageDto.fromAnimeBannerImage(anime.getBannerImage()),
-                ImageDto.fromImage(anime.getCardImage()),
-                albums.stream().map(AlbumItemDto::fromAlbum).toList()
-        );
-    }
 }

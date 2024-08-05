@@ -1,6 +1,6 @@
 package com.animusic.api.controller;
 
-import com.animusic.api.dto.JwtResponseDto;
+import com.animusic.api.mappers.AuthMapper;
 import com.animusic.user.JwtResponse;
 import com.animusic.user.dto.AuthRequest;
 import com.animusic.user.dto.RegisterRequest;
@@ -39,7 +39,7 @@ public class AuthController {
         JwtResponse response = authService.register(request);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, response.getRefreshTokenCookie().toString())
-                .body(JwtResponseDto.fromJwtResponse(response));
+                .body(AuthMapper.fromJwtResponse(response));
     }
 
     @PostMapping("/login")
@@ -53,7 +53,7 @@ public class AuthController {
         JwtResponse response = authService.authenticate(request);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, response.getRefreshTokenCookie().toString())
-                .body(JwtResponseDto.fromJwtResponse(response));
+                .body(AuthMapper.fromJwtResponse(response));
     }
 
     @PostMapping("/refresh")
@@ -67,6 +67,6 @@ public class AuthController {
         JwtResponse response = authService.updateToken(request);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, response.getRefreshTokenCookie().toString())
-                .body(JwtResponseDto.fromJwtResponse(response));
+                .body(AuthMapper.fromJwtResponse(response));
     }
 }

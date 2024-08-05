@@ -2,9 +2,9 @@ package com.animusic.api.controller;
 
 import java.util.List;
 
-import com.animusic.api.dto.AlbumConverter;
 import com.animusic.api.dto.AlbumDto;
 import com.animusic.api.dto.AlbumItemDto;
+import com.animusic.api.mappers.AlbumMapper;
 import com.animusic.content.album.AlbumService;
 import com.animusic.content.anime.AnimeNotFoundException;
 import com.animusic.core.db.model.Album;
@@ -34,8 +34,6 @@ public class AlbumController {
 
     private final AlbumService albumService;
 
-    private final AlbumConverter albumConverter;
-
     @GetMapping
     @Operation(summary = "Метод для получения списка альбомов по animeId")
     @ApiResponses(value = {
@@ -47,7 +45,7 @@ public class AlbumController {
         log.info("Requested albums by anime {}", animeId);
         var albums = albumService.getAlbumsByAnimeId(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        return albumConverter.convertListToItemDto(albums);
+        return AlbumMapper.albumItems(albums);
     }
 
     @GetMapping("{id}")
@@ -59,8 +57,8 @@ public class AlbumController {
     })
     public AlbumDto getAlbumById(@PathVariable Integer id) {
         log.info("Requested album with id {}", id);
-        Album album = albumService.getAlbumById(id);
-        return albumConverter.convertToDto(album);
+        var album = albumService.getAlbumById(id);
+        return AlbumMapper.fromAlbum(album);
     }
 
 
@@ -74,7 +72,7 @@ public class AlbumController {
     })
     public AlbumDto createAlbum(@RequestBody CreateAlbumDto request, @PathVariable Integer animeId) {
         Album album = albumService.createAlbum(request.toAlbum(), animeId);
-        AlbumDto albumDto = albumConverter.convertToDto(album);
+        AlbumDto albumDto = AlbumMapper.fromAlbum(album);
         log.info("Album {} in anime {} created", album.getName(), animeId);
         return albumDto;
     }
@@ -88,7 +86,7 @@ public class AlbumController {
     })
     public AlbumDto updateAlbumName(@RequestBody UpdateAlbumDto albumDto, @PathVariable Integer albumId) {
         Album album = albumService.updateAlbumName(albumDto.name(), albumId);
-        AlbumDto newAlbumDto = albumConverter.convertToDto(album);
+        AlbumDto newAlbumDto = AlbumMapper.fromAlbum(album);
         log.info("Album id={} updated successfully", albumId);
         return newAlbumDto;
     }

@@ -1,6 +1,7 @@
 package com.animusic.api.controller;
 
 import com.animusic.api.dto.CoverArtDto;
+import com.animusic.api.mappers.CoverArtMapper;
 import com.animusic.content.album.AlbumService;
 import com.animusic.core.db.model.CoverArt;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,7 +38,7 @@ public class AlbumCoverController {
                 coverArtDto.colorLight(),
                 coverArtDto.colorDark()
         );
-        return CoverArtDto.fromCoverArt(coverArt);
+        return CoverArtMapper.fromCoverArt(coverArt);
     }
 
     public record CreateCoverDto(String colorLight, String colorDark) {
