@@ -1,6 +1,8 @@
 package com.animusic.api.mappers;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.animusic.api.dto.AlbumDto;
 import com.animusic.api.dto.AlbumItemDto;
@@ -34,7 +36,7 @@ public class AlbumMapper {
     }
 
     public static List<AlbumItemDto> albumItems(List<Album> albums) {
-        return albums.stream().map(AlbumMapper::albumItemDto).toList();
+        return albums.stream().map(AlbumMapper::albumItemDto).collect(Collectors.toCollection(ArrayList::new));
     }
 
 }
