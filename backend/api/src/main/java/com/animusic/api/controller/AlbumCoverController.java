@@ -25,8 +25,6 @@ public class AlbumCoverController {
 
     private final AlbumService albumService;
 
-    private CoverArtMapper coverArtMapper;
-
     @PostMapping("{albumId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public CoverArtDto createAlbumCover(
@@ -40,7 +38,7 @@ public class AlbumCoverController {
                 coverArtDto.colorLight(),
                 coverArtDto.colorDark()
         );
-        return coverArtMapper.fromCoverArt(coverArt);
+        return CoverArtMapper.fromCoverArt(coverArt);
     }
 
     public record CreateCoverDto(String colorLight, String colorDark) {

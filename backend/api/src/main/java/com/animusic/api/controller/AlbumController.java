@@ -34,8 +34,6 @@ public class AlbumController {
 
     private final AlbumService albumService;
 
-    private final AlbumMapper albumMapper;
-
     @GetMapping
     @Operation(summary = "Метод для получения списка альбомов по animeId")
     @ApiResponses(value = {
@@ -47,7 +45,7 @@ public class AlbumController {
         log.info("Requested albums by anime {}", animeId);
         var albums = albumService.getAlbumsByAnimeId(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        return albumMapper.albumItems(albums);
+        return AlbumMapper.albumItems(albums);
     }
 
     @GetMapping("{id}")
@@ -60,7 +58,7 @@ public class AlbumController {
     public AlbumDto getAlbumById(@PathVariable Integer id) {
         log.info("Requested album with id {}", id);
         var album = albumService.getAlbumById(id);
-        return albumMapper.fromAlbum(album);
+        return AlbumMapper.fromAlbum(album);
     }
 
 
@@ -74,7 +72,7 @@ public class AlbumController {
     })
     public AlbumDto createAlbum(@RequestBody CreateAlbumDto request, @PathVariable Integer animeId) {
         Album album = albumService.createAlbum(request.toAlbum(), animeId);
-        AlbumDto albumDto = albumMapper.fromAlbum(album);
+        AlbumDto albumDto = AlbumMapper.fromAlbum(album);
         log.info("Album {} in anime {} created", album.getName(), animeId);
         return albumDto;
     }
@@ -88,7 +86,7 @@ public class AlbumController {
     })
     public AlbumDto updateAlbumName(@RequestBody UpdateAlbumDto albumDto, @PathVariable Integer albumId) {
         Album album = albumService.updateAlbumName(albumDto.name(), albumId);
-        AlbumDto newAlbumDto = albumMapper.fromAlbum(album);
+        AlbumDto newAlbumDto = AlbumMapper.fromAlbum(album);
         log.info("Album id={} updated successfully", albumId);
         return newAlbumDto;
     }

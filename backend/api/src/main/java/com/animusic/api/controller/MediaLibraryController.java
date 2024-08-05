@@ -25,8 +25,6 @@ public class MediaLibraryController {
 
     private final MediaLibraryService mediaLibraryService;
 
-    private final PlaylistMapper playlistMapper;
-
     @GetMapping
     @Operation(summary = "Метод для получения списка любимых треков")
     @ApiResponses(value = {
@@ -36,7 +34,7 @@ public class MediaLibraryController {
     })
     public PlaylistDto getFavouriteTracksPlaylist() {
         Playlist playlist = mediaLibraryService.getFavouritePlaylistOrCreate();
-        PlaylistDto dto = playlistMapper.convertToDto(playlist);
+        PlaylistDto dto = PlaylistMapper.convertToDto(playlist);
         return dto;
     }
 

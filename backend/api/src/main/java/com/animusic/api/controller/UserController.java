@@ -25,8 +25,6 @@ public class UserController {
 
     private final UserService userService;
 
-    private final UserMapper userMapper;
-
     @GetMapping("")
     @Operation(summary = "Метод для получения данных пользователя")
     @ApiResponses(value = {
@@ -36,7 +34,7 @@ public class UserController {
     })
     public UserDto getUser(@AuthenticationPrincipal User currentUser) {
         User user = userService.findByEmailOrThrow(currentUser.getEmail());
-        return userMapper.fromUser(user);
+        return UserMapper.fromUser(user);
     }
 
 }

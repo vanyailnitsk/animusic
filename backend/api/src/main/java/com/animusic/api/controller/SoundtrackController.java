@@ -37,8 +37,6 @@ public class SoundtrackController {
 
     private final SoundtrackService soundtrackService;
 
-    private final SoundtrackMapper soundtrackMapper;
-
     @GetMapping("{soundtrackId}")
     @Operation(summary = "Метод для получения саундтрека по id")
     @ApiResponses(value = {
@@ -48,7 +46,7 @@ public class SoundtrackController {
     })
     public SoundtrackDto getSoundtrack(@PathVariable Integer soundtrackId) {
         Soundtrack soundtrack = soundtrackService.getSoundtrack(soundtrackId);
-        return soundtrackMapper.fromSoundtrack(soundtrack);
+        return SoundtrackMapper.fromSoundtrack(soundtrack);
     }
 
     @PutMapping("{soundtrackId}")
@@ -70,7 +68,7 @@ public class SoundtrackController {
                 updateSoundtrackDto.duration()
         );
         log.info("Soundtrack id={} updated successfully", soundtrackId);
-        return soundtrackMapper.fromSoundtrack(soundtrack);
+        return SoundtrackMapper.fromSoundtrack(soundtrack);
     }
 
     @PatchMapping("{soundtrackId}")
@@ -87,7 +85,7 @@ public class SoundtrackController {
     ) {
         Soundtrack soundtrackPatched = soundtrackService.updateSoundtrack(jsonPatch, soundtrackId);
         log.info("Soundtrack id={} updated successfully", soundtrackId);
-        return soundtrackMapper.fromSoundtrack(soundtrackPatched);
+        return SoundtrackMapper.fromSoundtrack(soundtrackPatched);
     }
 
     @PostMapping
@@ -111,7 +109,7 @@ public class SoundtrackController {
         soundtrack = soundtrackService.createSoundtrack(
                 audio, image, soundtrack, albumId
         );
-        return soundtrackMapper.fromSoundtrack(soundtrack);
+        return SoundtrackMapper.fromSoundtrack(soundtrack);
     }
 
     @PutMapping("/audio/{soundtrackId}")
@@ -128,7 +126,7 @@ public class SoundtrackController {
     ) {
         Soundtrack soundtrack = soundtrackService.updateAudio(audio, soundtrackId);
         log.info("Soundtrack id={} audio updated to {}", soundtrackId, soundtrack.getAudioFile());
-        return soundtrackMapper.fromSoundtrack(soundtrack);
+        return SoundtrackMapper.fromSoundtrack(soundtrack);
     }
 
     @PutMapping("/images/{soundtrackId}")
@@ -145,7 +143,7 @@ public class SoundtrackController {
     ) {
         Soundtrack soundtrack = soundtrackService.setImage(soundtrackId, image);
         log.info("Image of Soundtrack with id={} updated to '{}'", soundtrackId, soundtrack.getImage().getSource());
-        return soundtrackMapper.fromSoundtrack(soundtrack);
+        return SoundtrackMapper.fromSoundtrack(soundtrack);
     }
 
     @DeleteMapping("{id}")

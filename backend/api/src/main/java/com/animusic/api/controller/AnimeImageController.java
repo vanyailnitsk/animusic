@@ -27,8 +27,6 @@ public class AnimeImageController {
 
     private final AnimeImageService animeImageService;
 
-    private ImageMapper imageMapper;
-
     @PostMapping("banner/{animeId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public AnimeBannerImageDto setBanner(
@@ -37,7 +35,7 @@ public class AnimeImageController {
             @ModelAttribute AnimeBannerImage bannerImage
     ) {
         AnimeBannerImage bannerCreated = animeImageService.setBanner(animeId, banner, bannerImage);
-        return imageMapper.fromAnimeBanner(bannerCreated);
+        return ImageMapper.fromAnimeBanner(bannerCreated);
     }
 
     @PostMapping("card/{animeId}")
@@ -47,6 +45,6 @@ public class AnimeImageController {
             @RequestPart(value = "card") MultipartFile card
     ) {
         Image cardCreated = animeImageService.setCard(animeId, card);
-        return imageMapper.fromImage(cardCreated);
+        return ImageMapper.fromImage(cardCreated);
     }
 }

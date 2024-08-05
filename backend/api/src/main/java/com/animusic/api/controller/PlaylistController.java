@@ -30,15 +30,11 @@ public class PlaylistController {
 
     private final PlaylistService playlistService;
 
-    private final PlaylistMapper playlistMapper;
-
-    private final CoverArtMapper coverArtMapper;
-
     @GetMapping("{playlistId}")
     @Operation(summary = "Метод для получения плейлиста по Id")
     public PlaylistDto getPlaylistById(@PathVariable Integer playlistId) {
         Playlist playlist = playlistService.getPlaylistById(playlistId);
-        return playlistMapper.convertToDto(playlist);
+        return PlaylistMapper.convertToDto(playlist);
     }
 
     @PostMapping
@@ -65,7 +61,7 @@ public class PlaylistController {
                 playlistId,
                 imageFile,
                 coverArt);
-        return coverArtMapper.fromCoverArt(created);
+        return CoverArtMapper.fromCoverArt(created);
     }
 
 }

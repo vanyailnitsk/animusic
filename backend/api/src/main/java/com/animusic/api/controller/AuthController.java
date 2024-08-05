@@ -28,8 +28,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-    private final AuthMapper authMapper;
-
     @PostMapping("/register")
     @Operation(summary = "Метод для регистрации пользователя.")
     @ApiResponses(value = {
@@ -41,7 +39,7 @@ public class AuthController {
         JwtResponse response = authService.register(request);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, response.getRefreshTokenCookie().toString())
-                .body(authMapper.fromJwtResponse(response));
+                .body(AuthMapper.fromJwtResponse(response));
     }
 
     @PostMapping("/login")
@@ -55,7 +53,7 @@ public class AuthController {
         JwtResponse response = authService.authenticate(request);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, response.getRefreshTokenCookie().toString())
-                .body(authMapper.fromJwtResponse(response));
+                .body(AuthMapper.fromJwtResponse(response));
     }
 
     @PostMapping("/refresh")
@@ -69,6 +67,6 @@ public class AuthController {
         JwtResponse response = authService.updateToken(request);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, response.getRefreshTokenCookie().toString())
-                .body(authMapper.fromJwtResponse(response));
+                .body(AuthMapper.fromJwtResponse(response));
     }
 }
