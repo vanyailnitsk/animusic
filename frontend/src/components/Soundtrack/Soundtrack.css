@@ -1,0 +1,128 @@
+.soundtrack__container {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-block: 5px;
+    margin-bottom: 3px;
+    width: 100%;
+    background: transparent;
+    transition: 0.2s linear;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.soundtrack__container.playing {
+    background-color: #595959;
+}
+
+.soundtrack__container:hover {
+    background-color: #333333;
+}
+
+.soundtrack__container:hover > .soundtrack__toggle__play img {
+    display: block;
+}
+
+.soundtrack__container:hover > .soundtrack__toggle__play span {
+    display: none;
+}
+
+.soundtrack__container:hover > .soundtrack__add {
+    opacity: 1;
+}
+
+.soundtrack__toggle__play {
+    display: flex;
+    width: 40px;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    transition: .2s ease;
+}
+
+.soundtrack__toggle__play img {
+    width: 18px;
+    display: none;
+}
+
+.soundtrack__toggle__play span {
+    display: block;
+    color: #808080;
+    width: 18px;
+    font-size: 14px;
+}
+
+.soundtrack__image {
+    width: 40px;
+    height: 40px;
+}
+
+.title {
+    margin: 0 0 0 10px;
+    font-size: 15px;
+    width: 20vw;
+    white-space: nowrap;
+}
+
+.original__title {
+    font-size: 15px;
+    white-space: nowrap;
+    width: 27vw;
+    margin-left: 7vw;
+    margin-block: auto;
+    text-align: left;
+}
+
+.soundtrack__add {
+    opacity: 0;
+    position: absolute;
+    right: 13vw;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.soundtrack__add img {
+    width: 20px;
+    height: 20px;
+}
+
+.track__duration {
+    font-size: 15px;
+    position: absolute;
+    right: 7vw;
+    color: #808080;
+}
+
+@media screen and (max-width: 759px) {
+    .original__title {
+        display: none;
+    }
+
+    .soundtrack__add {
+        display: none;
+    }
+
+    .title {
+        font-size: 13px;
+        margin-left: 10px;
+        width: 180px;
+        overflow: hidden;
+    }
+
+    .soundtrack__image {
+        width: 30px;
+        height: 30px;
+    }
+
+    .track__duration {
+        font-size: 13px;
+        position: absolute;
+        right: 7vw;
+    }
+}

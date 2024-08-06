@@ -1,0 +1,85 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.add-anime-main {
+    position: relative;
+    height: 80vh;
+    width: 80%;
+    background-color: #121212;
+    color: white;
+    border-radius: 20px;
+}
+
+.anime-title, .studio, .release-year, .description, .folder-name {
+    width: 80%;
+    margin-top: 3%;
+    margin-inline: 10%;
+    height: 5vh;
+    background: transparent;
+    color: white;
+    font-size: 20px;
+    border: none;
+    box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    outline: none;
+    border-radius: 5px;
+}
+
+.upload-pictures {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 3%;
+    margin-inline: 10%;
+}
+
+.anime-card,
+.picture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px; /* Добавлен отступ между элементами */
+}
+
+.anime-card span,
+.picture span {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.anime-card input,
+.picture input {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 5px;
+    background-color: transparent;
+    color: white;
+    box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.create-btn {
+    display: flex;
+    position: absolute;
+    bottom: 20px;
+    right: 0px;
+}
+
+.create-btn button {
+    padding-inline: 14px;
+    padding-block: 8px;
+    border: none;
+    color: black;
+    background-color: white;
+    border-radius: 10px;
+    margin-right: 20px;
+    transition: .1s linear;
+}
+
+.create-btn button:hover {
+    color: white;
+    background-color: #383838;
+}
