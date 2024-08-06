@@ -26,8 +26,8 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.env.Profiles;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -58,9 +58,11 @@ public class DatabaseConfig {
         return liquibase;
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    @Profile("dev")
-    public void loadData() {
+    @EventListener
+    public void loadData(ApplicationReadyEvent event) {
+        if (!event.getApplicationContext().getEnvironment().acceptsProfiles(Profiles.of("dev"))) {
+            return;
+        }
         var script = "initdb-dev.sql";
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(
                 true,
