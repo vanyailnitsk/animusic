@@ -1,0 +1,9 @@
+.soundtrack-manager-container {
+    margin-left: 16%;
+    margin-top: 8vh;
+    height: 92vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
