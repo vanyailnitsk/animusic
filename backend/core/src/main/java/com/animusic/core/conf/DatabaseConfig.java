@@ -22,10 +22,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
@@ -51,6 +56,20 @@ public class DatabaseConfig {
         liquibase.setChangeLog("classpath:liquibase/changelog.xml");
         liquibase.setDataSource(dataSource);
         return liquibase;
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    @Profile("dev")
+    public void loadData() {
+        var script = "initdb-dev.sql";
+        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(
+                true,
+                false,
+                "UTF-8",
+                new ClassPathResource(script)
+        );
+        resourceDatabasePopulator.execute(dataSource);
+        log.info("Script {} was executed", script);
     }
 
     @Bean
