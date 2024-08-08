@@ -33,7 +33,7 @@ services:
 
   storage:
     image: minio/minio
-    command: minio server /data
+    command: server /data --console-address :9001
     ports:
       - "9000:9000"
       - "9001:9001"
