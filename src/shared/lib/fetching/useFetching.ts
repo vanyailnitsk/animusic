@@ -1,15 +1,7 @@
 import {useEffect, useState} from "react";
 import {AxiosResponse} from "axios";
 
-export const useFetching =
-<
-T > (requestCallback
-:
-() => Promise<AxiosResponse<T>>, deps
-:
-any[] = []
-) =>
-{
+export const useFetching = <T>(requestCallback: () => Promise<AxiosResponse<T>>, deps: any[] = []) => {
     const [data, setData] = useState<null | T>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
@@ -30,5 +22,4 @@ any[] = []
     }, deps);
 
     return {data, isLoading, error};
-}
-;
+};
