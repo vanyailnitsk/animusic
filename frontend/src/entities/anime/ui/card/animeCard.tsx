@@ -17,8 +17,8 @@ export const AnimeCard = ({cardImageUrl, title, id}: AnimeCardProps) => {
         <div className={styles.anime__card} onClick={() => navigate('/anime/' + id)}>
             {loading?
                 (
-                    <div style={{position:"absolute"}}>
-                        <Skeleton style={{width:290,height:160,position:'absolute',left:14,right:14,top:14}}/>
+                    <div className={styles.anime__card__skeleton}>
+                        <Skeleton style={{width: 290, height: 160}}/>
                     </div>
                 )
                 : null
