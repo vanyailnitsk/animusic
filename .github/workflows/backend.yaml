@@ -16,6 +16,6 @@ jobs:
           distribution: 'corretto'
           cache: maven
       - name: Build with Maven
-        run: mvn package -DskipTests
+        run: mvn -B package --file backend/pom.xml -DskipTests
       - name: Run tests
-        run: mvn test
+        run: mvn -B test --file backend/pom.xml
