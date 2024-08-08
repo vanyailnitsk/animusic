@@ -2,49 +2,45 @@ version: "3.9"
 services:
   animusic-db:
     container_name: animusic_postgres
-    build:
-      context: ../database
-      dockerfile: ../database/Dockerfile
+    image: postgres:14
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=admin
-    volumes:
-      - type: bind
-        source: ./database/data
-        target: /var/lib/postgresql/data
+      - POSTGRES_DB=animusic
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
     restart: always
     healthcheck:
-      test: [ 'CMD-SHELL', 'pg_isready -U postgres -d animusic' ]
+      test: [ 'CMD-SHELL', 'pg_isready -U test -d animusic' ]
       start_period: 10s
       interval: 20s
       timeout: 5s
       retries: 5
     command: postgres -c stats_temp_directory=/tmp
     ports:
-      - "5433:5432"
+      - "5431:5432"
 
   spring-app:
     container_name: spring-app
     build:
-      context: ..
+      context: .
       dockerfile: Dockerfile
     environment:
       DB_URL: jdbc:postgresql://animusic-db:5432/animusic
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      port: 8081
-      storage: "/animusic"
-      JWT_SECRET: ${JWT_SECRET}
-      s3-url: ${s3-url}
-      s3-bucket: ${s3-bucket}
-      s3-region: ${s3-region}
-      s3-accesskey: ${s3-accesskey}
-      s3-secretkey: ${s3-secretkey}
-    volumes:
-      - ${STORAGE}:/animusic
+      STORAGE_URL: http://storage:9000
     ports:
-      - "8081:8081"
+      - "8080:8080"
     depends_on:
       animusic-db:
         condition: service_healthy
+
+  storage:
+    image: minio/minio
+    command: server /data --console-address :9001
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - '~/Animusic/Storage:/data'
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_DEFAULT_BUCKETS=animusic

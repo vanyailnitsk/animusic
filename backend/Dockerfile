@@ -1,12 +1,11 @@
-FROM maven:3.8.7-openjdk-18 AS build
+FROM maven:3.9.8-amazoncorretto-21 AS build
 WORKDIR /app
-COPY pom.xml .
-COPY backend ./src
-RUN mvn clean package -DskipTests
+COPY . .
+RUN mvn package -DskipTests
 
-FROM openjdk:18
+FROM amazoncorretto:21
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
-COPY ../database/migration database/migration
-EXPOSE 8081
-ENTRYPOINT ["java", "-jar", "app.jar"]
+COPY --from=build /app/api/target/api-1.0.jar app.jar
+
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar","--spring.profiles.active=dev"]
