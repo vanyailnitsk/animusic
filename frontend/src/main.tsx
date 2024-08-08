@@ -1,15 +1,12 @@
-import React, {createContext} from 'react';
+import {createContext} from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import MusicStore from "./store/MusicStore";
-import UserStore from "./store/UserStore";
+import App from "@/app/App";
+import {MusicStore, UserStore} from "@/shared/store";
 
-interface State {
+interface State{
     userStore: UserStore,
-    musicStore: MusicStore
+    musicStore : MusicStore
 }
-
 const userStore = new UserStore()
 const musicStore = new MusicStore()
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -18,8 +15,8 @@ export const Context = createContext<State>({
     musicStore
 });
 root.render(
-    <Context.Provider value={{userStore, musicStore}}>
-        <App />
+    <Context.Provider value={ {userStore, musicStore} }>
+        <App/>
     </Context.Provider>
 );
 
