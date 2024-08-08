@@ -1,17 +1,17 @@
 import styles from './anime-cards-list.module.css'
-import {AnimeCard, IAnime} from "@/entities/anime";
+import {AnimeCard, getAllAnime} from "@/entities/anime";
 import {useFetching} from "@/shared/lib/fetching";
+import {storageUrl} from "@/shared/api";
 
-interface AnimeCardListProps {
-    animeCards: IAnime[]
-}
-
-export const AnimeCardsList = ({animeCards}: AnimeCardListProps) => {
-    const {} = useFetching(async () =>)
+export const AnimeCardsList = () => {
+    const {data, error} = useFetching(async () => getAllAnime(), [])
+    if (error) {
+        return <div>{error}</div>
+    }
     return (
         <div className={styles.cards__list__wrapper}>
-            {animeCards.map(card =>
-                <AnimeCard card={card} key={card.id}/>
+            {data && data.map(card =>
+                <AnimeCard id={card.id} cardImageUrl={storageUrl + card.cardImage.source} title={card.title}/>
             )}
         </div>
     );
