@@ -1,0 +1,24 @@
+name: Java CI with Maven
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - backend/**
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file backend/pom.xml -DskipTests
+      - name: Run tests
+        run: mvn test --file backend/pom.xml -Dspring.profiles.active=testing
