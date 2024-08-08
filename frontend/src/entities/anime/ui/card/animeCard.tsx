@@ -24,7 +24,9 @@ export const AnimeCard = ({cardImageUrl, title, id}: AnimeCardProps) => {
                 : null
             }
             <img src={cardImageUrl} alt="" onLoad={() => setLoading(false)}/>
-            <span>{title}</span>
+            <div className={styles.anime__card__title}>
+                <span>{title}</span>
+            </div>
         </div>
     );
 };
