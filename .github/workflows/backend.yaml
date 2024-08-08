@@ -18,4 +18,4 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file backend/pom.xml -DskipTests
       - name: Run tests
-        run: mvn -B test --file backend/pom.xml
+        run: mvn -B test --file backend/pom.xml -Dspring.profiles.active=testing
