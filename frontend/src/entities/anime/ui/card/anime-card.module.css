@@ -26,7 +26,6 @@
     bottom: 0;
 }
 
-<<<<<<< HEAD:frontend/src/entities/anime/ui/card/anime-card.module.css
 .anime__card__skeleton {
     width: 292px;
     height: 160px;
@@ -35,8 +34,6 @@
     left: 13px;
     border-radius: 7px;
 }
-=======
->>>>>>> e5e14c7 (типизировал запросы связанные с anime и пофиксил стили карточки):src/entities/anime/ui/anime-card/anime-card.module.css
 .anime__card__title span {
     font-size: 15px;
 }
