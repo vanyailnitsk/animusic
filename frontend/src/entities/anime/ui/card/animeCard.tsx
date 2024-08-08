@@ -17,16 +17,14 @@ export const AnimeCard = ({cardImageUrl, title, id}: AnimeCardProps) => {
         <div className={styles.anime__card} onClick={() => navigate('/anime/' + id)}>
             {loading?
                 (
-                    <div className={styles.anime__card__skeleton}>
-                        <Skeleton style={{width: 290, height: 160}}/>
+                    <div style={{position:"absolute"}}>
+                        <Skeleton style={{width:290,height:160,position:'absolute',left:14,right:14,top:14}}/>
                     </div>
                 )
                 : null
             }
             <img src={cardImageUrl} alt="" onLoad={() => setLoading(false)}/>
-            <div className={styles.anime__card__title}>
-                <span>{title}</span>
-            </div>
+            <span>{title}</span>
         </div>
     );
 };
