@@ -17,6 +17,7 @@ create.sql
 logs/
 out/
 node_modules
+frontend/.env
 
 ### STS ###
 .apt_generated
@@ -45,3 +46,9 @@ build/
 
 ### VS Code ###
 .vscode/
+/frontend/dist/assets/avatar-CYQRBOUn.jpeg
+/frontend/dist/assets/favourites-BN598mkr.jpg
+/frontend/dist/assets/home-BQbTEIzJ.png
+/frontend/dist/assets/index-CxdIJC51.js
+/frontend/dist/assets/index-uzofl3Pd.css
+/frontend/dist/vite.svg
