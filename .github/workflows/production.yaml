@@ -59,23 +59,6 @@ jobs:
       run:
         working-directory: ./frontend
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-      - run: npm ci
-      - run: touch .env && echo "VITE_REACT_APP_API_URL=https://animusic.me/api" > .env
-      - run: npm run build
-      - name: Deploy frontend to animusic.me
-        uses: appleboy/scp-action@master
-        with:
-          username: ${{ secrets.SSH_ANIMUSIC_USER }}
-          host: ${{ secrets.SSH_ANIMUSIC_HOST }}
-          key: ${{ secrets.SSH_ANIMUSIC_KEY }}
-          port: 22
-          source: build
-          target: /var/www
       - name: Restart nginx
         uses: appleboy/ssh-action@master
         with:
@@ -84,6 +67,8 @@ jobs:
           key: ${{ secrets.SSH_ANIMUSIC_KEY }}
           port: 22
           script: |
-            sudo service nginx restart
+            cd ~/animusic/frontend
+            sh deploy.sh
+            echo "Success on frontend-app deploy"
           
     
