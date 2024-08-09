@@ -153,7 +153,7 @@ Response example
 }
 ```
 
-2) POST /api/soundtrack/create-from-file - создать саундтрек с помощью аудиофайла 
+2) POST /api/soundtrack/create-from-file - создать саундтрек с помощью аудиофайла
 
 Пример использования:
 

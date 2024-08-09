@@ -1,0 +1,124 @@
+.current__track {
+    position: relative;
+    width: 280px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin-left: 25px;
+}
+
+.hidden {
+    display: none;
+}
+
+.track__img {
+    width: 50px;
+    height: 50px;
+}
+
+.track__name {
+    display: flex;
+    flex-direction: column;
+    line-height: 21px;
+    height: 50px;
+    width: 190px;
+    margin-left: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.track__name span:first-child {
+    font-size: 17px;
+    font-weight: 400;
+    position: absolute;
+    top: 5px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.track__name span:first-child:hover {
+    cursor: pointer;
+    text-decoration: underline white;
+}
+
+.track__name span:last-child {
+    position: absolute;
+    bottom: 0;
+    opacity: 0.7;
+    font-size: 15px;
+    font-weight: 200;
+}
+
+.add__track {
+    width: 26px;
+    height: 26px;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+}
+
+@keyframes scrollText {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.current__track .track__name span.scrolling {
+    white-space: nowrap; /* Запретить перенос текста на новую строку */
+    overflow: hidden; /* Скрыть часть текста, выходящую за пределы блока */
+    animation: scrollText 10s linear infinite;
+}
+
+@media screen and (min-width: 320px) and (max-width: 655px) {
+    .track__name span.scrolling {
+        white-space: nowrap; /* Запретить перенос текста на новую строку */
+        overflow: hidden; /* Скрыть часть текста, выходящую за пределы блока */
+        animation: scrollText 10s linear infinite
+    }
+
+    .track__img {
+        width: 55px;
+        height: 55px;
+        margin-left: 5%;
+    }
+
+    .track__img.active {
+        width: 320px;
+        height: 320px;
+        margin-inline: auto;
+        margin-top: 13vh;
+    }
+
+    .add__track {
+        right: 30px;
+    }
+
+    .track__name.active {
+        width: 100%;
+        display: flex;
+        margin-top: 10vh;
+        height: 8vh;
+        align-items: center;
+        margin-inline: 0;
+    }
+
+    .track__name.active span:first-child {
+        font-size: 20px;
+        font-weight: 500;
+        animation: none;
+    }
+
+    .track__name.active span:last-child {
+        font-size: 17px;
+    }
+
+    .add__track.active {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+    }
+}

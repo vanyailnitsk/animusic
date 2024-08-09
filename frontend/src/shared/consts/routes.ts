@@ -1,0 +1,7 @@
+export const HOME_ROUTE = '/'
+export const ANIME_ROUTE = '/anime/:id'
+export const ALBUM_ROUTE = '/album/:id'
+export const SEARCH_ROUTE = '/search'
+export const LOGIN = '/sign-in'
+export const SIGN_UP = '/sign-up'
+export const COLLECTION = '/collection'

@@ -6,12 +6,16 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .. --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "npx steiger ./src",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
     "@hookform/resolvers": "^3.9.0",
+    "@mui/material": "^5.16.4",
     "axios": "^1.7.2",
+    "clsx": "^2.1.1",
     "mobx-react-lite": "^4.0.7",
     "react": "^18.3.1",
     "react-device-detect": "^2.2.3",
@@ -32,6 +36,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "typescript": "^5.2.2",
-    "vite": "^5.3.4"
+    "vite": "^5.3.4",
+    "vite-plugin-svgr": "^4.2.0"
   }
 }
