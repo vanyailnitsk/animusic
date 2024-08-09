@@ -1,9 +1,6 @@
 name: Deploy to production
 
-on:
-  pull_request:
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
   backend-build-test:
@@ -59,7 +56,7 @@ jobs:
       run:
         working-directory: ./frontend
     steps:
-      - name: Restart nginx
+      - name: Build project and restart nginx
         uses: appleboy/ssh-action@master
         with:
           username: ${{ secrets.SSH_ANIMUSIC_USER }}
