@@ -32,7 +32,6 @@ jobs:
           key: ${{ secrets.SSH_ANIMUSIC_KEY }}
           port: 22
           script: |
-            whoami
-            cd ~/animusic
-            ls -l
+            cd ~/animusic/backend
+            sh deploy.sh
     
