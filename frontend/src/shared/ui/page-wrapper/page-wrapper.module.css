@@ -1,0 +1,48 @@
+.page__wrapper {
+    position: relative;
+    margin-inline:auto;
+    width: calc(100% + 7px);
+    height: 87vh;
+    overflow: auto;
+    border-radius: 7px;
+    scrollbar-gutter: stable;
+}
+
+.page__wrapper:hover::-webkit-scrollbar-thumb {
+    background: #48494a;
+}
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+}
+
+.profile__picture__wrapper{
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #060606;;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    -webkit-box-shadow: 0px 0px 11px 4px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 0px 11px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 11px 4px rgba(0, 0, 0, 0.2);
+}
+@media screen and (max-width: 1080px) and (max-height: 2400px){
+    .profile__picture__wrapper{
+        width: 30px;
+        height: 30px;
+        top: 7px;
+        right: 7px;
+    }
+}
