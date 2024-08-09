@@ -1,0 +1,19 @@
+.main__wrapper{
+    width: 99%;
+    height: 88vh;
+    margin-top: 1vh;
+    margin-bottom: 10vh;
+    display: grid;
+    grid-template-columns:24.5% calc(75.5% - 10px);
+    grid-template-rows:auto 1fr auto;
+    gap: 10px;
+    z-index: 1;
+    position: fixed;
+}
+
+@media screen and (max-width: 980px) and (max-height: 2400px){
+    .main__wrapper{
+        width: 99%;
+        display: block;
+    }
+}
