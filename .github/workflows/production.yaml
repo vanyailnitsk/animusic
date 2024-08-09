@@ -65,12 +65,7 @@ jobs:
           port: 22
           script: |
             cd ~/animusic/frontend
-            npm install
-            npm run build
-            mv dist build
-            rm -rf /var/www/build
-            cp build /var/www
-            sudo service nginx restart
+            sh deploy.sh
             echo "Фронтенд-приложение успешно обновлено"
           
     

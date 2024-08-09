@@ -16,6 +16,7 @@ index.html
 create.sql
 logs/
 out/
+frontend/.env
 
 ### STS ###
 .apt_generated
@@ -26,7 +27,6 @@ out/
 .springBeans
 .sts4-cache
 
-<<<<<<<< HEAD:.gitignore
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -45,7 +45,6 @@ build/
 
 ### VS Code ###
 .vscode/
-========
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -56,4 +55,4 @@ build/
 *.njsproj
 *.sln
 *.sw?
->>>>>>>> 96a4b48 (move all to `frontend` folder):frontend/.gitignore
+
