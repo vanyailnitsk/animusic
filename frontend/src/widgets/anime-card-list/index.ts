@@ -1,1 +1,0 @@
-export {AnimeCardsList} from './ui/AnimeCardsList.tsx'

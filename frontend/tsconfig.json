@@ -9,14 +9,12 @@
     ],
     "module": "ESNext",
     "skipLibCheck": true,
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -31,7 +29,8 @@
     }
   },
   "include": [
-    "src"
+    "src",
+    "vite-env.d.ts"
   ],
   "references": [
     {
@@ -39,4 +38,3 @@
     }
   ]
 }
-
