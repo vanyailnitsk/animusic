@@ -34,4 +34,6 @@ jobs:
           script: |
             cd ~/animusic/backend
             sh deploy.sh
+            timeout 60 tail -f logs/app.log
+            echo "Завершение запуска..."
     
