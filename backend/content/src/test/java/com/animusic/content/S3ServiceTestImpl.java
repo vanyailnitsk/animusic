@@ -32,4 +32,8 @@ public class S3ServiceTestImpl implements S3Service {
         return fileName;
     }
 
+    public void clear() {
+        storage.clear();
+    }
+
 }

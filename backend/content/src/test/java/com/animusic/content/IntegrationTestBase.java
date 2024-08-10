@@ -13,6 +13,7 @@ import com.animusic.core.db.table.SoundtrackRepository;
 import com.animusic.user.service.UserService;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -64,4 +65,8 @@ public class IntegrationTestBase {
         log.info("{}",soundtrackRepository.findAll());
     }
 
+    @AfterEach
+    void tearDown() {
+        s3Service.clear();
+    }
 }
