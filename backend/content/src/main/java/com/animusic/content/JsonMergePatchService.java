@@ -1,4 +1,4 @@
-package com.animusic.core;
+package com.animusic.content;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

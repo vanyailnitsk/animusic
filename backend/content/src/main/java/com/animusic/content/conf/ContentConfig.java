@@ -5,6 +5,7 @@ import com.animusic.content.soundtrack.SoundtrackSavedHelper;
 import com.animusic.core.conf.DatabaseConfig;
 import com.animusic.user.service.UserService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Import;
 @Import({
         DatabaseConfig.class,
 })
+@ComponentScan("com.animusic.content")
 public class ContentConfig {
     @Bean
     public SoundtrackSavedHelper savedHelper(UserService userService, MediaLibraryService mediaLibraryService) {
