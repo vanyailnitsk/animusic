@@ -19,14 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
+import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.DOCKER;
 
 @SpringJUnitConfig({
         DatabaseConfig.class,
         IntegrationTestsConfig.class,
         ContentConfig.class
 })
-@AutoConfigureEmbeddedDatabase(provider = ZONKY)
+@AutoConfigureEmbeddedDatabase(provider = DOCKER)
 @Slf4j
 public class IntegrationTestBase {
 
