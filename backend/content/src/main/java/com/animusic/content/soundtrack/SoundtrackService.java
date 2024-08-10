@@ -57,10 +57,9 @@ public class SoundtrackService {
                     image);
             soundtrack.setImage(savedImage);
         }
-        Soundtrack savedSoundtrack = soundtrackRepository.save(soundtrack);
         soundtrack.setAlbum(album);
         log.info("Soundtrack {} created successfully", blobKey);
-        return savedSoundtrack;
+        return soundtrackRepository.save(soundtrack);
     }
 
 
