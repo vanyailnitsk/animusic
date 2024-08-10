@@ -1,7 +1,6 @@
 package com.animusic.content;
 
 import com.animusic.content.conf.ContentConfig;
-import com.animusic.core.conf.DatabaseConfig;
 import com.animusic.core.db.table.AlbumRepository;
 import com.animusic.core.db.table.AnimeBannerImageRepository;
 import com.animusic.core.db.table.AnimeRepository;
@@ -19,14 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.DOCKER;
+import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 
 @SpringJUnitConfig({
-        DatabaseConfig.class,
         IntegrationTestsConfig.class,
         ContentConfig.class
 })
-@AutoConfigureEmbeddedDatabase(provider = DOCKER)
+@AutoConfigureEmbeddedDatabase(provider = ZONKY)
 @Slf4j
 public class IntegrationTestBase {
 
