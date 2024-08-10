@@ -23,10 +23,15 @@ import static com.animusic.core.db.table.PlaylistRepository.FAVOURITE_PLAYLIST_N
 @Service
 @RequiredArgsConstructor
 public class MediaLibraryService {
+
     private final UserService userService;
+
     private final SoundtrackRepository soundtrackRepository;
+
     private final PlaylistRepository playlistRepository;
+
     private final PlaylistSoundtrackRepository playlistSoundtrackRepository;
+
     private final PlaylistService playlistService;
 
     public Optional<Playlist> getFavouritePlaylist(@NonNull User user) {

@@ -13,10 +13,14 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class ImageService {
+
     private final ImageRepository imageRepository;
+
     private final S3Service s3Service;
     private static final String ANIME_IMAGES_PATH = "%s/images/%s";
+
     private static final String USER_IMAGES_PATH = "users/%d/%s";
+
     private final String CONTENT_TYPE = "image/jpeg";
 
     @Transactional

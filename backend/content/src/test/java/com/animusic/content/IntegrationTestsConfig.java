@@ -1,7 +1,6 @@
 package com.animusic.content;
 
 import com.animusic.core.conf.DatabaseConfig;
-import com.animusic.s3.S3Service;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

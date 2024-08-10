@@ -26,7 +26,7 @@ class AudioServiceTest extends IntegrationTestBase {
                 .build();
         var content = "content_of_audiofile";
         var file = new MockMultipartFile("file", "track.aac", "audio/aac", content.getBytes());
-        audioService.createAudioFile(soundtrack,file);
+        audioService.createAudioFile(soundtrack, file);
         assertThat(s3Service.getObject("Naruto/audio/Opening 1.aac")).isEqualTo(content.getBytes());
     }
 }

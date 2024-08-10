@@ -2,9 +2,9 @@ package com.animusic.content.soundtrack;
 
 import java.util.Objects;
 
+import com.animusic.content.JsonMergePatchService;
 import com.animusic.content.album.AlbumService;
 import com.animusic.content.image.ImageService;
-import com.animusic.content.JsonMergePatchService;
 import com.animusic.core.db.model.Album;
 import com.animusic.core.db.model.Anime;
 import com.animusic.core.db.model.Image;
