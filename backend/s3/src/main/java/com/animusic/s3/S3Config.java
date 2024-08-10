@@ -14,7 +14,6 @@ import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
 
 @Configuration
 @Import(PropertiesConfig.class)
@@ -44,6 +43,6 @@ public class S3Config {
 
     @Bean
     public S3Service s3Service(S3Client s3Client) {
-        return new S3Service(s3Client, properties);
+        return new S3ServiceImpl(s3Client, properties);
     }
 }
