@@ -9,11 +9,11 @@ import lombok.Getter;
 @Getter
 public class S3ServiceTestImpl implements S3Service {
 
-    private final Map<String,byte[]> storage = new HashMap<>();
+    private final Map<String, byte[]> storage = new HashMap<>();
 
     @Override
     public void putObject(String key, byte[] file, String contentType) {
-        storage.put(key,file);
+        storage.put(key, file);
     }
 
     @Override

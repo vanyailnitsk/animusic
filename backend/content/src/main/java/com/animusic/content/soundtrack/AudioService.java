@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.animusic.core.InvalidDataException;
 import com.animusic.core.db.model.Soundtrack;
 import com.animusic.s3.S3Service;
-import com.animusic.s3.S3ServiceImpl;
 import com.animusic.s3.StoragePathResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
