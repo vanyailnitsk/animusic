@@ -29,7 +29,7 @@ public class ImageService {
 
     @Transactional
     public Image createImageInAnimeDirectory(String animeFolder, String imageName, MultipartFile image) {
-        Image imageEntity = new Image();
+        var imageEntity = new Image();
         var fileName = StoragePathResolver.imageInAnimeFolder(animeFolder, imageName, image.getOriginalFilename());
         try {
             String blobKey = s3Service.createBlob(fileName, image.getBytes(), CONTENT_TYPE);
@@ -41,7 +41,7 @@ public class ImageService {
     }
 
     public Image createImageForUser(Integer userId, String imageName, MultipartFile image) {
-        Image imageEntity = new Image();
+        var imageEntity = new Image();
         var fileName = StoragePathResolver.imageInUserFolder(userId, imageName, image.getOriginalFilename());
         try {
             String blobKey = s3Service.createBlob(fileName, image.getBytes(), CONTENT_TYPE);
