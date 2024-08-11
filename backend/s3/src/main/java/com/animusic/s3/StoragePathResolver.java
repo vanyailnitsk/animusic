@@ -10,6 +10,12 @@ public class StoragePathResolver {
 
     private static final String USER_IMAGES_PATH = "users/%d/%s";
 
+    private static String storageUrl;
+
+    public static void setStorageUrl(String url, String bucketName) {
+        StoragePathResolver.storageUrl = "%s/%s/".formatted(url, bucketName);
+    }
+
     public static String getFileExtension(String fileName) {
         if (fileName == null || fileName.lastIndexOf('.') == -1) {
             return null;
@@ -42,5 +48,9 @@ public class StoragePathResolver {
     ) {
         var extension = Objects.requireNonNull(getFileExtension(originalFileName));
         return USER_IMAGES_PATH.formatted(userId, imageName + extension);
+    }
+
+    public static String getAbsoluteFileUrl(String relativeUrl) {
+        return storageUrl + relativeUrl;
     }
 }

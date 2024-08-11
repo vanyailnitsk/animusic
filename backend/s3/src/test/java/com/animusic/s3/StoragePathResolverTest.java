@@ -45,4 +45,12 @@ class StoragePathResolverTest {
         assertThatThrownBy(() -> StoragePathResolver.imageInUserFolder(2, "p", null))
                 .isInstanceOf(NullPointerException.class);
     }
+
+    @Test
+    void absoluteUrlTest() {
+        StoragePathResolver.setStorageUrl("https://yandex-cloud.net", "animusic");
+        var objectUrl = "Naruto/track.mp3";
+        assertThat(StoragePathResolver.getAbsoluteFileUrl(objectUrl))
+                .isEqualTo("https://yandex-cloud.net/animusic/Naruto/track.mp3");
+    }
 }
