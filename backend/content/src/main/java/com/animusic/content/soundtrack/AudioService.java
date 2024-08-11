@@ -21,7 +21,7 @@ public class AudioService {
             throw new InvalidDataException("Содержимое аудиофайла не может быть пустым!");
         }
         var animeFolder = soundtrack.getAnime().getFolderName();
-        var fileName = StoragePathResolver.createSoundtrackFileName(
+        var fileName = StoragePathResolver.soundtrackAudioFile(
                 animeFolder,
                 soundtrack.getAnimeTitle(),
                 audio.getOriginalFilename()

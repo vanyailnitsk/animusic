@@ -7,7 +7,6 @@ import com.animusic.content.album.AlbumService;
 import com.animusic.content.image.ImageService;
 import com.animusic.core.db.model.Album;
 import com.animusic.core.db.model.Anime;
-import com.animusic.core.db.model.Image;
 import com.animusic.core.db.model.Soundtrack;
 import com.animusic.core.db.table.SoundtrackRepository;
 import com.animusic.s3.S3Service;
@@ -53,24 +52,16 @@ public class SoundtrackService {
         var blobKey = audioService.createAudioFile(soundtrack, audio);
         soundtrack.setAudioFile(blobKey);
         if (image != null && !image.isEmpty()) {
-            Image savedImage = imageService.createSoundtrackImage(anime.getFolderName(), soundtrack.getAnimeTitle(),
-                    image);
+            var savedImage = imageService.createImageInAnimeDirectory(
+                    soundtrack.getAnime().getFolderName(),
+                    soundtrack.getAnimeTitle(),
+                    image
+            );
             soundtrack.setImage(savedImage);
         }
         soundtrack.setAlbum(album);
         log.info("Soundtrack {} created successfully", blobKey);
         return soundtrackRepository.save(soundtrack);
-    }
-
-
-    @Transactional
-    public Soundtrack setImage(Integer soundtrackId, MultipartFile image) {
-        Soundtrack soundtrack = soundtrackRepository.findById(soundtrackId)
-                .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
-        Image savedImage = imageService.createSoundtrackImage(soundtrack.getAnime().getFolderName(),
-                soundtrack.getAnimeTitle(), image);
-        soundtrack.setImage(savedImage);
-        return soundtrack;
     }
 
     public void remove(Integer id) {
@@ -107,6 +98,19 @@ public class SoundtrackService {
                 .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
         var createdAudio = audioService.createAudioFile(soundtrack, audio);
         soundtrack.setAudioFile(createdAudio);
+        return soundtrack;
+    }
+
+    @Transactional
+    public Soundtrack updateImage(MultipartFile image, Integer soundtrackId) {
+        var soundtrack = soundtrackRepository.findById(soundtrackId)
+                .orElseThrow(() -> new SoundtrackNotFoundException(soundtrackId));
+        var createdImage = imageService.createImageInAnimeDirectory(
+                soundtrack.getAnime().getFolderName(),
+                soundtrack.getAnimeTitle(),
+                image
+        );
+        soundtrack.setImage(createdImage);
         return soundtrack;
     }
 

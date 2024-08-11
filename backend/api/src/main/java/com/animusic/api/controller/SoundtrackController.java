@@ -141,7 +141,7 @@ public class SoundtrackController {
             @PathVariable Integer soundtrackId,
             @RequestPart(value = "image") MultipartFile image
     ) {
-        Soundtrack soundtrack = soundtrackService.setImage(soundtrackId, image);
+        Soundtrack soundtrack = soundtrackService.updateImage(image, soundtrackId);
         log.info("Image of Soundtrack with id={} updated to '{}'", soundtrackId, soundtrack.getImage().getSource());
         return SoundtrackMapper.fromSoundtrack(soundtrack);
     }
