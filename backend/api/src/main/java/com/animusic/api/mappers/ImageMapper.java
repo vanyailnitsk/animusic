@@ -4,6 +4,7 @@ import com.animusic.api.dto.AnimeBannerImageDto;
 import com.animusic.api.dto.ImageDto;
 import com.animusic.core.db.model.AnimeBannerImage;
 import com.animusic.core.db.model.Image;
+import com.animusic.s3.StoragePathResolver;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class ImageMapper {
             return null;
         }
         return new ImageDto(
-                image.getSource()
+                StoragePathResolver.getAbsoluteFileUrl(image.getSource())
         );
     }
 
