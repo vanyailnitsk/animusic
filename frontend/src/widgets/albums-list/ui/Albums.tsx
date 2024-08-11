@@ -1,6 +1,5 @@
 import styles from './albums-list.module.css'
 import {AlbumCard, getAlbumsByAnimeId} from "@/entities/album";
-import {storageUrl} from "@/shared/api";
 import Skeleton from "react-loading-skeleton";
 import {useFetching} from "@/shared/lib";
 import {useEffect, useState} from "react";
@@ -39,7 +38,7 @@ export const AlbumList = ({id, isAlbumsLoading, setAlbumsLoading}: AlbumListProp
                     name={album.name}
                     id={album.id}
                     key={album.id}
-                    imageUrl={storageUrl + album.coverArt?.image.source}
+                    imageUrl={album.coverArt?.image.source}
                     show={!isAlbumsLoading}
                     handleLoadCardImage={handleLoadCardImage}
                 />)}

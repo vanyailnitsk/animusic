@@ -3,7 +3,6 @@ import addButton from "@/shared/icons/addButton.png";
 import styles from './current-track.module.css'
 import {useNavigate} from "react-router-dom";
 import {Context} from "@/main.tsx";
-import {storageUrl} from "@/shared/api";
 
 export const CurrentTrack = () => {
     const {musicStore} = useContext(Context)
@@ -17,7 +16,7 @@ export const CurrentTrack = () => {
     return (
         <div className={musicStore.currentTrack ? styles.current__track : styles.hidden}>
             <img
-                src={musicStore.currentTrack && storageUrl + (musicStore.currentTrack.image?.source || "images/track-img.jpeg")}
+                src={musicStore.currentTrack && musicStore.currentTrack.image?.source || "images/track-img.jpeg"}
                 alt=""
                 className={styles.track__img}/>
             {musicStore.currentTrack &&
