@@ -33,7 +33,6 @@ public class AnimeService {
         if (existsTitle) {
             throw new AnimeAlreadyExistsException(anime.getTitle());
         }
-        animeRepository.save(anime);
         return animeRepository.save(anime);
     }
 
