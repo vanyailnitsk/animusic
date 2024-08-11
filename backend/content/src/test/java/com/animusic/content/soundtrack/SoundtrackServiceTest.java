@@ -32,7 +32,7 @@ class SoundtrackServiceTest extends IntegrationTestBase {
     @Test
     void createSoundtrack() {
         var audio = new MockMultipartFile("audio", "track.aac", "audio/aac", "audio".getBytes());
-        var image = new MockMultipartFile("image", "logo.png", "img.png", "image".getBytes());
+        var image = new MockMultipartFile("image", "logo.png", "img/png", "image".getBytes());
         var soundtrack = Soundtrack.builder()
                 .animeTitle("Opening 1")
                 .originalTitle("Song")
@@ -44,6 +44,10 @@ class SoundtrackServiceTest extends IntegrationTestBase {
         var expectedAudioFile = "Anime1/audio/Opening 1.aac";
         assertThat(s3Service.getObject(expectedAudioFile)).isEqualTo("audio".getBytes());
         assertThat(soundtrack.getAudioFile()).isEqualTo(expectedAudioFile);
+
+        var expectedImage = "Anime1/images/Opening 1.png";
+        assertThat(s3Service.getObject(expectedImage)).isEqualTo("image".getBytes());
+        assertThat(soundtrack.getImage().getSource()).isEqualTo(expectedImage);
     }
 
     @Test

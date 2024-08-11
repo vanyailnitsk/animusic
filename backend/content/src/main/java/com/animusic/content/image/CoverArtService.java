@@ -22,7 +22,7 @@ public class CoverArtService {
             MultipartFile imageFile,
             CoverArt coverArt
     ) {
-        Image image = imageService.createAnimeImage(animeFolder, imageName, imageFile);
+        Image image = imageService.createImageInAnimeDirectory(animeFolder, imageName, imageFile);
         coverArt.setImage(image);
         return coverArtRepository.save(coverArt);
     }
