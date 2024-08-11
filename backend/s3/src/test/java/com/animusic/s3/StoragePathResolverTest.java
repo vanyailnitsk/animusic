@@ -18,11 +18,31 @@ class StoragePathResolverTest {
 
     @Test
     void createSoundtrackFileName() {
-        assertThat(StoragePathResolver.createSoundtrackFileName("Naruto", "Opening 1", "track.aac"))
+        assertThat(StoragePathResolver.soundtrackAudioFile("Naruto", "Opening 1", "track.aac"))
                 .isEqualTo("Naruto/audio/Opening 1.aac");
-        assertThat(StoragePathResolver.createSoundtrackFileName("HxH", "123", "track.mp3"))
+        assertThat(StoragePathResolver.soundtrackAudioFile("HxH", "123", "track.mp3"))
                 .isEqualTo("HxH/audio/123.mp3");
-        assertThatThrownBy(() -> StoragePathResolver.createSoundtrackFileName("Anime", "track", ""))
+        assertThatThrownBy(() -> StoragePathResolver.soundtrackAudioFile("Anime", "track", ""))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void imageInAnimeFolder() {
+        assertThat(StoragePathResolver.imageInAnimeFolder("Naruto", "banner", "image.png"))
+                .isEqualTo("Naruto/images/banner.png");
+        assertThat(StoragePathResolver.imageInAnimeFolder("HxH", "Opening 1", "123.jpeg"))
+                .isEqualTo("HxH/images/Opening 1.jpeg");
+        assertThatThrownBy(() -> StoragePathResolver.imageInAnimeFolder("Anime", "track", ""))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void imageInUserFolder() {
+        assertThat(StoragePathResolver.imageInUserFolder(1, "avatar", "img.jpg"))
+                .isEqualTo("users/1/avatar.jpg");
+        assertThat(StoragePathResolver.imageInUserFolder(2, "playlist1", "123.png"))
+                .isEqualTo("users/2/playlist1.png");
+        assertThatThrownBy(() -> StoragePathResolver.imageInUserFolder(2, "p", null))
                 .isInstanceOf(NullPointerException.class);
     }
 }
