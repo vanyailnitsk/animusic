@@ -8,6 +8,7 @@ import com.animusic.api.dto.SoundtrackEntityDto;
 import com.animusic.content.soundtrack.SoundtrackSavedHelper;
 import com.animusic.core.db.model.PlaylistSoundtrack;
 import com.animusic.core.db.model.Soundtrack;
+import com.animusic.s3.StoragePathResolver;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,7 +23,7 @@ public class SoundtrackMapper {
                 soundtrack.getId(),
                 soundtrack.getOriginalTitle(),
                 soundtrack.getAnimeTitle(),
-                soundtrack.getAudioFile(),
+                StoragePathResolver.getAbsoluteFileUrl(soundtrack.getAudioFile()),
                 ImageMapper.fromImage(soundtrack.getImage()),
                 soundtrack.getDuration(),
                 SoundtrackSavedHelper.isSaved(soundtrack),

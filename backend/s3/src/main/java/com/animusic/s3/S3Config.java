@@ -43,6 +43,7 @@ public class S3Config {
 
     @Bean
     public S3Service s3Service(S3Client s3Client) {
+        StoragePathResolver.setStorageUrl(properties.getUrl(), properties.getBucket());
         return new S3ServiceImpl(s3Client, properties);
     }
 }
