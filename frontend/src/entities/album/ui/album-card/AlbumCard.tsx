@@ -6,7 +6,7 @@ import {clsx} from "clsx";
 interface AlbumCardProps {
     name: string
     id: number
-    imageUrl: string
+    imageUrl: string | undefined
     show: boolean
     handleLoadCardImage: () => void
 }

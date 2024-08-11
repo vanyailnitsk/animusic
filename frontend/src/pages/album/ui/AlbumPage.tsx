@@ -2,7 +2,6 @@ import {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import styles from './album-page.module.css'
 import {getAlbumById, IAlbum} from "@/entities/album";
-import {storageUrl} from "@/shared/api";
 import {SoundtrackList} from "@/widgets/soundtrack-list";
 
 export const AlbumPage = () => {
@@ -32,7 +31,7 @@ export const AlbumPage = () => {
                    {album?.coverArt && (
                        <div className={styles.album__image}>
                            <img
-                               src={storageUrl + (album?.coverArt.image.source) } alt="Banner"
+                               src={album?.coverArt.image.source} alt="Banner"
                                onLoad={() => setIsLoadingImage(false)}
                            />
                        </div>
