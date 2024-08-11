@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 public class AnimeService {
+
     private final AnimeRepository animeRepository;
 
     public Optional<Anime> getAnime(Integer animeId) {
