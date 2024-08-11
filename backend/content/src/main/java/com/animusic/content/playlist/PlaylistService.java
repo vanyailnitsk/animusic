@@ -16,8 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RequiredArgsConstructor
 public class PlaylistService {
+
     private final PlaylistRepository playlistRepository;
+
     private final UserService userService;
+
     private final CoverArtService coverArtService;
 
     @Transactional

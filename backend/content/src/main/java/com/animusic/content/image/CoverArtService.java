@@ -1,7 +1,6 @@
 package com.animusic.content.image;
 
 import com.animusic.core.db.model.CoverArt;
-import com.animusic.core.db.model.Image;
 import com.animusic.core.db.table.CoverArtRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class CoverArtService {
+
     private final CoverArtRepository coverArtRepository;
+
     private final ImageService imageService;
 
     @Transactional
@@ -22,7 +23,7 @@ public class CoverArtService {
             MultipartFile imageFile,
             CoverArt coverArt
     ) {
-        Image image = imageService.createAnimeImage(animeFolder, imageName, imageFile);
+        var image = imageService.createImageInAnimeDirectory(animeFolder, imageName, imageFile);
         coverArt.setImage(image);
         return coverArtRepository.save(coverArt);
     }
@@ -34,7 +35,7 @@ public class CoverArtService {
             MultipartFile imageFile,
             CoverArt coverArt
     ) {
-        Image image = imageService.createImageForUser(userId, generateHash(playlistName, 10), imageFile);
+        var image = imageService.createImageForUser(userId, generateHash(playlistName, 10), imageFile);
         coverArt.setImage(image);
         return coverArtRepository.save(coverArt);
     }
