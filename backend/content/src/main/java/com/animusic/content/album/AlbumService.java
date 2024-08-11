@@ -19,13 +19,16 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class AlbumService {
+
     private final AlbumRepository albumRepository;
+
     private final AnimeService animeService;
+
     private final CoverArtService coverArtService;
 
     @Transactional
     public Album createAlbum(Album album, Integer animeId) {
-        Anime anime = animeService.getAnime(animeId)
+        var anime = animeService.getAnime(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
         if (albumRepository.existsByNameAndAnimeId(album.getName(), animeId)) {
             throw new AlbumAlreadyExistsException(album.getName(), animeId);
@@ -45,8 +48,8 @@ public class AlbumService {
         if (entity.isEmpty()) {
             throw new AlbumNotFoundException(id);
         }
-        Album album = entity.get();
-        String albumName = album.getName();
+        var album = entity.get();
+        var albumName = album.getName();
         if (albumName.equals("Openings") || albumName.equals("Endings")) {
             album.getSoundtracks().sort(Comparator.comparingInt(
                     a -> {
@@ -83,9 +86,9 @@ public class AlbumService {
 
     @Transactional
     public CoverArt createCoverArt(Integer albumId, MultipartFile imageFile, String colorLight, String colorDark) {
-        Album album = albumRepository.findById(albumId)
+        var album = albumRepository.findById(albumId)
                 .orElseThrow(() -> new AlbumNotFoundException(albumId));
-        CoverArt coverArt = CoverArt.builder()
+        var coverArt = CoverArt.builder()
                 .colorLight(colorLight)
                 .colorDark(colorDark)
                 .build();
