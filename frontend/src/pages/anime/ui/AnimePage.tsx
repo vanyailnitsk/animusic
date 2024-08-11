@@ -2,7 +2,6 @@ import {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from './anime-page.module.css'
 import {getAnimeInfo, IAnime} from "@/entities/anime";
-import {storageUrl} from "@/shared/api";
 import {AlbumList} from "@/widgets/albums-list";
 import Skeleton from "react-loading-skeleton";
 
@@ -34,7 +33,7 @@ export const AnimePage = () => {
                     top: 0
                 }}/>}
                 <img
-                    src={storageUrl + animeData?.banner.image.source} alt=""
+                    src={animeData?.banner.image.source} alt=""
                     onLoad={() => setIsLoading({...isLoading, banner: false})}
                 />
                 {!isLoading.banner &&

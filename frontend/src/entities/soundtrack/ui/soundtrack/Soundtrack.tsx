@@ -5,7 +5,6 @@ import Play from '@/shared/icons/soundtrack-play.png'
 import addButton from '@/shared/icons/addButton.png'
 import {observer} from "mobx-react-lite";
 import {Context} from "@/main.tsx";
-import {storageUrl} from "@/shared/api";
 import {formatTime} from "@/shared/lib";
 import {ISoundtrack, SoundtrackData} from "@/entities/soundtrack";
 
@@ -17,7 +16,7 @@ interface SoundtrackProps {
 
 export const Soundtrack = observer(({soundtrackData, listening_queue, index}: SoundtrackProps) => {
     const {musicStore} = useContext(Context)
-    const image = storageUrl + (soundtrackData.image?.source || "images/track-img.jpeg")
+    const image =soundtrackData.image?.source || "images/track-img.jpeg"
     const playTrackHandler = () => {
         if (!musicStore.trackEquals(soundtrackData)) {
             musicStore.setPlaylist(listening_queue)

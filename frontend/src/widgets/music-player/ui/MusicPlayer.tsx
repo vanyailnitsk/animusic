@@ -18,7 +18,6 @@ import {observer} from "mobx-react-lite";
 import {isMobile, isTablet} from 'react-device-detect';
 import repeatButtonActive from '@/shared/icons/repeatButtonActive.png'
 import {Context} from "@/main.tsx";
-import {storageUrl} from "@/shared/api";
 import {formatTime} from "@/shared/lib";
 import {CurrentTrack} from "@/entities/soundtrack";
 
@@ -146,7 +145,7 @@ export const MusicPlayer = observer(() => {
             title: musicStore.currentTrack.originalTitle,
             artist: musicStore.currentTrack.animeTitle,
             artwork: [
-                {src: musicStore.currentTrack && storageUrl + (musicStore.currentTrack.image?.source || "images/track-img.jpeg"), sizes: '512x512', type: 'image/png'}
+                {src: musicStore.currentTrack && musicStore.currentTrack.image?.source || "images/track-img.jpeg", sizes: '512x512', type: 'image/png'}
             ]
         });
     }
@@ -155,7 +154,7 @@ export const MusicPlayer = observer(() => {
             <div className={activePhonePlayer ? "music__player__wrapper active" : "music__player__wrapper"}
                  onClick={!activePhonePlayer ? handlePhoneMusicPlayer : undefined}>
                 <img
-                    src={musicStore.currentTrack && storageUrl + (musicStore.currentTrack.image?.source || "images/track-img.jpeg")}
+                    src={musicStore.currentTrack && musicStore.currentTrack.image?.source || "images/track-img.jpeg"}
                     alt=""
                     className={activePhonePlayer ? 'track__img active' : 'track__img'}/>
                 <img src={addButton} alt="" className={activePhonePlayer ? 'add__track active' : 'add__track'}/>
@@ -163,7 +162,7 @@ export const MusicPlayer = observer(() => {
                      onClick={handlePhoneMusicPlayer}/>
                 <div className={activePhonePlayer ? "time__bar active" : "time__bar"}>
                     <audio ref={audioRef}
-                           src={musicStore.currentTrack && storageUrl + musicStore.currentTrack.audioFile}
+                           src={musicStore.currentTrack && musicStore.currentTrack.audioFile}
                            autoPlay
                            onEnded={playNextTrack}
                            onTimeUpdate={handleTimeUpdate}
@@ -230,7 +229,7 @@ export const MusicPlayer = observer(() => {
                         </div>
                         <div className="time__bar">
                             <audio ref={audioRef}
-                                   src={musicStore.currentTrack && storageUrl + musicStore.currentTrack.audioFile}
+                                   src={musicStore.currentTrack && musicStore.currentTrack.audioFile}
                                    autoPlay
                                    onEnded={playNextTrack}
                                    onTimeUpdate={handleTimeUpdate}
