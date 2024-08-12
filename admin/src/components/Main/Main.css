@@ -1,0 +1,14 @@
+.main__wrapper{
+    width: 99vw;
+    height: 99vh;
+    margin-top: 1vh;
+    margin-bottom: 10vh;
+    display: grid;
+    grid-template-columns:24.5% calc(75.5% - 10px);
+    grid-template-rows:auto 1fr auto;
+    gap: 10px;
+    z-index: 1;
+    position: fixed;
+}
+
+

@@ -45,7 +45,16 @@ public class AlbumController {
         log.info("Requested albums by anime {}", animeId);
         var albums = albumService.getAlbumsByAnimeId(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        return AlbumMapper.albumItems(albums);
+        var albumItems = AlbumMapper.albumItems(albums);
+        albumItems.sort((a1, a2) -> {
+            List<String> categoryOrder = List.of("Openings", "Endings", "Themes", "Scene songs");
+
+            int index1 = categoryOrder.indexOf(a1.name());
+            int index2 = categoryOrder.indexOf(a2.name());
+
+            return Integer.compare(index1, index2);
+        });
+        return albumItems;
     }
 
     @GetMapping("{id}")

@@ -37,6 +37,18 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ResponseBody
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorMessage internalServerError(RuntimeException ex, WebRequest request) {
+        return new ErrorMessage(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+    }
+
+    @ResponseBody
     @ExceptionHandler(PlaylistNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage playlistNotFound(PlaylistNotFoundException ex, WebRequest request) {

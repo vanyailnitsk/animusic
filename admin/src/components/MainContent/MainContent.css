@@ -1,0 +1,8 @@
+.main__content__wrapper{
+    position: relative;
+    width: 100%;
+    grid-row: 1 / span 2;
+    height: 100%;
+    border-radius: 7px;
+    background-color: #121212;
+}

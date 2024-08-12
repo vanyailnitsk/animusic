@@ -1,0 +1,25 @@
+.album__card__wrapper{
+    width: 190px;
+    height: 201px;
+    background: #161515;
+    display: flex;
+    position: relative;
+    transition: .2s linear;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-radius: 7px;
+    border: 1px solid rgba(213, 217, 219, 0.2);
+    cursor: pointer;
+}
+.album__card__wrapper img {
+    width: 150px;
+    height: 150px;
+    border-radius: 7px;
+    margin-top: 13px;
+}
+.album__card__wrapper:hover{
+    background-color: #2E2E2E;
+}
+.album__card__wrapper span{
+    font-size: 15px;
+}

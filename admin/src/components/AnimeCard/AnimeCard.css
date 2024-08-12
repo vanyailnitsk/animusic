@@ -1,0 +1,24 @@
+.anime__card{
+    width: 318px;
+    height: 200px;
+    text-align: center;
+    background-color: #161515;
+    border-radius: 7px;
+    border: 1px solid rgba(213, 217, 219, 0.2);
+    transition: .2s linear;
+    position: relative;
+    cursor: pointer;
+}
+.anime__card img{
+    width: 290px;
+    height: 160px;
+    margin-inline: 14px;
+    margin-top: 14px;
+    border-radius: 7px;
+}
+.anime__card span{
+    font-size: 15px;
+}
+.anime__card:hover{
+    background-color: #2E2E2E;
+}

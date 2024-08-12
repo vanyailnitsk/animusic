@@ -1,0 +1,12 @@
+.change__form__wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    grid-column: 1;
+    grid-row: 2;
+    overflow: auto;
+    height: 100%;
+    transition: .3s ease;
+    border-radius: 7px;
+    background-color: #121212;
+}
