@@ -1,4 +1,4 @@
-import {MouseEventHandler, useContext, useEffect, useState} from "react";
+import {MouseEventHandler, useContext, useState} from "react";
 import "./Soundtrack.css";
 import Pause from '@/shared/icons/soundtrack-pause.png';
 import Play from '@/shared/icons/soundtrack-play.png';
@@ -18,7 +18,6 @@ interface SoundtrackProps {
 export const Soundtrack = observer(({soundtrackData, listening_queue, index}: SoundtrackProps) => {
     const {musicStore} = useContext(Context)
     const image =soundtrackData.image?.source || "images/track-img.jpeg"
-    const [isTrackSaved,setIsTrackSaved] = useState(soundtrackData.saved)
     const playTrackHandler = () => {
         if (!musicStore.trackEquals(soundtrackData)) {
             musicStore.setPlaylist(listening_queue);
@@ -28,17 +27,14 @@ export const Soundtrack = observer(({soundtrackData, listening_queue, index}: So
             musicStore.togglePlayPause();
         }
     };
-
     const handleSavedTrack: MouseEventHandler<HTMLButtonElement> = async (e) => {
         e.stopPropagation();
         const trackId = soundtrackData.id;
         if (trackId) {
-            if (isTrackSaved) {
+            if (musicStore.isSaved(soundtrackData.id)) {
                 await musicStore.removeFromFavorites(trackId);
-                setIsTrackSaved(false);
             } else {
                 await musicStore.addToFavorite(trackId);
-                setIsTrackSaved(true);
             }
         }
     };
@@ -56,9 +52,9 @@ export const Soundtrack = observer(({soundtrackData, listening_queue, index}: So
             <img src={image} alt="" className="soundtrack__image"/>
             <h3 className="title">{soundtrackData.animeTitle}</h3>
             <p className="original__title">{soundtrackData.originalTitle}</p>
-            <button className={isTrackSaved? "soundtrack__saved" : "soundtrack__add"}
+            <button className={musicStore.isSaved(soundtrackData.id)? "soundtrack__saved" : "soundtrack__add"}
                     onClick={handleSavedTrack}>
-                {isTrackSaved? <img src={savedTrackImage} alt=""/> : <img src={addButton} alt=""/>}
+                {musicStore.isSaved(soundtrackData.id)? <img src={savedTrackImage} alt=""/> : <img src={addButton} alt=""/>}
             </button>
             <span className='track__duration'>{formatTime(soundtrackData.duration)}</span>
         </div>

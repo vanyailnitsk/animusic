@@ -16,4 +16,8 @@ export class MusicService {
             }
         })
     }
+    static async getCollection(){
+        const response = await $host.get(collection);
+        return response.data;
+    }
 }
