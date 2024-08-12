@@ -1,18 +1,13 @@
-import {MouseEventHandler, useContext} from 'react';
-import addButton from "@/shared/icons/addButton.png";
+import {useContext} from 'react';
 import styles from './current-track.module.css'
 import {useNavigate} from "react-router-dom";
 import {Context} from "@/main.tsx";
+import {observer} from "mobx-react-lite";
+import {SaveTrack} from "@/features/collection";
 
-export const CurrentTrack = () => {
+export const CurrentTrack = observer(() => {
     const {musicStore} = useContext(Context)
     const navigate = useNavigate()
-    const addTrack: MouseEventHandler<HTMLImageElement> = (e) => {
-        e.stopPropagation();
-        if (musicStore.currentTrack?.id) {
-            musicStore.addToFavorite(musicStore.currentTrack.id);
-        }
-    };
     return (
         <div className={musicStore.currentTrack ? styles.current__track : styles.hidden}>
             <img
@@ -27,8 +22,8 @@ export const CurrentTrack = () => {
                     <span>{musicStore.currentTrack.animeTitle}</span>
                 </div>
             }
-            <img src={addButton} alt="" className={styles.add__track} onClick={addTrack}/>
+            <SaveTrack className={styles.save__track} id={musicStore.currentTrack?.id} saved={musicStore.currentTrack && musicStore.isSaved(musicStore.currentTrack.id)}/>
         </div>
     );
-};
+});
 

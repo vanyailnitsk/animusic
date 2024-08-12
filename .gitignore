@@ -16,8 +16,9 @@ index.html
 create.sql
 logs/
 out/
-node_modules
+frontend/node_modules
 frontend/.env
+admin/node_modules
 
 ### STS ###
 .apt_generated

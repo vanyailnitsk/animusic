@@ -5,9 +5,15 @@ import {AppRouter} from "@/app/routers";
 import {Context} from "@/main.tsx";
 
 function App() {
-    const { userStore } = useContext(Context);
+    const { userStore,musicStore } = useContext(Context);
     const [loading, setLoading] = useState(true);
-
+    useEffect(() => {
+        const loadFavorites = async () => {
+            await musicStore.fetchFavTracks();
+            setLoading(false);
+        };
+        loadFavorites();
+    }, []);
     useEffect(() => {
         const checkAuthentication = async () => {
             try {

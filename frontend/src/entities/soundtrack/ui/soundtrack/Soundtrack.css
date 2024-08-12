@@ -75,11 +75,21 @@
     background: transparent;
     cursor: pointer;
 }
+.soundtrack__saved{
+    position: absolute;
+    right: 13vw;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
 .soundtrack__add img{
     width: 20px;
     height: 20px;
 }
-
+.soundtrack__saved img {
+    width: 20px;
+    height: 20px;
+}
 .track__duration{
     font-size: 15px;
     position: absolute;
