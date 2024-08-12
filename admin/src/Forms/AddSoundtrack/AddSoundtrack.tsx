@@ -11,9 +11,7 @@ const schema = z.object({
     audioFile: z
         .instanceof(FileList)
         .refine((file) => {
-            if (file[0] && file[0].name) {
-                return file[0].name.toLowerCase().endsWith(".mp3");
-            }
+            return file[0] && file[0].name;
         }, {
             message: "Invalid file extension. '.mp3' is expected."
         }),
