@@ -1,4 +1,6 @@
 import {$host, collection} from "@/shared/api";
+import {AxiosResponse} from "axios";
+import {Playlist} from "@/entities/playlist";
 
 
 export class MusicService {
@@ -16,8 +18,8 @@ export class MusicService {
             }
         })
     }
-    static async getCollection(){
-        const response = await $host.get(collection);
-        return response.data;
+    static async getCollection():Promise<AxiosResponse<Playlist>>{
+        const response:AxiosResponse<Playlist> = await $host.get(collection);
+        return response;
     }
 }

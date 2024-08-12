@@ -1,4 +1,4 @@
-import {FC, MouseEventHandler, useContext, useState} from "react";
+import {FC, MouseEventHandler, useContext} from "react";
 import {Context} from "@/main.tsx";
 import addButton from '@/shared/icons/follow.png';
 import savedTrackImage from '@/shared/icons/saved-track.png';

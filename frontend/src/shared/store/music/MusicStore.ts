@@ -32,7 +32,7 @@ export class MusicStore {
         try {
             const tracks = await MusicService.getCollection();
             runInAction(() => {
-                this.fav_tracks = tracks.soundtracks.map(track => track.soundtrack.id);
+                this.fav_tracks = tracks.data.soundtracks.map((track) => track.soundtrack.id);
             });
         } catch (e) {
             console.log("Ошибка при загрузке треков:", e);
