@@ -1,0 +1,12 @@
+.cardslist__wrapper{
+    width: 1040px;
+    height: auto;
+    display: grid;
+    position: absolute;
+    left: 0;
+    right: 0;
+    grid-template-columns:245px 245px 245px 245px;
+    gap: 20px;
+    margin-top: 33px;
+    margin-inline: auto;
+}

@@ -32,7 +32,7 @@ public class AlbumMapper {
     }
 
     public static List<AlbumDto> convertListToDto(List<Album> albums) {
-        return albums.stream().map(AlbumMapper::fromAlbum).toList();
+        return albums.stream().map(AlbumMapper::fromAlbum).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public static List<AlbumItemDto> albumItems(List<Album> albums) {

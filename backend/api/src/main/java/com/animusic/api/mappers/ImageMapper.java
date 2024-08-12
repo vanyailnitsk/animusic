@@ -22,6 +22,9 @@ public class ImageMapper {
     }
 
     public static AnimeBannerImageDto fromAnimeBanner(AnimeBannerImage bannerImage) {
+        if (bannerImage == null) {
+            return null;
+        }
         var image = fromImage(bannerImage.getImage());
         return new AnimeBannerImageDto(bannerImage.getColor(), image);
     }

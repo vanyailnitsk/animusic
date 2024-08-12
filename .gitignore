@@ -47,4 +47,7 @@ build/
 
 ### VS Code ###
 .vscode/
-/frontend/dist/**
+/frontend/dist
+/frontend/.env
+/admin/.env
+/frontend/.env

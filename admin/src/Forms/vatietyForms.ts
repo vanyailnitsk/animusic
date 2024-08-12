@@ -1,0 +1,6 @@
+export const CREATE_ANIME = 'createAnime'
+export const EDIT_ANIME = 'editAnime'
+export const CREATE_ALBUM = 'createAlbum'
+export const EDIT_ALBUM = 'editAlbum'
+export const ADD_SOUNDTRACK = 'addSoundtrack'
+export const EDIT_SOUNDTRACK = 'editSoundtrack'
