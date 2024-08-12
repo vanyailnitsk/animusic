@@ -15,7 +15,6 @@ export const PlaylistPage = observer(() => {
     const {musicStore} = useContext(Context)
     const [playlist, setPlaylist] = useState<Playlist | null>(null)
     useEffect(() => {
-        console.log("fav_tracks updated:", musicStore.fav_tracks);
         if (location.pathname === COLLECTION){
             MusicService.getCollection()
                 .then(response => {
