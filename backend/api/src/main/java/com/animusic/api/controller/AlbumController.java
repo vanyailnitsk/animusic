@@ -71,7 +71,7 @@ public class AlbumController {
     }
 
 
-    @PostMapping("{animeId}")
+    @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Метод для создания альбома")
     @ApiResponses(value = {
@@ -79,10 +79,10 @@ public class AlbumController {
             @ApiResponse(responseCode = "400", description = "Альбом уже существует"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public AlbumDto createAlbum(@RequestBody CreateAlbumDto request, @PathVariable Integer animeId) {
-        Album album = albumService.createAlbum(request.toAlbum(), animeId);
-        AlbumDto albumDto = AlbumMapper.fromAlbum(album);
-        log.info("Album {} in anime {} created", album.getName(), animeId);
+    public AlbumDto createAlbum(@RequestBody CreateAlbumDto request) {
+        var album = albumService.createAlbum(request.toAlbum(), request.animeId);
+        var albumDto = AlbumMapper.fromAlbum(album);
+        log.info("Album {} in anime {} created", album.getName(), request.animeId);
         return albumDto;
     }
 
@@ -113,7 +113,10 @@ public class AlbumController {
         log.info("Album with id {} deleted", id);
     }
 
-    record CreateAlbumDto(String name) {
+    record CreateAlbumDto(
+            String name,
+            Integer animeId
+    ) {
         public Album toAlbum() {
             return Album.builder()
                     .name(name)
