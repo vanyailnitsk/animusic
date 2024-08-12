@@ -3,7 +3,6 @@ import SoundtrackList from "../../components/SoundtrackList/SoundtrackList";
 import {useNavigate, useParams} from "react-router-dom";
 import {getAlbumById} from "../../services/api/tracks";
 import styles from '../AlbumPage/AlbumPage.module.css'
-import {storageUrl} from "../../services/api/consts";
 import {Album} from "../../models/Albums";
 import {EDIT_ALBUM} from "../../Forms/vatietyForms";
 import {Context} from "../../index";
@@ -17,7 +16,7 @@ const AlbumPage = () => {
     const [album, setAlbum] = useState<Album | null>(null)
     const navigate = useNavigate()
     const [colors,setColors] = useState({colorLight:'',colorDark:''})
-    const bannerUrl = storageUrl+album?.coverArt?.image.source
+    const bannerUrl = album?.coverArt?.image.source
     const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false)
     useEffect(() => {
         contentStore.setCurrentContentType(EDIT_ALBUM)
@@ -53,7 +52,7 @@ const AlbumPage = () => {
                    :(album?.coverArt && (
                            <div className={styles.album__image}>
                                <img
-                                   src={storageUrl + (album?.coverArt.image.source) } alt="Banner"
+                                   src={(album?.coverArt.image.source)} alt="Banner"
                                    onLoad={() => setIsLoadingImage(false)}
                                />
                            </div>

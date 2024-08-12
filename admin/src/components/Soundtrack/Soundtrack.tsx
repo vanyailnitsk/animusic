@@ -3,7 +3,6 @@ import "./Soundtrack.css";
 import addButton from '../../icons/addButton.png'
 import {formatTime} from "../../tools/FormatTime";
 import {SoundtrackProps} from "../../models/Soundtracks";
-import {storageUrl} from "../../services/api/consts";
 import {Context} from "../../index";
 import {EDIT_SOUNDTRACK} from "../../Forms/vatietyForms";
 import {observer} from "mobx-react";
@@ -19,7 +18,7 @@ const Soundtrack = ({soundtrackData, index} : SoundtrackProps) => {
         editSoundtrack.setTrackId(soundtrackData.id)
         contentStore.setCurrentContentType(EDIT_SOUNDTRACK)
     }
-    const image = storageUrl + (soundtrackData.image?.source || "images/track-img.jpeg")
+    const image = soundtrackData.image?.source || "images/track-img.jpeg"
     return (
         <div className={`soundtrack__container`} onClick={clickHandler}>
             <button className="soundtrack__toggle__play">

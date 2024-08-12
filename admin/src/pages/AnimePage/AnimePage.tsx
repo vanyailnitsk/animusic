@@ -1,9 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {getAnimeInfo} from "../../services/api/anime";
 import {useNavigate, useParams} from "react-router-dom";
-import playPlaylist from '../../icons/play-playlist.png'
 import Albums from "../../components/Albums/Albums";
-import {storageUrl} from "../../services/api/consts";
 import {IAlbums} from "../../models/Albums";
 import {IAnime} from "../../models/Anime";
 import styles from './AnimePage.module.css'
@@ -42,7 +40,7 @@ const AnimePage = () => {
                     <img src={editBannerStore.bannerImage} alt=""/>
                     :(animeData?.banner?.image?.source && (
                         <img
-                            src={storageUrl+animeData?.banner.image.source} alt=""
+                            src={animeData?.banner.image.source} alt=""
                         />
                     ))
                 }
