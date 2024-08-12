@@ -23,8 +23,11 @@ export class MusicStore {
         this.volume = volume
         localStorage.setItem('volume', this.volume.toString())
     }
-    addToFavorite(TrackId:number){
-        MusicService.addToFavorite(TrackId)
+    addToFavorite(trackId:number){
+        MusicService.addToFavorite(trackId)
+    }
+    removeFromFavorites(trackId){
+        MusicService.removeFromFavorite(trackId)
     }
     setTrackIndex(index:number) {
         this._trackIndex = index

@@ -2,7 +2,8 @@ import {MouseEventHandler, useContext} from "react";
 import "./Soundtrack.css";
 import Pause from '@/shared/icons/soundtrack-pause.png'
 import Play from '@/shared/icons/soundtrack-play.png'
-import addButton from '@/shared/icons/addButton.png'
+import addButton from '@/shared/icons/follow.png'
+import savedTrackImage from '@/shared/icons/saved-track.png'
 import {observer} from "mobx-react-lite";
 import {Context} from "@/main.tsx";
 import {formatTime} from "@/shared/lib";
@@ -26,13 +27,14 @@ export const Soundtrack = observer(({soundtrackData, listening_queue, index}: So
             musicStore.togglePlayPause()
         }
     };
-    const addTrack: MouseEventHandler<HTMLButtonElement> = (e) => {
+    const handleSavedTrack: MouseEventHandler<HTMLButtonElement> = (e) => {
         e.stopPropagation();
         const trackId = soundtrackData.id;
         if (trackId) {
-            musicStore.addToFavorite(trackId);
+            soundtrackData.saved? musicStore.removeFromFavorites(trackId) : musicStore.addToFavorite(trackId)
         }
     };
+
     return (
         <div className={`soundtrack__container ${musicStore.trackEquals(soundtrackData) ? "playing" : ""}`}
              onClick={playTrackHandler}>
@@ -47,8 +49,8 @@ export const Soundtrack = observer(({soundtrackData, listening_queue, index}: So
             <img src={image} alt="" className="soundtrack__image"/>
             <h3 className="title">{soundtrackData.animeTitle}</h3>
             <p className="original__title">{soundtrackData.originalTitle}</p>
-            <button className="soundtrack__add" onClick={addTrack}>
-                <img src={addButton} alt=""/>
+            <button className={soundtrackData.saved? "soundtrack__saved": "soundtrack__add"} onClick={handleSavedTrack}>
+                {soundtrackData.saved? <img src={savedTrackImage} alt=""/>: <img src={addButton} alt=""/>}
             </button>
             <span className='track__duration'>{formatTime(soundtrackData.duration)}</span>
         </div>
