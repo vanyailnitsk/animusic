@@ -19,7 +19,7 @@ export const PlaylistPage = () => {
                 console.log(error)
             })
         }
-    }, []);
+    }, [playlist?.soundtracks]);
     return (
         <div>
             {playlist &&

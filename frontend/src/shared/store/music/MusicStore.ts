@@ -1,4 +1,4 @@
-import {makeAutoObservable} from "mobx";
+import {makeAutoObservable,runInAction} from "mobx";
 import {ISoundtrack, SoundtrackData} from "@/entities/soundtrack";
 import {MusicService} from "@/shared/services";
 
@@ -23,15 +23,23 @@ export class MusicStore {
         this.volume = volume
         localStorage.setItem('volume', this.volume.toString())
     }
-    addToFavorite(trackId:number){
-        MusicService.addToFavorite(trackId)
+    async addToFavorite(trackId: number) {
+        try {
+            await MusicService.addToFavorite(trackId);
+        } catch (error) {
+            console.error("Failed to add to favorites:", error);
+        }
     }
-    removeFromFavorites(trackId){
-        MusicService.removeFromFavorite(trackId)
+
+    async removeFromFavorites(trackId: number) {
+        try {
+            await MusicService.removeFromFavorite(trackId);
+        } catch (error) {
+            console.error("Failed to remove from favorites:", error);
+        }
     }
     setTrackIndex(index:number) {
         this._trackIndex = index
-
         localStorage.setItem("currentTrackIndex", JSON.stringify(index));
     }
     togglePlayPause() {
@@ -69,6 +77,7 @@ export class MusicStore {
     trackEquals(track : SoundtrackData):boolean {
         return JSON.stringify(this.currentTrack)===JSON.stringify(track)
     }
+
     get currentTrack(): SoundtrackData | undefined  {
         if (this._listening_queue && this._listening_queue.length > this._trackIndex && this._trackIndex >= 0) {
             return this._listening_queue[this._trackIndex].soundtrack;
