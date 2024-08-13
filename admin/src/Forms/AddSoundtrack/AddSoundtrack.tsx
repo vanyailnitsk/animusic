@@ -52,7 +52,6 @@ const AddSoundtrack = () => {
             addSoundtrackFormData.append('duration', data.duration || "null")
             try {
                 await addSoundtrack(addSoundtrackFormData)
-                window.location.reload()
             } catch (e) {
                 console.log(e)
             }
