@@ -1,10 +1,10 @@
-.soundtracklist__wrapper {
+.soundtrack__list__wrapper {
     margin-top: 10px;
     width: 100%;
     background-color: transparent;
     position: relative;
 }
-.header__soundracklist{
+.header__soundtrack__list{
     display: flex;
     position: relative;
     align-items: center;
@@ -18,11 +18,11 @@
     padding-bottom: 3px;
     margin-bottom: 2px;
 }
-.header__soundracklist span{
+.header__soundtrack__list span{
     color:#808080;
     font-size: 14px;
 }
-.header__soundracklist span:first-child{
+.header__soundtrack__list span:first-child{
     width: 40px;
     display: flex;
     align-items: center;
@@ -36,6 +36,19 @@
     margin-left: 7vw;
     width: 27vw;
 }
+.playlist__anime__title__header{
+    margin-left: 50px;
+    width: 15vw;
+}
+.playlist__original__title__header{
+    margin-left: 5vw;
+    width: 23vw;
+}
+.added__at{
+    width: 10vw;
+    text-align: center;
+    margin-left: 0;
+}
 .clock__icon{
     width: 28px;
     display: flex;
@@ -44,7 +57,15 @@
     right: 7vw;
     justify-content: center;
 }
-.clock__icon img{
+.playlist__clock__icon{
+    width: 28px;
+    display: flex;
+    height: 20px;
+    position: absolute;
+    right: 5vw;
+    justify-content: center;
+}
+.clock__icon,.playlist__clock__icon img{
     width: 20px;
     height: 20px;
 }

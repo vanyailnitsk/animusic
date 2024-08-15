@@ -1,4 +1,4 @@
-.soundtrack__container {
+.playlist__soundtrack__wrapper {
     color: #fff;
     display: flex;
     align-items: center;
@@ -13,19 +13,19 @@
     -ms-user-select: none;
     user-select: none;
 }
-.soundtrack__container.playing {
+.playlist__soundtrack__wrapper.playing {
     background-color: #595959;
 }
-.soundtrack__container:hover{
+.playlist__soundtrack__wrapper:hover{
     background-color: #333333;
 }
-.soundtrack__container:hover > .soundtrack__toggle__play img{
+.playlist__soundtrack__wrapper:hover > .soundtrack__toggle__play img{
     display: block;
 }
-.soundtrack__container:hover > .soundtrack__toggle__play span{
+.playlist__soundtrack__wrapper:hover > .soundtrack__toggle__play span{
     display: none;
 }
-.soundtrack__container:hover > .soundtrack__add{
+.playlist__soundtrack__wrapper:hover > .soundtrack__saved{
     opacity: 1;
 }
 
@@ -55,11 +55,15 @@
 }
 .title {
     margin: 0 0 0 10px;
-    width: 20vw;
+    width: 15vw;
     white-space: nowrap;
 }
 .anime__title{
     font-size: 15px;
+}
+.anime__title:hover {
+    cursor: pointer;
+    text-decoration: underline white;
 }
 .anime_name{
     font-size: 14px;
@@ -72,29 +76,18 @@
 .original__title {
     font-size: 15px;
     white-space: nowrap;
-    width: 27vw;
-    margin-left: 7vw;
+    width: 23vw;
+    margin-left: 5vw;
     margin-block: auto;
     text-align: left;
 }
-.soundtrack__add {
+.soundtrack__saved{
     opacity: 0;
     position: absolute;
-    right: 13vw;
+    right: 10vw;
     border: none;
     background: transparent;
     cursor: pointer;
-}
-.soundtrack__saved{
-    position: absolute;
-    right: 13vw;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-}
-.soundtrack__add img{
-    width: 20px;
-    height: 20px;
 }
 .soundtrack__saved img {
     width: 20px;
@@ -103,15 +96,23 @@
 .track__duration{
     font-size: 15px;
     position: absolute;
-    right: 7vw;
+    right: 5vw;
     color:#808080;
 }
-
+.date_of_addition{
+    text-align: center;
+    width: 10vw;
+}
+.date_of_addition span{
+    color:#808080;
+    font-size: 15px;
+    font-weight: 400;
+}
 @media screen and (max-width: 759px){
     .original__title{
         display: none;
     }
-    .soundtrack__add{
+    .soundtrack__saved{
         display: none;
     }
     .title{

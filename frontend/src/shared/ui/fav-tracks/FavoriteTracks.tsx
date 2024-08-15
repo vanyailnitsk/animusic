@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import fav from '@/shared/icons/favourites.jpg'
+import fav from '@/shared/icons/icons8-избранное-500.png'
 import styles from './FavoriteTracks.module.css'
 import {useNavigate} from "react-router-dom";
 import Skeleton from "react-loading-skeleton";

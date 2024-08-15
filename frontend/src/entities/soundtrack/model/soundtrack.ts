@@ -20,7 +20,7 @@ export interface SoundtrackData {
     }
 }
 
-export interface PlaylistSoundtrack {
+export interface IPlaylistSoundtrack {
     addedAt: string
     soundtrack: SoundtrackData
 }

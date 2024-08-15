@@ -3,6 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import styles from './album-page.module.css'
 import {getAlbumById, IAlbum} from "@/entities/album";
 import {SoundtrackList} from "@/widgets/soundtrack-list";
+import {SoundtrackType} from "@/shared/types";
 
 export const AlbumPage = () => {
     const animeRoute = '/anime/'
@@ -52,7 +53,7 @@ export const AlbumPage = () => {
            </div>
             <div style={{background:`linear-gradient(to bottom, ${colors.colorDark}, #121212`}} className={styles.album__page__bottom_rgb}></div>
             {!isLoadingImage && album && album.soundtracks &&
-                    <SoundtrackList soundtracks={album.soundtracks} />
+                    <SoundtrackList soundtracks={album.soundtracks} type={SoundtrackType.album}/>
             }
         </div>
     );
