@@ -1,4 +1,4 @@
-import {PlaylistSoundtrack} from "@/entities/soundtrack";
+import {IPlaylistSoundtrack} from "@/entities/soundtrack";
 
 export interface Playlist{
     id: number,
@@ -10,5 +10,5 @@ export interface Playlist{
             url: string
         }
     }
-    soundtracks:PlaylistSoundtrack[]
+    soundtracks:IPlaylistSoundtrack[]
 }

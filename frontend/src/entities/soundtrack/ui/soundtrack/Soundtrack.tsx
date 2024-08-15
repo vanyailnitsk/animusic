@@ -7,6 +7,7 @@ import {Context} from "@/main.tsx";
 import {formatTime} from "@/shared/lib";
 import {ISoundtrack, SoundtrackData} from "@/entities/soundtrack";
 import {SaveTrack} from "@/features/collection";
+import {useNavigate} from "react-router-dom";
 
 interface SoundtrackProps {
     soundtrackData: SoundtrackData;
@@ -16,6 +17,7 @@ interface SoundtrackProps {
 
 export const Soundtrack = observer(({soundtrackData, listening_queue, index}: SoundtrackProps) => {
     const {musicStore} = useContext(Context)
+    const navigate = useNavigate()
     const image =soundtrackData.image?.source || "images/track-img.jpeg"
     const playTrackHandler = () => {
         if (!musicStore.trackEquals(soundtrackData)) {
@@ -26,6 +28,10 @@ export const Soundtrack = observer(({soundtrackData, listening_queue, index}: So
             musicStore.togglePlayPause();
         }
     };
+    const animeNavigate = (e:any) => {
+        e.stopPropagation()
+        navigate(`/anime/${soundtrackData.anime.id}`)
+    }
     return (
         <div className={`soundtrack__container ${musicStore.trackEquals(soundtrackData) ? "playing" : ""}`}
              onClick={playTrackHandler}>
@@ -38,7 +44,10 @@ export const Soundtrack = observer(({soundtrackData, listening_queue, index}: So
                 )}
             </button>
             <img src={image} alt="" className="soundtrack__image"/>
-            <h3 className="title">{soundtrackData.animeTitle}</h3>
+            <div className='title'>
+                <h3 className='anime__title'>{soundtrackData.animeTitle}</h3>
+                <span className='anime_name' onClick={animeNavigate}>{soundtrackData.anime.title}</span>
+            </div>
             <p className="original__title">{soundtrackData.originalTitle}</p>
             <SaveTrack className={musicStore.isSaved(soundtrackData.id)? "soundtrack__saved" : "soundtrack__add"} id={soundtrackData.id} saved={musicStore.isSaved(soundtrackData.id)}/>
             <span className='track__duration'>{formatTime(soundtrackData.duration)}</span>
