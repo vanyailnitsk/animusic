@@ -81,5 +81,11 @@
         margin-left: 40px;
         width: 180px;
     }
-
+    .playlist__anime__title__header{
+        display: none;
+    }
+    .playlist__original__title__header{
+        margin-left: 40px;
+        width: 180px;
+    }
 }
