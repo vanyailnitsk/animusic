@@ -28,7 +28,7 @@ export const PlaylistPage = observer(() => {
     }, [musicStore.fav_tracks]);
     return (
         <div>
-            <div className={styles.playlist__page__header}>
+            {playlist && <div className={styles.playlist__page__header}>
                 <div className={styles.playlist__page__header__content}>
                     <div className={styles.playlist__image}>
                         <img
@@ -39,11 +39,11 @@ export const PlaylistPage = observer(() => {
                         <span className={styles.type__content}>Playlist</span>
                         <div className={styles.playlist__name}>Favorites</div>
                         <div>
-                            <span style={{fontSize: 14}}>{`${playlist?.soundtracks.length} tracks`}</span>
+                            <span style={{fontSize: 14}}>{`${playlist.soundtracks.length} tracks`}</span>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
             <div className={styles.playlist__page__bottom_rgb}></div>
             {playlist &&
                 <div>
