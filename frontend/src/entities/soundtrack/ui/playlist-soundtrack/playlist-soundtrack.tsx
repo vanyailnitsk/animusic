@@ -49,8 +49,8 @@ export const PlaylistSoundtrack = observer(({soundtrackData, listening_queue, in
             </button>
             <img src={image} alt="" className={styles.soundtrack__image}/>
             <div className={styles.title}>
-                <h3 className={styles.anime__title} onClick={albumNavigate}>{soundtrackData.soundtrack.animeTitle}</h3>
-                <span className={styles.anime_name} onClick={animeNavigate}>{soundtrackData.soundtrack.anime.title}</span>
+                <span className={styles.anime__title} onClick={albumNavigate}>{soundtrackData.soundtrack.animeTitle}</span>
+                <span className={styles.anime__name} onClick={animeNavigate}>{soundtrackData.soundtrack.anime.title}</span>
             </div>
             <p className={styles.original__title}>{soundtrackData.soundtrack.originalTitle}</p>
             <div className={styles.date_of_addition}>
