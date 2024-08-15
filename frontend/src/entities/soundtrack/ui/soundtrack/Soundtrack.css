@@ -56,13 +56,22 @@
 .title {
     margin: 0 0 0 10px;
     width: 20vw;
+    position: relative;
     white-space: nowrap;
 }
 .anime__title{
+    text-overflow: ellipsis;
+    position: absolute;
+    bottom: 0;
+    overflow: hidden;
     font-size: 15px;
 }
 .anime_name{
+    text-overflow: ellipsis;
+    position: absolute;
+    top: 0;
     font-size: 14px;
+    overflow: hidden;
     color: #808080;
 }
 .anime_name:hover {
@@ -70,6 +79,8 @@
     text-decoration: underline #808080;
 }
 .original__title {
+    text-overflow: ellipsis;
+    overflow: hidden;
     font-size: 15px;
     white-space: nowrap;
     width: 27vw;

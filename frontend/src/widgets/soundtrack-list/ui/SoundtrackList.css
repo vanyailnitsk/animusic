@@ -41,11 +41,15 @@
     width: 15vw;
 }
 .playlist__original__title__header{
+    position: absolute;
+    left: 21vw;
     margin-left: 5vw;
     width: 23vw;
 }
 .added__at{
     width: 10vw;
+    position: absolute;
+    left: 50vw;
     text-align: center;
     margin-left: 0;
 }

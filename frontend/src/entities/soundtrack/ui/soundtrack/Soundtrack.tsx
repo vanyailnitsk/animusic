@@ -45,7 +45,7 @@ export const Soundtrack = observer(({soundtrackData, listening_queue, index}: So
             </button>
             <img src={image} alt="" className="soundtrack__image"/>
             <div className='title'>
-                <h3 className='anime__title'>{soundtrackData.animeTitle}</h3>
+                <span className='anime__title'>{soundtrackData.animeTitle}</span>
                 <span className='anime_name' onClick={animeNavigate}>{soundtrackData.anime.title}</span>
             </div>
             <p className="original__title">{soundtrackData.originalTitle}</p>

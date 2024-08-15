@@ -55,27 +55,40 @@
 }
 .title {
     margin: 0 0 0 10px;
-    width: 15vw;
-    white-space: nowrap;
+    position: relative;
 }
 .anime__title{
+    white-space: nowrap;
     font-size: 15px;
+    position: absolute;
+    bottom: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .anime__title:hover {
     cursor: pointer;
     text-decoration: underline white;
 }
-.anime_name{
+.anime__name{
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     font-size: 14px;
+    overflow: hidden;
     color: #808080;
 }
-.anime_name:hover {
+.anime__name:hover {
     cursor: pointer;
     text-decoration: underline #808080;
 }
 .original__title {
+    text-overflow: ellipsis;
     font-size: 15px;
+    overflow: hidden;
     white-space: nowrap;
+    position: absolute;
+    left: 21vw;
     width: 23vw;
     margin-left: 5vw;
     margin-block: auto;
@@ -100,6 +113,8 @@
     color:#808080;
 }
 .date_of_addition{
+    position: absolute;
+    left: 50vw;
     text-align: center;
     width: 10vw;
 }
