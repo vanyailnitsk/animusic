@@ -49,7 +49,6 @@ export class UserStore {
     async logout(){
         this.setAuthProgress(true)
         try{
-            // await AuthService.logout()
             localStorage.removeItem('token')
             this.setAuth(false)
             this.setUser(null)

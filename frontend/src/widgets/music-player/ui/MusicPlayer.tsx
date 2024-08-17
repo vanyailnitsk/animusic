@@ -24,7 +24,7 @@ import {CurrentTrack} from "@/entities/soundtrack";
 
 export const MusicPlayer = observer(() => {
     const audioRef = useRef<HTMLAudioElement>(null);
-    const {musicStore, userStore} = useContext(Context)
+    const {musicStore} = useContext(Context)
     const [isShuffleActive, setIsShuffleActive] = useState(false);
     const [currentTime, setCurrentTime] = useState<number>(0);
     const [repeatStatus, setRepeatStatus] = useState<boolean>(false)
@@ -149,7 +149,7 @@ export const MusicPlayer = observer(() => {
             ]
         });
     }
-    if (isMobile && userStore.isAuth) {
+    if (isMobile) {
         return (
             <div className={activePhonePlayer ? "music__player__wrapper active" : "music__player__wrapper"}
                  onClick={!activePhonePlayer ? handlePhoneMusicPlayer : undefined}>
@@ -205,7 +205,6 @@ export const MusicPlayer = observer(() => {
             </div>
         );
     } else {
-        if (userStore.isAuth) {
             return (
                 <div className="music__player__wrapper">
                     <CurrentTrack/>
@@ -269,6 +268,5 @@ export const MusicPlayer = observer(() => {
             );
         }
 
-    }
 });
 

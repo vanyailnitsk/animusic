@@ -73,8 +73,8 @@
 }
 
 .current__track .track__name span.scrolling {
-    white-space: nowrap; /* Запретить перенос текста на новую строку */
-    overflow: hidden; /* Скрыть часть текста, выходящую за пределы блока */
+    white-space: nowrap;
+    overflow: hidden;
     animation: scrollText 10s linear infinite;
 }
 

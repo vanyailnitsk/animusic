@@ -28,7 +28,13 @@ export const SignUp = observer(() => {
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
         try {
             await userStore.registration(data.username, data.email, data.password)
-            navigate(HOME_ROUTE, {replace: true})
+            const redirectPath = localStorage.getItem('redirectPath')
+            if(redirectPath){
+                navigate(redirectPath, {replace: true})
+            }
+            else{
+                navigate(HOME_ROUTE,{replace: true})
+            }
         } catch (e: any) {
             setError('root', {type: 'custom', message: e.status === 500 ? e.message : e.response.data.error})
         }
