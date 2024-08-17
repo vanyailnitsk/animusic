@@ -33,7 +33,13 @@ export const SignIn = observer(() => {
         if (data && data.email && data.password) {
             try {
                 await userStore.login(data.email, data.password)
-                navigate(HOME_ROUTE, {replace: true})
+                const redirectPath = localStorage.getItem('redirectPath')
+                if(redirectPath){
+                    navigate(redirectPath, {replace: true})
+                }
+                else{
+                    navigate(HOME_ROUTE,{replace: true})
+                }
             } catch (e: any) {
                 setError('root', {
                     type: 'custom',

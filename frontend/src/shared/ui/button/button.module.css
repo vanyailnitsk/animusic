@@ -1,0 +1,13 @@
+.button__wrapper{
+    padding: 10px 20px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .2s linear;
+}
+.button__wrapper:hover{
+    transform: scale(1.1);
+    color: white;
+}

@@ -3,18 +3,23 @@ import {useContext, useEffect, useState} from "react";
 import {observer} from "mobx-react-lite";
 import {AppRouter} from "@/app/routers";
 import {Context} from "@/main.tsx";
+import {SnackbarProvider} from "notistack";
 
 function App() {
-    const { userStore,musicStore } = useContext(Context);
-    const [loading, setLoading] = useState(true);
+    const {userStore, musicStore} = useContext(Context);
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
-        const loadFavorites = async () => {
-            await musicStore.fetchFavTracks();
-            setLoading(false);
-        };
-        loadFavorites();
-    }, []);
+        if(userStore.isAuth){
+            setLoading(true)
+            const loadFavorites = async () => {
+                await musicStore.fetchFavTracks();
+                setLoading(false);
+            };
+            loadFavorites();
+        }
+    }, [userStore.isAuth]);
     useEffect(() => {
+        setLoading(true)
         const checkAuthentication = async () => {
             try {
                 await userStore.checkAuth();
@@ -31,15 +36,17 @@ function App() {
             setLoading(false);
         }
     }, [userStore]);
-    if (!loading) {
+    if(!loading){
         return (
             <div className='app'>
-                <AppRouter />
+                <SnackbarProvider>
+                    <AppRouter/>
+                </SnackbarProvider>
             </div>
         );
     }
+    return null
 
-    return null;
 }
 
 export default observer(App);

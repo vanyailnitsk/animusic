@@ -26,36 +26,36 @@ export const AlbumPage = () => {
        }
     }, [id]);
     return (
-        <div className={styles.album__page__wrapper}>
-           <div className={styles.album__page__header} style={{background:`linear-gradient(to bottom, ${colors.colorLight}, ${colors.colorDark}`}}>
-               <div className={styles.album__page__header__content}>
-                   {album?.coverArt && (
-                       <div className={styles.album__image}>
-                           <img
-                               src={album?.coverArt.image.source} alt="Banner"
-                               onLoad={() => setIsLoadingImage(false)}
-                           />
-                       </div>
-                   )}
-                   {album && (
-                   <div className={styles.album__main__info}>
-                       <span className={styles.type__content}>Album</span>
-                       <div className={styles.album__name}>{album?.name}</div>
+            <div className={styles.album__page__wrapper}>
+                <div className={styles.album__page__header} style={{background:`linear-gradient(to bottom, ${colors.colorLight}, ${colors.colorDark}`}}>
+                    <div className={styles.album__page__header__content}>
+                        {album?.coverArt && (
+                            <div className={styles.album__image}>
+                                <img
+                                    src={album?.coverArt.image.source} alt="Banner"
+                                    onLoad={() => setIsLoadingImage(false)}
+                                />
+                            </div>
+                        )}
+                        {album && (
+                            <div className={styles.album__main__info}>
+                                <span className={styles.type__content}>Album</span>
+                                <div className={styles.album__name}>{album?.name}</div>
 
-                           <div>
-                               <span className={styles.anime__title} onClick={() => navigate(animeRoute+album?.anime.id)}>{album?.anime.title}</span>
-                               <span> • </span>
-                               <span style={{fontSize:14}}>{`${album?.soundtracks.length} tracks`}</span>
-                           </div>
-                   </div>
-                   )}
-               </div>
-           </div>
-            <div style={{background:`linear-gradient(to bottom, ${colors.colorDark}, #121212`}} className={styles.album__page__bottom_rgb}></div>
-            {!isLoadingImage && album && album.soundtracks &&
+                                <div>
+                                    <span className={styles.anime__title} onClick={() => navigate(animeRoute+album?.anime.id)}>{album?.anime.title}</span>
+                                    <span> • </span>
+                                    <span style={{fontSize:14}}>{`${album?.soundtracks.length} tracks`}</span>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div style={{background:`linear-gradient(to bottom, ${colors.colorDark}, #121212`}} className={styles.album__page__bottom_rgb}></div>
+                {!isLoadingImage && album && album.soundtracks &&
                     <SoundtrackList soundtracks={album.soundtracks} type={SoundtrackType.album}/>
-            }
-        </div>
+                }
+            </div>
     );
 };
 
