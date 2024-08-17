@@ -7,7 +7,7 @@ import {observer} from "mobx-react-lite";
 import logo from "@/shared/icons/logo.ico";
 import {useNavigate} from "react-router-dom";
 import {Context} from "@/main.tsx";
-import {HOME_ROUTE, LOGIN} from "@/shared/consts";
+import {HOME_ROUTE,SIGN_IN} from "@/shared/consts";
 
 const schema = z.object({
     username: z.string(),
@@ -77,7 +77,7 @@ export const SignUp = observer(() => {
                 <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Loading...' : 'Sign up'}</button>
                 <div className={styles.redirection}>
                     <span>Already have an account?</span>
-                    <span onClick={() => navigate(LOGIN)} style={{cursor: "pointer"}}> Sign in</span>
+                    <span onClick={() => navigate(SIGN_IN)} style={{cursor: "pointer"}}> Sign in</span>
                 </div>
             </form>
         </div>

@@ -20,11 +20,14 @@ import repeatButtonActive from '@/shared/icons/repeatButtonActive.png'
 import {Context} from "@/main.tsx";
 import {formatTime} from "@/shared/lib";
 import {CurrentTrack} from "@/entities/soundtrack";
+import {useLocation} from "react-router-dom";
+import {SIGN_IN, SIGN_UP} from "@/shared/consts";
 
 
 export const MusicPlayer = observer(() => {
     const audioRef = useRef<HTMLAudioElement>(null);
     const {musicStore} = useContext(Context)
+    const location = useLocation()
     const [isShuffleActive, setIsShuffleActive] = useState(false);
     const [currentTime, setCurrentTime] = useState<number>(0);
     const [repeatStatus, setRepeatStatus] = useState<boolean>(false)
@@ -149,7 +152,7 @@ export const MusicPlayer = observer(() => {
             ]
         });
     }
-    if (isMobile) {
+    if (isMobile && (location.pathname !== SIGN_UP && location.pathname !== SIGN_IN)) {
         return (
             <div className={activePhonePlayer ? "music__player__wrapper active" : "music__player__wrapper"}
                  onClick={!activePhonePlayer ? handlePhoneMusicPlayer : undefined}>
@@ -205,6 +208,7 @@ export const MusicPlayer = observer(() => {
             </div>
         );
     } else {
+        if(location.pathname !== SIGN_UP && location.pathname !== SIGN_IN){
             return (
                 <div className="music__player__wrapper">
                     <CurrentTrack/>
@@ -267,6 +271,4 @@ export const MusicPlayer = observer(() => {
                 </div>
             );
         }
-
-});
-
+}})
