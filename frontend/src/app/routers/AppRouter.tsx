@@ -9,7 +9,7 @@ import {AlbumPage} from "@/pages/album";
 import {SearchPage} from "@/pages/search";
 import {PlaylistPage} from "@/pages/playlist";
 import {SignIn, SignUp} from "@/pages/auth";
-import {ALBUM_ROUTE, ANIME_ROUTE, COLLECTION, HOME_ROUTE, LOGIN, SEARCH_ROUTE, SIGN_UP} from "@/shared/consts";
+import {ALBUM_ROUTE, ANIME_ROUTE, COLLECTION, HOME_ROUTE, SEARCH_ROUTE, SIGN_IN, SIGN_UP} from "@/shared/consts";
 
 export const AppRouter = observer(() => {
     return (
@@ -17,7 +17,7 @@ export const AppRouter = observer(() => {
             <BrowserRouter>
                 <MusicPlayer/>
                 <Routes>
-                    <Route path={LOGIN} element={<SignIn/>}/>
+                    <Route path={SIGN_IN} element={<SignIn/>}/>
                     <Route path={SIGN_UP} element={<SignUp/>}/>
                     <Route path={HOME_ROUTE} element={<AppContent page={<HomePage/>}/>}/>
                     <Route path={ANIME_ROUTE} element={<AppContent page={<AnimePage/>}/>}/>
