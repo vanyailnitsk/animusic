@@ -30,7 +30,7 @@ public class AudioService {
         var contentType = switch (extension) {
             case ".ogg" -> "audio/ogg";
             case ".mp3" -> "audio/mpeg";
-            case ".aac" -> "audio/aac";
+            case ".m4a" -> "audio/mp4";
             default -> "application/octet-stream";
         };
         try {
