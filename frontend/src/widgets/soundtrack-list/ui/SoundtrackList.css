@@ -1,6 +1,7 @@
 .soundtrack__list__wrapper {
     margin-top: 10px;
-    width: 100%;
+    width: 97%;
+    margin-inline: auto;
     background-color: transparent;
     position: relative;
 }
@@ -16,7 +17,7 @@
     user-select: none;
     border-bottom: 1px solid #808080;
     padding-bottom: 3px;
-    margin-bottom: 2px;
+    margin-bottom: 10px;
 }
 .header__soundtrack__list span{
     color:#808080;

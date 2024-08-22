@@ -6,6 +6,7 @@
     padding-block:5px;
     margin-bottom: 3px;
     width: 100%;
+    border-radius: 5px;
     background: transparent;
     transition: 0.2s linear;
     -webkit-user-select: none;
