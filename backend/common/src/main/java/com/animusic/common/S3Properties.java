@@ -15,6 +15,8 @@ public class S3Properties {
 
     private String url;
 
+    private String publicUrl;
+
     private String bucket;
 
     private String region;

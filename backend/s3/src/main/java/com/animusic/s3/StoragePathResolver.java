@@ -12,8 +12,14 @@ public class StoragePathResolver {
 
     private static String storageUrl;
 
+    private static String publicUrl;
+
     public static void setStorageUrl(String url, String bucketName) {
         StoragePathResolver.storageUrl = "%s/%s/".formatted(url, bucketName);
+    }
+
+    public static void setPublicUrl(String url, String bucketName) {
+        StoragePathResolver.publicUrl = "%s/%s/".formatted(url, bucketName);
     }
 
     public static String getFileExtension(String fileName) {
@@ -51,6 +57,6 @@ public class StoragePathResolver {
     }
 
     public static String getAbsoluteFileUrl(String relativeUrl) {
-        return storageUrl + relativeUrl;
+        return publicUrl + relativeUrl;
     }
 }

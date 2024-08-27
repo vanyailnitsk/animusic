@@ -1,6 +1,7 @@
 package com.animusic.s3;
 
 import java.net.URI;
+import java.util.Objects;
 
 import com.animusic.common.PropertiesConfig;
 import com.animusic.common.S3Properties;
@@ -43,7 +44,9 @@ public class S3Config {
 
     @Bean
     public S3Service s3Service(S3Client s3Client) {
+        var publicUrl = Objects.requireNonNullElse(properties.getPublicUrl(), properties.getUrl());
         StoragePathResolver.setStorageUrl(properties.getUrl(), properties.getBucket());
+        StoragePathResolver.setPublicUrl(publicUrl, properties.getBucket());
         return new S3ServiceImpl(s3Client, properties);
     }
 }
