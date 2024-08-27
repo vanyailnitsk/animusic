@@ -1,6 +1,9 @@
 package com.animusic.core.db.model;
 
+import java.util.Date;
+
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -35,6 +38,9 @@ public class Soundtrack {
     private String animeTitle;
 
     private String audioFile;
+
+    @Column(name = "creation_date")
+    private Date creationDate;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
