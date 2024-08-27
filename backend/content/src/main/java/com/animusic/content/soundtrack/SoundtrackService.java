@@ -1,5 +1,6 @@
 package com.animusic.content.soundtrack;
 
+import java.util.Date;
 import java.util.Objects;
 
 import com.animusic.content.JsonMergePatchService;
@@ -49,6 +50,7 @@ public class SoundtrackService {
         Album album = albumService.getAlbumById(albumId);
         Anime anime = album.getAnime();
         soundtrack.setAnime(anime);
+        soundtrack.setCreationDate(new Date());
         var blobKey = audioService.createAudioFile(soundtrack, audio);
         soundtrack.setAudioFile(blobKey);
         if (image != null && !image.isEmpty()) {

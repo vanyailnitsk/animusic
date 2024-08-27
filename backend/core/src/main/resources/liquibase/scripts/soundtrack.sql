@@ -23,3 +23,7 @@ alter table soundtrack
 --changeset vanyailnitsk:add_fk_soundtrack_image
 alter table soundtrack
     add constraint fk_soundtrack_image foreign key (image_id) references images (id);
+
+--changeset vanyailnitsk:add_creation_date
+alter table soundtrack
+    add column creation_date timestamp;

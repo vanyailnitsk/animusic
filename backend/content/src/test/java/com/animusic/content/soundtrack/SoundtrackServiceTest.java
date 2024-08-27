@@ -37,6 +37,7 @@ class SoundtrackServiceTest extends IntegrationTestBase {
                 .duration(123)
                 .build();
         soundtrackService.createSoundtrack(audio, image, soundtrack, album.getId());
+        assertThat(soundtrack.getCreationDate()).isNotNull();
         assertThat(soundtrackRepository.findById(soundtrack.getId()).get())
                 .isEqualTo(soundtrack);
 
