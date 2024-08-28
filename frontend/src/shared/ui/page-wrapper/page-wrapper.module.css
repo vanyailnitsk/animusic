@@ -51,7 +51,14 @@
 }
 
 @media (max-width: 480px) {
-
+    .sign__in,.sign__up{
+        padding:10px 13px !important;
+        font-size: 12px !important;
+    }
+    .auth__actions{
+        width: 150px;
+        right: 20px;
+    }
 }
 @media (min-width: 768px) and (max-width: 1024px) {
 

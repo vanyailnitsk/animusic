@@ -3,7 +3,7 @@
     height: 88vh;
     margin-top: 1vh;
     display: grid;
-    grid-template-columns:24.5% calc(75.5% - 10px);
+    grid-template-columns:24.5vw calc(75.5vw - 10px);
     grid-template-rows:auto 1fr auto;
     gap: 10px;
     z-index: 1;
@@ -19,7 +19,6 @@
 @media screen and (max-width: 480px) {
     .main__wrapper{
         margin: 0;
-        height: 90vh;
         width: 100%;
         display: flex;
         flex-direction: column;

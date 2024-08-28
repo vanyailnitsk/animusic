@@ -2,7 +2,7 @@ import styles from "./phone-music-player.module.css";
 import {SaveTrack} from "@/features/collection";
 import {FC, useContext, useEffect, useRef, useState} from "react";
 import {Context} from "@/main.tsx";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {Sheet} from "react-modal-sheet";
 import {formatTime} from "@/shared/lib";
 import shuffleButton from "@/shared/icons/shuffleButton.png";
@@ -13,9 +13,11 @@ import nextButton from "@/shared/icons/next.png";
 import repeatButtonActive from "@/shared/icons/repeatButtonActive.png";
 import repeatButton from "@/shared/icons/repeatButton.png";
 import {observer} from "mobx-react-lite";
+import {SIGN_IN, SIGN_UP} from "@/shared/consts";
 export const PhoneMusicPlayer = observer(() => {
     const {musicStore} = useContext(Context)
     const navigate = useNavigate()
+    const location = useLocation()
     const [isOpen, setOpen] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
     const [currentTime, setCurrentTime] = useState<number>(0);
@@ -118,56 +120,58 @@ export const PhoneMusicPlayer = observer(() => {
             ]
         });
     }
-    return (
-        <div className={musicStore.currentTrack ? styles.phone__music__player__wrapper : styles.hidden}
-             onClick={() => setOpen(true)}>
-            <div className={styles.phone__music__player__content}>
-                <audio ref={audioRef}
-                       src={musicStore.currentTrack && musicStore.currentTrack.audioFile}
-                       autoPlay
-                       onEnded={playNextTrack}
-                       onTimeUpdate={handleTimeUpdate}
-                       onPlay={handlePlay}
-                       onPause={handlePause}
-                       preload="auto"
-                >
-                </audio>
-                <img
-                    src={musicStore.currentTrack && musicStore.currentTrack.image?.source || "images/track-img.jpeg"}
-                    alt=""
-                    className={styles.track__img}/>
-                {musicStore.currentTrack &&
-                    <div className={styles.track__name}>
+    if (location.pathname !== SIGN_UP && location.pathname !== SIGN_IN){
+        return (
+            <div className={musicStore.currentTrack ? styles.phone__music__player__wrapper : styles.hidden}
+                 onClick={() => setOpen(true)}>
+                <div className={styles.phone__music__player__content}>
+                    <audio ref={audioRef}
+                           src={musicStore.currentTrack && musicStore.currentTrack.audioFile}
+                           autoPlay
+                           onEnded={playNextTrack}
+                           onTimeUpdate={handleTimeUpdate}
+                           onPlay={handlePlay}
+                           onPause={handlePause}
+                           preload="auto"
+                    >
+                    </audio>
+                    <img
+                        src={musicStore.currentTrack && musicStore.currentTrack.image?.source || "images/track-img.jpeg"}
+                        alt=""
+                        className={styles.track__img}/>
+                    {musicStore.currentTrack &&
+                        <div className={styles.track__name}>
                             <span
                                 onClick={() => navigate(`/album/${musicStore.currentTrack?.album.id}`)}
                                 className={musicStore.currentTrack.originalTitle.length > 20 ? styles.scrolling : ""}>{musicStore.currentTrack.originalTitle}</span>
-                        <span>{musicStore.currentTrack.animeTitle}</span>
-                    </div>
-                }
-                {musicStore.currentTrack && <SaveTrack className={styles.save__track} id={musicStore.currentTrack.id}
-                                                       saved={musicStore.isSaved(musicStore.currentTrack.id)}/>}
+                            <span>{musicStore.currentTrack.animeTitle}</span>
+                        </div>
+                    }
+                    {musicStore.currentTrack && <SaveTrack className={styles.save__track} id={musicStore.currentTrack.id}
+                                                           saved={musicStore.isSaved(musicStore.currentTrack.id)}/>}
+                </div>
+                <Sheet isOpen={isOpen} onClose={() => setOpen(false)}>
+                    <Sheet.Container>
+                        <Sheet.Header style={{backgroundColor: '#060606'}}/>
+                        <Sheet.Content>
+                            <ActiveMusicPlayer
+                                currentTime={currentTime}
+                                duration={duration}
+                                audioRef={audioRef}
+                                handleSeek={handleSeek}
+                                playNextTrack={playNextTrack}
+                                playPauseHandler={playPauseHandler}
+                                playPreviousTrack={playPreviousTrack}
+                                toggleRepeat={toggleRepeat}
+                                repeatStatus={repeatStatus}
+                            />
+                        </Sheet.Content>
+                    </Sheet.Container>
+                    <Sheet.Backdrop/>
+                </Sheet>
             </div>
-            <Sheet isOpen={isOpen} onClose={() => setOpen(false)}>
-                <Sheet.Container>
-                    <Sheet.Header style={{backgroundColor: '#060606'}}/>
-                    <Sheet.Content>
-                        <ActiveMusicPlayer
-                            currentTime={currentTime}
-                            duration={duration}
-                            audioRef={audioRef}
-                            handleSeek={handleSeek}
-                            playNextTrack={playNextTrack}
-                            playPauseHandler={playPauseHandler}
-                            playPreviousTrack={playPreviousTrack}
-                            toggleRepeat={toggleRepeat}
-                            repeatStatus={repeatStatus}
-                        />
-                    </Sheet.Content>
-                </Sheet.Container>
-                <Sheet.Backdrop/>
-            </Sheet>
-        </div>
-    );
+        );
+    }
 });
 interface ActivePlayerProps{
     currentTime:number;
