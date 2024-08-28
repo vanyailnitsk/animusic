@@ -91,39 +91,20 @@
         margin-left: 5%;
     }
 
-    .track__img.active {
-        width: 320px;
-        height: 320px;
-        margin-inline: auto;
-        margin-top: 13vh;
-    }
-
     .add__track {
         right: 30px;
     }
 
-    .track__name.active {
-        width: 100%;
-        display: flex;
-        margin-top: 10vh;
-        height: 8vh;
-        align-items: center;
-        margin-inline: 0;
-    }
+}
+@media (max-width: 480px) {
 
-    .track__name.active span:first-child {
-        font-size: 20px;
-        font-weight: 500;
-        animation: none;
-    }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
 
-    .track__name.active span:last-child {
-        font-size: 17px;
-    }
+}
+@media (min-width: 1024px) and (max-width: 1280px) {
 
-    .add__track.active {
-        position: absolute;
-        top: 30px;
-        right: 30px;
-    }
+}
+@media (min-width: 1280px) {
+
 }

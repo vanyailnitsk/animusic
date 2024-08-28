@@ -4,7 +4,7 @@
     right: 0;
     left: 0;
     margin-left: 30px;
-    margin-top: 50px;
+    margin-top: 10vh;
     display: grid;
     grid-template-columns:1fr 1fr 1fr 1fr;
     gap:54px;
@@ -37,7 +37,8 @@
         display: grid;
         height: auto;
         gap:30px;
-        margin-top:10px;
+        margin-top:3vh;
+        padding-bottom: 10vh;
         grid-template-columns:190px;
     }
 }
@@ -48,7 +49,8 @@
         display: grid;
         height: auto;
         gap:30px;
-        margin-top:10px;
+        margin-top:3vh;
+        padding-bottom: 10vh;
         grid-template-columns:190px 190px;
     }
 }
@@ -59,7 +61,7 @@
         display: grid;
         height: auto;
         gap:30px;
-        margin-top:10px;
+        margin-top:4vh;
         grid-template-columns:190px 190px 190px;
     }
 }
@@ -70,7 +72,7 @@
         display: grid;
         height: auto;
         gap:30px;
-        margin-top:10px;
+        margin-top:5vh;
         grid-template-columns:190px 190px 190px 190px;
     }
 }

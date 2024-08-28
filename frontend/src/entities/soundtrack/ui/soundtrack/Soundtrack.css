@@ -126,12 +126,6 @@
     .soundtrack__add{
         display: none;
     }
-    .title{
-        font-size: 13px;
-        margin-left: 10px;
-        width: 180px;
-        overflow: hidden;
-    }
     .soundtrack__image{
         width: 30px;
         height: 30px;
@@ -140,5 +134,24 @@
         font-size: 13px;
         position: absolute;
         right: 7vw;
+    }
+}
+@media (max-width: 480px) {
+    .anime__title{
+        font-size: 13px;
+    }
+    .anime_name{
+        font-size: 12px;
+    }
+    .soundtrack__saved,.soundtrack__add{
+        right: 16vw;
+    }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+    .anime__title{
+        font-size: 13px;
+    }
+    .anime_name{
+        font-size: 12px;
     }
 }

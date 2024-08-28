@@ -1,4 +1,4 @@
-import {useContext} from 'react';
+import {useContext, useEffect} from 'react';
 import {SubmitHandler, useForm} from "react-hook-form";
 import styles from './sign-up.module.css'
 import {z} from 'zod'
@@ -17,7 +17,7 @@ const schema = z.object({
 
 type FormFields = z.infer<typeof schema>
 export const SignUp = observer(() => {
-    const {userStore} = useContext(Context)
+    const {userStore,musicStore} = useContext(Context)
     const navigate = useNavigate()
     const {
         register,
@@ -25,6 +25,9 @@ export const SignUp = observer(() => {
         setError,
         formState: {errors, isSubmitting}
     } = useForm<FormFields>({resolver: zodResolver(schema)})
+    useEffect(() => {
+        musicStore.setIsPlaying(false)
+    }, []);
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
         try {
             await userStore.registration(data.username, data.email, data.password)
