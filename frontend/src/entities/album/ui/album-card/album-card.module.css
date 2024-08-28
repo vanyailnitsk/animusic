@@ -63,15 +63,21 @@
     .album__card__image_wrapper:hover .album__card__image {
         opacity: 1;
     }
-    .album__card__image_wrapper:hover .album__card__actions {
-        transform: none;
+    .album__card__actions{
+        display: none;
+    }
+    .album__card__actions_img{
+        display: none;
     }
 }
 @media (min-width: 768px) and (max-width: 1024px) {
     .album__card__image_wrapper:hover .album__card__image {
         opacity: 1;
     }
-    .album__card__image_wrapper:hover .album__card__actions {
-        transform: none;
+    .album__card__actions{
+        display: none;
+    }
+    .album__card__actions_img{
+        display: none;
     }
 }

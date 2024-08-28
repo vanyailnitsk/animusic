@@ -18,6 +18,7 @@
 }
 .album__page__header__content{
     display: flex;
+    align-items: center;
     flex-direction: row;
     width: 90%;
     height: 230px;
@@ -52,8 +53,35 @@
     border-radius: 7px;
     height: 230px;
 }
-@media screen and (max-width: 1080px) and (max-height: 2400px){
+@media (min-width: 768px) and (max-width: 1024px)  {
+    .album__name{
+        font-size: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .type__content{
+        font-size: 12px;
+    }
+    .anime__title{
+        font-size: 12px;
+    }
     .album__name{
         font-size: 25px;
+        line-height: 25px;
+    }
+    .album__main__info{
+        width: 30vw;
+        height: 15vh;
+    }
+    .album__image img{
+        width: 200px;
+        height: 200px;
+    }
+    .album__page__header__content{
+        height: 200px;
+    }
+    .album__page__header{
+        height: 35vh;
     }
 }

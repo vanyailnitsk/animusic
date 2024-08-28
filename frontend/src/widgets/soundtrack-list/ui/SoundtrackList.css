@@ -74,6 +74,7 @@
     width: 20px;
     height: 20px;
 }
+
 @media screen and (max-width: 1080px) and (max-height: 2400px){
     .anime__title__header{
         display: none;
@@ -88,5 +89,10 @@
     .playlist__original__title__header{
         margin-left: 40px;
         width: 180px;
+    }
+}
+@media (max-width: 480px) {
+    .soundtrack__list__wrapper{
+        padding-bottom: 10vh;
     }
 }
