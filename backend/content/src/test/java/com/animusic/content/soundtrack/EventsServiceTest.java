@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-class ListeningStatsServiceTest extends IntegrationTestBase {
+class EventsServiceTest extends IntegrationTestBase {
 
     @Autowired
-    ListeningStatsService listeningStatsService;
+    EventsService eventsService;
 
     @Test
     void addListeningEvent() {
@@ -39,7 +39,7 @@ class ListeningStatsServiceTest extends IntegrationTestBase {
         var user = User.builder().username("user").build();
         userRepository.save(user);
         var trackId = soundtrack.getId();
-        var event = listeningStatsService.addListeningEvent(user, trackId);
+        var event = eventsService.addListeningEvent(user, trackId);
 
         assertThat(trackListeningEventRepository.trackListeningsCount(trackId)).isEqualTo(1);
         assertThat(event.getListenedAt()).isNotNull();

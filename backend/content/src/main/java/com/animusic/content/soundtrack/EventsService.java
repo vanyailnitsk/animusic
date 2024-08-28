@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ListeningStatsService {
+public class EventsService {
 
     private final TrackListeningEventRepository listeningEventRepository;
 
@@ -27,8 +27,4 @@ public class ListeningStatsService {
         return listeningEventRepository.save(event);
     }
 
-    public Long trackListeningsCount(Integer trackId) {
-        soundtrackService.getSoundtrackOrThrow(trackId);
-        return listeningEventRepository.trackListeningsCount(trackId);
-    }
 }
