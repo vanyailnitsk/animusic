@@ -3,13 +3,16 @@
     padding: 0;
     box-sizing: border-box;
 }
+#root{
+    background-color: #060606;
+}
 .app{
     position: relative;
     top:0;
     left: 0;
-    background-color: #060606;
     height: 100vh;
     width: 100%;
+    background-color: #060606;
     font-family: Kanit;
     display: flex;
     justify-content: center;
