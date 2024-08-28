@@ -13,7 +13,7 @@ import littleSound from '@/shared/icons/icons8-низкая-громкость-1
 import loudSound from '@/shared/icons/icons8-громкий-звук-100.png'
 import noSound from '@/shared/icons/icons8-нет-звука-100.png'
 import {observer} from "mobx-react-lite";
-import {isMobile, isTablet} from 'react-device-detect';
+import {isTablet} from 'react-device-detect';
 import repeatButtonActive from '@/shared/icons/repeatButtonActive.png'
 import {Context} from "@/main.tsx";
 import {formatTime} from "@/shared/lib";

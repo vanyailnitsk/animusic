@@ -14,21 +14,21 @@ import repeatButtonActive from "@/shared/icons/repeatButtonActive.png";
 import repeatButton from "@/shared/icons/repeatButton.png";
 import {observer} from "mobx-react-lite";
 import {SIGN_IN, SIGN_UP} from "@/shared/consts";
+import * as React from "react";
+
 export const PhoneMusicPlayer = observer(() => {
     const {musicStore} = useContext(Context)
     const navigate = useNavigate()
     const location = useLocation()
     const [isOpen, setOpen] = useState(false);
-    const audioRef = useRef<HTMLAudioElement>(null);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
     const [currentTime, setCurrentTime] = useState<number>(0);
     const [duration, setDuration] = useState<number>(musicStore.currentTrack ? musicStore.currentTrack.duration : 0);
     const [repeatStatus, setRepeatStatus] = useState<boolean>(false)
     useEffect(() => {
         musicStore.changeVolume(1)
         if (audioRef.current) {
-            if (audioRef.current) {
-                audioRef.current.volume = musicStore.volume
-            }
+            audioRef.current.volume = musicStore.volume
             if (musicStore.isPlaying) {
                 audioRef.current.play()
             } else {
@@ -85,7 +85,6 @@ export const PhoneMusicPlayer = observer(() => {
     };
 
 
-
     const handleSeek = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const time: number = +event.target.value;
         if (audioRef.current) {
@@ -100,7 +99,7 @@ export const PhoneMusicPlayer = observer(() => {
             setRepeatStatus(audioRef.current.loop)
         }
     }
-    const handleAlbumNavigate = (e) => {
+    const handleAlbumNavigate = (e: React.MouseEvent<HTMLSpanElement>) => {
         e.stopPropagation()
         navigate(`/album/${musicStore.currentTrack?.album.id}`)
     }
@@ -123,7 +122,7 @@ export const PhoneMusicPlayer = observer(() => {
             ]
         });
     }
-    if (location.pathname !== SIGN_UP && location.pathname !== SIGN_IN){
+    if (location.pathname !== SIGN_UP && location.pathname !== SIGN_IN) {
         return (
             <div className={musicStore.currentTrack ? styles.phone__music__player__wrapper : styles.hidden}
                  onClick={() => setOpen(true)}>
@@ -150,8 +149,9 @@ export const PhoneMusicPlayer = observer(() => {
                             <span>{musicStore.currentTrack.animeTitle}</span>
                         </div>
                     }
-                    {musicStore.currentTrack && <SaveTrack className={styles.save__track} id={musicStore.currentTrack.id}
-                                                           saved={musicStore.isSaved(musicStore.currentTrack.id)}/>}
+                    {musicStore.currentTrack &&
+                        <SaveTrack className={styles.save__track} id={musicStore.currentTrack.id}
+                                   saved={musicStore.isSaved(musicStore.currentTrack.id)}/>}
                 </div>
                 <Sheet isOpen={isOpen} onClose={() => setOpen(false)}>
                     <Sheet.Container>
@@ -176,19 +176,31 @@ export const PhoneMusicPlayer = observer(() => {
         );
     }
 });
-interface ActivePlayerProps{
-    currentTime:number;
-    duration:number;
-    audioRef:React.MutableRefObject<HTMLAudioElement>;
-    playPreviousTrack:() => void
-    playPauseHandler:() => void
-    playNextTrack:() => void
-    toggleRepeat:() => void
-    repeatStatus:boolean;
-    handleSeek:(event: React.ChangeEvent<HTMLInputElement>) => void;
+
+interface ActivePlayerProps {
+    currentTime: number;
+    duration: number;
+    audioRef: React.MutableRefObject<HTMLAudioElement | null>;
+    playPreviousTrack: () => void
+    playPauseHandler: () => void
+    playNextTrack: () => void
+    toggleRepeat: () => void
+    repeatStatus: boolean;
+    handleSeek: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const ActiveMusicPlayer:FC<ActivePlayerProps> = observer((props) => {
-    const {currentTime,duration,audioRef,playNextTrack,playPreviousTrack,playPauseHandler,toggleRepeat,repeatStatus,handleSeek} = props
+
+const ActiveMusicPlayer: FC<ActivePlayerProps> = observer((props) => {
+    const {
+        currentTime,
+        duration,
+        audioRef,
+        playNextTrack,
+        playPreviousTrack,
+        playPauseHandler,
+        toggleRepeat,
+        repeatStatus,
+        handleSeek
+    } = props
     const {musicStore} = useContext(Context)
     return (
         <div className={styles.phone__music__player__wrapper__active}>
@@ -212,14 +224,14 @@ const ActiveMusicPlayer:FC<ActivePlayerProps> = observer((props) => {
             <div className={styles.time__bar}>
                 <div className={styles.current__time}>{formatTime(currentTime)}</div>
                 <div className={styles.progress__bar}>
-                    <input
+                    {audioRef && <input
                         type="range"
                         min="0"
                         max={audioRef.current ? audioRef.current.duration : 0}
                         step="1"
                         value={currentTime}
                         onChange={handleSeek}
-                    />
+                    />}
                 </div>
                 <div className={styles.total__time}>{formatTime(duration)}</div>
             </div>
