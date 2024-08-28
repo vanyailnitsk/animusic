@@ -35,7 +35,7 @@ public class SoundtrackService {
 
     private final JsonMergePatchService jsonMergePatchService;
 
-    public Soundtrack getSoundtrack(Integer id) {
+    public Soundtrack getSoundtrackOrThrow(Integer id) {
         return soundtrackRepository.findById(id)
                 .orElseThrow(() -> new SoundtrackNotFoundException(id));
     }

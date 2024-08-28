@@ -1,6 +1,9 @@
 package com.animusic.content.soundtrack;
 
-import com.animusic.core.db.table.SoundtrackRepository;
+import java.util.Date;
+
+import com.animusic.core.db.model.TrackListeningEvent;
+import com.animusic.core.db.model.User;
 import com.animusic.core.db.table.TrackListeningEventRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,14 +14,21 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ListeningStatsService {
 
-    private TrackListeningEventRepository listeningEventRepository;
+    private final TrackListeningEventRepository listeningEventRepository;
 
-    private SoundtrackRepository soundtrackRepository;
+    private final SoundtrackService soundtrackService;
+
+    public TrackListeningEvent addListeningEvent(User user, Integer soundtrackId) {
+        var event = TrackListeningEvent.builder()
+                .soundtrack(soundtrackService.getSoundtrackOrThrow(soundtrackId))
+                .user(user)
+                .listenedAt(new Date())
+                .build();
+        return listeningEventRepository.save(event);
+    }
 
     public Long trackListeningsCount(Integer trackId) {
-        if (soundtrackRepository.findById(trackId).isEmpty()) {
-            throw new SoundtrackNotFoundException(trackId);
-        }
+        soundtrackService.getSoundtrackOrThrow(trackId);
         return listeningEventRepository.trackListeningsCount(trackId);
     }
 }

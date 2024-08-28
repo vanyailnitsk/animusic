@@ -45,7 +45,7 @@ public class SoundtrackController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public SoundtrackDto getSoundtrack(@PathVariable Integer soundtrackId) {
-        Soundtrack soundtrack = soundtrackService.getSoundtrack(soundtrackId);
+        var soundtrack = soundtrackService.getSoundtrackOrThrow(soundtrackId);
         return SoundtrackMapper.fromSoundtrack(soundtrack);
     }
 
