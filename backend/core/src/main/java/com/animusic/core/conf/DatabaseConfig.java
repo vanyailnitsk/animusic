@@ -14,6 +14,7 @@ import com.animusic.core.db.table.PlaylistRepository;
 import com.animusic.core.db.table.PlaylistSoundtrackRepository;
 import com.animusic.core.db.table.RefreshTokenRepository;
 import com.animusic.core.db.table.SoundtrackRepository;
+import com.animusic.core.db.table.TrackListeningEventRepository;
 import com.animusic.core.db.table.UserRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
@@ -122,6 +123,11 @@ public class DatabaseConfig {
     @Bean
     public RefreshTokenRepository refreshTokenRepository(EntityManager entityManager) {
         return new RefreshTokenRepository.Impl(entityManager);
+    }
+
+    @Bean
+    public TrackListeningEventRepository trackListeningEventRepository(EntityManager entityManager) {
+        return new TrackListeningEventRepository.Impl(entityManager);
     }
 
 }
