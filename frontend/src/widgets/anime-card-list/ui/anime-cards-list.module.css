@@ -34,6 +34,6 @@
     .cards__list__wrapper {
         width: 318px;
         grid-template-columns: 318px;
-        padding-bottom: 10vh;
+        padding-bottom: 14vh;
     }
 }

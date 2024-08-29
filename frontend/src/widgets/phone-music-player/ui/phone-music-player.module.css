@@ -6,7 +6,7 @@
     align-items: center;
     justify-content: center;
     background-color: #060606;
-    bottom: 0;
+    bottom: 4vh;
     z-index: 1000;
 }
 .phone__music__player__wrapper__active{

@@ -21,6 +21,7 @@
 }
 .playlist__page__header__content{
     display: flex;
+    align-items: center;
     flex-direction: row;
     width: 90%;
     height: 230px;
@@ -48,4 +49,25 @@
     border-radius: 7px;
     height: 230px;
 }
-
+@media (max-width: 480px){
+    .playlist__image img{
+        width: 200px;
+        height: 200px;
+    }
+    .type__content{
+        font-size: 12px;
+    }
+    .playlist__main__info{
+        width: 30vw;
+        height: 10vh;
+    }
+    .playlist__name{
+        font-size: 4vh;
+    }
+    .playlist__page__header__content{
+        height: 200px;
+    }
+    .playlist__page__header{
+        height: 35vh;
+    }
+}

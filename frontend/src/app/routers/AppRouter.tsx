@@ -12,12 +12,14 @@ import {SignIn, SignUp} from "@/pages/auth";
 import {ALBUM_ROUTE, ANIME_ROUTE, COLLECTION, HOME_ROUTE, SEARCH_ROUTE, SIGN_IN, SIGN_UP} from "@/shared/consts";
 import {isMobile} from "react-device-detect";
 import {PhoneMusicPlayer} from "@/widgets/phone-music-player";
+import {PhoneNavigation} from "@/widgets/phone-navigation";
 
 export const AppRouter = observer(() => {
     return (
         <SkeletonTheme baseColor="#313131" highlightColor="#525252">
             <BrowserRouter>
                 {isMobile? <PhoneMusicPlayer/> : <MusicPlayer/>}
+                {isMobile && <PhoneNavigation/>}
                 <Routes>
                     <Route path={SIGN_IN} element={<SignIn/>}/>
                     <Route path={SIGN_UP} element={<SignUp/>}/>

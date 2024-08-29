@@ -127,3 +127,8 @@
     background: #64ed88;
     box-shadow: -408px 0 0 404px #64ed88;
 }
+@media (min-width: 1024px) and (max-width: 1170px) {
+    .player{
+        display: none;
+    }
+}

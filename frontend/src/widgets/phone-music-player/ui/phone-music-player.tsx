@@ -2,7 +2,7 @@ import styles from "./phone-music-player.module.css";
 import {SaveTrack} from "@/features/collection";
 import {FC, useContext, useEffect, useRef, useState} from "react";
 import {Context} from "@/main.tsx";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {Sheet} from "react-modal-sheet";
 import {formatTime} from "@/shared/lib";
 import shuffleButton from "@/shared/icons/shuffleButton.png";
@@ -18,7 +18,6 @@ import * as React from "react";
 
 export const PhoneMusicPlayer = observer(() => {
     const {musicStore} = useContext(Context)
-    const navigate = useNavigate()
     const location = useLocation()
     const [isOpen, setOpen] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -99,10 +98,7 @@ export const PhoneMusicPlayer = observer(() => {
             setRepeatStatus(audioRef.current.loop)
         }
     }
-    const handleAlbumNavigate = (e: React.MouseEvent<HTMLSpanElement>) => {
-        e.stopPropagation()
-        navigate(`/album/${musicStore.currentTrack?.album.id}`)
-    }
+
     navigator.mediaSession.setActionHandler("nexttrack", (): void => {
         playNextTrack()
     });
@@ -144,7 +140,6 @@ export const PhoneMusicPlayer = observer(() => {
                     {musicStore.currentTrack &&
                         <div className={styles.track__name}>
                             <span
-                                onClick={handleAlbumNavigate}
                                 className={musicStore.currentTrack.originalTitle.length > 20 ? styles.scrolling : ""}>{musicStore.currentTrack.originalTitle}</span>
                             <span>{musicStore.currentTrack.animeTitle}</span>
                         </div>
