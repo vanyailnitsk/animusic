@@ -1,0 +1,14 @@
+.navigation__wrapper{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 4vh !important;
+    display: flex;
+    align-items: center;
+    z-index: 1001;
+    background-color: #060606 !important;
+}
+.navigation__icon{
+    width: 20px;
+    height: 20px;
+}

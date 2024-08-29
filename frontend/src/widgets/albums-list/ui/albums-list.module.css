@@ -38,7 +38,7 @@
         height: auto;
         gap:30px;
         margin-top:3vh;
-        padding-bottom: 10vh;
+        padding-bottom: 14vh;
         grid-template-columns:190px;
     }
 }
@@ -50,7 +50,7 @@
         height: auto;
         gap:30px;
         margin-top:3vh;
-        padding-bottom: 10vh;
+        padding-bottom: 14vh;
         grid-template-columns:190px 190px;
     }
 }

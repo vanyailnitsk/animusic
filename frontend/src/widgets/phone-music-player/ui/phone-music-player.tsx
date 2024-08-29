@@ -99,10 +99,7 @@ export const PhoneMusicPlayer = observer(() => {
             setRepeatStatus(audioRef.current.loop)
         }
     }
-    const handleAlbumNavigate = (e: React.MouseEvent<HTMLSpanElement>) => {
-        e.stopPropagation()
-        navigate(`/album/${musicStore.currentTrack?.album.id}`)
-    }
+
     navigator.mediaSession.setActionHandler("nexttrack", (): void => {
         playNextTrack()
     });
@@ -144,7 +141,6 @@ export const PhoneMusicPlayer = observer(() => {
                     {musicStore.currentTrack &&
                         <div className={styles.track__name}>
                             <span
-                                onClick={handleAlbumNavigate}
                                 className={musicStore.currentTrack.originalTitle.length > 20 ? styles.scrolling : ""}>{musicStore.currentTrack.originalTitle}</span>
                             <span>{musicStore.currentTrack.animeTitle}</span>
                         </div>
