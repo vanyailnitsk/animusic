@@ -75,24 +75,26 @@
     height: 20px;
 }
 
-@media screen and (max-width: 1080px) and (max-height: 2400px){
+@media (max-width: 480px) {
+    .soundtrack__list__wrapper{
+        padding-bottom: 14vh;
+    }
+    .added__at{
+        display: none;
+    }
     .anime__title__header{
         display: none;
     }
     .original__title__header{
-        margin-left: 40px;
-        width: 180px;
+        margin-left: 10vw;
+    }
+    .playlist__original__title__header{
+        left: 14vw;
     }
     .playlist__anime__title__header{
         display: none;
     }
-    .playlist__original__title__header{
-        margin-left: 40px;
-        width: 180px;
-    }
-}
-@media (max-width: 480px) {
-    .soundtrack__list__wrapper{
-        padding-bottom: 14vh;
+    .playlist__clock__icon{
+        right: 7vw;
     }
 }

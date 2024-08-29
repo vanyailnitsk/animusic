@@ -41,7 +41,6 @@ export const AlbumPage = () => {
                             <div className={styles.album__main__info}>
                                 <span className={styles.type__content}>Album</span>
                                 <div className={styles.album__name}>{album?.name}</div>
-
                                 <div>
                                     <span className={styles.anime__title} onClick={() => navigate(animeRoute+album?.anime.id)}>{album?.anime.title}</span>
                                     <span> • </span>

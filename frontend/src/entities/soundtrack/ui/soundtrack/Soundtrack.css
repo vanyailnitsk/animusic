@@ -119,7 +119,19 @@
     color:#808080;
 }
 
-@media screen and (max-width: 759px){
+@media (max-width: 480px) {
+    .anime__title{
+        font-size: 13px;
+    }
+    .original__title{
+        display: none;
+    }
+    .anime_name{
+        font-size: 12px;
+    }
+    .soundtrack__saved,.soundtrack__add{
+        right: 16vw;
+    }
     .original__title{
         display: none;
     }
@@ -134,17 +146,6 @@
         font-size: 13px;
         position: absolute;
         right: 7vw;
-    }
-}
-@media (max-width: 480px) {
-    .anime__title{
-        font-size: 13px;
-    }
-    .anime_name{
-        font-size: 12px;
-    }
-    .soundtrack__saved,.soundtrack__add{
-        right: 16vw;
     }
 }
 @media (min-width: 768px) and (max-width: 1024px) {

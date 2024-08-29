@@ -1,6 +1,6 @@
 .current__track {
     position: relative;
-    width: 280px;
+    width: 23vw;
     height: 50px;
     display: flex;
     align-items: center;
@@ -89,10 +89,6 @@
         width: 55px;
         height: 55px;
         margin-left: 5%;
-    }
-
-    .add__track {
-        right: 30px;
     }
 
 }
