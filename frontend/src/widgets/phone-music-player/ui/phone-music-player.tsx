@@ -2,7 +2,7 @@ import styles from "./phone-music-player.module.css";
 import {SaveTrack} from "@/features/collection";
 import {FC, useContext, useEffect, useRef, useState} from "react";
 import {Context} from "@/main.tsx";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {Sheet} from "react-modal-sheet";
 import {formatTime} from "@/shared/lib";
 import shuffleButton from "@/shared/icons/shuffleButton.png";
