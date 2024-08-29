@@ -18,7 +18,6 @@ import * as React from "react";
 
 export const PhoneMusicPlayer = observer(() => {
     const {musicStore} = useContext(Context)
-    const navigate = useNavigate()
     const location = useLocation()
     const [isOpen, setOpen] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);

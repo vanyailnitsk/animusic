@@ -1,5 +1,5 @@
 import {BottomNavigation, BottomNavigationAction} from "@mui/material";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import styles from './phone-navigation.module.css'
 import favorites from '@/shared/icons/icons8-избранное-500.png'
 import home from '@/shared/icons/icons8-главная-192.png'
@@ -39,6 +39,6 @@ export const PhoneNavigation = () => {
     );
 };
 
-const IconGeneration = (url) => {
+const IconGeneration = (url:string) => {
     return <img src={url} alt="" className={styles.navigation__icon}/>
 }
