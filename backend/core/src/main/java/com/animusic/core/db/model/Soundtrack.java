@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table
@@ -31,8 +32,9 @@ public class Soundtrack {
 
     private String originalTitle;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "anime_id", nullable = false)
+    @ToString.Exclude
     private Anime anime;
 
     private String animeTitle;
@@ -48,7 +50,8 @@ public class Soundtrack {
 
     private Integer duration;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id", nullable = false)
+    @ToString.Exclude
     private Album album;
 }

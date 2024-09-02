@@ -9,6 +9,8 @@ import com.animusic.core.db.table.ImageRepository;
 import com.animusic.core.db.table.PlaylistRepository;
 import com.animusic.core.db.table.PlaylistSoundtrackRepository;
 import com.animusic.core.db.table.SoundtrackRepository;
+import com.animusic.core.db.table.TrackListeningEventRepository;
+import com.animusic.core.db.table.UserRepository;
 import com.animusic.user.service.UserService;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,9 @@ public class IntegrationTestBase {
 
     @MockBean
     protected UserService userService;
+
+    @Autowired
+    protected UserRepository userRepository;
 
     @Autowired
     protected S3ServiceTestImpl s3Service;
@@ -57,6 +62,9 @@ public class IntegrationTestBase {
 
     @Autowired
     protected SoundtrackRepository soundtrackRepository;
+
+    @Autowired
+    protected TrackListeningEventRepository trackListeningEventRepository;
 
     @Test
     void init() {

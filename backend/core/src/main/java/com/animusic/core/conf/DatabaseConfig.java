@@ -14,6 +14,7 @@ import com.animusic.core.db.table.PlaylistRepository;
 import com.animusic.core.db.table.PlaylistSoundtrackRepository;
 import com.animusic.core.db.table.RefreshTokenRepository;
 import com.animusic.core.db.table.SoundtrackRepository;
+import com.animusic.core.db.table.TrackListeningEventRepository;
 import com.animusic.core.db.table.UserRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
@@ -30,6 +31,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Profiles;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -122,6 +124,14 @@ public class DatabaseConfig {
     @Bean
     public RefreshTokenRepository refreshTokenRepository(EntityManager entityManager) {
         return new RefreshTokenRepository.Impl(entityManager);
+    }
+
+    @Bean
+    public TrackListeningEventRepository trackListeningEventRepository(
+            EntityManager entityManager,
+            NamedParameterJdbcTemplate jdbcTemplate
+    ) {
+        return new TrackListeningEventRepository.Impl(entityManager, jdbcTemplate);
     }
 
 }

@@ -48,7 +48,9 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/error",
-            "/actuator/**"
+            "/actuator/**",
+            "/api/events/listening",
+            "/api/stats/soundtracks/most-popular"
     };
 
 
