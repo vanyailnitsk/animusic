@@ -31,4 +31,12 @@ public class StatisticsService {
                 .toList();
         return soundtrackService.findAllByIds(soundtrackIds);
     }
+
+    public List<Soundtrack> mostPopularAnimeTracks(Integer animeId, Integer limit) {
+        var stats = listeningEventRepository.mostPopularAnimeTracks(animeId, limit);
+        var soundtrackIds = stats.stream()
+                .map(TrackListeningsStats::getTrackId)
+                .toList();
+        return soundtrackService.findAllByIds(soundtrackIds);
+    }
 }

@@ -70,4 +70,19 @@ class TrackListeningEventRepositoryTest extends DatabaseTest {
         assertThat(idMap.get(1).getCount()).isEqualTo(2);
         assertThat(idMap.get(2).getCount()).isEqualTo(1);
     }
+
+    @Test
+    void mostPopularAnimeTracks() {
+        var soundtrack = soundtrackRepository.findById(1).get();
+        var event1 = TrackListeningEvent.builder()
+                .soundtrack(soundtrack)
+                .listenedAt(new Date())
+                .build();
+        var event2 = TrackListeningEvent.builder()
+                .soundtrack(soundtrack)
+                .listenedAt(new Date())
+                .build();
+        listeningEventRepository.saveAll(List.of(event1, event2));
+        assertThat(listeningEventRepository.mostPopularAnimeTracks(1, 10).size()).isEqualTo(2);
+    }
 }
