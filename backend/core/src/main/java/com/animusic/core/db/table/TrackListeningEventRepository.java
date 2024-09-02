@@ -17,6 +17,8 @@ public interface TrackListeningEventRepository extends CrudRepository<TrackListe
 
     Long trackListeningsCount(Integer trackId);
 
+    List<TrackListeningsStats> mostPopularTracks(Integer limit);
+
     class Impl extends RepositoryBase<TrackListeningEvent, Integer> implements TrackListeningEventRepository {
 
         private final NamedParameterJdbcTemplate jdbcTemplate;
