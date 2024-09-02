@@ -19,6 +19,8 @@ public interface TrackListeningEventRepository extends CrudRepository<TrackListe
 
     List<TrackListeningsStats> mostPopularTracks(Integer limit);
 
+    List<TrackListeningsStats> mostPopularAnimeTracks(Integer animeId, Integer limit);
+
     class Impl extends RepositoryBase<TrackListeningEvent, Integer> implements TrackListeningEventRepository {
 
         private final NamedParameterJdbcTemplate jdbcTemplate;
@@ -44,6 +46,26 @@ public interface TrackListeningEventRepository extends CrudRepository<TrackListe
                     """;
             var params = new MapSqlParameterSource();
             params.addValue("limit", limit);
+            return jdbcTemplate.query(query, params, (rs, rowNum) -> {
+                var track = new TrackListeningsStats(
+                        rs.getInt("track_id"),
+                        rs.getInt("listenings")
+                );
+                return track;
+            });
+        }
+
+        @Override
+        public List<TrackListeningsStats> mostPopularAnimeTracks(Integer animeId, Integer limit) {
+            var query = """
+                    select s.id as track_id, count(*) as listenings 
+                    from soundtrack s left join track_listening_events tl on tl.track_id=s.id 
+                    where s.anime_id = :animeId
+                    group by s.id order by listenings desc, s.id limit :limit ;
+                    """;
+            var params = new MapSqlParameterSource();
+            params.addValue("limit", limit);
+            params.addValue("animeId", animeId);
             return jdbcTemplate.query(query, params, (rs, rowNum) -> {
                 var track = new TrackListeningsStats(
                         rs.getInt("track_id"),
