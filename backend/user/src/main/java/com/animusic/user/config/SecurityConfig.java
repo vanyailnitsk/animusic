@@ -50,7 +50,8 @@ public class SecurityConfig {
             "/error",
             "/actuator/**",
             "/api/events/listening",
-            "/api/stats/soundtracks/most-popular"
+            "/api/stats/soundtracks/most-popular",
+            "/api/stats/soundtracks/most-popular-by-anime"
     };
 
 
