@@ -40,7 +40,7 @@ public interface TrackListeningEventRepository extends CrudRepository<TrackListe
             var query = """
                     select s.id as track_id, count(*) as listenings 
                     from soundtrack s left join track_listening_events tl on tl.track_id=s.id 
-                    group by s.id order by listenings desc;
+                    group by s.id order by listenings desc limit :limit;
                     """;
             var params = new MapSqlParameterSource();
             params.addValue("limit", limit);

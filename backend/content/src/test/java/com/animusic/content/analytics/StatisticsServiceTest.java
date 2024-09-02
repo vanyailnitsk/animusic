@@ -10,11 +10,14 @@ import com.animusic.core.db.views.TrackListeningsStats;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@Transactional
 class StatisticsServiceTest extends IntegrationTestBase {
 
     @MockBean
@@ -35,13 +38,16 @@ class StatisticsServiceTest extends IntegrationTestBase {
                         new TrackListeningsStats(3, 4)
                 ));
         var soundtracks = List.of(
-                Soundtrack.builder().id(1).originalTitle("track-1").build(),
                 Soundtrack.builder().id(2).originalTitle("track-2").build(),
+                Soundtrack.builder().id(1).originalTitle("track-1").build(),
                 Soundtrack.builder().id(3).originalTitle("track-3").build()
         );
         when(soundtrackService.findAllByIds(List.of(2, 1, 3)))
                 .thenReturn(soundtracks);
         var mostPopular = statisticsService.mostPopularTracks(10);
         assertThat(mostPopular).isEqualTo(soundtracks);
+
+        verify(trackListeningEventRepository).mostPopularTracks(10);
+        verify(soundtrackService).findAllByIds(List.of(2, 1, 3));
     }
 }
