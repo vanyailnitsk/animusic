@@ -49,6 +49,7 @@ public class SecurityConfig {
             "/v3/api-docs/**",
             "/error",
             "/actuator/**",
+            "/api/events/listening",
             "/api/stats/soundtracks/most-popular"
     };
 
