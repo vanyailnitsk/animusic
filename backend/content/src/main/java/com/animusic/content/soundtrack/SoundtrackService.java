@@ -1,7 +1,9 @@
 package com.animusic.content.soundtrack;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.StreamSupport;
 
 import com.animusic.content.JsonMergePatchService;
 import com.animusic.content.album.AlbumService;
@@ -122,5 +124,10 @@ public class SoundtrackService {
         Soundtrack res = jsonMergePatchService.mergePatch(patch, soundtrack, Soundtrack.class);
         soundtrackRepository.save(res);
         return res;
+    }
+
+    public List<Soundtrack> findAllByIds(List<Integer> ids) {
+        var tracks = soundtrackRepository.findAllById(ids);
+        return StreamSupport.stream(tracks.spliterator(), false).toList();
     }
 }
