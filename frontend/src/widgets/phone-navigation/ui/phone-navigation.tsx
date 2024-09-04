@@ -4,12 +4,13 @@ import styles from './phone-navigation.module.css'
 import favorites from '@/shared/icons/icons8-избранное-500.png'
 import home from '@/shared/icons/icons8-главная-192.png'
 import search from '@/shared/icons/icons8-поиск-150.png'
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {enqueueSnackbar, VariantType} from "notistack";
-import {COLLECTION} from "@/shared/consts";
+import {COLLECTION, SIGN_IN, SIGN_UP} from "@/shared/consts";
 import {Context} from "@/main.tsx";
 export const PhoneNavigation = () => {
     const {userStore} = useContext(Context)
+    const location = useLocation()
     const navigate = useNavigate()
     const handleGoHome = () => {
         navigate('/')
@@ -28,7 +29,8 @@ export const PhoneNavigation = () => {
             navigate(COLLECTION)
         }
     }
-    return (
+    if(location.pathname !== SIGN_IN && location.pathname !== SIGN_UP){
+        return (
             <BottomNavigation
                 className={styles.navigation__wrapper}
             >
@@ -36,7 +38,8 @@ export const PhoneNavigation = () => {
                 <BottomNavigationAction label="Favorites" icon={IconGeneration(favorites)} onClick={handleGoToCollection}/>
                 <BottomNavigationAction label="Search" icon={IconGeneration(search)} onClick={handleGoToSearch}/>
             </BottomNavigation>
-    );
+        );
+    }
 };
 
 const IconGeneration = (url:string) => {
