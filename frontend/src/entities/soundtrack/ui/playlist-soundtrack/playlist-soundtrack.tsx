@@ -1,7 +1,7 @@
 import {useContext} from "react";
 import styles from "./playlist-soundtrack.module.css";
-import Pause from '@/shared/icons/soundtrack-pause.png';
-import Play from '@/shared/icons/soundtrack-play.png';
+import Pause from '@/shared/assets/icons/soundtrack-pause.png';
+import Play from '@/shared/assets/icons/soundtrack-play.png';
 import {observer} from "mobx-react-lite";
 import {Context} from "@/main.tsx";
 import {CalculateDataOfAddition, formatTime} from "@/shared/lib";

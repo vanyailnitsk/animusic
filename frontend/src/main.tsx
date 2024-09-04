@@ -2,6 +2,8 @@ import {createContext} from 'react';
 import ReactDOM from 'react-dom/client';
 import App from "@/app/App";
 import {MusicStore, UserStore} from "@/shared/store";
+import {Provider} from "react-redux";
+import store from "@/app/store.ts";
 
 interface State{
     userStore: UserStore,
@@ -16,7 +18,9 @@ export const Context = createContext<State>({
 });
 root.render(
     <Context.Provider value={ {userStore, musicStore} }>
-        <App/>
+        <Provider store={store}>
+            <App/>
+        </Provider>
     </Context.Provider>
 );
 

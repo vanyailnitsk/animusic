@@ -4,7 +4,7 @@ import styles from './sign-up.module.css'
 import {z} from 'zod'
 import {zodResolver} from "@hookform/resolvers/zod";
 import {observer} from "mobx-react-lite";
-import logo from "@/shared/icons/logo.ico";
+import logo from "@/shared/assets/icons/logo.ico";
 import {useNavigate} from "react-router-dom";
 import {Context} from "@/main.tsx";
 import {HOME_ROUTE,SIGN_IN} from "@/shared/consts";

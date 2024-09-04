@@ -1,9 +1,9 @@
 import {BottomNavigation, BottomNavigationAction} from "@mui/material";
 import {useContext} from "react";
 import styles from './phone-navigation.module.css'
-import favorites from '@/shared/icons/icons8-избранное-500.png'
-import home from '@/shared/icons/icons8-главная-192.png'
-import search from '@/shared/icons/icons8-поиск-150.png'
+import favorites from '@/shared/assets/icons/icons8-избранное-500.png'
+import home from '@/shared/assets/icons/icons8-главная-192.png'
+import search from '@/shared/assets/icons/icons8-поиск-150.png'
 import {useLocation, useNavigate} from "react-router-dom";
 import {enqueueSnackbar, VariantType} from "notistack";
 import {COLLECTION, SIGN_IN, SIGN_UP} from "@/shared/consts";

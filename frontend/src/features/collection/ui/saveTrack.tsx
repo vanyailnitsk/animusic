@@ -1,8 +1,8 @@
 import {FC, MouseEventHandler, useContext} from "react";
 import {Context} from "@/main.tsx";
-import addButton from '@/shared/icons/follow.png';
+import addButton from '@/shared/assets/icons/follow.png';
 import {VariantType, useSnackbar} from 'notistack';
-import savedTrackImage from '@/shared/icons/saved-track.png';
+import savedTrackImage from '@/shared/assets/icons/saved-track.png';
 
 interface SaveTrackProps {
     className: string;

@@ -28,7 +28,7 @@ export class MusicStore {
         localStorage.setItem('volume', this.volume.toString());
     }
 
-    async fetchFavTracks() {
+    async fetchFavTracks() {// не взял
         try {
             const tracks = await MusicService.getCollection();
             runInAction(() => {
@@ -39,7 +39,7 @@ export class MusicStore {
         }
     }
 
-    async addToFavorite(trackId: number) {
+    async addToFavorite(trackId: number) {// не взял
         try {
             await MusicService.addToFavorite(trackId);
             runInAction(() => {
@@ -50,7 +50,7 @@ export class MusicStore {
         }
     }
 
-    async removeFromFavorites(trackId: number) {
+    async removeFromFavorites(trackId: number) {// не взял
         try {
             await MusicService.removeFromFavorite(trackId);
             runInAction(() => {
@@ -62,7 +62,7 @@ export class MusicStore {
     }
 
     isSaved(id: number) {
-        return this.fav_tracks.includes(id);
+        return this.fav_tracks.includes(id); // не взял
     }
 
     setTrackIndex(index: number) {

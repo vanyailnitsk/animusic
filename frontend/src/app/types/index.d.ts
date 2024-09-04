@@ -1,3 +1,5 @@
+import store from "@/app/store.ts";
+
 declare module '*.png' {
     const value: any;
     export default value;
@@ -25,3 +27,5 @@ interface ImportMetaEnv {
 interface ImportMeta {
     readonly env: ImportMetaEnv;
 }
+declare type RootState = ReturnType<typeof import('@/app/store.ts').store.getState>
+declare type AppDispatch = typeof import('@/app/store.ts').store.dispatch

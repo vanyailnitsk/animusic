@@ -3,7 +3,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {Playlist} from "@/entities/playlist";
 import {COLLECTION, HOME_ROUTE} from "@/shared/consts";
 import {Context} from "@/main.tsx";
-import fav from '@/shared/icons/icons8-избранное-500.png'
+import fav from '@/shared/assets/icons/icons8-избранное-500.png'
 import {MusicService} from "@/shared/services";
 import {observer} from "mobx-react-lite";
 import {SoundtrackList} from "@/widgets/soundtrack-list";
