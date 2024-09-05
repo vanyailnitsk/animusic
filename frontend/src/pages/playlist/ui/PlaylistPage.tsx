@@ -4,23 +4,25 @@ import {Playlist} from "@/entities/playlist";
 import {COLLECTION, HOME_ROUTE} from "@/shared/consts";
 import {Context} from "@/main.tsx";
 import fav from '@/shared/assets/icons/icons8-избранное-500.png'
-import {MusicService} from "@/shared/services";
 import {observer} from "mobx-react-lite";
 import {SoundtrackList} from "@/widgets/soundtrack-list";
 import {SoundtrackType} from "@/shared/types";
 import styles from "./playlist-page.module.css";
+import {getCollection, selectMusicState} from "@/entities/music";
+import {useAppSelector} from "@/shared/lib/store";
 
 
 export const PlaylistPage = observer(() => {
     const location = useLocation()
-    const {musicStore,userStore} = useContext(Context)
+    const musicStore = useAppSelector(selectMusicState)
+    const {userStore} = useContext(Context)
     const navigate = useNavigate()
     const [playlist, setPlaylist] = useState<Playlist | null>(null)
     useEffect(() => {
         if (location.pathname === COLLECTION) {
-            MusicService.getCollection()
-                .then(response => {
-                    setPlaylist(response.data)
+            getCollection()
+                .then(playlist => {
+                    setPlaylist(playlist)
                 })
                 .catch(error => {
                     console.log(error)

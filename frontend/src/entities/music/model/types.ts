@@ -1,4 +1,4 @@
-import {ISoundtrack} from "@/entities/soundtrack";
+import {IPlaylistSoundtrack, ISoundtrack, SoundtrackData} from "@/entities/soundtrack";
 
 export interface MusicState {
     listening_queue: ISoundtrack[];

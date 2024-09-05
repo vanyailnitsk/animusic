@@ -1,6 +1,6 @@
-import {ISoundtrack, SoundtrackData} from "@/entities/soundtrack";
+import {IPlaylistSoundtrack, ISoundtrack, SoundtrackData} from "@/entities/soundtrack";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {MusicState} from "@/entities/music/model/types.ts";
+import {addTrackToCollection, fetchCollection, MusicState, removeTrackFromCollection} from "@/entities/music";
 
 
 
@@ -49,18 +49,18 @@ const musicSlice = createSlice({
             } else {
                 state.trackIndex = 0;
             }
-        }
+        },
+    },
+    extraReducers:(builder) => {
+        builder
+            .addCase(fetchCollection.fulfilled, (state:MusicState, action:PayloadAction<IPlaylistSoundtrack[]>) => state.fav_tracks = action.payload.map(track => track.soundtrack.id))
+
+            .addCase(removeTrackFromCollection.fulfilled, (state:MusicState, action: PayloadAction<number>) => state.fav_tracks = state.fav_tracks.filter(id => id !== action.payload))
+
+            .addCase(addTrackToCollection.fulfilled, (state:MusicState, action:PayloadAction<number>) => state.fav_tracks.push(action.payload))
     }
 })
 export default musicSlice.reducer
-export const isTrackSaved = (state: MusicState,id:number):boolean => state.fav_tracks.includes(id)
-export const currentTrack = (state: MusicState): SoundtrackData | undefined => {
-    if (state.listening_queue && state.listening_queue.length > state.trackIndex && state.trackIndex >= 0) {
-        return state.listening_queue[state.trackIndex].soundtrack;
-    } else {
-        return undefined;
-    }
-}
 export const {
     setPlaylist,
     changeVolume,
@@ -69,6 +69,7 @@ export const {
     togglePlayPause,
     nextTrack,
     previousTrack,
+    trackEquals
 } = musicSlice.actions
 
 

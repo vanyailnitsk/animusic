@@ -12,10 +12,8 @@ import mediumSound from '@/shared/assets/icons/icons8-средняя-громк�
 import littleSound from '@/shared/assets/icons/icons8-низкая-громкость-100.png'
 import loudSound from '@/shared/assets/icons/icons8-громкий-звук-100.png'
 import noSound from '@/shared/assets/icons/icons8-нет-звука-100.png'
-import {observer} from "mobx-react-lite";
 import {isTablet} from 'react-device-detect';
 import repeatButtonActive from '@/shared/assets/icons/repeatButtonActive.png'
-import {Context} from "@/main.tsx";
 import {formatTime} from "@/shared/lib";
 import {CurrentTrack} from "@/entities/soundtrack";
 import {useLocation} from "react-router-dom";
@@ -23,18 +21,16 @@ import {SIGN_IN, SIGN_UP} from "@/shared/consts";
 import {useAppDispatch, useAppSelector} from "@/shared/lib/store";
 import {
     changeVolume,
-    currentTrack,
-    isTrackSaved,
     nextTrack,
-    previousTrack,
+    previousTrack, selectCurrentTrack, selectMusicState,
     setIsPlaying,
     togglePlayPause
 } from "@/entities/music";
 
 
-export const MusicPlayer = observer(() => {
-    const musicStore = useAppSelector(state => state.music)
-    const currentMusicTrack = useAppSelector(state => currentTrack(state.music))
+export const MusicPlayer = () => {
+    const musicStore = useAppSelector(selectMusicState)
+    const currentMusicTrack = useAppSelector(selectCurrentTrack)
     const dispatch = useAppDispatch()
     const audioRef = useRef<HTMLAudioElement>(null);
     const location = useLocation()
@@ -222,4 +218,4 @@ export const MusicPlayer = observer(() => {
             </div>
         );
     }
-})
+}
