@@ -24,7 +24,7 @@ interface SoundtrackProps {
 
 export const Soundtrack = observer(({soundtrackData, listening_queue, index}: SoundtrackProps) => {
     const musicStore = useAppSelector(selectMusicState)
-    const isSaved = useAppSelector(state => isTrackSaved(state.music,soundtrackData.id))
+    const isSaved = useAppSelector(state => isTrackSaved(musicStore,soundtrackData.id))
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const trackEquals = useAppSelector(state => isTrackEquals(state.music,soundtrackData))
@@ -60,7 +60,7 @@ export const Soundtrack = observer(({soundtrackData, listening_queue, index}: So
                 <span className='anime_name' onClick={animeNavigate}>{soundtrackData.anime.title}</span>
             </div>
             <p className="original__title">{soundtrackData.originalTitle}</p>
-            <SaveTrack className={isSaved? "soundtrack__saved" : "soundtrack__add"} id={soundtrackData.id} saved={isSaved}/>
+            <SaveTrack className={isSaved? "soundtrack__saved" : "soundtrack__add"} id={soundtrackData.id}/>
             <span className='track__duration'>{formatTime(soundtrackData.duration)}</span>
         </div>
     );

@@ -4,15 +4,18 @@ import {observer} from "mobx-react-lite";
 import {AppRouter} from "@/app/routers";
 import {Context} from "@/main.tsx";
 import {SnackbarProvider} from "notistack";
+import {useAppDispatch} from "@/shared/lib/store";
+import {fetchCollection} from "@/entities/music";
 
 function App() {
     const {userStore, musicStore} = useContext(Context);
+    const dispatch = useAppDispatch()
     const [loading, setLoading] = useState(false);
     useEffect(() => {
         if(userStore.isAuth){
             setLoading(true)
-            const loadFavorites = async () => {
-                await musicStore.fetchFavTracks();
+            const loadFavorites = () => {
+                dispatch(fetchCollection());
                 setLoading(false);
             };
             loadFavorites();

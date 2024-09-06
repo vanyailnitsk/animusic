@@ -25,7 +25,7 @@ export const CurrentTrack = () => {
                     <span>{currentMusicTrack.animeTitle}</span>
                 </div>
             }
-            <SaveTrack className={styles.save__track} id={currentMusicTrack?.id} saved={isSaved}/>
+            {currentMusicTrack && <SaveTrack className={styles.save__track} id={currentMusicTrack.id}/>}
         </div>
     );
 }

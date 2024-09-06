@@ -12,7 +12,7 @@ const initialState:MusicState = {
     fav_tracks: [],
 }
 
-const musicSlice = createSlice({
+export const musicSlice = createSlice({
     name: 'music',
     initialState,
     reducers: {
@@ -53,11 +53,17 @@ const musicSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder
-            .addCase(fetchCollection.fulfilled, (state:MusicState, action:PayloadAction<IPlaylistSoundtrack[]>) => state.fav_tracks = action.payload.map(track => track.soundtrack.id))
+            .addCase(fetchCollection.fulfilled, (state:MusicState, action:PayloadAction<IPlaylistSoundtrack[]>) => {
+                state.fav_tracks = action.payload.map(track => track.soundtrack.id)
+            })
 
-            .addCase(removeTrackFromCollection.fulfilled, (state:MusicState, action: PayloadAction<number>) => state.fav_tracks = state.fav_tracks.filter(id => id !== action.payload))
+            .addCase(removeTrackFromCollection.fulfilled, (state:MusicState, action: PayloadAction<number>) => {
+                state.fav_tracks = state.fav_tracks.filter(id => id !== action.payload)
+            })
 
-            .addCase(addTrackToCollection.fulfilled, (state:MusicState, action:PayloadAction<number>) => state.fav_tracks.push(action.payload))
+            .addCase(addTrackToCollection.fulfilled, (state:MusicState, action:PayloadAction<number>) => {
+                state.fav_tracks.push(action.payload)
+            })
     }
 })
 export default musicSlice.reducer
