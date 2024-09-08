@@ -1,4 +1,4 @@
-import {IPlaylistSoundtrack, ISoundtrack, SoundtrackData} from "@/entities/soundtrack";
+import {IPlaylistSoundtrack, ISoundtrack} from "@/entities/soundtrack";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {addTrackToCollection, fetchCollection, MusicState, removeTrackFromCollection} from "@/entities/music";
 

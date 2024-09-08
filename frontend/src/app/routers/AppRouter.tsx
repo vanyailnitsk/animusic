@@ -10,7 +10,7 @@ import {PlaylistPage} from "@/pages/playlist";
 import {SignIn, SignUp} from "@/pages/auth";
 import {ALBUM_ROUTE, ANIME_ROUTE, COLLECTION, HOME_ROUTE, SEARCH_ROUTE, SIGN_IN, SIGN_UP} from "@/shared/consts";
 import {isMobile} from "react-device-detect";
-import {PhoneMusicPlayer} from "@/widgets/phone-music-player";
+import {PhoneMusicPlayer} from "../../entities/music/ui/phone-music-player";
 import {PhoneNavigation} from "@/widgets/phone-navigation";
 import {MusicPlayer} from "@/entities/music";
 

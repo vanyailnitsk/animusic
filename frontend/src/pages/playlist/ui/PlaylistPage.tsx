@@ -2,7 +2,6 @@ import {useContext, useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import {Playlist} from "@/entities/playlist";
 import {COLLECTION, HOME_ROUTE} from "@/shared/consts";
-import {Context} from "@/main.tsx";
 import fav from '@/shared/assets/icons/icons8-избранное-500.png'
 import {observer} from "mobx-react-lite";
 import {SoundtrackList} from "@/widgets/soundtrack-list";
@@ -10,12 +9,13 @@ import {SoundtrackType} from "@/shared/types";
 import styles from "./playlist-page.module.css";
 import {getCollection, selectMusicState} from "@/entities/music";
 import {useAppSelector} from "@/shared/lib/store";
+import {selectUser} from "@/entities/user";
 
 
 export const PlaylistPage = observer(() => {
     const location = useLocation()
     const musicStore = useAppSelector(selectMusicState)
-    const {userStore} = useContext(Context)
+    const user = useAppSelector(selectUser)
     const navigate = useNavigate()
     const [playlist, setPlaylist] = useState<Playlist | null>(null)
     useEffect(() => {
@@ -30,10 +30,10 @@ export const PlaylistPage = observer(() => {
         }
     }, [musicStore.fav_tracks]);
     useEffect(() => {
-        if(!userStore.isAuth){
+        if(!user){
             navigate(HOME_ROUTE)
         }
-    }, [userStore.isAuth]);
+    }, [user]);
     return (
         <div>
             {playlist && <div className={styles.playlist__page__header}>
