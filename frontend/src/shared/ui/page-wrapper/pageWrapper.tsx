@@ -4,12 +4,16 @@ import {Button} from "@/shared/ui";
 import {useLocation, useNavigate} from "react-router-dom";
 import {Context} from "@/main.tsx";
 import {observer} from "mobx-react-lite";
+import {useAppDispatch, useAppSelector} from "@/shared/lib/store";
+import {logout, selectUser, selectUserState} from "@/entities/user";
+import {clearCollection} from "@/entities/music";
 
 interface PageWrapperProps{
     page:ReactNode
 }
 export const PageWrapper:FC<PageWrapperProps> = observer(({page}) => {
-    const {userStore,musicStore} = useContext(Context)
+    const user = useAppSelector(selectUser)
+    const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const location = useLocation()
     const handleSignIn = () => {
@@ -22,12 +26,17 @@ export const PageWrapper:FC<PageWrapperProps> = observer(({page}) => {
         navigate('/sign-up');
     };
     const handleLogout = () => {
-        userStore.logout()
-        musicStore.fav_tracks = []
+        try {
+            dispatch(logout())
+            dispatch(clearCollection())
+        }
+        catch (e){
+            console.log(e)
+        }
     }
     return (
         <div className={styles.page__wrapper}>
-            {userStore.isAuth?(
+            {user?(
                 <Button className={styles.logout} content={'Logout'} onClick={handleLogout}/>
             ):(<div className={styles.auth__actions}>
                 <Button className={styles.sign__up} content={'Sign up'} onClick={handleSignUp}/>

@@ -6,8 +6,9 @@ export {
     setIsPlaying,
     togglePlayPause,
     nextTrack,
-    previousTrack
-} from './model/slice'
+    previousTrack,
+    clearCollection
+} from './model/musicSlice.ts'
 export {isTrackSaved,selectMusicState,selectCurrentTrack,isTrackEquals} from './model/selectors'
 export type {MusicState} from './model/types'
 export {addTrackToCollection,removeTrackFromCollection,fetchCollection} from './model/collectionThunks'

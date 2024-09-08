@@ -1,8 +1,10 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {musicReducer} from "@/entities/music";
+import {userReducer} from "@/entities/user";
 
 const rootReducer = combineReducers({
-    music:musicReducer
+    music:musicReducer,
+    user:userReducer
 })
 const store = configureStore({
     reducer:rootReducer

@@ -1,7 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import axios from "axios";
 import {AuthResponse, IUser} from "@/entities/user";
-import {AuthService} from "@/shared/services";
 
 export class UserStore {
     user : IUser | null = null;
@@ -22,10 +21,10 @@ export class UserStore {
     async login(email:string,password:string){
         this.setAuthProgress(true)
         try{
-            const response = await AuthService.login(email,password)
-            localStorage.setItem('token', response.data.accessToken)
+            // const response = await AuthService.login(email,password)
+            // localStorage.setItem('token', response.data.accessToken)
             this.setAuth(true)
-            this.setUser(response.data.user)
+            // this.setUser(response.data.user)
         } catch (e : unknown){
             throw e
         } finally {
@@ -36,10 +35,10 @@ export class UserStore {
     async registration(username:string, email:string,password:string){
         this.setAuthProgress(true)
         try{
-            const response = await AuthService.registration(username,email,password)
-            localStorage.setItem('token', response.data.accessToken)
+            // const response = await AuthService.registration(username,email,password)
+            // localStorage.setItem('token', response.data.accessToken)
             this.setAuth(true)
-            this.setUser(response.data.user)
+            // this.setUser(response.data.user)
         } catch (e : any){
             throw e
         } finally {

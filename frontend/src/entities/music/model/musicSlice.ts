@@ -50,6 +50,9 @@ export const musicSlice = createSlice({
                 state.trackIndex = 0;
             }
         },
+        clearCollection:(state:MusicState) => {
+            state.fav_tracks = []
+        }
     },
     extraReducers:(builder) => {
         builder
@@ -75,7 +78,8 @@ export const {
     togglePlayPause,
     nextTrack,
     previousTrack,
-    trackEquals
+    trackEquals,
+    clearCollection
 } = musicSlice.actions
 
 

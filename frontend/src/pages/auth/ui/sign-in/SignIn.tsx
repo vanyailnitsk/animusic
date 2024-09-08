@@ -8,6 +8,8 @@ import {observer} from "mobx-react-lite";
 import {useNavigate} from "react-router-dom";
 import {Context} from "@/main.tsx";
 import {HOME_ROUTE, SIGN_UP} from "@/shared/consts";
+import {useAppDispatch} from "@/shared/lib/store";
+import {setIsPlaying} from "@/entities/music";
 
 const schema = z.object({
     email: z.string().email(),
@@ -18,6 +20,7 @@ type FormFields = z.infer<typeof schema>
 export const SignIn = observer(() => {
     const {userStore,musicStore} = useContext(Context)
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
     const {
         register,
         handleSubmit,
@@ -30,7 +33,7 @@ export const SignIn = observer(() => {
         resolver: zodResolver(schema)
     })
     useEffect(() => {
-        musicStore.setIsPlaying(false)
+        dispatch(setIsPlaying(false))
     }, []);
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
         if (data && data.email && data.password) {

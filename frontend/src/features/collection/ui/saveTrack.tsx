@@ -11,6 +11,7 @@ import {
     removeTrackFromCollection,
     selectMusicState
 } from "@/entities/music";
+import {selectUser} from "@/entities/user";
 
 interface SaveTrackProps {
     className: string;
@@ -22,11 +23,11 @@ export const SaveTrack: FC<SaveTrackProps> = (props) => {
     const isSaved = useAppSelector(state => isTrackSaved(state.music,id))
     const {enqueueSnackbar} = useSnackbar()
     const dispatch = useAppDispatch()
-    const {userStore} = useContext(Context)
+    const user = useAppSelector(selectUser)
 
     const handleSavedTrack: MouseEventHandler<HTMLButtonElement> = (e) => {
         e.stopPropagation()
-        if(!userStore.isAuth && !userStore.isAuthInProgress){
+        if(!user){
             handleAddError('error')
         }
         else{

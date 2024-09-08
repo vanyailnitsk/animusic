@@ -1,55 +1,46 @@
-import './styles/global.css'
-import {useContext, useEffect, useState} from "react";
-import {observer} from "mobx-react-lite";
-import {AppRouter} from "@/app/routers";
-import {Context} from "@/main.tsx";
-import {SnackbarProvider} from "notistack";
-import {useAppDispatch} from "@/shared/lib/store";
+import './styles/global.css';
+import { useEffect, useState } from "react";
+import { AppRouter } from "@/app/routers";
+import { SnackbarProvider } from "notistack";
+import { useAppDispatch, useAppSelector } from "@/shared/lib/store";
+import { checkUserAuth, selectUser, selectUserLoading } from "@/entities/user";
 import {fetchCollection} from "@/entities/music";
 
 function App() {
-    const {userStore, musicStore} = useContext(Context);
-    const dispatch = useAppDispatch()
-    const [loading, setLoading] = useState(false);
+    const userLoading = useAppSelector(selectUserLoading);
+    const user = useAppSelector(selectUser);
+    const dispatch = useAppDispatch();
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-        if(userStore.isAuth){
-            setLoading(true)
-            const loadFavorites = () => {
-                dispatch(fetchCollection());
-                setLoading(false);
-            };
-            loadFavorites();
-        }
-    }, [userStore.isAuth]);
-    useEffect(() => {
-        setLoading(true)
-        const checkAuthentication = async () => {
-            try {
-                await userStore.checkAuth();
-                setLoading(false);
-            } catch (error) {
-                console.error("Произошла ошибка при проверке авторизации:", error);
-                setLoading(false);
+        const initializeApp = async () => {
+            if (localStorage.getItem('token')) {
+                await dispatch(checkUserAuth());
             }
+            setLoading(false);
         };
 
-        if (localStorage.getItem('token')) {
-            checkAuthentication();
-        } else {
-            setLoading(false);
-        }
-    }, [userStore]);
-    if(!loading){
-        return (
-            <div className='app'>
-                <SnackbarProvider>
-                    <AppRouter/>
-                </SnackbarProvider>
-            </div>
-        );
-    }
-    return null
+        initializeApp();
+    }, [dispatch]);
 
+    useEffect(() => {
+        if (user && !userLoading) {
+            dispatch(fetchCollection())
+
+        }
+    }, [user, userLoading]);
+
+    if (loading) {
+        return null;
+    }
+
+    return (
+        <div className='app'>
+            <SnackbarProvider>
+                <AppRouter />
+            </SnackbarProvider>
+        </div>
+    );
 }
 
-export default observer(App);
+export default App;
