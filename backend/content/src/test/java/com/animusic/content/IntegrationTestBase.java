@@ -9,6 +9,8 @@ import com.animusic.core.db.table.ImageRepository;
 import com.animusic.core.db.table.PlaylistRepository;
 import com.animusic.core.db.table.PlaylistSoundtrackRepository;
 import com.animusic.core.db.table.SoundtrackRepository;
+import com.animusic.core.db.table.SubscriptionForAlbumRepository;
+import com.animusic.core.db.table.SubscriptionForAnimeRepository;
 import com.animusic.core.db.table.TrackListeningEventRepository;
 import com.animusic.core.db.table.UserRepository;
 import com.animusic.user.service.UserService;
@@ -18,34 +20,35 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
+import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.DOCKER;
 
 @SpringJUnitConfig({
         IntegrationTestsConfig.class,
         ContentConfig.class
 })
-@AutoConfigureEmbeddedDatabase(provider = ZONKY)
+@AutoConfigureEmbeddedDatabase(provider = DOCKER)
 @Slf4j
 public class IntegrationTestBase {
 
     @MockBean
     protected UserService userService;
 
-    @Autowired
+    @SpyBean
     protected UserRepository userRepository;
 
     @Autowired
     protected S3ServiceTestImpl s3Service;
 
-    @Autowired
+    @SpyBean
     protected AlbumRepository albumRepository;
 
     @Autowired
     protected AnimeBannerImageRepository animeBannerImageRepository;
 
-    @Autowired
+    @SpyBean
     protected AnimeRepository animeRepository;
 
     @Autowired
@@ -66,9 +69,15 @@ public class IntegrationTestBase {
     @Autowired
     protected TrackListeningEventRepository trackListeningEventRepository;
 
+    @SpyBean
+    protected SubscriptionForAlbumRepository subscriptionForAlbumRepository;
+
+    @SpyBean
+    protected SubscriptionForAnimeRepository subscriptionForAnimeRepository;
+
     @Test
     void init() {
-        log.info("{}",soundtrackRepository.findAll());
+        log.info("{}", soundtrackRepository.findAll());
     }
 
     @AfterEach
