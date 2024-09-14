@@ -14,6 +14,8 @@ import com.animusic.core.db.table.PlaylistRepository;
 import com.animusic.core.db.table.PlaylistSoundtrackRepository;
 import com.animusic.core.db.table.RefreshTokenRepository;
 import com.animusic.core.db.table.SoundtrackRepository;
+import com.animusic.core.db.table.SubscriptionForAlbumRepository;
+import com.animusic.core.db.table.SubscriptionForAnimeRepository;
 import com.animusic.core.db.table.TrackListeningEventRepository;
 import com.animusic.core.db.table.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -132,6 +134,16 @@ public class DatabaseConfig {
             NamedParameterJdbcTemplate jdbcTemplate
     ) {
         return new TrackListeningEventRepository.Impl(entityManager, jdbcTemplate);
+    }
+
+    @Bean
+    public SubscriptionForAnimeRepository subscriptionForAnimeRepository(EntityManager entityManager) {
+        return new SubscriptionForAnimeRepository.Impl(entityManager);
+    }
+
+    @Bean
+    public SubscriptionForAlbumRepository subscriptionForAlbumRepository(EntityManager entityManager) {
+        return new SubscriptionForAlbumRepository.Impl(entityManager);
     }
 
 }
