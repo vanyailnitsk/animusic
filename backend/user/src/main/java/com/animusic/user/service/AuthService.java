@@ -2,6 +2,7 @@ package com.animusic.user.service;
 
 import com.animusic.core.db.model.Playlist;
 import com.animusic.core.db.model.RefreshToken;
+import com.animusic.core.db.model.Role;
 import com.animusic.core.db.model.User;
 import com.animusic.core.db.table.RefreshTokenRepository;
 import com.animusic.user.InvalidTokenException;
@@ -32,6 +33,7 @@ public class AuthService {
     public JwtResponse register(RegisterRequest registerRequest) {
         User user = registerRequest.toUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.getRoles().add(Role.ROLE_USER);
         Playlist playlist = Playlist.builder().name("Favourite tracks").build();
         playlist.setUser(user);
         userService.createUserOrThrow(user);
