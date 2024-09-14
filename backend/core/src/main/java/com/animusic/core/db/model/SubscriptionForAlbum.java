@@ -49,6 +49,11 @@ public class SubscriptionForAlbum implements ContentSubscription {
     }
 
     @Override
+    public String name() {
+        return album.getName();
+    }
+
+    @Override
     public User user() {
         return user;
     }
@@ -61,5 +66,15 @@ public class SubscriptionForAlbum implements ContentSubscription {
     @Override
     public SubscriptionTargetType targetType() {
         return ALBUM;
+    }
+
+    @Override
+    public Image image() {
+        return album.getCoverArt().getImage();
+    }
+
+    @Override
+    public String parentName() {
+        return album.getAnime().getTitle();
     }
 }
