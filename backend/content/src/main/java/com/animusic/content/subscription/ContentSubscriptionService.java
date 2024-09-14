@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SubscriptionManager {
+public class ContentSubscriptionService {
 
     private final SubscriptionForAnimeRepository subscriptionForAnimeRepository;
 
@@ -38,4 +38,5 @@ public class SubscriptionManager {
     public List<SubscriptionForAlbum> findSubscriptionsForAlbum(Integer userId) {
         return subscriptionForAlbumRepository.findByUserId(userId);
     }
+
 }

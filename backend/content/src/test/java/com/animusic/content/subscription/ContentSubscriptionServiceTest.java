@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class SubscriptionManagerTest {
+class ContentSubscriptionServiceTest {
 
     @Mock
     SubscriptionForAnimeRepository subscriptionForAnimeRepository;
@@ -33,12 +33,14 @@ class SubscriptionManagerTest {
     @Mock
     SubscriptionForAlbumRepository subscriptionForAlbumRepository;
 
-    SubscriptionManager subscriptionManager;
+    ContentSubscriptionService contentSubscriptionService;
 
     @BeforeEach
     void setUp() {
-        this.subscriptionManager = new SubscriptionManager(subscriptionForAnimeRepository,
-                subscriptionForAlbumRepository);
+        this.contentSubscriptionService = new ContentSubscriptionService(
+                subscriptionForAnimeRepository,
+                subscriptionForAlbumRepository
+        );
     }
 
     @Test
@@ -69,7 +71,7 @@ class SubscriptionManagerTest {
                         new SubscriptionForAlbum(2, album, user, date2)
                 ));
 
-        var subscriptions = subscriptionManager.findUserSubscriptions(1);
+        var subscriptions = contentSubscriptionService.findUserSubscriptions(1);
 
         assertThat(subscriptions.get(0)).extracting(
                         ContentSubscription::id,
