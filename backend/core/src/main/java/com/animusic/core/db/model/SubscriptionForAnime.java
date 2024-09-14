@@ -2,8 +2,6 @@ package com.animusic.core.db.model;
 
 import java.util.Date;
 
-import com.animusic.core.db.utils.ContentSubscription;
-import com.animusic.core.db.utils.SubscriptionTargetType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,21 +16,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static com.animusic.core.db.utils.SubscriptionTargetType.ANIME;
-
 @Entity
 @Table(name = "subscription_for_anime")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubscriptionForAnime implements ContentSubscription {
+public class SubscriptionForAnime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "anime_id", nullable = false)
     private Anime anime;
 
@@ -43,23 +39,4 @@ public class SubscriptionForAnime implements ContentSubscription {
     @Column(name = "added_at")
     private Date addedAt;
 
-    @Override
-    public Integer id() {
-        return id;
-    }
-
-    @Override
-    public User user() {
-        return user;
-    }
-
-    @Override
-    public Date addedAt() {
-        return addedAt;
-    }
-
-    @Override
-    public SubscriptionTargetType targetType() {
-        return ANIME;
-    }
 }

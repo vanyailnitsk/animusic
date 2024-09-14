@@ -6,12 +6,13 @@ import java.util.List;
 
 import com.animusic.core.db.model.Album;
 import com.animusic.core.db.model.Anime;
+import com.animusic.core.db.model.CoverArt;
 import com.animusic.core.db.model.SubscriptionForAlbum;
 import com.animusic.core.db.model.SubscriptionForAnime;
 import com.animusic.core.db.model.User;
 import com.animusic.core.db.table.SubscriptionForAlbumRepository;
 import com.animusic.core.db.table.SubscriptionForAnimeRepository;
-import com.animusic.core.db.utils.ContentSubscription;
+import com.animusic.core.db.views.ContentSubscription;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,6 +63,7 @@ class ContentSubscriptionServiceTest {
 
         var album = Album.builder()
                 .name("openings")
+                .coverArt(CoverArt.builder().build())
                 .anime(anime)
                 .build();
         var date2 = new SimpleDateFormat("dd-MM-yyyy").parse("07-07-2003");
@@ -74,18 +76,21 @@ class ContentSubscriptionServiceTest {
         var subscriptions = contentSubscriptionService.findUserSubscriptions(1);
 
         assertThat(subscriptions.get(0)).extracting(
-                        ContentSubscription::id,
-                        ContentSubscription::user,
-                        ContentSubscription::addedAt,
-                        ContentSubscription::targetType)
-                .containsExactly(1, user, date1, ANIME);
+                        ContentSubscription::getId,
+                        ContentSubscription::getName,
+                        ContentSubscription::getUser,
+                        ContentSubscription::getAddedAt,
+                        ContentSubscription::getTargetType)
+                .containsExactly(1, "anime-1", user, date1, ANIME);
 
         assertThat(subscriptions.get(1)).extracting(
-                        ContentSubscription::id,
-                        ContentSubscription::user,
-                        ContentSubscription::addedAt,
-                        ContentSubscription::targetType)
-                .containsExactly(2, user, date2, ALBUM);
+                        ContentSubscription::getId,
+                        ContentSubscription::getName,
+                        ContentSubscription::getUser,
+                        ContentSubscription::getAddedAt,
+                        ContentSubscription::getParentName,
+                        ContentSubscription::getTargetType)
+                .containsExactly(2, "openings", user, date2, "anime-1", ALBUM);
 
         verify(subscriptionForAnimeRepository).findByUserId(1);
         verify(subscriptionForAlbumRepository).findByUserId(1);

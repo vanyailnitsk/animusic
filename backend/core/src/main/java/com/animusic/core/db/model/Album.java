@@ -18,6 +18,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Singular;
+import org.jetbrains.annotations.Nullable;
 
 @Entity
 @Table(name = "album")
@@ -38,6 +39,7 @@ public class Album {
 
     @OneToOne
     @JoinColumn(name = "cover_art_id")
+    @Nullable
     private CoverArt coverArt;
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

@@ -10,7 +10,6 @@ import com.animusic.core.db.model.SubscriptionForAnime;
 import com.animusic.core.db.model.User;
 import com.animusic.core.db.table.SubscriptionForAlbumRepository;
 import com.animusic.core.db.table.SubscriptionForAnimeRepository;
-import com.animusic.core.db.utils.SubscriptionTargetType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,19 +43,24 @@ public class ContentSubscriptionsManager {
     }
 
     @Transactional
-    public void unsubscribeFromContent(User user, Integer entityId, SubscriptionTargetType targetType) {
-        // routing to correct table
-        var table = switch (targetType) {
-            case ANIME -> subscriptionForAnimeRepository;
-            case ALBUM -> subscriptionForAlbumRepository;
-        };
-
-        var entity = table.findById(entityId).orElseThrow(
+    public void unsubscribeFromAnime(User user, Integer entityId) {
+        SubscriptionForAnime entity = subscriptionForAnimeRepository.findById(entityId).orElseThrow(
                 () -> new NotFoundException("No subscription with id %d".formatted(entityId))
         );
 
-        if (entity.user().getId().equals(user.getId())) {
-            table.deleteById(entity.id());
+        if (entity.getUser().getId().equals(user.getId())) {
+            subscriptionForAnimeRepository.delete(entity);
+        }
+    }
+
+    @Transactional
+    public void unsubscribeFromAlbum(User user, Integer entityId) {
+        SubscriptionForAlbum entity = subscriptionForAlbumRepository.findById(entityId).orElseThrow(
+                () -> new NotFoundException("No subscription with id %d".formatted(entityId))
+        );
+
+        if (entity.getUser().getId().equals(user.getId())) {
+            subscriptionForAlbumRepository.delete(entity);
         }
     }
 }

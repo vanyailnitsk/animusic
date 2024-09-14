@@ -9,9 +9,12 @@ import com.animusic.core.db.model.SubscriptionForAlbum;
 import com.animusic.core.db.model.SubscriptionForAnime;
 import com.animusic.core.db.table.SubscriptionForAlbumRepository;
 import com.animusic.core.db.table.SubscriptionForAnimeRepository;
-import com.animusic.core.db.utils.ContentSubscription;
+import com.animusic.core.db.views.ContentSubscription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import static com.animusic.core.db.utils.SubscriptionTargetType.ALBUM;
+import static com.animusic.core.db.utils.SubscriptionTargetType.ANIME;
 
 @Service
 @RequiredArgsConstructor
@@ -21,13 +24,35 @@ public class ContentSubscriptionService {
 
     private final SubscriptionForAlbumRepository subscriptionForAlbumRepository;
 
-    public List<? extends ContentSubscription> findUserSubscriptions(Integer userId) {
+    public List<ContentSubscription> findUserSubscriptions(Integer userId) {
         var animeSubscriptions = findSubscriptionsForAnime(userId);
         var albumSubscriptions = findSubscriptionsForAlbum(userId);
 
-        return Stream.of(albumSubscriptions, animeSubscriptions)
+        List<ContentSubscription> dtosForAnime = animeSubscriptions.stream()
+                .map(s -> ContentSubscription.builder()
+                        .id(s.getId())
+                        .name(s.getAnime().getTitle())
+                        .user(s.getUser())
+                        .addedAt(s.getAddedAt())
+                        .targetType(ANIME)
+                        .image(s.getAnime().getCardImage())
+                        .parentName("")
+                        .build()).toList();
+
+        List<ContentSubscription> dtosForAlbum = albumSubscriptions.stream()
+                .map(s -> ContentSubscription.builder()
+                        .id(s.getId())
+                        .name(s.getAlbum().getName())
+                        .user(s.getUser())
+                        .addedAt(s.getAddedAt())
+                        .targetType(ALBUM)
+                        .image(s.getImage())
+                        .parentName(s.getAlbum().getAnime().getTitle())
+                        .build()).toList();
+
+        return Stream.of(dtosForAnime, dtosForAlbum)
                 .flatMap(Collection::stream)
-                .sorted(Comparator.comparing(ContentSubscription::addedAt).reversed())
+                .sorted(Comparator.comparing(ContentSubscription::getAddedAt).reversed())
                 .toList();
     }
 

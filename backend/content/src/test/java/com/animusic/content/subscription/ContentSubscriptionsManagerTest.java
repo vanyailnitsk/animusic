@@ -11,7 +11,6 @@ import com.animusic.core.db.model.SubscriptionForAnime;
 import com.animusic.core.db.model.User;
 import com.animusic.core.db.table.SubscriptionForAlbumRepository;
 import com.animusic.core.db.table.SubscriptionForAnimeRepository;
-import com.animusic.core.db.utils.SubscriptionTargetType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -46,10 +45,10 @@ class ContentSubscriptionsManagerTest extends IntegrationTestBase {
         var subscription = new SubscriptionForAnime(1, anime, user, new Date());
         when(subscriptionForAnimeRepository.findById(1)).thenReturn(Optional.of(subscription));
 
-        contentSubscriptionsManager.unsubscribeFromContent(user, 1, SubscriptionTargetType.ANIME);
+        contentSubscriptionsManager.unsubscribeFromAnime(user, 1);
 
         verify(subscriptionForAnimeRepository).findById(1);
-        verify(subscriptionForAnimeRepository).deleteById(1);
+        verify(subscriptionForAnimeRepository).delete(subscription);
     }
 
     @Test
@@ -66,9 +65,9 @@ class ContentSubscriptionsManagerTest extends IntegrationTestBase {
         var subscription = new SubscriptionForAlbum(1, album, user, new Date());
         when(subscriptionForAlbumRepository.findById(1)).thenReturn(Optional.of(subscription));
 
-        contentSubscriptionsManager.unsubscribeFromContent(user, 1, SubscriptionTargetType.ANIME);
+        contentSubscriptionsManager.unsubscribeFromAlbum(user, 1);
 
         verify(subscriptionForAlbumRepository).findById(1);
-        verify(subscriptionForAlbumRepository).deleteById(1);
+        verify(subscriptionForAlbumRepository).delete(subscription);
     }
 }

@@ -2,8 +2,6 @@ package com.animusic.core.db.model;
 
 import java.util.Date;
 
-import com.animusic.core.db.utils.ContentSubscription;
-import com.animusic.core.db.utils.SubscriptionTargetType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,63 +16,32 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static com.animusic.core.db.utils.SubscriptionTargetType.ALBUM;
-
 @Entity
 @Table(name = "subscription_for_album")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubscriptionForAlbum implements ContentSubscription {
+public class SubscriptionForAlbum {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "album_id", nullable = false)
     private Album album;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "added_at")
     private Date addedAt;
 
-    @Override
-    public Integer id() {
-        return id;
+    public Image getImage() {
+        var coverArt = album.getCoverArt();
+        return coverArt == null ? null : coverArt.getImage();
     }
 
-    @Override
-    public String name() {
-        return album.getName();
-    }
-
-    @Override
-    public User user() {
-        return user;
-    }
-
-    @Override
-    public Date addedAt() {
-        return addedAt;
-    }
-
-    @Override
-    public SubscriptionTargetType targetType() {
-        return ALBUM;
-    }
-
-    @Override
-    public Image image() {
-        return album.getCoverArt().getImage();
-    }
-
-    @Override
-    public String parentName() {
-        return album.getAnime().getTitle();
-    }
 }
