@@ -65,7 +65,8 @@ public class ContentSubscriptionsController {
     public void subscribeToAnime(
             @PathVariable("animeId") Integer animeId,
             @RequestParam
-            @Schema(description = "Operation") SubscribeOperationName operation
+            @Schema(description = "Operation", allowableValues = {"SUBSCRIBE", "UNSUBSCRIBE"})
+            SubscribeOperationName operation
     ) {
         User user = userService.getUserInSession().get();
 
@@ -85,7 +86,8 @@ public class ContentSubscriptionsController {
     public void subscribeToAlbum(
             @PathVariable("albumId") Integer albumId,
             @RequestParam
-            @Schema(description = "Operation") SubscribeOperationName operation
+            @Schema(description = "Operation", allowableValues = {"SUBSCRIBE", "UNSUBSCRIBE"})
+            SubscribeOperationName operation
     ) {
         User user = userService.getUserInSession().get();
 

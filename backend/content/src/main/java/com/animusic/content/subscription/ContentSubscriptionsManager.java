@@ -48,7 +48,7 @@ public class ContentSubscriptionsManager {
 
     @Transactional
     public void unsubscribeFromAnime(User user, Anime anime) {
-        Optional<SubscriptionForAnime> entity = subscriptionForAnimeRepository.findByUserAndAnime(
+        Optional<SubscriptionForAnime> entity = subscriptionForAnimeRepository.findAnimeSubscription(
                 user.getId(), anime.getId()
         );
 
@@ -57,7 +57,7 @@ public class ContentSubscriptionsManager {
 
     @Transactional
     public void unsubscribeFromAlbum(User user, Album album) {
-        Optional<SubscriptionForAlbum> entity = subscriptionForAlbumRepository.findByUserAndAlbum(
+        Optional<SubscriptionForAlbum> entity = subscriptionForAlbumRepository.findAlbumSubscription(
                 user.getId(), album.getId()
         );
 

@@ -39,15 +39,17 @@ class ContentSubscriptionsManagerTest extends IntegrationTestBase {
                 .build();
 
         var anime = Anime.builder()
+                .id(2)
                 .title("Anime-1")
                 .build();
 
         var subscription = new SubscriptionForAnime(1, anime, user, new Date());
-        when(subscriptionForAnimeRepository.findById(1)).thenReturn(Optional.of(subscription));
+        when(subscriptionForAnimeRepository.findAnimeSubscription(user.getId(), anime.getId()))
+                .thenReturn(Optional.of(subscription));
 
-        contentSubscriptionsManager.unsubscribeFromAnime(user, 1);
+        contentSubscriptionsManager.unsubscribeFromAnime(user, anime);
 
-        verify(subscriptionForAnimeRepository).findById(1);
+        verify(subscriptionForAnimeRepository).findAnimeSubscription(1, 2);
         verify(subscriptionForAnimeRepository).delete(subscription);
     }
 
@@ -59,15 +61,17 @@ class ContentSubscriptionsManagerTest extends IntegrationTestBase {
                 .build();
 
         var album = Album.builder()
+                .id(3)
                 .name("Album-1")
                 .build();
 
         var subscription = new SubscriptionForAlbum(1, album, user, new Date());
-        when(subscriptionForAlbumRepository.findById(1)).thenReturn(Optional.of(subscription));
+        when(subscriptionForAlbumRepository.findAlbumSubscription(user.getId(), album.getId()))
+                .thenReturn(Optional.of(subscription));
 
-        contentSubscriptionsManager.unsubscribeFromAlbum(user, 1);
+        contentSubscriptionsManager.unsubscribeFromAlbum(user, album);
 
-        verify(subscriptionForAlbumRepository).findById(1);
+        verify(subscriptionForAlbumRepository).findAlbumSubscription(1, 3);
         verify(subscriptionForAlbumRepository).delete(subscription);
     }
 }

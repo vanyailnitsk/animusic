@@ -15,7 +15,7 @@ public interface SubscriptionForAlbumRepository extends CrudRepository<Subscript
 
     List<SubscriptionForAlbum> findByUserId(Integer userId);
 
-    Optional<SubscriptionForAlbum> findByUserAndAlbum(Integer userId, Integer albumId);
+    Optional<SubscriptionForAlbum> findAlbumSubscription(Integer userId, Integer albumId);
 
     Boolean alreadySubscribed(Integer userId, Integer albumId);
 
@@ -34,7 +34,7 @@ public interface SubscriptionForAlbumRepository extends CrudRepository<Subscript
         }
 
         @Override
-        public Optional<SubscriptionForAlbum> findByUserAndAlbum(Integer userId, Integer albumId) {
+        public Optional<SubscriptionForAlbum> findAlbumSubscription(Integer userId, Integer albumId) {
             var query = "SELECT s from SubscriptionForAlbum s where s.user.id = :userId and s.album.id = :albumId";
             return getOptionalResult(
                     entityManager.createQuery(query, SubscriptionForAlbum.class)
