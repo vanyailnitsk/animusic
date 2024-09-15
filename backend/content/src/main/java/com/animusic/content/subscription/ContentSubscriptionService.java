@@ -24,7 +24,7 @@ public class ContentSubscriptionService {
 
     private final SubscriptionForAlbumRepository subscriptionForAlbumRepository;
 
-    public List<ContentSubscription> findUserSubscriptions(Integer userId) {
+    public List<ContentSubscription> findUserSubscriptions(Integer userId, Integer limit) {
         var animeSubscriptions = findSubscriptionsForAnime(userId);
         var albumSubscriptions = findSubscriptionsForAlbum(userId);
 
@@ -53,6 +53,7 @@ public class ContentSubscriptionService {
         return Stream.of(dtosForAnime, dtosForAlbum)
                 .flatMap(Collection::stream)
                 .sorted(Comparator.comparing(ContentSubscription::getAddedAt).reversed())
+                .limit(limit)
                 .toList();
     }
 

@@ -73,7 +73,7 @@ class ContentSubscriptionServiceTest {
                         new SubscriptionForAlbum(2, album, user, date2)
                 ));
 
-        var subscriptions = contentSubscriptionService.findUserSubscriptions(1);
+        var subscriptions = contentSubscriptionService.findUserSubscriptions(1, 2);
 
         assertThat(subscriptions.get(0)).extracting(
                         ContentSubscription::getId,
