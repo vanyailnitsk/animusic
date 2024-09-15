@@ -1,8 +1,8 @@
 package com.animusic.content.subscription;
 
 import java.util.Date;
+import java.util.Optional;
 
-import com.animusic.content.core.NotFoundException;
 import com.animusic.core.db.model.Album;
 import com.animusic.core.db.model.Anime;
 import com.animusic.core.db.model.SubscriptionForAlbum;
@@ -47,24 +47,20 @@ public class ContentSubscriptionsManager {
     }
 
     @Transactional
-    public void unsubscribeFromAnime(User user, Integer entityId) {
-        SubscriptionForAnime entity = subscriptionForAnimeRepository.findById(entityId).orElseThrow(
-                () -> new NotFoundException("No subscription with id %d".formatted(entityId))
+    public void unsubscribeFromAnime(User user, Anime anime) {
+        Optional<SubscriptionForAnime> entity = subscriptionForAnimeRepository.findByUserAndAnime(
+                user.getId(), anime.getId()
         );
 
-        if (entity.getUser().getId().equals(user.getId())) {
-            subscriptionForAnimeRepository.delete(entity);
-        }
+        entity.ifPresent(subscriptionForAnimeRepository::delete);
     }
 
     @Transactional
-    public void unsubscribeFromAlbum(User user, Integer entityId) {
-        SubscriptionForAlbum entity = subscriptionForAlbumRepository.findById(entityId).orElseThrow(
-                () -> new NotFoundException("No subscription with id %d".formatted(entityId))
+    public void unsubscribeFromAlbum(User user, Album album) {
+        Optional<SubscriptionForAlbum> entity = subscriptionForAlbumRepository.findByUserAndAlbum(
+                user.getId(), album.getId()
         );
 
-        if (entity.getUser().getId().equals(user.getId())) {
-            subscriptionForAlbumRepository.delete(entity);
-        }
+        entity.ifPresent(subscriptionForAlbumRepository::delete);
     }
 }

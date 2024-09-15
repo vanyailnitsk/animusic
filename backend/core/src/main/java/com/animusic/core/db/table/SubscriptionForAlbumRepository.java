@@ -1,6 +1,7 @@
 package com.animusic.core.db.table;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.animusic.core.db.model.SubscriptionForAlbum;
 import jakarta.persistence.EntityManager;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 public interface SubscriptionForAlbumRepository extends CrudRepository<SubscriptionForAlbum, Integer> {
 
     List<SubscriptionForAlbum> findByUserId(Integer userId);
+
+    Optional<SubscriptionForAlbum> findByUserAndAlbum(Integer userId, Integer albumId);
 
     Boolean alreadySubscribed(Integer userId, Integer albumId);
 
@@ -28,6 +31,16 @@ public interface SubscriptionForAlbumRepository extends CrudRepository<Subscript
             return entityManager.createQuery(query, SubscriptionForAlbum.class)
                     .setParameter("userId", userId)
                     .getResultList();
+        }
+
+        @Override
+        public Optional<SubscriptionForAlbum> findByUserAndAlbum(Integer userId, Integer albumId) {
+            var query = "SELECT s from SubscriptionForAlbum s where s.user.id = :userId and s.album.id = :albumId";
+            return getOptionalResult(
+                    entityManager.createQuery(query, SubscriptionForAlbum.class)
+                            .setParameter("userId", userId)
+                            .setParameter("albumId", albumId)
+            );
         }
 
         @Override

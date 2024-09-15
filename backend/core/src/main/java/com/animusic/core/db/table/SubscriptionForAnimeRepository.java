@@ -1,6 +1,7 @@
 package com.animusic.core.db.table;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.animusic.core.db.model.SubscriptionForAnime;
 import jakarta.persistence.EntityManager;
@@ -14,7 +15,10 @@ public interface SubscriptionForAnimeRepository extends CrudRepository<Subscript
 
     List<SubscriptionForAnime> findByUserId(Integer userId);
 
+    Optional<SubscriptionForAnime> findByUserAndAnime(Integer userId, Integer animeId);
+
     Boolean alreadySubscribed(Integer userId, Integer animeId);
+
 
     class Impl extends RepositoryBase<SubscriptionForAnime, Integer> implements SubscriptionForAnimeRepository {
 
@@ -28,6 +32,16 @@ public interface SubscriptionForAnimeRepository extends CrudRepository<Subscript
             return entityManager.createQuery(query, SubscriptionForAnime.class)
                     .setParameter("userId", userId)
                     .getResultList();
+        }
+
+        @Override
+        public Optional<SubscriptionForAnime> findByUserAndAnime(Integer userId, Integer animeId) {
+            var query = "SELECT s from SubscriptionForAnime s where s.user.id = :userId and s.anime.id = :animeId";
+            return getOptionalResult(
+                    entityManager.createQuery(query, SubscriptionForAnime.class)
+                            .setParameter("userId", userId)
+                            .setParameter("animeId", animeId)
+            );
         }
 
         @Override

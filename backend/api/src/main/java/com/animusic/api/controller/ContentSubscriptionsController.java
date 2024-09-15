@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.animusic.api.controller.ContentSubscriptionsController.SubscribeOperationName.SUBSCRIBE;
+import static com.animusic.api.controller.ContentSubscriptionsController.SubscribeOperationName.UNSUBSCRIBE;
+
 @RestController
 @RequestMapping("/api/subscriptions")
 @Slf4j
@@ -60,27 +63,45 @@ public class ContentSubscriptionsController {
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void subscribeToAnime(
-            @PathVariable("animeId") Integer animeId
+            @PathVariable("animeId") Integer animeId,
+            @RequestParam
+            @Schema(description = "Operation") SubscribeOperationName operation
     ) {
         User user = userService.getUserInSession().get();
 
         var anime = animeService.getAnime(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
 
-        contentSubscriptionsManager.subscribeToAnime(user, anime);
+        if (operation == SUBSCRIBE) {
+            contentSubscriptionsManager.subscribeToAnime(user, anime);
+        } else if (operation == UNSUBSCRIBE) {
+            contentSubscriptionsManager.unsubscribeFromAnime(user, anime);
+        }
     }
 
     @PostMapping("/album/{albumId}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void subscribeToAlbum(
-            @PathVariable("albumId") Integer albumId
+            @PathVariable("albumId") Integer albumId,
+            @RequestParam
+            @Schema(description = "Operation") SubscribeOperationName operation
     ) {
         User user = userService.getUserInSession().get();
 
         var album = albumService.getAlbumById(albumId);
 
-        contentSubscriptionsManager.subscribeToAlbum(user, album);
+        if (operation == SUBSCRIBE) {
+            contentSubscriptionsManager.subscribeToAlbum(user, album);
+        } else if (operation == UNSUBSCRIBE) {
+            contentSubscriptionsManager.unsubscribeFromAlbum(user, album);
+        }
+
+    }
+
+    enum SubscribeOperationName {
+        SUBSCRIBE,
+        UNSUBSCRIBE
     }
 
 }
