@@ -1,6 +1,8 @@
 package com.animusic.content.soundtrack;
 
-public class SoundtrackNotFoundException extends RuntimeException {
+import com.animusic.content.core.NotFoundException;
+
+public class SoundtrackNotFoundException extends NotFoundException {
     public SoundtrackNotFoundException(Integer id) {
         super("Soundtrack with id " + id + " not found");
     }
