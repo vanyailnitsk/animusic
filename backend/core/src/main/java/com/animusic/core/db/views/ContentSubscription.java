@@ -14,6 +14,8 @@ public class ContentSubscription {
 
     Integer id;
 
+    Integer entityId;
+
     String name;
 
     User user;

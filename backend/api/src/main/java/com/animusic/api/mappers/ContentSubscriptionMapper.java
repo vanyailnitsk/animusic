@@ -13,6 +13,7 @@ public class ContentSubscriptionMapper {
         return subscriptions.stream().map(s -> {
             return new ContentSubscriptionDto(
                     s.getId(),
+                    s.getEntityId(),
                     s.getName(),
                     s.getAddedAt(),
                     s.getTargetType(),

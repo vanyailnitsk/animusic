@@ -23,23 +23,27 @@ public class ContentSubscriptionsManager {
     private final SubscriptionForAlbumRepository subscriptionForAlbumRepository;
 
     @Transactional
-    public SubscriptionForAnime subscribeToAnime(User user, Anime anime) {
+    public void subscribeToAnime(User user, Anime anime) {
         var subscription = SubscriptionForAnime.builder()
                 .user(user)
                 .anime(anime)
                 .addedAt(new Date())
                 .build();
-        return subscriptionForAnimeRepository.save(subscription);
+        if (!subscriptionForAnimeRepository.alreadySubscribed(user.getId(), anime.getId())) {
+            subscriptionForAnimeRepository.save(subscription);
+        }
     }
 
     @Transactional
-    public SubscriptionForAlbum subscribeToAlbum(User user, Album album) {
+    public void subscribeToAlbum(User user, Album album) {
         var subscription = SubscriptionForAlbum.builder()
                 .user(user)
                 .album(album)
                 .addedAt(new Date())
                 .build();
-        return subscriptionForAlbumRepository.save(subscription);
+        if (!subscriptionForAlbumRepository.alreadySubscribed(user.getId(), album.getId())) {
+            subscriptionForAlbumRepository.save(subscription);
+        }
     }
 
     @Transactional

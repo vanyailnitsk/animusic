@@ -7,6 +7,8 @@ import com.animusic.core.db.utils.SubscriptionTargetType;
 public record ContentSubscriptionDto(
         Integer id,
 
+        Integer entityId,
+
         String name,
 
         Date addedAt,

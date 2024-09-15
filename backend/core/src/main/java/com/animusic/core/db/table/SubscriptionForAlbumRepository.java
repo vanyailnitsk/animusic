@@ -14,6 +14,8 @@ public interface SubscriptionForAlbumRepository extends CrudRepository<Subscript
 
     List<SubscriptionForAlbum> findByUserId(Integer userId);
 
+    Boolean alreadySubscribed(Integer userId, Integer albumId);
+
     class Impl extends RepositoryBase<SubscriptionForAlbum, Integer> implements SubscriptionForAlbumRepository {
 
         public Impl(@NonNull EntityManager entityManager) {
@@ -26,6 +28,18 @@ public interface SubscriptionForAlbumRepository extends CrudRepository<Subscript
             return entityManager.createQuery(query, SubscriptionForAlbum.class)
                     .setParameter("userId", userId)
                     .getResultList();
+        }
+
+        @Override
+        public Boolean alreadySubscribed(Integer userId, Integer albumId) {
+            var query = """
+                    SELECT count(s) > 0 from SubscriptionForAlbum s 
+                    where s.user.id = :userId AND s.album.id = :albumId
+                    """;
+            return entityManager.createQuery(query, Boolean.class)
+                    .setParameter("userId", userId)
+                    .setParameter("albumId", albumId)
+                    .getSingleResult();
         }
     }
 }
