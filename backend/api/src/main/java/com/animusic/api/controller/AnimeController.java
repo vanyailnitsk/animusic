@@ -8,7 +8,9 @@ import com.animusic.api.dto.RichAnimeDto;
 import com.animusic.api.mappers.AnimeMapper;
 import com.animusic.content.anime.AnimeNotFoundException;
 import com.animusic.content.anime.AnimeService;
+import com.animusic.content.subscription.ContentSubscriptionService;
 import com.animusic.core.db.model.Anime;
+import com.animusic.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -34,6 +36,10 @@ public class AnimeController {
 
     private final AnimeService animeService;
 
+    private final ContentSubscriptionService contentSubscriptionService;
+
+    private final UserService userService;
+
     @GetMapping("/{animeId}")
     @Operation(summary = "Метод для получения аниме по id")
     @ApiResponses(value = {
@@ -45,7 +51,7 @@ public class AnimeController {
         log.info("Requested anime {} info", animeId);
         var anime = animeService.getAnime(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        var response = AnimeMapper.richAnimeDto(anime);
+        var response = AnimeMapper.richAnimeDto(anime, userService, contentSubscriptionService);
         var albums = response.albums();
         albums.sort((a1, a2) -> {
             List<String> categoryOrder = List.of("Openings", "Endings", "Themes", "Scene songs");
@@ -100,7 +106,7 @@ public class AnimeController {
     })
     public RichAnimeDto updateAnime(@RequestBody Anime updateAnime, @PathVariable Integer animeId) {
         Anime anime = animeService.updateAnime(updateAnime, animeId);
-        RichAnimeDto richAnimeDto = AnimeMapper.richAnimeDto(anime);
+        RichAnimeDto richAnimeDto = AnimeMapper.richAnimeDto(anime, userService, contentSubscriptionService);
         log.info("Anime id={} updated successfully", animeId);
         return richAnimeDto;
     }

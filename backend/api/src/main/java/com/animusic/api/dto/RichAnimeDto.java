@@ -11,6 +11,7 @@ public record RichAnimeDto(
         String folderName,
         AnimeBannerImageDto banner,
         ImageDto cardImage,
+        Boolean isSubscribed,
         List<AlbumItemDto> albums
 ) {
 }
