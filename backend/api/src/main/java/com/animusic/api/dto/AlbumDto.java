@@ -9,7 +9,8 @@ public record AlbumDto(
         Integer id,
         String name,
         AnimeItemDto anime,
-        List<SoundtrackDto> soundtracks,
-        CoverArtDto coverArt
+        CoverArtDto coverArt,
+        Boolean isSubscribed,
+        List<SoundtrackDto> soundtracks
 ) {
 }

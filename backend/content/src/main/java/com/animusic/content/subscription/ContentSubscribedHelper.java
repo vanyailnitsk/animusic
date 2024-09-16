@@ -2,7 +2,6 @@ package com.animusic.content.subscription;
 
 import java.util.Optional;
 
-import com.animusic.core.db.model.SubscriptionForAlbum;
 import com.animusic.core.db.model.User;
 import com.animusic.user.service.UserService;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,6 @@ public class ContentSubscribedHelper {
         var animeSubscriptions = subscriptionService.findSubscriptionsForAnime(user.get().getId()).stream();
 
         return animeSubscriptions.map(subscription -> subscription.getAnime().getId())
-                .peek(System.out::println)
                 .anyMatch(s -> s.equals(animeId));
     }
 
@@ -39,7 +37,7 @@ public class ContentSubscribedHelper {
 
         var albumSubscriptions = subscriptionService.findSubscriptionsForAlbum(user.get().getId()).stream();
 
-        return albumSubscriptions.map(SubscriptionForAlbum::getId)
+        return albumSubscriptions.map(subscription -> subscription.getAlbum().getId())
                 .anyMatch(s -> s.equals(albumId));
     }
 }
