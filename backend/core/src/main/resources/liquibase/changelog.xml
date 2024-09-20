@@ -15,4 +15,6 @@
     <include file="scripts/playlist.sql" relativeToChangelogFile="true"/>
     <include file="scripts/playlist_soundtrack.sql" relativeToChangelogFile="true"/>
     <include file="scripts/track_listening_events.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/subscription_for_anime.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/subscription_for_album.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

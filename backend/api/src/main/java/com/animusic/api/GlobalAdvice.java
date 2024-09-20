@@ -3,10 +3,7 @@ package com.animusic.api;
 import java.util.Date;
 import java.util.Map;
 
-import com.animusic.content.album.AlbumNotFoundException;
-import com.animusic.content.anime.AnimeNotFoundException;
-import com.animusic.content.playlist.PlaylistNotFoundException;
-import com.animusic.content.soundtrack.SoundtrackNotFoundException;
+import com.animusic.content.core.NotFoundException;
 import com.animusic.user.InvalidTokenException;
 import com.animusic.user.TokenRefreshException;
 import org.springframework.http.HttpStatus;
@@ -22,19 +19,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class GlobalAdvice extends ResponseEntityExceptionHandler {
-    @ResponseBody
-    @ExceptionHandler(AlbumNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String playlistNotFoundHandler(AlbumNotFoundException ex) {
-        return ex.getMessage();
-    }
-
-    @ResponseBody
-    @ExceptionHandler(AnimeNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String animeNotFound(AnimeNotFoundException ex) {
-        return ex.getMessage();
-    }
 
     @ResponseBody
     @ExceptionHandler(RuntimeException.class)
@@ -43,28 +27,21 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
         return new ErrorMessage(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 new Date(),
-                ex.getMessage(),
+                ex,
                 request.getDescription(false)
         );
     }
 
     @ResponseBody
-    @ExceptionHandler(PlaylistNotFoundException.class)
+    @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorMessage playlistNotFound(PlaylistNotFoundException ex, WebRequest request) {
+    public ErrorMessage entityNotFound(NotFoundException ex, WebRequest request) {
         return new ErrorMessage(
                 HttpStatus.NOT_FOUND.value(),
                 new Date(),
-                ex.getMessage(),
+                ex,
                 request.getDescription(false)
         );
-    }
-
-    @ResponseBody
-    @ExceptionHandler(SoundtrackNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String soundtrackNotFound(SoundtrackNotFoundException ex) {
-        return ex.getMessage();
     }
 
     @ExceptionHandler(BadRequestException.class)
@@ -80,7 +57,7 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
         return new ErrorMessage(
                 HttpStatus.FORBIDDEN.value(),
                 new Date(),
-                ex.getMessage(),
+                ex,
                 request.getDescription(false)
         );
     }
@@ -89,12 +66,13 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorMessage badCredentials(BadCredentialsException ex, WebRequest request) {
-        return new ErrorMessage(
-                HttpStatus.UNAUTHORIZED.value(),
-                new Date(),
-                "Wrong email or password!",
-                request.getDescription(false)
-        );
+        return ErrorMessage.builder()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .timestamp(new Date())
+                .clazz(ex.getClass())
+                .message("Wrong email or password!")
+                .description(request.getDescription(false))
+                .build();
     }
 
     @ExceptionHandler(InvalidTokenException.class)
@@ -104,7 +82,7 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
         return new ErrorMessage(
                 HttpStatus.UNAUTHORIZED.value(),
                 new Date(),
-                ex.getMessage(),
+                ex,
                 request.getDescription(false)
         );
     }
@@ -116,7 +94,7 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
         return new ErrorMessage(
                 HttpStatus.FORBIDDEN.value(),
                 new Date(),
-                ex.getMessage(),
+                ex,
                 request.getDescription(false)
         );
     }

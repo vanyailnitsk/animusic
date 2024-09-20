@@ -7,7 +7,9 @@ import com.animusic.api.dto.AlbumItemDto;
 import com.animusic.api.mappers.AlbumMapper;
 import com.animusic.content.album.AlbumService;
 import com.animusic.content.anime.AnimeNotFoundException;
+import com.animusic.content.subscription.ContentSubscriptionService;
 import com.animusic.core.db.model.Album;
+import com.animusic.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -33,6 +35,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class AlbumController {
 
     private final AlbumService albumService;
+
+    private final UserService userService;
+
+    private final ContentSubscriptionService contentSubscriptionService;
 
     @GetMapping
     @Operation(summary = "Метод для получения списка альбомов по animeId")
@@ -67,7 +73,7 @@ public class AlbumController {
     public AlbumDto getAlbumById(@PathVariable Integer id) {
         log.info("Requested album with id {}", id);
         var album = albumService.getAlbumById(id);
-        return AlbumMapper.fromAlbum(album);
+        return AlbumMapper.fromAlbum(album, userService, contentSubscriptionService);
     }
 
 
@@ -81,7 +87,7 @@ public class AlbumController {
     })
     public AlbumDto createAlbum(@RequestBody CreateAlbumDto request) {
         var album = albumService.createAlbum(request.toAlbum(), request.animeId);
-        var albumDto = AlbumMapper.fromAlbum(album);
+        var albumDto = AlbumMapper.fromAlbum(album, userService, contentSubscriptionService);
         log.info("Album {} in anime {} created", album.getName(), request.animeId);
         return albumDto;
     }
@@ -95,7 +101,7 @@ public class AlbumController {
     })
     public AlbumDto updateAlbumName(@RequestBody UpdateAlbumDto albumDto, @PathVariable Integer albumId) {
         Album album = albumService.updateAlbumName(albumDto.name(), albumId);
-        AlbumDto newAlbumDto = AlbumMapper.fromAlbum(album);
+        AlbumDto newAlbumDto = AlbumMapper.fromAlbum(album, userService, contentSubscriptionService);
         log.info("Album id={} updated successfully", albumId);
         return newAlbumDto;
     }
