@@ -26,13 +26,14 @@ import {
     setIsPlaying,
     togglePlayPause
 } from "@/entities/music";
+import {listeningTrackEvent} from "@/shared/api";
 
 
 export const MusicPlayer = () => {
     const musicStore = useAppSelector(selectMusicState)
     const currentMusicTrack = useAppSelector(selectCurrentTrack)
     const dispatch = useAppDispatch()
-    const audioRef = useRef<HTMLAudioElement>(null);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
     const location = useLocation()
     const [isShuffleActive, setIsShuffleActive] = useState(false);
     const [currentTime, setCurrentTime] = useState<number>(0);
@@ -80,7 +81,7 @@ export const MusicPlayer = () => {
     const playPauseHandler = (): void => {
         dispatch(togglePlayPause())
     };
-    const handlePlay = (): void => {
+    const handlePlay = () => {
         dispatch(setIsPlaying(true))
     };
 
@@ -118,6 +119,7 @@ export const MusicPlayer = () => {
         setCurrentTime(time);
     };
     const playPreviousTrack = (): void => {
+
         if (musicStore.trackIndex > 0 && audioRef.current && audioRef.current.currentTime < 4) {
             dispatch(previousTrack())
         } else {
@@ -133,8 +135,11 @@ export const MusicPlayer = () => {
             setRepeatStatus(audioRef.current.loop)
         }
     }
-    const playNextTrack = (): void => {
+    const playNextTrack = async () => {
         dispatch(nextTrack())
+        if(currentMusicTrack){
+            await listeningTrackEvent(currentMusicTrack.id)
+        }
     };
     navigator.mediaSession.setActionHandler("nexttrack", (): void => {
         playNextTrack()

@@ -1,9 +1,9 @@
 import './styles/global.css';
-import { useEffect, useState } from "react";
-import { AppRouter } from "@/app/routers";
-import { SnackbarProvider } from "notistack";
-import { useAppDispatch, useAppSelector } from "@/shared/lib/store";
-import { checkUserAuth, selectUser, selectUserLoading } from "@/entities/user";
+import {useEffect, useState} from "react";
+import {AppRouter} from "@/app/routers";
+import {SnackbarProvider} from "notistack";
+import {useAppDispatch, useAppSelector} from "@/shared/lib/store";
+import {checkUserAuth, selectUser, selectUserLoading} from "@/entities/user";
 import {fetchCollection} from "@/entities/music";
 
 function App() {
@@ -13,31 +13,35 @@ function App() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const initializeApp = async () => {
+        setLoading(true)
+        const initializeAppWithUser = async () => {
             if (localStorage.getItem('token')) {
                 await dispatch(checkUserAuth());
             }
-            setLoading(false);
+            setLoading(false)
+
         };
 
-        initializeApp();
-    }, [dispatch]);
+        initializeAppWithUser();
+    }, []);
 
     useEffect(() => {
-        if (user && !userLoading) {
-            dispatch(fetchCollection())
-
+        setLoading(true)
+        const initializeApp = async () => {
+            if (user && !userLoading) {
+                await dispatch(fetchCollection())
+            }
+            setLoading(false)
         }
+        initializeApp()
     }, [user, userLoading]);
-
     if (loading) {
         return null;
     }
-
     return (
         <div className='app'>
             <SnackbarProvider>
-                <AppRouter />
+                <AppRouter/>
             </SnackbarProvider>
         </div>
     );

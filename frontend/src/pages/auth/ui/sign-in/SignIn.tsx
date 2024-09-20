@@ -15,7 +15,6 @@ const schema = z.object({
     email: z.string().email(),
     password: z.string().min(4)
 })
-
 type FormFields = z.infer<typeof schema>
 export const SignIn = observer(() => {
     const navigate = useNavigate();
@@ -31,7 +30,7 @@ export const SignIn = observer(() => {
 
     useEffect(() => {
         dispatch(setIsPlaying(false));
-    }, []);
+    }, [dispatch]);
 
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
         if (data && data.email && data.password) {
