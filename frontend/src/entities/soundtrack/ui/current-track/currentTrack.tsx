@@ -1,29 +1,28 @@
-import {useContext} from 'react';
 import styles from './current-track.module.css'
 import {useNavigate} from "react-router-dom";
-import {Context} from "@/main.tsx";
-import {observer} from "mobx-react-lite";
 import {SaveTrack} from "@/features/collection";
+import {useAppSelector} from "@/shared/lib/store";
+import {selectCurrentTrack} from "@/entities/music";
 
-export const CurrentTrack = observer(() => {
-    const {musicStore} = useContext(Context)
+export const CurrentTrack = () => {
+    const currentMusicTrack = useAppSelector(selectCurrentTrack)
     const navigate = useNavigate()
     return (
-        <div className={musicStore.currentTrack ? styles.current__track : styles.hidden}>
+        <div className={currentMusicTrack ? styles.current__track : styles.hidden}>
             <img
-                src={musicStore.currentTrack && musicStore.currentTrack.image?.source || "images/track-img.jpeg"}
+                src={currentMusicTrack && currentMusicTrack.image?.source || "images/track-img.jpeg"}
                 alt=""
                 className={styles.track__img}/>
-            {musicStore.currentTrack &&
+            {currentMusicTrack &&
                 <div className={styles.track__name}>
                             <span
-                                onClick={() => navigate(`/album/${musicStore.currentTrack?.album.id}`)}
-                                className={musicStore.currentTrack.originalTitle.length > 20 ? styles.scrolling : ""}>{musicStore.currentTrack.originalTitle}</span>
-                    <span>{musicStore.currentTrack.animeTitle}</span>
+                                onClick={() => navigate(`/album/${currentMusicTrack?.album.id}`)}
+                                className={currentMusicTrack.originalTitle.length > 20 ? styles.scrolling : ""}>{currentMusicTrack.originalTitle}</span>
+                    <span>{currentMusicTrack.animeTitle}</span>
                 </div>
             }
-            <SaveTrack className={styles.save__track} id={musicStore.currentTrack?.id} saved={musicStore.currentTrack && musicStore.isSaved(musicStore.currentTrack.id)}/>
+            {currentMusicTrack && <SaveTrack className={styles.save__track} id={currentMusicTrack.id}/>}
         </div>
     );
-});
+}
 

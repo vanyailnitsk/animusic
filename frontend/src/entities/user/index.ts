@@ -1,2 +1,5 @@
-export type {AuthResponse} from './model/auth'
-export type {IUser} from './model/user'
+export type {UserState, AuthResponse,LoginData,RegistrationData,IUser} from './model/types'
+export {login,registration,checkAuth} from './api/user'
+export {userLogin,userRegistration,checkUserAuth} from './model/userThunks.ts'
+export {default as userReducer,logout} from './model/userSlice'
+export {selectUserLoading,selectUserError,selectUserState,selectUser} from './model/selectors'

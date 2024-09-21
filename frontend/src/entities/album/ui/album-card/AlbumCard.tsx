@@ -1,5 +1,5 @@
 import styles from './album-card.module.css'
-import playButton from '@/shared/icons/playButton.png'
+import playButton from '@/shared/assets/icons/playButton.png'
 import {useNavigate} from "react-router-dom";
 import {clsx} from "clsx";
 

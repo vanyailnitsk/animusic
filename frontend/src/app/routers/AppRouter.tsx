@@ -1,7 +1,6 @@
 import {SkeletonTheme} from 'react-loading-skeleton';
 import {BrowserRouter,Route, Routes} from 'react-router-dom';
 import {observer} from "mobx-react-lite";
-import {MusicPlayer} from "@/widgets/music-player";
 import {HomePage} from "@/pages/home";
 import {AppContent} from "@/widgets/app-content";
 import {AnimePage} from "@/pages/anime";
@@ -11,8 +10,8 @@ import {PlaylistPage} from "@/pages/playlist";
 import {SignIn, SignUp} from "@/pages/auth";
 import {ALBUM_ROUTE, ANIME_ROUTE, COLLECTION, HOME_ROUTE, SEARCH_ROUTE, SIGN_IN, SIGN_UP} from "@/shared/consts";
 import {isMobile} from "react-device-detect";
-import {PhoneMusicPlayer} from "@/widgets/phone-music-player";
 import {PhoneNavigation} from "@/widgets/phone-navigation";
+import {MusicPlayer, PhoneMusicPlayer} from "@/entities/music";
 
 export const AppRouter = observer(() => {
     return (

@@ -1,13 +1,19 @@
-import {useContext} from "react";
 import styles from "./playlist-soundtrack.module.css";
-import Pause from '@/shared/icons/soundtrack-pause.png';
-import Play from '@/shared/icons/soundtrack-play.png';
-import {observer} from "mobx-react-lite";
-import {Context} from "@/main.tsx";
+import Pause from '@/shared/assets/icons/soundtrack-pause.png';
+import Play from '@/shared/assets/icons/soundtrack-play.png';
 import {CalculateDataOfAddition, formatTime} from "@/shared/lib";
 import {IPlaylistSoundtrack} from "@/entities/soundtrack";
 import {SaveTrack} from "@/features/collection";
 import {useNavigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "@/shared/lib/store";
+import {
+    isTrackEquals,
+    selectMusicState,
+    setIsPlaying,
+    setPlaylist,
+    setTrackIndex,
+    togglePlayPause
+} from "@/entities/music";
 
 interface PlaylistSoundtrackProps {
     soundtrackData: IPlaylistSoundtrack;
@@ -15,17 +21,19 @@ interface PlaylistSoundtrackProps {
     index: number;
 }
 
-export const PlaylistSoundtrack = observer(({soundtrackData, listening_queue, index}: PlaylistSoundtrackProps) => {
-    const {musicStore} = useContext(Context)
+export const PlaylistSoundtrack = ({soundtrackData, listening_queue, index}: PlaylistSoundtrackProps) => {
+    const musicStore = useAppSelector(selectMusicState)
+    const dispatch = useAppDispatch()
+    const trackEquals = useAppSelector(state => isTrackEquals(state.music,soundtrackData.soundtrack))
     const navigate = useNavigate()
     const image = soundtrackData.soundtrack.image?.source || "images/track-img.jpeg"
     const playTrackHandler = () => {
-        if (!musicStore.trackEquals(soundtrackData.soundtrack)) {
-            musicStore.setPlaylist(listening_queue);
-            musicStore.setTrackIndex(index);
-            musicStore.setIsPlaying(true);
+        if (!trackEquals) {
+            dispatch(setPlaylist(listening_queue));
+            dispatch(setTrackIndex(index));
+            dispatch(setIsPlaying(true));
         } else {
-            musicStore.togglePlayPause();
+            dispatch(togglePlayPause());
         }
     };
     const animeNavigate = (e:any) => {
@@ -37,11 +45,11 @@ export const PlaylistSoundtrack = observer(({soundtrackData, listening_queue, in
         navigate(`/album/${soundtrackData.soundtrack.album.id}`)
     }
     return (
-        <div className={`${styles.playlist__soundtrack__wrapper} ${musicStore.trackEquals(soundtrackData.soundtrack) ? styles.playing : ""}`}
+        <div className={`${styles.playlist__soundtrack__wrapper} ${trackEquals? styles.playing : ""}`}
              onClick={playTrackHandler}>
             <button className={styles.soundtrack__toggle__play}>
                 <span>{index + 1}</span>
-                {musicStore.trackEquals(soundtrackData.soundtrack) && musicStore.isPlaying ? (
+                {trackEquals && musicStore.isPlaying ? (
                     <img src={Pause} alt="Pause"/>
                 ) : (
                     <img src={Play} alt="Play"/>
@@ -56,8 +64,8 @@ export const PlaylistSoundtrack = observer(({soundtrackData, listening_queue, in
             <div className={styles.date_of_addition}>
                 <span>{CalculateDataOfAddition(soundtrackData.addedAt)}</span>
             </div>
-            <SaveTrack className={styles.soundtrack__saved} id={soundtrackData.soundtrack.id} saved={musicStore.isSaved(soundtrackData.soundtrack.id)}/>
+            <SaveTrack className={styles.soundtrack__saved} id={soundtrackData.soundtrack.id}/>
             <span className={styles.track__duration}>{formatTime(soundtrackData.soundtrack.duration)}</span>
         </div>
     );
-});
+};

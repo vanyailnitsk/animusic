@@ -1,13 +1,15 @@
-import {useContext, useEffect} from 'react';
+import {useEffect} from 'react';
 import {SubmitHandler, useForm} from "react-hook-form";
 import styles from './sign-up.module.css'
 import {z} from 'zod'
 import {zodResolver} from "@hookform/resolvers/zod";
 import {observer} from "mobx-react-lite";
-import logo from "@/shared/icons/logo.ico";
+import logo from "@/shared/assets/icons/logo.ico";
 import {useNavigate} from "react-router-dom";
-import {Context} from "@/main.tsx";
 import {HOME_ROUTE,SIGN_IN} from "@/shared/consts";
+import {useAppDispatch} from "@/shared/lib/store";
+import {userRegistration} from "@/entities/user";
+import {setIsPlaying} from "@/entities/music";
 
 const schema = z.object({
     username: z.string(),
@@ -17,7 +19,7 @@ const schema = z.object({
 
 type FormFields = z.infer<typeof schema>
 export const SignUp = observer(() => {
-    const {userStore,musicStore} = useContext(Context)
+    const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const {
         register,
@@ -26,20 +28,32 @@ export const SignUp = observer(() => {
         formState: {errors, isSubmitting}
     } = useForm<FormFields>({resolver: zodResolver(schema)})
     useEffect(() => {
-        musicStore.setIsPlaying(false)
+        dispatch(setIsPlaying(false))
     }, []);
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
         try {
-            await userStore.registration(data.username, data.email, data.password)
-            const redirectPath = localStorage.getItem('redirectPath')
-            if(redirectPath){
-                navigate(redirectPath, {replace: true})
+            const resultAction = await dispatch(userRegistration(data))
+            if(userRegistration.fulfilled.match(resultAction)){
+                const redirectPath = localStorage.getItem('redirectPath')
+                if(redirectPath){
+                    navigate(redirectPath, {replace: true})
+                }
+                else{
+                    navigate(HOME_ROUTE,{replace: true})
+                }
             }
-            else{
-                navigate(HOME_ROUTE,{replace: true})
+            else if(userRegistration.rejected.match(resultAction)){
+                const errorMessage = resultAction.payload?.messageError || 'An unknown error occurred'
+                setError('root', {
+                    type: 'custom',
+                    message: errorMessage,
+                });
             }
         } catch (e: any) {
-            setError('root', {type: 'custom', message: e.status === 500 ? e.message : e.response.data.error})
+            setError('root', {
+                type: 'custom',
+                message: 'An error occurred while processing your request',
+            });
         }
     }
     return (
