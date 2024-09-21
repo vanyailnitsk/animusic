@@ -1,4 +1,4 @@
-import {useContext, useEffect} from 'react';
+import {useEffect} from 'react';
 import {SubmitHandler, useForm} from "react-hook-form";
 import styles from './sign-up.module.css'
 import {z} from 'zod'
@@ -6,7 +6,6 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {observer} from "mobx-react-lite";
 import logo from "@/shared/assets/icons/logo.ico";
 import {useNavigate} from "react-router-dom";
-import {Context} from "@/main.tsx";
 import {HOME_ROUTE,SIGN_IN} from "@/shared/consts";
 import {useAppDispatch} from "@/shared/lib/store";
 import {userRegistration} from "@/entities/user";
@@ -44,7 +43,7 @@ export const SignUp = observer(() => {
                 }
             }
             else if(userRegistration.rejected.match(resultAction)){
-                const errorMessage = resultAction.payload.messageError || 'An unknown error occurred'
+                const errorMessage = resultAction.payload?.messageError || 'An unknown error occurred'
                 setError('root', {
                     type: 'custom',
                     message: errorMessage,

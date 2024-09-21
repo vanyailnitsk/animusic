@@ -3,7 +3,7 @@ import {addToCollection, getCollection, removeFromCollection} from "@/entities/m
 import {ErrorType} from "@/shared/types";
 
 
-export const fetchCollection = createAsyncThunk("collection/fetchCollection", async (arg, thunkAPI) => {
+export const fetchCollection = createAsyncThunk("collection/fetchCollection", async (_, thunkAPI) => {
     try {
         const response = await getCollection()
         return response.soundtracks

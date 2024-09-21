@@ -1,10 +1,9 @@
-import {useContext, useState} from 'react';
+import {useState} from 'react';
 import fav from '@/shared/assets/icons/icons8-избранное-500.png'
 import styles from './FavoriteTracks.module.css'
 import {useNavigate} from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import {COLLECTION} from "@/shared/consts";
-import {Context} from "@/main.tsx";
 import {enqueueSnackbar, VariantType} from "notistack";
 import {useAppSelector} from "@/shared/lib/store";
 import {selectUser} from "@/entities/user";

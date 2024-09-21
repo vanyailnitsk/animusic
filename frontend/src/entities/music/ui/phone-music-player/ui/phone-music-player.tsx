@@ -1,7 +1,6 @@
 import styles from "./phone-music-player.module.css";
 import {SaveTrack} from "@/features/collection";
-import {FC, useContext, useEffect, useRef, useState} from "react";
-import {Context} from "@/main.tsx";
+import {FC, useEffect, useRef, useState} from "react";
 import {useLocation} from "react-router-dom";
 import {Sheet} from "react-modal-sheet";
 import {formatTime} from "@/shared/lib";
@@ -17,7 +16,7 @@ import {SIGN_IN, SIGN_UP} from "@/shared/consts";
 import * as React from "react";
 import {useAppDispatch, useAppSelector} from "@/shared/lib/store";
 import {
-    changeVolume, isTrackSaved,
+    changeVolume,
     nextTrack,
     previousTrack,
     selectCurrentTrack,

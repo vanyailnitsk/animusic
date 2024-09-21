@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import {Playlist} from "@/entities/playlist";
 import {COLLECTION, HOME_ROUTE} from "@/shared/consts";

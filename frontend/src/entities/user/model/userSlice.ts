@@ -1,7 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {checkUserAuth, IUser, userLogin, userRegistration, UserState} from "@/entities/user";
-import {ErrorType, RejectedDataType} from "@/shared/types";
-
 const initialState: UserState = {
     user: null,
     loading: false,
@@ -32,7 +30,7 @@ const userSlice = createSlice({
             .addCase(userLogin.rejected,(state:UserState, action) => {
                 state.user = null
                 state.loading = false
-                state.error = action.payload.messageError as string
+                state.error = action.payload?.messageError || 'Unknown error'
             })
             .addCase(userRegistration.fulfilled, (state:UserState, action:PayloadAction<IUser>) => {
                 state.user = action.payload
@@ -42,9 +40,9 @@ const userSlice = createSlice({
             .addCase(userRegistration.rejected,(state:UserState, action) => {
                 state.user = null
                 state.loading = false
-                state.error = action.payload.messageError as string
+                state.error = action.payload?.messageError || 'Unknown error'
             })
-            .addCase(checkUserAuth.pending,(state:UserState, action) => {
+            .addCase(checkUserAuth.pending,(state:UserState) => {
                 state.loading = true
                 state.error = ''
             })
@@ -55,7 +53,7 @@ const userSlice = createSlice({
             })
             .addCase(checkUserAuth.rejected,(state:UserState, action) => {
                 state.loading = false
-                state.error = action.payload.messageError
+                state.error = action.payload?.messageError || 'Unknown error'
             })
 }
 })

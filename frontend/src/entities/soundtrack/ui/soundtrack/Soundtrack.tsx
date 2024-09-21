@@ -24,7 +24,7 @@ interface SoundtrackProps {
 
 export const Soundtrack = observer(({soundtrackData, listening_queue, index}: SoundtrackProps) => {
     const musicStore = useAppSelector(selectMusicState)
-    const isSaved = useAppSelector(state => isTrackSaved(musicStore,soundtrackData.id))
+    const isSaved = useAppSelector(state => isTrackSaved(state.music,soundtrackData.id))
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const trackEquals = useAppSelector(state => isTrackEquals(state.music,soundtrackData))

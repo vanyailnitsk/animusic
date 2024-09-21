@@ -1,4 +1,4 @@
-import {createSelector, PayloadAction} from "@reduxjs/toolkit";
+import {createSelector} from "@reduxjs/toolkit";
 import {RootState} from "@/app/store";
 import {MusicState} from "@/entities/music";
 import {SoundtrackData} from "@/entities/soundtrack";

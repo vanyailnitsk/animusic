@@ -5,7 +5,14 @@ export interface ErrorType {
     }
 }
 
+export interface KnownErrorType {
+    readonly response?: {
+        data?: {
+            message:string
+        }
+    }
+}
+
 export interface RejectedDataType {
     readonly messageError: string
-    readonly status?: string
 }

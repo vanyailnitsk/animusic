@@ -1,4 +1,5 @@
 import {$auth_host, playbackCounter} from "@/shared/api";
+import {ErrorType} from "@/shared/types";
 
 
 export const listeningTrackEvent = async (trackId:number) => {
@@ -7,7 +8,8 @@ export const listeningTrackEvent = async (trackId:number) => {
             trackId:trackId
         })
     }
-    catch (e){
-        console.log(e.message)
+    catch (e: unknown){
+        const knownError = e as ErrorType
+        console.log(knownError.message)
     }
 }

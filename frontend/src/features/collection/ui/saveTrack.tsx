@@ -1,15 +1,11 @@
-import {FC, MouseEventHandler, useContext} from "react";
-import {Context} from "@/main.tsx";
+import {FC, MouseEventHandler} from "react";
 import addButton from '@/shared/assets/icons/follow.png';
 import {VariantType, useSnackbar} from 'notistack';
 import savedTrackImage from '@/shared/assets/icons/saved-track.png';
 import {useAppDispatch, useAppSelector} from "@/shared/lib/store";
 import {
-    addToCollection,
     addTrackToCollection, isTrackSaved,
-    removeFromCollection,
     removeTrackFromCollection,
-    selectMusicState
 } from "@/entities/music";
 import {selectUser} from "@/entities/user";
 

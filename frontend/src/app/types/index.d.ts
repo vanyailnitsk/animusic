@@ -1,4 +1,3 @@
-import store from "@/app/store.ts";
 
 declare module '*.png' {
     const value: any;

@@ -78,7 +78,6 @@ export const {
     togglePlayPause,
     nextTrack,
     previousTrack,
-    trackEquals,
     clearCollection
 } = musicSlice.actions
 
