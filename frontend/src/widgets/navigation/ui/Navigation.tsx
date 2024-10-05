@@ -1,6 +1,6 @@
 import styles from './navigation.module.css'
-import homeIcon from '@/shared/assets/icons/home.png'
-import searchIcon from '@/shared/assets/icons/search.png'
+import homeIcon from '@/shared/icons/home.png'
+import searchIcon from '@/shared/icons/search.png'
 import {HOME_ROUTE, SEARCH_ROUTE} from "@/shared/consts";
 import {useNavigate} from "react-router-dom";
 

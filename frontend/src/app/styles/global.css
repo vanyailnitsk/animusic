@@ -3,10 +3,9 @@
     padding: 0;
     box-sizing: border-box;
 }
-body{
-    background-color: #060606
+#root{
+    background-color: #060606;
 }
-
 .app{
     position: relative;
     top:0;

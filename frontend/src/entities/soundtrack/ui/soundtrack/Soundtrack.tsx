@@ -1,20 +1,13 @@
+import {useContext} from "react";
 import "./Soundtrack.css";
-import Pause from '@/shared/assets/icons/soundtrack-pause.png';
-import Play from '@/shared/assets/icons/soundtrack-play.png';
+import Pause from '@/shared/icons/soundtrack-pause.png';
+import Play from '@/shared/icons/soundtrack-play.png';
 import {observer} from "mobx-react-lite";
+import {Context} from "@/main.tsx";
 import {formatTime} from "@/shared/lib";
 import {ISoundtrack, SoundtrackData} from "@/entities/soundtrack";
 import {SaveTrack} from "@/features/collection";
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "@/shared/lib/store";
-import {
-    isTrackEquals, isTrackSaved,
-    selectMusicState,
-    setIsPlaying,
-    setPlaylist,
-    setTrackIndex,
-    togglePlayPause,
-} from "@/entities/music";
 
 interface SoundtrackProps {
     soundtrackData: SoundtrackData;
@@ -23,20 +16,16 @@ interface SoundtrackProps {
 }
 
 export const Soundtrack = observer(({soundtrackData, listening_queue, index}: SoundtrackProps) => {
-    const musicStore = useAppSelector(selectMusicState)
-    const isSaved = useAppSelector(state => isTrackSaved(state.music,soundtrackData.id))
-    const dispatch = useAppDispatch()
+    const {musicStore} = useContext(Context)
     const navigate = useNavigate()
-    const trackEquals = useAppSelector(state => isTrackEquals(state.music,soundtrackData))
     const image =soundtrackData.image?.source || "images/track-img.jpeg"
-
     const playTrackHandler = () => {
-        if (!trackEquals) {
-            dispatch(setPlaylist(listening_queue));
-            dispatch(setTrackIndex(index));
-            dispatch(setIsPlaying(true));
+        if (!musicStore.trackEquals(soundtrackData)) {
+            musicStore.setPlaylist(listening_queue);
+            musicStore.setTrackIndex(index);
+            musicStore.setIsPlaying(true);
         } else {
-            dispatch(togglePlayPause());
+            musicStore.togglePlayPause();
         }
     };
     const animeNavigate = (e:any) => {
@@ -44,11 +33,11 @@ export const Soundtrack = observer(({soundtrackData, listening_queue, index}: So
         navigate(`/anime/${soundtrackData.anime.id}`)
     }
     return (
-        <div className={`soundtrack__container ${trackEquals ? "playing" : ""}`}
+        <div className={`soundtrack__container ${musicStore.trackEquals(soundtrackData) ? "playing" : ""}`}
              onClick={playTrackHandler}>
             <button className="soundtrack__toggle__play">
                 <span>{index + 1}</span>
-                {trackEquals && musicStore.isPlaying ? (
+                {musicStore.trackEquals(soundtrackData) && musicStore.isPlaying ? (
                     <img src={Pause} alt="Pause"/>
                 ) : (
                     <img src={Play} alt="Play"/>
@@ -60,7 +49,7 @@ export const Soundtrack = observer(({soundtrackData, listening_queue, index}: So
                 <span className='anime_name' onClick={animeNavigate}>{soundtrackData.anime.title}</span>
             </div>
             <p className="original__title">{soundtrackData.originalTitle}</p>
-            <SaveTrack className={isSaved? "soundtrack__saved" : "soundtrack__add"} id={soundtrackData.id}/>
+            <SaveTrack className={musicStore.isSaved(soundtrackData.id)? "soundtrack__saved" : "soundtrack__add"} id={soundtrackData.id} saved={musicStore.isSaved(soundtrackData.id)}/>
             <span className='track__duration'>{formatTime(soundtrackData.duration)}</span>
         </div>
     );

@@ -1,28 +1,26 @@
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import {Playlist} from "@/entities/playlist";
 import {COLLECTION, HOME_ROUTE} from "@/shared/consts";
-import fav from '@/shared/assets/icons/icons8-избранное-500.png'
+import {Context} from "@/main.tsx";
+import fav from '@/shared/icons/icons8-избранное-500.png'
+import {MusicService} from "@/shared/services";
 import {observer} from "mobx-react-lite";
 import {SoundtrackList} from "@/widgets/soundtrack-list";
 import {SoundtrackType} from "@/shared/types";
 import styles from "./playlist-page.module.css";
-import {getCollection, selectMusicState} from "@/entities/music";
-import {useAppSelector} from "@/shared/lib/store";
-import {selectUser} from "@/entities/user";
 
 
 export const PlaylistPage = observer(() => {
     const location = useLocation()
-    const musicStore = useAppSelector(selectMusicState)
-    const user = useAppSelector(selectUser)
+    const {musicStore,userStore} = useContext(Context)
     const navigate = useNavigate()
     const [playlist, setPlaylist] = useState<Playlist | null>(null)
     useEffect(() => {
         if (location.pathname === COLLECTION) {
-            getCollection()
-                .then(playlist => {
-                    setPlaylist(playlist)
+            MusicService.getCollection()
+                .then(response => {
+                    setPlaylist(response.data)
                 })
                 .catch(error => {
                     console.log(error)
@@ -30,10 +28,10 @@ export const PlaylistPage = observer(() => {
         }
     }, [musicStore.fav_tracks]);
     useEffect(() => {
-        if(!user){
+        if(!userStore.isAuth){
             navigate(HOME_ROUTE)
         }
-    }, [user]);
+    }, [userStore.isAuth]);
     return (
         <div>
             {playlist && <div className={styles.playlist__page__header}>

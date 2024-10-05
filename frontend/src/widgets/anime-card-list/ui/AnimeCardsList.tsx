@@ -9,8 +9,8 @@ export const AnimeCardsList = () => {
     }
     return (
         <div className={styles.cards__list__wrapper}>
-            {data && data.map((card,index) =>
-                <AnimeCard id={card.id} cardImageUrl={card.cardImage.source} title={card.title} key={index}/>
+            {data && data.map(card =>
+                <AnimeCard id={card.id} cardImageUrl={card.cardImage.source} title={card.title}/>
             )}
         </div>
     );
