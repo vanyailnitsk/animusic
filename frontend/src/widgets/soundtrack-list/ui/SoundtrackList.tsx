@@ -2,7 +2,7 @@ import "./SoundtrackList.css"
 import {observer} from "mobx-react-lite";
 import {IPlaylistSoundtrack, ISoundtrack, PlaylistSoundtrack, Soundtrack} from "@/entities/soundtrack";
 import {SoundtrackType} from "@/shared/types";
-import clock from "@/shared/assets/icons/clock.png";
+import clock from "@/shared/icons/clock.png";
 
 
 interface SoundtrackListProps {

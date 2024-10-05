@@ -1,37 +1,32 @@
-import {FC, MouseEventHandler} from "react";
-import addButton from '@/shared/assets/icons/follow.png';
+import {FC, MouseEventHandler, useContext} from "react";
+import {Context} from "@/main.tsx";
+import addButton from '@/shared/icons/follow.png';
 import {VariantType, useSnackbar} from 'notistack';
-import savedTrackImage from '@/shared/assets/icons/saved-track.png';
-import {useAppDispatch, useAppSelector} from "@/shared/lib/store";
-import {
-    addTrackToCollection, isTrackSaved,
-    removeTrackFromCollection,
-} from "@/entities/music";
-import {selectUser} from "@/entities/user";
+import savedTrackImage from '@/shared/icons/saved-track.png';
 
 interface SaveTrackProps {
     className: string;
-    id: number;
+    saved: boolean | undefined
+    id: number | undefined;
 }
 
 export const SaveTrack: FC<SaveTrackProps> = (props) => {
-    const {className, id} = props
-    const isSaved = useAppSelector(state => isTrackSaved(state.music,id))
+    const {className, id, saved} = props
     const {enqueueSnackbar} = useSnackbar()
-    const dispatch = useAppDispatch()
-    const user = useAppSelector(selectUser)
+    const {musicStore} = useContext(Context)
+    const {userStore} = useContext(Context)
 
-    const handleSavedTrack: MouseEventHandler<HTMLButtonElement> = (e) => {
+    const handleSavedTrack: MouseEventHandler<HTMLButtonElement> = async (e) => {
         e.stopPropagation()
-        if(!user){
+        if(!userStore.isAuth && !userStore.isAuthInProgress){
             handleAddError('error')
         }
         else{
             if (id) {
-                if (isSaved) {
-                    dispatch(removeTrackFromCollection(id))
+                if (saved) {
+                    await musicStore.removeFromFavorites(id);
                 } else {
-                   dispatch(addTrackToCollection(id));
+                    await musicStore.addToFavorite(id);
                 }
             }
         }
@@ -41,7 +36,7 @@ export const SaveTrack: FC<SaveTrackProps> = (props) => {
     };
     return (
         <button className={className} onClick={handleSavedTrack}>
-            {isSaved ? <img src={savedTrackImage} alt=''/> : <img src={addButton} alt=''/>}
+            {saved ? <img src={savedTrackImage} alt=''/> : <img src={addButton} alt=''/>}
         </button>
     );
 };

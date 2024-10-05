@@ -1,41 +1,31 @@
 import styles from "./phone-music-player.module.css";
 import {SaveTrack} from "@/features/collection";
-import {FC, useEffect, useRef, useState} from "react";
+import {FC, useContext, useEffect, useRef, useState} from "react";
+import {Context} from "@/main.tsx";
 import {useLocation} from "react-router-dom";
 import {Sheet} from "react-modal-sheet";
 import {formatTime} from "@/shared/lib";
-import shuffleButton from "@/shared/assets/icons/shuffleButton.png";
-import rewindButton from "@/shared/assets/icons/rewindButton.png";
-import pauseButton from "@/shared/assets/icons/pauseButton.png";
-import playButton from "@/shared/assets/icons/playButton.png";
-import nextButton from "@/shared/assets/icons/next.png";
-import repeatButtonActive from "@/shared/assets/icons/repeatButtonActive.png";
-import repeatButton from "@/shared/assets/icons/repeatButton.png";
+import shuffleButton from "@/shared/icons/shuffleButton.png";
+import rewindButton from "@/shared/icons/rewindButton.png";
+import pauseButton from "@/shared/icons/pauseButton.png";
+import playButton from "@/shared/icons/playButton.png";
+import nextButton from "@/shared/icons/next.png";
+import repeatButtonActive from "@/shared/icons/repeatButtonActive.png";
+import repeatButton from "@/shared/icons/repeatButton.png";
 import {observer} from "mobx-react-lite";
 import {SIGN_IN, SIGN_UP} from "@/shared/consts";
 import * as React from "react";
-import {useAppDispatch, useAppSelector} from "@/shared/lib/store";
-import {
-    changeVolume,
-    nextTrack,
-    previousTrack,
-    selectCurrentTrack,
-    selectMusicState,
-    setIsPlaying, togglePlayPause
-} from "@/entities/music";
 
 export const PhoneMusicPlayer = observer(() => {
-    const musicStore = useAppSelector(selectMusicState)
-    const currentTrack = useAppSelector(selectCurrentTrack)
-    const dispatch = useAppDispatch()
+    const {musicStore} = useContext(Context)
     const location = useLocation()
     const [isOpen, setOpen] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [currentTime, setCurrentTime] = useState<number>(0);
-    const [duration, setDuration] = useState<number>(currentTrack ? currentTrack.duration : 0);
+    const [duration, setDuration] = useState<number>(musicStore.currentTrack ? musicStore.currentTrack.duration : 0);
     const [repeatStatus, setRepeatStatus] = useState<boolean>(false)
     useEffect(() => {
-        dispatch(changeVolume(1))
+        musicStore.changeVolume(1)
         if (audioRef.current) {
             audioRef.current.volume = musicStore.volume
             if (musicStore.isPlaying) {
@@ -52,8 +42,8 @@ export const PhoneMusicPlayer = observer(() => {
             if (audioElement) {
                 setCurrentTime(audioElement.currentTime);
             }
-            if (currentTrack) {
-                setDuration(currentTrack.duration)
+            if (musicStore.currentTrack) {
+                setDuration(musicStore.currentTrack.duration)
             }
         };
         if (audioElement) {
@@ -70,11 +60,11 @@ export const PhoneMusicPlayer = observer(() => {
         setCurrentTime(event.target.currentTime);
     };
     const playNextTrack = (): void => {
-        dispatch(nextTrack())
+        musicStore.nextTrack()
     };
     const playPreviousTrack = (): void => {
         if (musicStore.trackIndex > 0 && audioRef.current && audioRef.current.currentTime < 4) {
-            dispatch(previousTrack())
+            musicStore.previousTrack()
         } else {
             if (audioRef.current) {
                 audioRef.current.currentTime = 0;
@@ -83,14 +73,14 @@ export const PhoneMusicPlayer = observer(() => {
         }
     };
     const handlePlay = (): void => {
-        dispatch(setIsPlaying(true))
+        musicStore.setIsPlaying(true)
     };
 
     const handlePause = (): void => {
-        dispatch(setIsPlaying(false))
+        musicStore.setIsPlaying(false);
     };
     const playPauseHandler = (): void => {
-        dispatch(togglePlayPause())
+        musicStore.togglePlayPause()
     };
 
 
@@ -115,13 +105,13 @@ export const PhoneMusicPlayer = observer(() => {
     navigator.mediaSession.setActionHandler("previoustrack", (): void => {
         playPreviousTrack()
     });
-    if (currentTrack) {
+    if (musicStore.currentTrack) {
         navigator.mediaSession.metadata = new MediaMetadata({
-            title: currentTrack.originalTitle,
-            artist: currentTrack.animeTitle,
+            title: musicStore.currentTrack.originalTitle,
+            artist: musicStore.currentTrack.animeTitle,
             artwork: [
                 {
-                    src: currentTrack && currentTrack.image?.source || "images/track-img.jpeg",
+                    src: musicStore.currentTrack && musicStore.currentTrack.image?.source || "images/track-img.jpeg",
                     sizes: '512x512',
                     type: 'image/png'
                 }
@@ -130,11 +120,11 @@ export const PhoneMusicPlayer = observer(() => {
     }
     if (location.pathname !== SIGN_UP && location.pathname !== SIGN_IN) {
         return (
-            <div className={currentTrack? styles.phone__music__player__wrapper : styles.hidden}
+            <div className={musicStore.currentTrack ? styles.phone__music__player__wrapper : styles.hidden}
                  onClick={() => setOpen(true)}>
                 <div className={styles.phone__music__player__content}>
                     <audio ref={audioRef}
-                           src={currentTrack && currentTrack.audioFile}
+                           src={musicStore.currentTrack && musicStore.currentTrack.audioFile}
                            autoPlay
                            onEnded={playNextTrack}
                            onTimeUpdate={handleTimeUpdate}
@@ -144,18 +134,19 @@ export const PhoneMusicPlayer = observer(() => {
                     >
                     </audio>
                     <img
-                        src={currentTrack && currentTrack.image?.source || "images/track-img.jpeg"}
+                        src={musicStore.currentTrack && musicStore.currentTrack.image?.source || "images/track-img.jpeg"}
                         alt=""
                         className={styles.track__img}/>
-                    {currentTrack &&
+                    {musicStore.currentTrack &&
                         <div className={styles.track__name}>
                             <span
-                                className={currentTrack.originalTitle.length > 20 ? styles.scrolling : ""}>{currentTrack.originalTitle}</span>
-                            <span>{currentTrack.animeTitle}</span>
+                                className={musicStore.currentTrack.originalTitle.length > 20 ? styles.scrolling : ""}>{musicStore.currentTrack.originalTitle}</span>
+                            <span>{musicStore.currentTrack.animeTitle}</span>
                         </div>
                     }
-                    {currentTrack &&
-                        <SaveTrack className={styles.save__track} id={currentTrack.id}/>}
+                    {musicStore.currentTrack &&
+                        <SaveTrack className={styles.save__track} id={musicStore.currentTrack.id}
+                                   saved={musicStore.isSaved(musicStore.currentTrack.id)}/>}
                 </div>
                 <Sheet isOpen={isOpen} onClose={() => setOpen(false)}>
                     <Sheet.Container>
@@ -205,23 +196,23 @@ const ActiveMusicPlayer: FC<ActivePlayerProps> = observer((props) => {
         repeatStatus,
         handleSeek
     } = props
-    const musicStore = useAppSelector(selectMusicState)
-    const currentTrack = useAppSelector(selectCurrentTrack)
+    const {musicStore} = useContext(Context)
     return (
         <div className={styles.phone__music__player__wrapper__active}>
             <img
-                src={currentTrack && currentTrack.image?.source || "images/track-img.jpeg"}
+                src={musicStore.currentTrack && musicStore.currentTrack.image?.source || "images/track-img.jpeg"}
                 alt=""
                 className={styles.track__img__active}
             />
-            {currentTrack &&
+            {musicStore.currentTrack &&
                 <div className={styles.track__content}>
                     <div className={styles.track__name__active}>
-                        <p>{currentTrack.originalTitle}</p>
-                        <p>{currentTrack.animeTitle}</p>
+                        <p>{musicStore.currentTrack.originalTitle}</p>
+                        <p>{musicStore.currentTrack.animeTitle}</p>
                     </div>
                     <SaveTrack className={styles.save__track__active}
-                               id={currentTrack.id}
+                               id={musicStore.currentTrack.id}
+                               saved={musicStore.isSaved(musicStore.currentTrack.id)}
                     />
                 </div>
             }

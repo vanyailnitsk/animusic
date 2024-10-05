@@ -1,47 +1,38 @@
-import {useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 
 import "./MusicPlayer.css"
-import pauseButton from '@/shared/assets/icons/pauseButton.png'
-import rewindButton from '@/shared/assets/icons/rewindButton.png'
-import nextButton from '@/shared/assets/icons/next.png'
-import shuffleButton from '@/shared/assets/icons/shuffleButton.png'
-import shuffleActive from '@/shared/assets/icons/shuffle-active.png'
-import playButton from '@/shared/assets/icons/playButton.png'
-import repeatButton from '@/shared/assets/icons/repeatButton.png'
-import mediumSound from '@/shared/assets/icons/icons8-средняя-громкость-100.png'
-import littleSound from '@/shared/assets/icons/icons8-низкая-громкость-100.png'
-import loudSound from '@/shared/assets/icons/icons8-громкий-звук-100.png'
-import noSound from '@/shared/assets/icons/icons8-нет-звука-100.png'
+import pauseButton from '@/shared/icons/pauseButton.png'
+import rewindButton from '@/shared/icons/rewindButton.png'
+import nextButton from '@/shared/icons/next.png'
+import shuffleButton from '@/shared/icons/shuffleButton.png'
+import shuffleActive from '@/shared/icons/shuffle-active.png'
+import playButton from '@/shared/icons/playButton.png'
+import repeatButton from '@/shared/icons/repeatButton.png'
+import mediumSound from '@/shared/icons/icons8-средняя-громкость-100.png'
+import littleSound from '@/shared/icons/icons8-низкая-громкость-100.png'
+import loudSound from '@/shared/icons/icons8-громкий-звук-100.png'
+import noSound from '@/shared/icons/icons8-нет-звука-100.png'
+import {observer} from "mobx-react-lite";
 import {isTablet} from 'react-device-detect';
-import repeatButtonActive from '@/shared/assets/icons/repeatButtonActive.png'
+import repeatButtonActive from '@/shared/icons/repeatButtonActive.png'
+import {Context} from "@/main.tsx";
 import {formatTime} from "@/shared/lib";
 import {CurrentTrack} from "@/entities/soundtrack";
 import {useLocation} from "react-router-dom";
 import {SIGN_IN, SIGN_UP} from "@/shared/consts";
-import {useAppDispatch, useAppSelector} from "@/shared/lib/store";
-import {
-    changeVolume,
-    nextTrack,
-    previousTrack, selectCurrentTrack, selectMusicState,
-    setIsPlaying,
-    togglePlayPause
-} from "@/entities/music";
-import {listeningTrackEvent} from "@/shared/api";
 
 
-export const MusicPlayer = () => {
-    const musicStore = useAppSelector(selectMusicState)
-    const currentMusicTrack = useAppSelector(selectCurrentTrack)
-    const dispatch = useAppDispatch()
-    const audioRef = useRef<HTMLAudioElement | null>(null);
+export const MusicPlayer = observer(() => {
+    const audioRef = useRef<HTMLAudioElement>(null);
+    const {musicStore} = useContext(Context)
     const location = useLocation()
     const [isShuffleActive, setIsShuffleActive] = useState(false);
     const [currentTime, setCurrentTime] = useState<number>(0);
     const [repeatStatus, setRepeatStatus] = useState<boolean>(false)
-    const [duration, setDuration] = useState<number>(currentMusicTrack ? currentMusicTrack.duration : 0);
+    const [duration, setDuration] = useState<number>(musicStore.currentTrack ? musicStore.currentTrack.duration : 0);
     useEffect(() => {
         if (isTablet) {
-            dispatch(changeVolume(1))
+            musicStore.changeVolume(1)
         }
         if (audioRef.current) {
             if (audioRef.current) {
@@ -61,8 +52,8 @@ export const MusicPlayer = () => {
             if (audioElement) {
                 setCurrentTime(audioElement.currentTime);
             }
-            if (currentMusicTrack) {
-                setDuration(currentMusicTrack.duration)
+            if (musicStore.currentTrack) {
+                setDuration(musicStore.currentTrack.duration)
             }
         };
         if (audioElement) {
@@ -79,18 +70,18 @@ export const MusicPlayer = () => {
         setIsShuffleActive(!isShuffleActive)
     }
     const playPauseHandler = (): void => {
-        dispatch(togglePlayPause())
+        musicStore.togglePlayPause()
     };
-    const handlePlay = () => {
-        dispatch(setIsPlaying(true))
+    const handlePlay = (): void => {
+        musicStore.setIsPlaying(true)
     };
 
     const handlePause = (): void => {
-        dispatch(setIsPlaying(false))
+        musicStore.setIsPlaying(false);
     };
     const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const newVolume = parseFloat(event.target.value);
-        dispatch(changeVolume(newVolume))
+        musicStore.changeVolume(newVolume);
 
         const audioElement = audioRef.current;
         if (audioElement) {
@@ -119,9 +110,8 @@ export const MusicPlayer = () => {
         setCurrentTime(time);
     };
     const playPreviousTrack = (): void => {
-
         if (musicStore.trackIndex > 0 && audioRef.current && audioRef.current.currentTime < 4) {
-            dispatch(previousTrack())
+            musicStore.previousTrack()
         } else {
             if (audioRef.current) {
                 audioRef.current.currentTime = 0;
@@ -135,11 +125,8 @@ export const MusicPlayer = () => {
             setRepeatStatus(audioRef.current.loop)
         }
     }
-    const playNextTrack = async () => {
-        dispatch(nextTrack())
-        if(currentMusicTrack){
-            await listeningTrackEvent(currentMusicTrack.id)
-        }
+    const playNextTrack = (): void => {
+        musicStore.nextTrack()
     };
     navigator.mediaSession.setActionHandler("nexttrack", (): void => {
         playNextTrack()
@@ -147,13 +134,13 @@ export const MusicPlayer = () => {
     navigator.mediaSession.setActionHandler("previoustrack", (): void => {
         playPreviousTrack()
     });
-    if (currentMusicTrack) {
+    if (musicStore.currentTrack) {
         navigator.mediaSession.metadata = new MediaMetadata({
-            title: currentMusicTrack.originalTitle,
-            artist: currentMusicTrack.animeTitle,
+            title: musicStore.currentTrack.originalTitle,
+            artist: musicStore.currentTrack.animeTitle,
             artwork: [
                 {
-                    src: currentMusicTrack && currentMusicTrack.image?.source || "images/track-img.jpeg",
+                    src: musicStore.currentTrack && musicStore.currentTrack.image?.source || "images/track-img.jpeg",
                     sizes: '512x512',
                     type: 'image/png'
                 }
@@ -164,7 +151,7 @@ export const MusicPlayer = () => {
         return (
             <div className="music__player__wrapper">
                 <CurrentTrack/>
-                <div className={currentMusicTrack ? 'player' : 'player block'}>
+                <div className={musicStore.currentTrack ? 'player' : 'player block'}>
                     <div className='player__buttons'>
                         <button onClick={toggleShuffle}><img src={isShuffleActive ? shuffleActive : shuffleButton}
                                                              alt="" style={{width: 24, height: 24}}/></button>
@@ -184,7 +171,7 @@ export const MusicPlayer = () => {
                     </div>
                     <div className="time__bar">
                         <audio ref={audioRef}
-                               src={currentMusicTrack && currentMusicTrack.audioFile}
+                               src={musicStore.currentTrack && musicStore.currentTrack.audioFile}
                                autoPlay
                                onEnded={playNextTrack}
                                onTimeUpdate={handleTimeUpdate}
@@ -209,7 +196,7 @@ export const MusicPlayer = () => {
                 </div>
 
 
-                <div className={currentMusicTrack ? 'volume__bar' : 'volume__bar block'}>
+                <div className={musicStore.currentTrack ? 'volume__bar' : 'volume__bar block'}>
                     <img className="volume__icon" src={changeVolumeIcon(musicStore.volume)} alt=""/>
                     <input
                         type="range"
@@ -223,4 +210,4 @@ export const MusicPlayer = () => {
             </div>
         );
     }
-}
+})
