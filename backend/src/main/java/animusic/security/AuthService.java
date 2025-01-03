@@ -1,4 +1,4 @@
-package animusic.service.security;
+package animusic.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import animusic.core.db.model.RefreshToken;
 import animusic.core.db.model.Role;
 import animusic.core.db.model.User;
 import animusic.core.db.table.RefreshTokenRepository;
-import animusic.security.JwtResponse;
+import animusic.service.security.UserService;
 
 @Service
 @RequiredArgsConstructor

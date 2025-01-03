@@ -1,4 +1,4 @@
-package animusic.service.security;
+package animusic.security;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -12,6 +12,7 @@ import animusic.api.exception.TokenRefreshException;
 import animusic.core.db.model.RefreshToken;
 import animusic.core.db.model.User;
 import animusic.core.db.table.RefreshTokenRepository;
+import animusic.util.CookieUtils;
 
 @Service
 public class RefreshTokenService {

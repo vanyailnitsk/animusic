@@ -3,7 +3,9 @@ package animusic.conf;
 import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -22,6 +24,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import animusic.conf.properties.PropertiesConfig;
 import animusic.security.JwtAuthorizationFilter;
 import animusic.service.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +33,8 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableMethodSecurity
+@Import({UtilConfig.class, PropertiesConfig.class})
+@ComponentScan("animusic.security")
 public class SecurityConfig {
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
 

@@ -13,6 +13,7 @@ import animusic.util.JsonMergePatchService;
 @Configuration
 @Import({
         DatabaseConfig.class,
+        SecurityConfig.class,
 })
 @ComponentScan("animusic.service")
 public class ContentConfig {

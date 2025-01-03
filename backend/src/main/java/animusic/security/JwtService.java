@@ -1,4 +1,4 @@
-package animusic.service.security;
+package animusic.security;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import animusic.conf.properties.JwtProperties;
 import animusic.core.db.model.User;
+import animusic.util.CookieUtils;
 
 @Service
 @Slf4j

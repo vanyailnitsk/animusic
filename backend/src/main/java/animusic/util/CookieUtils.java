@@ -1,4 +1,4 @@
-package animusic.service.security;
+package animusic.util;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

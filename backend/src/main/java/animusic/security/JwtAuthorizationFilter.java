@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import animusic.core.db.model.User;
-import animusic.service.security.JwtService;
 import animusic.service.security.UserService;
 
 @Component

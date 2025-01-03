@@ -18,7 +18,7 @@ import animusic.api.dto.AuthRequest;
 import animusic.api.dto.RegisterRequest;
 import animusic.api.mappers.AuthMapper;
 import animusic.security.JwtResponse;
-import animusic.service.security.AuthService;
+import animusic.security.AuthService;
 
 @RestController
 @RequestMapping("/api/auth")
