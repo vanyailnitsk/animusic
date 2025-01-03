@@ -19,6 +19,7 @@ out/
 frontend/node_modules
 frontend/.env
 admin/node_modules
+backend/.gradle
 
 ### STS ###
 .apt_generated

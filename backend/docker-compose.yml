@@ -16,7 +16,7 @@ services:
       retries: 5
     command: postgres -c stats_temp_directory=/tmp
     ports:
-      - "5431:5432"
+      - "5433:5432"
 
   spring-app:
     container_name: spring-app
