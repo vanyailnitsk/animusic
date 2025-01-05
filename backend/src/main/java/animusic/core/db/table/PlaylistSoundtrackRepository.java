@@ -1,13 +1,12 @@
 package animusic.core.db.table;
 
+import jakarta.persistence.EntityManager;
+import lombok.NonNull;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import animusic.core.db.model.PlaylistSoundtrack;
-
-import jakarta.persistence.EntityManager;
-import lombok.NonNull;
 
 @Component
 @NoRepositoryBean

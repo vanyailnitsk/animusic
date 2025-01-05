@@ -9,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import animusic.api.exception.UserAlreadyExistsException;
 import animusic.api.exception.UserNotFoundException;
 import animusic.core.db.model.Playlist;
 import animusic.core.db.model.Role;
@@ -39,7 +38,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User findOrCreateUserByOAuth(String provider, String id, String externalEmail, String name, String avatarUrl) {
+    public User findOrCreateUserByOAuth(
+            String provider,
+            String id,
+            String externalEmail,
+            String name,
+            String avatarUrl
+    ) {
         Optional<User> user;
 
         if (provider.equals("google")) {

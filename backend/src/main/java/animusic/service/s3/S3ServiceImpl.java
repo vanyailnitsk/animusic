@@ -5,7 +5,6 @@ import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -18,7 +17,7 @@ import animusic.conf.properties.S3Properties;
 
 @Slf4j
 @RequiredArgsConstructor
-public class S3ServiceImpl implements S3Service{
+public class S3ServiceImpl implements S3Service {
 
     private final S3Client s3Client;
 

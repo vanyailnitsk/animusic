@@ -2,9 +2,9 @@
 --changeset vanyailnitsk:create_playlist_soundtrack_table
 create table playlist_soundtrack
 (
-    id          bigserial primary key,
+    id            bigserial primary key,
     added_at      timestamp(6),
-    playlist_id integer not null,
+    playlist_id   integer not null,
     soundtrack_id integer not null
 );
 

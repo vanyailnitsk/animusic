@@ -1,12 +1,13 @@
 package animusic.service.image;
 
-import animusic.core.db.model.CoverArt;
-import animusic.core.db.table.CoverArtRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import animusic.core.db.model.CoverArt;
+import animusic.core.db.table.CoverArtRepository;
 
 @Service
 @RequiredArgsConstructor

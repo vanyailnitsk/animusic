@@ -2,13 +2,14 @@ package animusic.service.analytics;
 
 import java.util.List;
 
-import animusic.service.soundtrack.SoundtrackService;
-import animusic.core.db.model.Soundtrack;
-import animusic.core.db.table.TrackListeningEventRepository;
-import animusic.core.db.views.TrackListeningsStats;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import animusic.core.db.model.Soundtrack;
+import animusic.core.db.table.TrackListeningEventRepository;
+import animusic.core.db.views.TrackListeningsStats;
+import animusic.service.soundtrack.SoundtrackService;
 
 @Service
 @Slf4j

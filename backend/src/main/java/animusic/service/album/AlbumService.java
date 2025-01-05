@@ -4,17 +4,18 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import animusic.service.anime.AnimeNotFoundException;
-import animusic.service.anime.AnimeService;
-import animusic.service.image.CoverArtService;
-import animusic.core.db.model.Album;
-import animusic.core.db.model.Anime;
-import animusic.core.db.model.CoverArt;
-import animusic.core.db.table.AlbumRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import animusic.core.db.model.Album;
+import animusic.core.db.model.Anime;
+import animusic.core.db.model.CoverArt;
+import animusic.core.db.table.AlbumRepository;
+import animusic.service.anime.AnimeNotFoundException;
+import animusic.service.anime.AnimeService;
+import animusic.service.image.CoverArtService;
 
 @Service
 @RequiredArgsConstructor

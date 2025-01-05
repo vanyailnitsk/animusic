@@ -43,7 +43,7 @@ public class S3Properties {
                 .append("bucket", bucket)
                 .append("region", region)
                 .append("accessKey", accessKey)
-                .append("secret", secretKey.substring(0,5)+"***:size="+secretKey.length())
+                .append("secret", secretKey.substring(0, 5) + "***:size=" + secretKey.length())
                 .toString();
     }
 }
