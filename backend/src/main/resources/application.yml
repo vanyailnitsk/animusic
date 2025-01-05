@@ -1,0 +1,28 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: Ov23liKJHg2I3blUU0Nx
+            clientSecret: ${GITHUB_CLIENT_SECRET}
+            redirect-uri: "{baseUrl}/api/oauth2/github/token"
+            scope:
+              - read:user
+          google:
+            clientId: 60226795969-a430ck6c3bqd2qrvq4hit716914i0cu3.apps.googleusercontent.com
+            clientSecret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: "{baseUrl}/api/oauth2/google/token"
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo

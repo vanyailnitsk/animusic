@@ -2,12 +2,17 @@ package animusic.security;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+import javax.crypto.SecretKey;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +29,7 @@ public class JwtService {
 
     private final String SECRET_KEY;
 
-    private final long TTL_MINUTES;
+    private final long TTL_HOURS;
 
     private final long REFRESH_TTL_HOURS;
 
@@ -38,18 +43,23 @@ public class JwtService {
     public JwtService(CookieUtils cookieUtils, JwtProperties jwtProperties) {
         this.cookieUtils = cookieUtils;
         this.SECRET_KEY = jwtProperties.getSecret();
-        this.TTL_MINUTES = jwtProperties.getExpirationMinutes();
+        this.TTL_HOURS = jwtProperties.getExpirationHours();
         this.REFRESH_TTL_HOURS = jwtProperties.getRefreshExpirationHours();
     }
 
     public String createToken(User user) {
-        Claims claims = Jwts.claims().setSubject(user.getEmail());
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", user.getId());
         ZonedDateTime tokenCreateTime = ZonedDateTime.now();
-        Date tokenValidity = Date.from(tokenCreateTime.plusMinutes(TTL_MINUTES).toInstant());
+        Date tokenValidity = Date.from(tokenCreateTime.plusHours(TTL_HOURS).toInstant());
         return Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(tokenValidity)
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .claims()
+                .add(claims)
+                .subject(user.getUsername())
+                .expiration(tokenValidity)
+                .issuedAt(new Date())
+                .and()
+                .signWith(getSecretKey())
                 .compact();
     }
 
@@ -58,20 +68,29 @@ public class JwtService {
         return cookieUtils.generateCookie("access-token", jwt, "/api");
     }
 
-
-    public String parseUsernameFromJwt(String token) {
-        return parseJwtClaims(token).getSubject();
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
-    private Claims parseJwtClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSecretKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+
+    private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimResolver.apply(claims);
     }
 
     public Claims resolveClaims(HttpServletRequest req) {
         try {
             String token = resolveToken(req);
             if (token != null) {
-                return parseJwtClaims(token);
+                return extractAllClaims(token);
             }
             return null;
         } catch (ExpiredJwtException ex) {
@@ -84,7 +103,6 @@ public class JwtService {
     }
 
     public String resolveToken(HttpServletRequest request) {
-
         String bearerToken = request.getHeader(TOKEN_HEADER);
         if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
             return bearerToken.substring(TOKEN_PREFIX.length());
@@ -101,7 +119,8 @@ public class JwtService {
         }
     }
 
-    private List<String> getRoles(Claims claims) {
-        return (List<String>) claims.get("roles");
+    private SecretKey getSecretKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

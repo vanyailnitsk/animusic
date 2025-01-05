@@ -32,6 +32,10 @@ tasks.withType<JavaCompile>() {
     options.encoding = "UTF-8"
 }
 
+tasks.getByName<Jar>("jar") {
+    enabled = false
+}
+
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -62,13 +66,21 @@ tasks.register<JavaExec>("runDev") {
     group = "application"
     description = "Run the application with the 'dev' profile"
 
-    mainClass.set("animusic.api.AnimusicApplication")
+    mainClass.set("animusic.AnimusicApplication")
 
     classpath = sourceSets["main"].runtimeClasspath
-    val s3Secret = System.getenv("S3_SECRET")
     environment("SPRING_PROFILES_ACTIVE", "dev")
-    jvmArgs = listOf("-Dspring.profiles.active=dev","-Dtimeweb.s3.secret-key=$s3Secret")
+    jvmArgs = listOf("-Dspring.profiles.active=dev")
     workingDir = file(".")
+}
+
+tasks.register<Copy>("copyEnvFile") {
+    from(".env")
+    into(layout.buildDirectory)
+}
+
+tasks.named("compileJava") {
+    dependsOn("copyEnvFile")
 }
 
 

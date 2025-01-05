@@ -47,10 +47,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
             Claims claims = jwtService.resolveClaims(request);
             if (claims != null && jwtService.validateClaims(claims)) {
-                String username = claims.getSubject();
-                User user = userService.findByEmailOrThrow(username);
+                String email = claims.getSubject();
+                User user = userService.findByEmailOrThrow(email);
                 Authentication authentication =
-                        new UsernamePasswordAuthenticationToken(username, "", user.getRoles());
+                        new UsernamePasswordAuthenticationToken(user, "", user.getRoles());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (JwtException e) {

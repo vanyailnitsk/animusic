@@ -51,6 +51,18 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
     }
 
+    @ResponseBody
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage entityNotFound(IllegalArgumentException ex, WebRequest request) {
+        return new ErrorMessage(
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                ex,
+                request.getDescription(false)
+        );
+    }
+
     @ExceptionHandler(TokenRefreshException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody

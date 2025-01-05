@@ -1,11 +1,19 @@
-FROM maven:3.9.8-amazoncorretto-21 AS build
-WORKDIR /app
-COPY . .
-RUN mvn package -DskipTests
+FROM openjdk:17-jdk-slim
 
-FROM amazoncorretto:21
 WORKDIR /app
-COPY --from=build /app/api/target/api-1.0.jar app.jar
+
+COPY gradlew gradlew
+COPY gradle gradle
+COPY build.gradle.kts build.gradle.kts
+COPY settings.gradle.kts settings.gradle.kts
+COPY dependencies.gradle dependencies.gradle
+COPY src src
+COPY .env .env
+
+RUN chmod +x gradlew
+
+RUN ./gradlew build -x test
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar","--spring.profiles.active=dev"]
+
+ENTRYPOINT ["java", "-jar", "build/libs/animusic-1.0.jar", "--spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]

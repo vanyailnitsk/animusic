@@ -15,6 +15,10 @@ import lombok.NonNull;
 public interface UserRepository extends CrudRepository<User, Integer> {
     Optional<User> findByEmail(String email);
 
+    Optional<User> findByGoogleId(String id);
+
+    Optional<User> findByGithubId(String id);
+
     class Impl extends RepositoryBase<User, Integer> implements UserRepository {
 
         public Impl(@NonNull EntityManager entityManager) {
@@ -28,6 +32,26 @@ public interface UserRepository extends CrudRepository<User, Integer> {
             var root = query.from(User.class);
             query.select(root)
                 .where(cb.equal(root.get("email"), email));
+            return getOptionalResult(entityManager.createQuery(query));
+        }
+
+        @Override
+        public Optional<User> findByGoogleId(String id) {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            var query = cb.createQuery(User.class);
+            var root = query.from(User.class);
+            query.select(root)
+                    .where(cb.equal(root.get("google_id"), id));
+            return getOptionalResult(entityManager.createQuery(query));
+        }
+
+        @Override
+        public Optional<User> findByGithubId(String id) {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            var query = cb.createQuery(User.class);
+            var root = query.from(User.class);
+            query.select(root)
+                    .where(cb.equal(root.get("github_id"), id));
             return getOptionalResult(entityManager.createQuery(query));
         }
     }
