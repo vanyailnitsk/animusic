@@ -1,5 +1,6 @@
 package animusic.core.db.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -37,7 +38,7 @@ public class Playlist {
     private User user;
 
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL)
-    private List<PlaylistSoundtrack> soundtracks;
+    private List<PlaylistSoundtrack> soundtracks = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "cover_art_id")

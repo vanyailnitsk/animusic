@@ -1,11 +1,10 @@
 package animusic.service.security;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +26,8 @@ public class UserService {
                 .username(username)
                 .email(email)
                 .password(passwordEncoder.encode(rawPassword))
+                .roles(Set.of(Role.ROLE_USER))
                 .build();
-        user.getRoles().add(Role.ROLE_USER);
         Playlist playlist = Playlist.builder().name("Favourite tracks").build();
         playlist.setUser(user);
         return user;
@@ -83,10 +82,8 @@ public class UserService {
         return userRepository.findByEmail(email).isPresent();
     }
 
-    public Optional<User> getUserInSession() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        return userRepository.findByEmail(email);
+    public User findById(Integer id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
 }

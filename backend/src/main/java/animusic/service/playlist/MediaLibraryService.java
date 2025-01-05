@@ -44,16 +44,14 @@ public class MediaLibraryService {
     }
 
     @Transactional
-    public Playlist getFavouritePlaylistOrCreate() {
-        var user = userService.getUserInSession()
-                .orElseThrow(() -> new RuntimeException("User not found in session"));
-        return getFavouritePlaylist(user)
-                .orElseGet(() -> playlistService.createPlaylist(FAVOURITE_PLAYLIST_NAME));
+    public Playlist getFavouritePlaylistOrCreate(User currentUser) {
+        return getFavouritePlaylist(currentUser)
+                .orElseGet(() -> playlistService.createPlaylistForUser(FAVOURITE_PLAYLIST_NAME, currentUser));
     }
 
     @Transactional
-    public void addTrackToFavourites(Integer trackId) {
-        var playlist = getFavouritePlaylistOrCreate();
+    public void addTrackToFavourites(Integer trackId, User currentUser) {
+        var playlist = getFavouritePlaylistOrCreate(currentUser);
         var soundtrack = soundtrackRepository.findById(trackId)
                 .orElseThrow(() -> new SoundtrackNotFoundException(trackId));
         boolean alreadyContainsTrack = playlist.getSoundtracks().stream()
@@ -70,9 +68,8 @@ public class MediaLibraryService {
         }
     }
 
-    public void deleteTrackFromFavourites(Integer trackId) {
-        var user = userService.getUserInSession().orElseThrow(() -> new RuntimeException("User not found in session"));
-        var favourites = getFavouritePlaylist(user);
+    public void deleteTrackFromFavourites(Integer trackId, User currentUser) {
+        var favourites = getFavouritePlaylist(currentUser);
         favourites.ifPresent(
                 playlist -> playlistSoundtrackRepository.deleteTrackFromPlaylist(playlist.getId(), trackId)
         );

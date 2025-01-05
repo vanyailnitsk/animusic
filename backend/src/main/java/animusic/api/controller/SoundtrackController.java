@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,6 +28,7 @@ import animusic.api.dto.SoundtrackDto;
 import animusic.api.dto.UpdateSoundtrackDto;
 import animusic.api.mappers.SoundtrackMapper;
 import animusic.core.db.model.Soundtrack;
+import animusic.core.db.model.User;
 import animusic.service.soundtrack.SoundtrackService;
 
 @RestController
@@ -45,9 +47,9 @@ public class SoundtrackController {
             @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public SoundtrackDto getSoundtrack(@PathVariable Integer soundtrackId) {
+    public SoundtrackDto getSoundtrack(@PathVariable Integer soundtrackId, @AuthenticationPrincipal User user) {
         var soundtrack = soundtrackService.getSoundtrackOrThrow(soundtrackId);
-        return SoundtrackMapper.fromSoundtrack(soundtrack);
+        return SoundtrackMapper.fromSoundtrack(soundtrack, user);
     }
 
     @PutMapping("{soundtrackId}")
@@ -60,7 +62,8 @@ public class SoundtrackController {
     })
     public SoundtrackDto updateSoundtrack(
             @RequestBody UpdateSoundtrackDto updateSoundtrackDto,
-            @PathVariable Integer soundtrackId
+            @PathVariable Integer soundtrackId,
+            @AuthenticationPrincipal User user
     ) {
         Soundtrack soundtrack = soundtrackService.updateSoundtrack(
                 soundtrackId,
@@ -69,7 +72,7 @@ public class SoundtrackController {
                 updateSoundtrackDto.duration()
         );
         log.info("Soundtrack id={} updated successfully", soundtrackId);
-        return SoundtrackMapper.fromSoundtrack(soundtrack);
+        return SoundtrackMapper.fromSoundtrack(soundtrack, user);
     }
 
     @PatchMapping("{soundtrackId}")
@@ -82,11 +85,12 @@ public class SoundtrackController {
     })
     public SoundtrackDto patchSoundtrack(
             @RequestBody JsonNode jsonPatch,
-            @PathVariable Integer soundtrackId
+            @PathVariable Integer soundtrackId,
+            @AuthenticationPrincipal User user
     ) {
         Soundtrack soundtrackPatched = soundtrackService.updateSoundtrack(jsonPatch, soundtrackId);
         log.info("Soundtrack id={} updated successfully", soundtrackId);
-        return SoundtrackMapper.fromSoundtrack(soundtrackPatched);
+        return SoundtrackMapper.fromSoundtrack(soundtrackPatched, user);
     }
 
     @PostMapping
@@ -101,7 +105,8 @@ public class SoundtrackController {
             @RequestPart(value = "audio") MultipartFile audio,
             @RequestPart(value = "image", required = false) MultipartFile image,
             @ModelAttribute CreateSoundtrackDto request,
-            @RequestParam("albumId") Integer albumId
+            @RequestParam("albumId") Integer albumId,
+            @AuthenticationPrincipal User user
     ) {
         Soundtrack soundtrack = request.toSoundtrack();
         if (audio.isEmpty()) {
@@ -110,7 +115,7 @@ public class SoundtrackController {
         soundtrack = soundtrackService.createSoundtrack(
                 audio, image, soundtrack, albumId
         );
-        return SoundtrackMapper.fromSoundtrack(soundtrack);
+        return SoundtrackMapper.fromSoundtrack(soundtrack, user);
     }
 
     @PutMapping("/audio/{soundtrackId}")
@@ -123,11 +128,12 @@ public class SoundtrackController {
     })
     public SoundtrackDto updateAudioFile(
             @RequestPart("audio") MultipartFile audio,
-            @PathVariable Integer soundtrackId
+            @PathVariable Integer soundtrackId,
+            @AuthenticationPrincipal User user
     ) {
         Soundtrack soundtrack = soundtrackService.updateAudio(audio, soundtrackId);
         log.info("Soundtrack id={} audio updated to {}", soundtrackId, soundtrack.getAudioFile());
-        return SoundtrackMapper.fromSoundtrack(soundtrack);
+        return SoundtrackMapper.fromSoundtrack(soundtrack, user);
     }
 
     @PutMapping("/images/{soundtrackId}")
@@ -140,11 +146,12 @@ public class SoundtrackController {
     })
     public SoundtrackDto setSoundtrackImage(
             @PathVariable Integer soundtrackId,
-            @RequestPart(value = "image") MultipartFile image
+            @RequestPart(value = "image") MultipartFile image,
+            @AuthenticationPrincipal User user
     ) {
         Soundtrack soundtrack = soundtrackService.updateImage(image, soundtrackId);
         log.info("Image of Soundtrack with id={} updated to '{}'", soundtrackId, soundtrack.getImage().getSource());
-        return SoundtrackMapper.fromSoundtrack(soundtrack);
+        return SoundtrackMapper.fromSoundtrack(soundtrack, user);
     }
 
     @DeleteMapping("{id}")

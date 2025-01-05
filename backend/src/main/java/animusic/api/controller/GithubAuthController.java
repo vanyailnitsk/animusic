@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import animusic.security.AuthProvidersService;
 import animusic.security.AuthService;
-import animusic.security.oauth.GithubUserInfo;
 
 @RestController
 @RequestMapping("/api/oauth2/github")
@@ -20,9 +19,13 @@ public class GithubAuthController {
     private final AuthProvidersService authProvidersService;
 
     @GetMapping("/token")
-    public GithubUserInfo getToken(@RequestParam("code") String code, @RequestParam("state") String state) {
-        GithubUserInfo userInfo = authProvidersService.getGitHubUserInfo(code);
-        return userInfo;
+    public String getToken(@RequestParam("code") String code, @RequestParam("state") String state) {
+        /**
+         * Запрос на получение кода выглядит так
+         * https://github.com/login/oauth/authorize?response_type=code&client_id=Ov23liKJHg2I3blUU0Nx&scope=read:user&state=vLTrqxBeBzhqc0-TqR7CJW98knpQFBn6jLSpSOknB_Y%3D&redirect_uri=http://localhost:8080/api/oauth2/github/token
+         */
+//        String tokenGithub = authProvidersService.exchangeCodeForTokenGithub(code);
+        return code;
     }
 
     @GetMapping("/test")

@@ -11,7 +11,6 @@ import animusic.core.db.model.Playlist;
 import animusic.core.db.model.User;
 import animusic.core.db.table.PlaylistRepository;
 import animusic.service.image.CoverArtService;
-import animusic.service.security.UserService;
 
 @Service
 @Slf4j
@@ -20,13 +19,10 @@ public class PlaylistService {
 
     private final PlaylistRepository playlistRepository;
 
-    private final UserService userService;
-
     private final CoverArtService coverArtService;
 
     @Transactional
-    public Playlist createPlaylist(String playlistName) {
-        User user = userService.getUserInSession().orElseThrow(() -> new RuntimeException("User not found in session"));
+    public Playlist createPlaylistForUser(String playlistName, User user) {
         Playlist playlist = Playlist.builder()
                 .name(playlistName)
                 .user(user)

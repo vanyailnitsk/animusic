@@ -54,6 +54,7 @@ public class SecurityConfig {
             "/api/albums/**",
             "/api/anime/**",
             "/swagger-ui/**",
+            "/openapi",
             "/v3/api-docs/**",
             "/error",
             "/actuator/**",

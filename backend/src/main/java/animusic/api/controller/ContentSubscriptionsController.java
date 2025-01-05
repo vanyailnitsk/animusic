@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,10 +49,9 @@ public class ContentSubscriptionsController {
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public List<ContentSubscriptionDto> fetchSubscriptions(
             @RequestParam(required = false, defaultValue = "10")
-            @Schema(description = "Ограничение по количеству", defaultValue = "10") Integer limit
+            @Schema(description = "Ограничение по количеству", defaultValue = "10") Integer limit,
+            @AuthenticationPrincipal User user
     ) {
-        User user = userService.getUserInSession().get();
-
         List<ContentSubscription> subscriptions = contentSubscriptionService.findUserSubscriptions(user.getId(), limit);
 
         return ContentSubscriptionMapper.fromSubscriptions(subscriptions);
@@ -64,10 +64,9 @@ public class ContentSubscriptionsController {
             @PathVariable("animeId") Integer animeId,
             @RequestParam
             @Schema(description = "Operation", allowableValues = {"SUBSCRIBE", "UNSUBSCRIBE"})
-            SubscribeOperationName operation
+            SubscribeOperationName operation,
+            @AuthenticationPrincipal User user
     ) {
-        User user = userService.getUserInSession().get();
-
         var anime = animeService.getAnime(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
 
@@ -85,10 +84,9 @@ public class ContentSubscriptionsController {
             @PathVariable("albumId") Integer albumId,
             @RequestParam
             @Schema(description = "Operation", allowableValues = {"SUBSCRIBE", "UNSUBSCRIBE"})
-            SubscribeOperationName operation
+            SubscribeOperationName operation,
+            @AuthenticationPrincipal User user
     ) {
-        User user = userService.getUserInSession().get();
-
         var album = albumService.getAlbumById(albumId);
 
         if (operation == SubscribeOperationName.SUBSCRIBE) {

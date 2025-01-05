@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import animusic.api.dto.PlaylistDto;
 import animusic.api.mappers.PlaylistMapper;
 import animusic.core.db.model.Playlist;
+import animusic.core.db.model.User;
 import animusic.service.playlist.MediaLibraryService;
 
 @RestController
@@ -33,9 +35,9 @@ public class MediaLibraryController {
             @ApiResponse(responseCode = "401", description = "Не авторизован"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public PlaylistDto getFavouriteTracksPlaylist() {
-        Playlist playlist = mediaLibraryService.getFavouritePlaylistOrCreate();
-        PlaylistDto dto = PlaylistMapper.convertToDto(playlist);
+    public PlaylistDto getFavouriteTracksPlaylist(@AuthenticationPrincipal User user) {
+        Playlist playlist = mediaLibraryService.getFavouritePlaylistOrCreate(user);
+        PlaylistDto dto = PlaylistMapper.convertToDto(playlist, user);
         return dto;
     }
 
@@ -46,8 +48,8 @@ public class MediaLibraryController {
             @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public void addTrackToFavourites(@RequestParam Integer trackId) {
-        mediaLibraryService.addTrackToFavourites(trackId);
+    public void addTrackToFavourites(@RequestParam Integer trackId, @AuthenticationPrincipal User user) {
+        mediaLibraryService.addTrackToFavourites(trackId, user);
     }
 
     @DeleteMapping
@@ -57,8 +59,8 @@ public class MediaLibraryController {
             @ApiResponse(responseCode = "404", description = "Саундтрек не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public void deleteTrackFromFavourites(@RequestParam Integer trackId) {
-        mediaLibraryService.deleteTrackFromFavourites(trackId);
+    public void deleteTrackFromFavourites(@RequestParam Integer trackId, @AuthenticationPrincipal User user) {
+        mediaLibraryService.deleteTrackFromFavourites(trackId, user);
     }
 
 

@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import animusic.api.mappers.CoverArtMapper;
 import animusic.api.mappers.PlaylistMapper;
 import animusic.core.db.model.CoverArt;
 import animusic.core.db.model.Playlist;
+import animusic.core.db.model.User;
 import animusic.service.playlist.PlaylistService;
 
 @RestController
@@ -33,9 +35,9 @@ public class PlaylistController {
 
     @GetMapping("{playlistId}")
     @Operation(summary = "Метод для получения плейлиста по Id")
-    public PlaylistDto getPlaylistById(@PathVariable Integer playlistId) {
+    public PlaylistDto getPlaylistById(@PathVariable Integer playlistId, @AuthenticationPrincipal User user) {
         Playlist playlist = playlistService.getPlaylistById(playlistId);
-        return PlaylistMapper.convertToDto(playlist);
+        return PlaylistMapper.convertToDto(playlist, user);
     }
 
     @PostMapping
@@ -44,8 +46,8 @@ public class PlaylistController {
             @ApiResponse(responseCode = "200", description = "Успешное создание"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public Playlist createPlaylist(@RequestParam String playlistName) {
-        return playlistService.createPlaylist(playlistName);
+    public Playlist createPlaylist(@RequestParam String playlistName, @AuthenticationPrincipal User user) {
+        return playlistService.createPlaylistForUser(playlistName, user);
     }
 
     @PostMapping("cover-art/{playlistId}")

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import animusic.api.dto.AlbumDto;
 import animusic.api.dto.AlbumItemDto;
 import animusic.core.db.model.Album;
-import animusic.service.security.UserService;
+import animusic.core.db.model.User;
 import animusic.service.subscription.ContentSubscribedHelper;
 import animusic.service.subscription.ContentSubscriptionService;
 
@@ -20,17 +20,17 @@ public class AlbumMapper {
 
     public static AlbumDto fromAlbum(
             Album album,
-            UserService userService,
+            User user,
             ContentSubscriptionService contentSubscriptionService
     ) {
         var animeRef = album.getAnime();
-        var soundtracks = SoundtrackMapper.soundtrackDtos(album.getSoundtracks());
+        var soundtracks = SoundtrackMapper.soundtrackDtos(album.getSoundtracks(), user);
         return new AlbumDto(
                 album.getId(),
                 album.getName(),
                 AnimeMapper.animeItemDto(animeRef),
                 CoverArtMapper.fromCoverArt(album.getCoverArt()),
-                ContentSubscribedHelper.isSubscribedToAlbum(userService, contentSubscriptionService, album.getId()),
+                ContentSubscribedHelper.isSubscribedToAlbum(user, contentSubscriptionService, album.getId()),
                 soundtracks
         );
     }

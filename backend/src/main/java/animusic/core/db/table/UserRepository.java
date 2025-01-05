@@ -41,7 +41,7 @@ public interface UserRepository extends CrudRepository<User, Integer> {
             var query = cb.createQuery(User.class);
             var root = query.from(User.class);
             query.select(root)
-                    .where(cb.equal(root.get("google_id"), id));
+                    .where(cb.equal(root.get("googleId"), id));
             return getOptionalResult(entityManager.createQuery(query));
         }
 
@@ -51,7 +51,7 @@ public interface UserRepository extends CrudRepository<User, Integer> {
             var query = cb.createQuery(User.class);
             var root = query.from(User.class);
             query.select(root)
-                    .where(cb.equal(root.get("github_id"), id));
+                    .where(cb.equal(root.get("githubId"), id));
             return getOptionalResult(entityManager.createQuery(query));
         }
     }

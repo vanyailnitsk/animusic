@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import animusic.api.dto.CreateAnimeDto;
 import animusic.api.dto.RichAnimeDto;
 import animusic.api.mappers.AnimeMapper;
 import animusic.core.db.model.Anime;
+import animusic.core.db.model.User;
 import animusic.service.anime.AnimeNotFoundException;
 import animusic.service.anime.AnimeService;
 import animusic.service.security.UserService;
@@ -48,11 +50,11 @@ public class AnimeController {
             @ApiResponse(responseCode = "404", description = "Аниме не найдено"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public RichAnimeDto getAnimeInfo(@PathVariable Integer animeId) {
+    public RichAnimeDto getAnimeInfo(@PathVariable Integer animeId, @AuthenticationPrincipal User user) {
         log.info("Requested anime {} info", animeId);
         var anime = animeService.getAnime(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        var response = AnimeMapper.richAnimeDto(anime, userService, contentSubscriptionService);
+        var response = AnimeMapper.richAnimeDto(anime, user, contentSubscriptionService);
         var albums = response.albums();
         albums.sort((a1, a2) -> {
             List<String> categoryOrder = List.of("Openings", "Endings", "Themes", "Scene songs");
@@ -105,9 +107,9 @@ public class AnimeController {
             @ApiResponse(responseCode = "404", description = "Аниме не найдено"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public RichAnimeDto updateAnime(@RequestBody Anime updateAnime, @PathVariable Integer animeId) {
+    public RichAnimeDto updateAnime(@RequestBody Anime updateAnime, @PathVariable Integer animeId, @AuthenticationPrincipal User user) {
         Anime anime = animeService.updateAnime(updateAnime, animeId);
-        RichAnimeDto richAnimeDto = AnimeMapper.richAnimeDto(anime, userService, contentSubscriptionService);
+        RichAnimeDto richAnimeDto = AnimeMapper.richAnimeDto(anime, user, contentSubscriptionService);
         log.info("Anime id={} updated successfully", animeId);
         return richAnimeDto;
     }

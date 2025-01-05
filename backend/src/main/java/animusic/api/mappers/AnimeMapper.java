@@ -6,7 +6,7 @@ import animusic.api.dto.AnimeDto;
 import animusic.api.dto.AnimeItemDto;
 import animusic.api.dto.RichAnimeDto;
 import animusic.core.db.model.Anime;
-import animusic.service.security.UserService;
+import animusic.core.db.model.User;
 import animusic.service.subscription.ContentSubscribedHelper;
 import animusic.service.subscription.ContentSubscriptionService;
 
@@ -32,7 +32,7 @@ public class AnimeMapper {
 
     public static RichAnimeDto richAnimeDto(
             Anime anime,
-            UserService userService,
+            User user,
             ContentSubscriptionService contentSubscriptionService
     ) {
         return new RichAnimeDto(
@@ -44,7 +44,7 @@ public class AnimeMapper {
                 anime.getFolderName(),
                 ImageMapper.fromAnimeBanner(anime.getBannerImage()),
                 ImageMapper.fromImage(anime.getCardImage()),
-                ContentSubscribedHelper.isSubscribedToAnime(userService, contentSubscriptionService, anime.getId()),
+                ContentSubscribedHelper.isSubscribedToAnime(user, contentSubscriptionService, anime.getId()),
                 AlbumMapper.albumItems(anime.getAlbums())
         );
     }

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import animusic.api.dto.AlbumDto;
 import animusic.api.dto.AlbumItemDto;
 import animusic.api.mappers.AlbumMapper;
 import animusic.core.db.model.Album;
+import animusic.core.db.model.User;
 import animusic.service.album.AlbumService;
 import animusic.service.anime.AnimeNotFoundException;
 import animusic.service.security.UserService;
@@ -71,10 +73,10 @@ public class AlbumController {
             @ApiResponse(responseCode = "404", description = "Альбом не найден"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public AlbumDto getAlbumById(@PathVariable Integer id) {
+    public AlbumDto getAlbumById(@PathVariable Integer id, @AuthenticationPrincipal User user) {
         log.info("Requested album with id {}", id);
         var album = albumService.getAlbumById(id);
-        return AlbumMapper.fromAlbum(album, userService, contentSubscriptionService);
+        return AlbumMapper.fromAlbum(album, user, contentSubscriptionService);
     }
 
 
@@ -86,9 +88,9 @@ public class AlbumController {
             @ApiResponse(responseCode = "400", description = "Альбом уже существует"),
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
-    public AlbumDto createAlbum(@RequestBody CreateAlbumDto request) {
+    public AlbumDto createAlbum(@RequestBody CreateAlbumDto request, @AuthenticationPrincipal User user) {
         var album = albumService.createAlbum(request.toAlbum(), request.animeId);
-        var albumDto = AlbumMapper.fromAlbum(album, userService, contentSubscriptionService);
+        var albumDto = AlbumMapper.fromAlbum(album, user, contentSubscriptionService);
         log.info("Album {} in anime {} created", album.getName(), request.animeId);
         return albumDto;
     }
@@ -100,9 +102,13 @@ public class AlbumController {
             @ApiResponse(responseCode = "200", description = "Успешное обновление альбома."),
             @ApiResponse(responseCode = "404", description = "Альбом не найден")
     })
-    public AlbumDto updateAlbumName(@RequestBody UpdateAlbumDto albumDto, @PathVariable Integer albumId) {
+    public AlbumDto updateAlbumName(
+            @RequestBody UpdateAlbumDto albumDto,
+            @PathVariable Integer albumId,
+            @AuthenticationPrincipal User user
+    ) {
         Album album = albumService.updateAlbumName(albumDto.name(), albumId);
-        AlbumDto newAlbumDto = AlbumMapper.fromAlbum(album, userService, contentSubscriptionService);
+        AlbumDto newAlbumDto = AlbumMapper.fromAlbum(album, user, contentSubscriptionService);
         log.info("Album id={} updated successfully", albumId);
         return newAlbumDto;
     }
