@@ -34,8 +34,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Ошибка на стороне сервера")
     })
     public UserDto getUser(@AuthenticationPrincipal User currentUser) {
-        User user = userService.findByEmailOrThrow(currentUser.getEmail());
-        return UserMapper.fromUser(user);
+        return UserMapper.fromUser(currentUser);
     }
 
 }
